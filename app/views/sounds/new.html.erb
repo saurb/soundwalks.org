@@ -1,0 +1,13 @@
+<h1>New sound</h1>
+
+<% form_for @sound, :html => {:multipart => true} do |form| %>
+	<%= form.error_messages %>
+	
+	<p>
+		<%= label_tag 'Sound File' %><br />
+		<%= file_field :upload, :file %>
+	</p>
+	<p>
+		<%= form.submit 'Save' %>
+	</p>
+<% end %>

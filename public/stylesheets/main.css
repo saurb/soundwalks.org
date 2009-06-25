@@ -1,0 +1,77 @@
+body {
+	background: #fafafa;
+	font-family: "Lucida Sans Unicode", "Lucida Granda", Verdana, Arial, Helvetica, sans-serif;
+	font-size: 80%;
+	padding: 16px;
+}
+
+strong, em, b, i {
+	font-family: "Lucida Sans", "Lucida Sans Unicode", "Lucida Grande", Verdana, Arial, Helvetica, sans-serif;
+}
+#notice {
+	color: green;
+}
+
+#showsound {
+	width: 950px;
+}
+
+#shownavigation {
+	text-align: center;
+}
+
+#previous {
+	font-size: 4em;
+	margin: -32px;
+	padding: 0;
+	line-height: 2em;
+	display: inline;
+	vertical-align: middle;
+}
+
+#previous a {
+	color: #cdcdcd;
+	text-decoration: none;
+}
+
+#next {
+	font-size: 4em;
+	margin: -32px;
+	padding: 0;
+	display: inline;
+	vertical-align: middle;
+}
+
+#next a {
+	color: #cdcdcd;
+	text-decoration: none;
+}
+#current {
+	font-size: 8em;
+	margin: 0;
+	padding: 0;
+	display: inline;
+	vertical-align: middle;
+}
+
+#showdetails {
+}
+
+#showfeatures {
+	width: 600px;
+	float: right;
+}
+
+table {
+	margin: 4px;
+}
+
+td {
+	padding: 8px;
+}
+
+th {
+	background-color: #efefef;
+	padding: 8px;
+	text-align: left;
+}

@@ -1,0 +1,11 @@
+# Read about fixtures at http://ar.rubyonrails.org/classes/Fixtures.html
+
+one:
+  filename: MyString
+  duration: 9.99
+  recorded_at: 2009-06-19 15:47:38
+
+two:
+  filename: MyString
+  duration: 9.99
+  recorded_at: 2009-06-19 15:47:38

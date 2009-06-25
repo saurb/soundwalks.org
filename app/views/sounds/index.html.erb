@@ -1,0 +1,28 @@
+<h1>All Sounds</h1>
+
+<p>
+	<%= link_to 'upload sound', new_sound_path %>
+</p>
+
+<table>
+	<tr>
+		<th>Filename</th>
+		<th>Duration</th>
+		<th>Sample rate</th>
+		<th>Recorded at</th>
+		<th>Created at</th>
+		<th>Updated at</th>
+	</tr>
+	
+<% @sounds.each do |sound| %>
+	<tr>
+		<td><%= link_to sound.filename, sound %></td>
+		<td><%= sprintf('%.2f', sound.samples.to_f / sound.sample_rate.to_f) %> s</td>
+		<td><%= sound.sample_rate %> Hz</td>
+		<td><%= sound.recorded_at %></td>
+		<td><%= sound.created_at %></td>
+		<td><%= sound.updated_at %></td>
+		<th><%= link_to 'delete', sound, :method => :delete %>
+	</tr>
+<% end %>
+</table>

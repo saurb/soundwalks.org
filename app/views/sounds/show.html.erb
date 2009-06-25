@@ -1,0 +1,40 @@
+<% 
+
+sound_index = @sounds.index(@sound)
+previous_index = sound_index > 0 ? sound_index - 1 : @sounds.size - 1;
+next_index = sound_index < @sounds.size - 1 ? sound_index + 1 : 0;
+
+%>
+
+<div id='showsound'>
+	<p id='showfeatures'>
+		<%= feature_chart('loudness', @sound.trajectory(:loudness)[0], 0, 'ab4444') %><br/>
+		<%= feature_chart('temporal sparsity', @sound.trajectory(:temporal_sparsity)[0], 'auto', '44ab44') %><br/>
+		<%= feature_chart('spectral sparsity', @sound.trajectory(:spectral_sparsity)[0], 'auto', '4444ab') %><br/>
+		<%= feature_chart('spectral centroid', @sound.trajectory(:spectral_centroid)[0], 'auto', 'abab44') %><br/>
+		<%= feature_chart('transient index', @sound.trajectory(:transient_index)[0], 'auto', '44abab') %><br/>
+		<%= feature_chart('harmonicity', @sound.trajectory(:harmonicity)[0], 'auto', 'ab44ab') %><br/>
+	</p>
+	
+	<div id='shownavigation'>
+		<h1 id='previous'><%= link_to @sounds[previous_index].id, @sounds[previous_index] %>
+		<h1 id='current'><%= @sound.id %>
+		<h1 id='next'><%= link_to @sounds[next_index].id, @sounds[next_index] %>
+	</div>
+	<p id='showdetails'>
+		<b>Filename: </b><%=h @sound.filename %><br/>
+		<b>Duration: </b><%=h sprintf('%.2f', @sound.samples.to_f / @sound.sample_rate.to_f) %> s (<%= @sound.samples %> samples, <%= @sound.frames %> frames)<br/>
+		<b>Sample rate: </b><%=h @sound.sample_rate %><br/>
+		<b>Frame length: </b><%=h @sound.frame_length %>s (<%= @sound.frame_size %> samples)<br/>
+		<b>Hop size: </b><%=h @sound.hop_length %>s (<%= @sound.hop_size%> samples)<br/>
+		<b>Spectrum size: </b><%=h @sound.spectrum_size %><br/>
+		<b>Recorded at: </b><%=h @sound.recorded_at %><br/>
+		<b>Created at: </b><%=h @sound.created_at %><br/>
+		<b>Updated at: </b><%=h @sound.updated_at %>
+	</p>
+
+	<p>
+	<%= link_to 'Sound index', sounds_path %><br/>
+	<%= link_to 'Delete sound', @sound, :confirm => 'Are you sure?', :method => :delete %>
+	</p>
+</div>
