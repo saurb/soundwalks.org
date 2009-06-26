@@ -1,14 +1,20 @@
 require 'soundwalk'
 
 class Sound < ActiveRecord::Base
+  serialize :features, Hash
   attr_accessor :file
   
-  validates_presence_of :recorded_at, :sample_rate, :samples, :frame_size, :hop_size, :spectrum_size, :filename, :frames
+  validates_presence_of :recorded_at, :sample_rate, :samples, 
+    :frame_size, :hop_size, :spectrum_size, :frame_length, 
+    :hop_length, :filename, :frames
+    
   validates_numericality_of :recorded_at, :greater_than => 0
   validates_numericality_of :sample_rate, :greater_than => 0
   validates_numericality_of :samples, :greater_than => 0
   validates_numericality_of :frame_size, :greater_than => 0
   validates_numericality_of :hop_size, :greater_than => 0
+  validates_numericality_of :frame_length, :greater_than => 0
+  validates_numericality_of :hop_length, :greater_than => 0
   validates_numericality_of :spectrum_size, :greater_than => 0
   validates_numericality_of :frames, :greater_than => 0
   
@@ -55,23 +61,13 @@ class Sound < ActiveRecord::Base
     sound_file.frameLength = self.frame_length
     sound_file.hopLength = self.hop_length
     sound_file.open sound_path
-    
-    print "\n", sound_file
-    print "\n\tPath: ", sound_file.path
-    print "\n\tSamples: ", sound_file.samples
-    print "\n\tSample rate: ", sound_file.sampleRate
-    print "\n\tFrame length: ", sound_file.frameLength, "s (", sound_file.samplesPerFrame, " samples)"
-    print "\n\tHop length: ", sound_file.hopLength, "s (", sound_file.samplesPerHop, " samples)"
-    print "\n\tFFT Size: ", sound_file.fftSize
-    print "\n\tSpectrum size: ", sound_file.spectrumSize
-    print "\n\n"
 
     # Initialize features.
     loudness = Soundwalk::LoudnessFeature.new
     temporal_sparsity = Soundwalk::TemporalSparsityFeature.new
     spectral_sparsity = Soundwalk::SpectralSparsityFeature.new
     spectral_centroid = Soundwalk::SpectralCentroidFeature.new
-
+    
     harmonicity = Soundwalk::HarmonicityFeature.new
     harmonicity.absThreshold = 1
     harmonicity.threshold = 0.1
@@ -98,51 +94,13 @@ class Sound < ActiveRecord::Base
     # Extract features.
     sound_file.extractFeatures
     
-    histories = Array[loudness.history, temporal_sparsity.history, spectral_sparsity.history, spectral_centroid.history, transient_index.history, harmonicity.history]
-    
-    features_file = File.new(feature_path, 'w')
-    for i in 0...sound_file.frames
-      histories.each do |history|
-        features_file.write(history[i])
-        features_file.write(',')
-      end
-      
-      features_file.write("\n")
-    end
-  end
-  
-  def trajectory(*args)
-    indices = Array.new
-    
-    args.each do |arg|
-      indices.push 0 if arg == :loudness || arg == 'loudness'
-      indices.push 1 if arg == :temporal_sparsity || arg == 'temporal_sparsity'
-      indices.push 2 if arg == :spectral_sparsity || arg == 'spectral_sparsity'
-      indices.push 3 if arg == :spectral_centroid || arg == 'spectral_centroid'
-      indices.push 4 if arg == :transient_index || arg == 'transient_index'
-      indices.push 5 if arg == :harmonicity || arg == 'harmonicity'
-    end
-    
-    puts indices
-    
-    trajectory = Array.new(indices.size) { |feature|
-      feature = Array.new
+    self.features = {
+      :loudness => loudness.history, 
+      :temporal_sparsity => temporal_sparsity.history,
+      :spectral_sparsity => spectral_sparsity.history,
+      :spectral_centroid => spectral_centroid.history,
+      :transient_index => transient_index.history,
+      :harmonicity => harmonicity.history
     }
-    
-    File.open(feature_path, 'r').each { |line|
-      elements = line.split(',')
-      
-      for i in 0..(indices.size - 1)
-        number = elements[indices[i]].to_f
-        
-        if !number.nan? && number.finite?
-          trajectory[i].push number
-        else
-          trajectory[i].push 0
-        end
-      end
-    }
-    
-    return trajectory
   end
 end

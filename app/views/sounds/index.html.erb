@@ -9,6 +9,8 @@
 		<th>Filename</th>
 		<th>Duration</th>
 		<th>Sample rate</th>
+		<th>Latitude</th>
+		<th>Longitude</th>
 		<th>Recorded at</th>
 		<th>Created at</th>
 		<th>Updated at</th>
@@ -17,8 +19,10 @@
 <% @sounds.each do |sound| %>
 	<tr>
 		<td><%= link_to sound.filename, sound %></td>
-		<td><%= sprintf('%.2f', sound.samples.to_f / sound.sample_rate.to_f) %> s</td>
+		<td><%= sprintf('%.2f', sound.samples.to_f / sound.sample_rate.to_f) %>s</td>
 		<td><%= sound.sample_rate %> Hz</td>
+		<td><%= sound.latitude %></td>
+		<td><%= sound.longitude %></td>
 		<td><%= sound.recorded_at %></td>
 		<td><%= sound.created_at %></td>
 		<td><%= sound.updated_at %></td>

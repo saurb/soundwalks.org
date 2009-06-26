@@ -24,6 +24,7 @@ ActiveRecord::Schema.define(:version => 20090619224738) do
     t.text     "description"
     t.decimal  "longitude"
     t.decimal  "latitude"
+    t.text     "features"
     t.datetime "recorded_at"
     t.datetime "created_at"
     t.datetime "updated_at"

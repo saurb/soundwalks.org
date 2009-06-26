@@ -16,6 +16,8 @@ class CreateSounds < ActiveRecord::Migration
       t.decimal :longitude
       t.decimal :latitude
       
+      t.text :features
+      
       t.timestamp :recorded_at
 
       t.timestamps

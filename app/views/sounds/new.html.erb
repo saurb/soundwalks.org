@@ -8,6 +8,16 @@
 		<%= file_field :upload, :file %>
 	</p>
 	<p>
+		<%= form.label :description %><br />
+		<%= form.text_area :description %>
+	<p>
+	<p>
+		<%= form.label :latitude %><br />
+		<%= form.text_field :latitude %><br />
+		<%= form.label :longitude %><br />
+		<%= form.text_field :longitude %><br />
+	</p>
+	<p>
 		<%= form.submit 'Save' %>
 	</p>
 <% end %>

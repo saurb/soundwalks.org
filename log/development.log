@@ -13777,3 +13777,484 @@ Migrating to CreateSounds (20090619224738)
  WHERE type = 'table' AND NOT name = 'sqlite_sequence'
 [0m
   [4;36;1mSQL (0.1ms)[0m   [0;1mPRAGMA index_list("sounds")[0m
+
+
+Processing SoundsController#index (for 127.0.0.1 at 2009-06-24 21:06:29) [GET]
+  [4;36;1mSound Load (0.6ms)[0m   [0;1mSELECT * FROM "sounds" [0m
+Rendering template within layouts/sounds
+Rendering sounds/index
+Completed in 32ms (View: 14, DB: 1) | 200 OK [http://localhost/sounds]
+
+
+Processing SoundsController#new (for 127.0.0.1 at 2009-06-24 21:06:38) [GET]
+Rendering template within layouts/sounds
+Rendering sounds/new
+Completed in 22ms (View: 11, DB: 0) | 200 OK [http://localhost/sounds/new]
+
+
+Processing SoundsController#create (for 127.0.0.1 at 2009-06-24 21:06:50) [POST]
+  Parameters: {"commit"=>"Save", "authenticity_token"=>"qJXJFtjh0e1Hpp5JW5NLIST9e5Qs6T7odSwB5ZEROgs=", "upload"=>{"file"=>#<File:/var/folders/e0/e0z8MyayGiOlG8t6Sqnkh++++TI/-Tmp-/RackMultipart.1392.1>}}
+  [4;35;1mSound Create (0.7ms)[0m   [0mINSERT INTO "sounds" ("frame_size", "hop_size", "latitude", "updated_at", "frame_length", "recorded_at", "sample_rate", "description", "filename", "spectrum_size", "longitude", "samples", "frames", "hop_length", "created_at") VALUES(1764, 882, NULL, '2009-06-25 04:06:51', 0.04, '2009-06-25 04:06:50', 44100, NULL, '090402_01.wav', 1025, NULL, 481124, 544, 0.02, '2009-06-25 04:06:51')[0m
+Redirected to http://localhost:3000/sounds/1
+Completed in 1050ms (DB: 1) | 302 Found [http://localhost/sounds]
+
+
+Processing SoundsController#show (for 127.0.0.1 at 2009-06-24 21:06:51) [GET]
+  Parameters: {"id"=>"1"}
+  [4;36;1mSound Load (0.9ms)[0m   [0;1mSELECT * FROM "sounds" [0m
+  [4;35;1mSound Load (0.5ms)[0m   [0mSELECT * FROM "sounds" WHERE ("sounds"."id" = 1) [0m
+Rendering template within layouts/sounds
+Rendering sounds/show
+Completed in 130ms (View: 117, DB: 1) | 200 OK [http://localhost/sounds/1]
+
+
+Processing SoundsController#show (for 127.0.0.1 at 2009-06-24 21:07:08) [GET]
+  Parameters: {"id"=>"1"}
+  [4;36;1mSound Load (0.8ms)[0m   [0;1mSELECT * FROM "sounds" [0m
+  [4;35;1mSound Load (0.4ms)[0m   [0mSELECT * FROM "sounds" WHERE ("sounds"."id" = 1) [0m
+Rendering template within layouts/sounds
+Rendering sounds/show
+Completed in 121ms (View: 109, DB: 1) | 200 OK [http://localhost/sounds/1]
+
+
+Processing SoundsController#index (for 127.0.0.1 at 2009-06-24 21:07:10) [GET]
+  [4;36;1mSound Load (0.8ms)[0m   [0;1mSELECT * FROM "sounds" [0m
+Rendering template within layouts/sounds
+Rendering sounds/index
+Completed in 41ms (View: 32, DB: 1) | 200 OK [http://localhost/sounds]
+
+
+Processing SoundsController#new (for 127.0.0.1 at 2009-06-24 21:07:12) [GET]
+Rendering template within layouts/sounds
+Rendering sounds/new
+Completed in 16ms (View: 6, DB: 0) | 200 OK [http://localhost/sounds/new]
+
+
+Processing SoundsController#create (for 127.0.0.1 at 2009-06-24 21:07:18) [POST]
+  Parameters: {"commit"=>"Save", "authenticity_token"=>"qJXJFtjh0e1Hpp5JW5NLIST9e5Qs6T7odSwB5ZEROgs=", "upload"=>{"file"=>#<File:/var/folders/e0/e0z8MyayGiOlG8t6Sqnkh++++TI/-Tmp-/RackMultipart.1392.1>}}
+  [4;35;1mSound Create (0.9ms)[0m   [0mINSERT INTO "sounds" ("frame_size", "hop_size", "latitude", "updated_at", "frame_length", "recorded_at", "sample_rate", "description", "filename", "spectrum_size", "longitude", "samples", "frames", "hop_length", "created_at") VALUES(1764, 882, NULL, '2009-06-25 04:07:18', 0.04, '2009-06-25 04:07:18', 44100, NULL, '090402_02.wav', 1025, NULL, 661504, 749, 0.02, '2009-06-25 04:07:18')[0m
+Redirected to http://localhost:3000/sounds/2
+Completed in 1692ms (DB: 1) | 302 Found [http://localhost/sounds]
+
+
+Processing SoundsController#show (for 127.0.0.1 at 2009-06-24 21:07:20) [GET]
+  Parameters: {"id"=>"2"}
+  [4;36;1mSound Load (1.2ms)[0m   [0;1mSELECT * FROM "sounds" [0m
+  [4;35;1mSound Load (0.5ms)[0m   [0mSELECT * FROM "sounds" WHERE ("sounds"."id" = 2) [0m
+Rendering template within layouts/sounds
+Rendering sounds/show
+Completed in 164ms (View: 149, DB: 2) | 200 OK [http://localhost/sounds/2]
+
+
+Processing SoundsController#index (for 127.0.0.1 at 2009-06-24 21:07:23) [GET]
+  [4;36;1mSound Load (1.0ms)[0m   [0;1mSELECT * FROM "sounds" [0m
+Rendering template within layouts/sounds
+Rendering sounds/index
+Completed in 66ms (View: 56, DB: 1) | 200 OK [http://localhost/sounds]
+
+
+Processing SoundsController#new (for 127.0.0.1 at 2009-06-24 21:07:24) [GET]
+Rendering template within layouts/sounds
+Rendering sounds/new
+Completed in 17ms (View: 6, DB: 0) | 200 OK [http://localhost/sounds/new]
+
+
+Processing SoundsController#create (for 127.0.0.1 at 2009-06-24 21:07:30) [POST]
+  Parameters: {"commit"=>"Save", "authenticity_token"=>"qJXJFtjh0e1Hpp5JW5NLIST9e5Qs6T7odSwB5ZEROgs=", "upload"=>{"file"=>#<File:/var/folders/e0/e0z8MyayGiOlG8t6Sqnkh++++TI/-Tmp-/RackMultipart.1392.1>}}
+  [4;35;1mSound Create (1.0ms)[0m   [0mINSERT INTO "sounds" ("frame_size", "hop_size", "latitude", "updated_at", "frame_length", "recorded_at", "sample_rate", "description", "filename", "spectrum_size", "longitude", "samples", "frames", "hop_length", "created_at") VALUES(1764, 882, NULL, '2009-06-25 04:07:30', 0.04, '2009-06-25 04:07:30', 44100, NULL, '090402_03.wav', 1025, NULL, 562255, 636, 0.02, '2009-06-25 04:07:30')[0m
+Redirected to http://localhost:3000/sounds/3
+Completed in 1366ms (DB: 1) | 302 Found [http://localhost/sounds]
+
+
+Processing SoundsController#show (for 127.0.0.1 at 2009-06-24 21:07:31) [GET]
+  Parameters: {"id"=>"3"}
+  [4;36;1mSound Load (1.3ms)[0m   [0;1mSELECT * FROM "sounds" [0m
+  [4;35;1mSound Load (0.6ms)[0m   [0mSELECT * FROM "sounds" WHERE ("sounds"."id" = 3) [0m
+Rendering template within layouts/sounds
+Rendering sounds/show
+Completed in 144ms (View: 128, DB: 2) | 200 OK [http://localhost/sounds/3]
+
+
+Processing SoundsController#show (for 127.0.0.1 at 2009-06-24 21:10:20) [GET]
+  Parameters: {"id"=>"3"}
+  [4;36;1mSound Load (1.1ms)[0m   [0;1mSELECT * FROM "sounds" [0m
+  [4;35;1mSound Load (0.4ms)[0m   [0mSELECT * FROM "sounds" WHERE ("sounds"."id" = 3) [0m
+Rendering template within layouts/sounds
+Rendering sounds/show
+Completed in 135ms (View: 122, DB: 2) | 200 OK [http://localhost/sounds/3]
+
+
+Processing SoundsController#show (for 127.0.0.1 at 2009-06-24 21:11:03) [GET]
+  Parameters: {"id"=>"3"}
+  [4;36;1mSound Load (1.3ms)[0m   [0;1mSELECT * FROM "sounds" [0m
+  [4;35;1mSound Load (0.5ms)[0m   [0mSELECT * FROM "sounds" WHERE ("sounds"."id" = 3) [0m
+Rendering template within layouts/sounds
+Rendering sounds/show
+Completed in 144ms (View: 128, DB: 2) | 200 OK [http://localhost/sounds/3]
+
+
+Processing SoundsController#show (for 127.0.0.1 at 2009-06-24 21:11:26) [GET]
+  Parameters: {"id"=>"3"}
+  [4;36;1mSound Load (1.2ms)[0m   [0;1mSELECT * FROM "sounds" [0m
+  [4;35;1mSound Load (0.4ms)[0m   [0mSELECT * FROM "sounds" WHERE ("sounds"."id" = 3) [0m
+Rendering template within layouts/sounds
+Rendering sounds/show
+Completed in 137ms (View: 124, DB: 2) | 200 OK [http://localhost/sounds/3]
+
+
+Processing SoundsController#show (for 127.0.0.1 at 2009-06-24 21:12:02) [GET]
+  Parameters: {"id"=>"3"}
+  [4;36;1mSound Load (1.2ms)[0m   [0;1mSELECT * FROM "sounds" [0m
+  [4;35;1mSound Load (0.4ms)[0m   [0mSELECT * FROM "sounds" WHERE ("sounds"."id" = 3) [0m
+Rendering template within layouts/sounds
+Rendering sounds/show
+Completed in 229ms (View: 215, DB: 2) | 200 OK [http://localhost/sounds/3]
+
+
+Processing SoundsController#show (for 127.0.0.1 at 2009-06-24 21:12:09) [GET]
+  Parameters: {"id"=>"3"}
+  [4;36;1mSound Load (1.2ms)[0m   [0;1mSELECT * FROM "sounds" [0m
+  [4;35;1mSound Load (0.5ms)[0m   [0mSELECT * FROM "sounds" WHERE ("sounds"."id" = 3) [0m
+Rendering template within layouts/sounds
+Rendering sounds/show
+Completed in 138ms (View: 123, DB: 2) | 200 OK [http://localhost/sounds/3]
+
+
+Processing SoundsController#index (for 127.0.0.1 at 2009-06-24 21:12:17) [GET]
+  [4;36;1mSound Load (1.2ms)[0m   [0;1mSELECT * FROM "sounds" [0m
+Rendering template within layouts/sounds
+Rendering sounds/index
+Completed in 89ms (View: 79, DB: 1) | 200 OK [http://localhost/sounds]
+
+
+Processing SoundsController#new (for 127.0.0.1 at 2009-06-24 21:12:19) [GET]
+Rendering template within layouts/sounds
+Rendering sounds/new
+Completed in 16ms (View: 6, DB: 0) | 200 OK [http://localhost/sounds/new]
+
+
+Processing SoundsController#create (for 127.0.0.1 at 2009-06-24 21:12:24) [POST]
+  Parameters: {"commit"=>"Save", "authenticity_token"=>"qJXJFtjh0e1Hpp5JW5NLIST9e5Qs6T7odSwB5ZEROgs=", "upload"=>{"file"=>#<File:/var/folders/e0/e0z8MyayGiOlG8t6Sqnkh++++TI/-Tmp-/RackMultipart.1392.1>}}
+  [4;35;1mSound Create (99.5ms)[0m   [0mINSERT INTO "sounds" ("frame_size", "hop_size", "latitude", "updated_at", "frame_length", "recorded_at", "sample_rate", "description", "filename", "spectrum_size", "longitude", "samples", "frames", "hop_length", "created_at") VALUES(1764, 882, NULL, '2009-06-25 04:12:24', 0.04, '2009-06-25 04:12:24', 44100, NULL, '090402_04.wav', 1025, NULL, 457614, 517, 0.02, '2009-06-25 04:12:24')[0m
+Redirected to http://localhost:3000/sounds/4
+Completed in 927ms (DB: 99) | 302 Found [http://localhost/sounds]
+
+
+Processing SoundsController#show (for 127.0.0.1 at 2009-06-24 21:12:25) [GET]
+  Parameters: {"id"=>"4"}
+  [4;36;1mSound Load (1.5ms)[0m   [0;1mSELECT * FROM "sounds" [0m
+  [4;35;1mSound Load (0.5ms)[0m   [0mSELECT * FROM "sounds" WHERE ("sounds"."id" = 4) [0m
+Rendering template within layouts/sounds
+Rendering sounds/show
+Completed in 128ms (View: 110, DB: 2) | 200 OK [http://localhost/sounds/4]
+
+
+Processing SoundsController#index (for 127.0.0.1 at 2009-06-24 21:12:28) [GET]
+  [4;36;1mSound Load (1.4ms)[0m   [0;1mSELECT * FROM "sounds" [0m
+Rendering template within layouts/sounds
+Rendering sounds/index
+Completed in 218ms (View: 207, DB: 1) | 200 OK [http://localhost/sounds]
+
+
+Processing SoundsController#new (for 127.0.0.1 at 2009-06-24 21:12:29) [GET]
+Rendering template within layouts/sounds
+Rendering sounds/new
+Completed in 16ms (View: 6, DB: 0) | 200 OK [http://localhost/sounds/new]
+
+
+Processing SoundsController#create (for 127.0.0.1 at 2009-06-24 21:12:33) [POST]
+  Parameters: {"commit"=>"Save", "authenticity_token"=>"qJXJFtjh0e1Hpp5JW5NLIST9e5Qs6T7odSwB5ZEROgs=", "upload"=>{"file"=>#<File:/var/folders/e0/e0z8MyayGiOlG8t6Sqnkh++++TI/-Tmp-/RackMultipart.1392.0>}}
+  [4;35;1mSound Create (0.9ms)[0m   [0mINSERT INTO "sounds" ("frame_size", "hop_size", "latitude", "updated_at", "frame_length", "recorded_at", "sample_rate", "description", "filename", "spectrum_size", "longitude", "samples", "frames", "hop_length", "created_at") VALUES(1764, 882, NULL, '2009-06-25 04:12:33', 0.04, '2009-06-25 04:12:33', 44100, NULL, '090402_05.wav', 1025, NULL, 412392, 466, 0.02, '2009-06-25 04:12:33')[0m
+Redirected to http://localhost:3000/sounds/5
+Completed in 728ms (DB: 1) | 302 Found [http://localhost/sounds]
+
+
+Processing SoundsController#show (for 127.0.0.1 at 2009-06-24 21:12:34) [GET]
+  Parameters: {"id"=>"5"}
+  [4;36;1mSound Load (1.7ms)[0m   [0;1mSELECT * FROM "sounds" [0m
+  [4;35;1mSound Load (0.5ms)[0m   [0mSELECT * FROM "sounds" WHERE ("sounds"."id" = 5) [0m
+Rendering template within layouts/sounds
+Rendering sounds/show
+Completed in 140ms (View: 118, DB: 2) | 200 OK [http://localhost/sounds/5]
+
+
+Processing SoundsController#show (for 127.0.0.1 at 2009-06-24 21:12:38) [GET]
+  Parameters: {"id"=>"1"}
+  [4;36;1mSound Load (1.6ms)[0m   [0;1mSELECT * FROM "sounds" [0m
+  [4;35;1mSound Load (0.4ms)[0m   [0mSELECT * FROM "sounds" WHERE ("sounds"."id" = 1) [0m
+Rendering template within layouts/sounds
+Rendering sounds/show
+Completed in 125ms (View: 112, DB: 2) | 200 OK [http://localhost/sounds/1]
+
+
+Processing SoundsController#show (for 127.0.0.1 at 2009-06-24 21:12:40) [GET]
+  Parameters: {"id"=>"2"}
+  [4;36;1mSound Load (1.4ms)[0m   [0;1mSELECT * FROM "sounds" [0m
+  [4;35;1mSound Load (0.5ms)[0m   [0mSELECT * FROM "sounds" WHERE ("sounds"."id" = 2) [0m
+Rendering template within layouts/sounds
+Rendering sounds/show
+Completed in 153ms (View: 140, DB: 2) | 200 OK [http://localhost/sounds/2]
+
+
+Processing SoundsController#index (for 127.0.0.1 at 2009-06-24 21:13:27) [GET]
+  [4;36;1mSound Load (1.4ms)[0m   [0;1mSELECT * FROM "sounds" [0m
+Rendering template within layouts/sounds
+Rendering sounds/index
+Completed in 141ms (View: 131, DB: 1) | 200 OK [http://localhost/sounds]
+
+
+Processing SoundsController#show (for 127.0.0.1 at 2009-06-24 21:17:54) [GET]
+  Parameters: {"id"=>"1"}
+  [4;35;1mSound Load (1.5ms)[0m   [0mSELECT * FROM "sounds" [0m
+  [4;36;1mSound Load (0.4ms)[0m   [0;1mSELECT * FROM "sounds" WHERE ("sounds"."id" = 1) [0m
+Rendering template within layouts/sounds
+Rendering sounds/show
+Completed in 230ms (View: 216, DB: 2) | 200 OK [http://localhost/sounds/1]
+
+
+Processing SoundsController#index (for 127.0.0.1 at 2009-06-24 21:30:33) [GET]
+  [4;35;1mSound Load (1.4ms)[0m   [0mSELECT * FROM "sounds" [0m
+Rendering template within layouts/sounds
+Rendering sounds/index
+Completed in 152ms (View: 142, DB: 1) | 200 OK [http://localhost/sounds]
+
+
+Processing SoundsController#new (for 127.0.0.1 at 2009-06-24 21:30:35) [GET]
+Rendering template within layouts/sounds
+Rendering sounds/new
+
+ActionView::TemplateError (undefined method `latitutde' for #<Sound:0x241574c>) on line #16 of app/views/sounds/new.html.erb:
+13: 	<p>
+14: 	<p>
+15: 		<%= form.label :latitude %><br />
+16: 		<%= form.text_field :latitutde %><br />
+17: 		<%= form.label :longitude %><br />
+18: 		<%= form.text_field :longitude %><br />
+19: 	</p>
+
+    app/views/sounds/new.html.erb:16
+    app/views/sounds/new.html.erb:3
+    app/controllers/sounds_controller.rb:24:in `new'
+
+Rendered rescues/_trace (72.1ms)
+Rendered rescues/_request_and_response (2.5ms)
+Rendering rescues/layout (internal_server_error)
+
+
+Processing SoundsController#new (for 127.0.0.1 at 2009-06-24 21:36:33) [GET]
+Rendering template within layouts/sounds
+Rendering sounds/new
+Completed in 123ms (View: 111, DB: 0) | 200 OK [http://localhost/sounds/new]
+
+
+Processing SoundsController#create (for 127.0.0.1 at 2009-06-24 21:47:00) [POST]
+  Parameters: {"commit"=>"Save", "authenticity_token"=>"qJXJFtjh0e1Hpp5JW5NLIST9e5Qs6T7odSwB5ZEROgs=", "upload"=>{"file"=>#<File:/var/folders/e0/e0z8MyayGiOlG8t6Sqnkh++++TI/-Tmp-/RackMultipart.1392.2>}, "sound"=>{"latitude"=>"-112.56", "description"=>"Sound 4 is a sound of a crab walking.", "longitude"=>"72.34"}}
+Rendering template within layouts/sounds
+Rendering sounds/new
+Completed in 110ms (View: 7, DB: 0) | 200 OK [http://localhost/sounds]
+
+
+Processing SoundsController#create (for 127.0.0.1 at 2009-06-24 21:47:38) [POST]
+  Parameters: {"commit"=>"Save", "authenticity_token"=>"qJXJFtjh0e1Hpp5JW5NLIST9e5Qs6T7odSwB5ZEROgs=", "upload"=>{"file"=>#<File:/var/folders/e0/e0z8MyayGiOlG8t6Sqnkh++++TI/-Tmp-/RackMultipart.1392.3>}, "sound"=>{"latitude"=>"-112.56", "description"=>"Sound 4 is a sound of a crab walking.", "longitude"=>"72.34"}}
+  [4;36;1mSQL (0.7ms)[0m   [0;1m SELECT name
+ FROM sqlite_master
+ WHERE type = 'table' AND NOT name = 'sqlite_sequence'
+[0m
+  [4;35;1mSQL (0.3ms)[0m   [0m SELECT name
+ FROM sqlite_master
+ WHERE type = 'table' AND NOT name = 'sqlite_sequence'
+[0m
+
+NoMethodError (undefined method `serialized' for #<Class:0x2554b80>):
+  app/models/sound.rb:4
+  app/controllers/sounds_controller.rb:31:in `create'
+
+Rendered rescues/_trace (57.9ms)
+Rendered rescues/_request_and_response (0.5ms)
+Rendering rescues/layout (internal_server_error)
+
+
+Processing SoundsController#create (for 127.0.0.1 at 2009-06-24 21:48:09) [POST]
+  Parameters: {"commit"=>"Save", "authenticity_token"=>"qJXJFtjh0e1Hpp5JW5NLIST9e5Qs6T7odSwB5ZEROgs=", "upload"=>{"file"=>#<File:/var/folders/e0/e0z8MyayGiOlG8t6Sqnkh++++TI/-Tmp-/RackMultipart.1392.1>}, "sound"=>{"latitude"=>"-112.56", "description"=>"Sound 4 is a sound of a crab walking.", "longitude"=>"72.34"}}
+Rendering template within layouts/sounds
+Rendering sounds/new
+Completed in 159ms (View: 6, DB: 0) | 200 OK [http://localhost/sounds]
+
+
+Processing SoundsController#create (for 127.0.0.1 at 2009-06-24 21:48:16) [POST]
+  Parameters: {"commit"=>"Save", "authenticity_token"=>"qJXJFtjh0e1Hpp5JW5NLIST9e5Qs6T7odSwB5ZEROgs=", "upload"=>{"file"=>#<File:/var/folders/e0/e0z8MyayGiOlG8t6Sqnkh++++TI/-Tmp-/RackMultipart.1392.0>}, "sound"=>{"latitude"=>"-112.56", "description"=>"Sound 4 is a sound of a crab walking.", "longitude"=>"72.34"}}
+Rendering template within layouts/sounds
+Rendering sounds/new
+Completed in 116ms (View: 7, DB: 0) | 200 OK [http://localhost/sounds]
+
+
+Processing SoundsController#index (for 127.0.0.1 at 2009-06-24 21:48:54) [GET]
+  [4;36;1mSound Load (1.6ms)[0m   [0;1mSELECT * FROM "sounds" [0m
+Rendering template within layouts/sounds
+Rendering sounds/index
+Completed in 271ms (View: 254, DB: 2) | 200 OK [http://localhost/sounds]
+
+
+Processing SoundsController#new (for 127.0.0.1 at 2009-06-24 21:48:56) [GET]
+Rendering template within layouts/sounds
+Rendering sounds/new
+Completed in 19ms (View: 7, DB: 0) | 200 OK [http://localhost/sounds/new]
+
+
+Processing SoundsController#create (for 127.0.0.1 at 2009-06-24 21:49:21) [POST]
+  Parameters: {"commit"=>"Save", "authenticity_token"=>"qJXJFtjh0e1Hpp5JW5NLIST9e5Qs6T7odSwB5ZEROgs=", "upload"=>{"file"=>#<File:/var/folders/e0/e0z8MyayGiOlG8t6Sqnkh++++TI/-Tmp-/RackMultipart.1392.2>}, "sound"=>{"latitude"=>"-112.56", "description"=>"description", "longitude"=>"72.34"}}
+  [4;35;1mSound Create (0.9ms)[0m   [0mINSERT INTO "sounds" ("frame_size", "hop_size", "latitude", "updated_at", "frame_length", "recorded_at", "sample_rate", "description", "filename", "spectrum_size", "longitude", "samples", "frames", "hop_length", "created_at") VALUES(1764, 882, -112.56, '2009-06-25 04:49:21', 0.04, '2009-06-25 04:49:21', 44100, 'description', '090402_06.wav', 1025, 72.34, 303230, 342, 0.02, '2009-06-25 04:49:21')[0m
+
+NoMethodError (undefined method `features=' for #<Sound:0x25651c4>):
+  app/models/sound.rb:97:in `after_create'
+  app/controllers/sounds_controller.rb:35:in `create'
+  app/controllers/sounds_controller.rb:34:in `create'
+
+Rendered rescues/_trace (69.0ms)
+Rendered rescues/_request_and_response (0.5ms)
+Rendering rescues/layout (internal_server_error)
+  [4;36;1mSQL (0.6ms)[0m   [0;1m SELECT name
+ FROM sqlite_master
+ WHERE type = 'table' AND NOT name = 'sqlite_sequence'
+[0m
+  [4;35;1mSQL (0.2ms)[0m   [0mSELECT version FROM schema_migrations[0m
+  [4;36;1mSQL (0.2ms)[0m   [0;1m SELECT name
+ FROM sqlite_master
+ WHERE type = 'table' AND NOT name = 'sqlite_sequence'
+[0m
+  [4;35;1mSQL (0.2ms)[0m   [0mSELECT version FROM schema_migrations[0m
+Migrating to CreateSounds (20090619224738)
+  [4;36;1mSQL (0.1ms)[0m   [0;1mselect sqlite_version(*)[0m
+  [4;35;1mSQL (0.8ms)[0m   [0mDROP TABLE "sounds"[0m
+  [4;36;1mSQL (0.2ms)[0m   [0;1mDELETE FROM schema_migrations WHERE version = '20090619224738'[0m
+  [4;35;1mSQL (0.3ms)[0m   [0m SELECT name
+ FROM sqlite_master
+ WHERE type = 'table' AND NOT name = 'sqlite_sequence'
+[0m
+  [4;36;1mSQL (0.1ms)[0m   [0;1mSELECT version FROM schema_migrations[0m
+  [4;35;1mSQL (0.2ms)[0m   [0m SELECT name
+ FROM sqlite_master
+ WHERE type = 'table' AND NOT name = 'sqlite_sequence'
+[0m
+  [4;36;1mSQL (0.6ms)[0m   [0;1m SELECT name
+ FROM sqlite_master
+ WHERE type = 'table' AND NOT name = 'sqlite_sequence'
+[0m
+  [4;35;1mSQL (0.1ms)[0m   [0mSELECT version FROM schema_migrations[0m
+Migrating to CreateSounds (20090619224738)
+  [4;36;1mSQL (0.1ms)[0m   [0;1mselect sqlite_version(*)[0m
+  [4;35;1mSQL (1.4ms)[0m   [0mCREATE TABLE "sounds" ("id" INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, "filename" varchar(255), "samples" integer, "sample_rate" integer, "frame_size" integer, "hop_size" integer, "spectrum_size" integer, "frames" integer, "frame_length" decimal, "hop_length" decimal, "description" text, "longitude" decimal, "latitude" decimal, "features" text, "recorded_at" datetime, "created_at" datetime, "updated_at" datetime) [0m
+  [4;36;1mSQL (0.2ms)[0m   [0;1mINSERT INTO schema_migrations (version) VALUES ('20090619224738')[0m
+  [4;35;1mSQL (0.4ms)[0m   [0m SELECT name
+ FROM sqlite_master
+ WHERE type = 'table' AND NOT name = 'sqlite_sequence'
+[0m
+  [4;36;1mSQL (0.2ms)[0m   [0;1mSELECT version FROM schema_migrations[0m
+  [4;35;1mSQL (0.2ms)[0m   [0m SELECT name
+ FROM sqlite_master
+ WHERE type = 'table' AND NOT name = 'sqlite_sequence'
+[0m
+  [4;36;1mSQL (0.1ms)[0m   [0;1mPRAGMA index_list("sounds")[0m
+
+
+Processing SoundsController#index (for 127.0.0.1 at 2009-06-24 21:50:21) [GET]
+  [4;36;1mSound Load (0.6ms)[0m   [0;1mSELECT * FROM "sounds" [0m
+Rendering template within layouts/sounds
+Rendering sounds/index
+Completed in 33ms (View: 15, DB: 1) | 200 OK [http://localhost/sounds]
+
+
+Processing SoundsController#new (for 127.0.0.1 at 2009-06-24 21:50:23) [GET]
+Rendering template within layouts/sounds
+Rendering sounds/new
+Completed in 29ms (View: 13, DB: 0) | 200 OK [http://localhost/sounds/new]
+
+
+Processing SoundsController#create (for 127.0.0.1 at 2009-06-24 21:50:40) [POST]
+  Parameters: {"commit"=>"Save", "authenticity_token"=>"qJXJFtjh0e1Hpp5JW5NLIST9e5Qs6T7odSwB5ZEROgs=", "upload"=>{"file"=>#<File:/var/folders/e0/e0z8MyayGiOlG8t6Sqnkh++++TI/-Tmp-/RackMultipart.1462.1>}, "sound"=>{"latitude"=>"-112.56", "description"=>"This is a sound of one hand clapping.", "longitude"=>"72.34"}}
+  [4;35;1mSound Create (0.7ms)[0m   [0mINSERT INTO "sounds" ("frame_size", "hop_size", "latitude", "updated_at", "frame_length", "recorded_at", "sample_rate", "description", "filename", "features", "spectrum_size", "longitude", "samples", "frames", "hop_length", "created_at") VALUES(1764, 882, -112.56, '2009-06-25 04:50:40', 0.04, '2009-06-25 04:06:50', 44100, 'This is a sound of one hand clapping.', '090402_01.wav', NULL, 1025, 72.34, 481124, 544, 0.02, '2009-06-25 04:50:40')[0m
+Redirected to http://localhost:3000/sounds/1
+Completed in 1180ms (DB: 1) | 302 Found [http://localhost/sounds]
+
+
+Processing SoundsController#show (for 127.0.0.1 at 2009-06-24 21:50:41) [GET]
+  Parameters: {"id"=>"1"}
+  [4;36;1mSound Load (0.9ms)[0m   [0;1mSELECT * FROM "sounds" [0m
+  [4;35;1mSound Load (0.8ms)[0m   [0mSELECT * FROM "sounds" WHERE ("sounds"."id" = 1) [0m
+Rendering template within layouts/sounds
+Rendering sounds/show
+
+ActionView::TemplateError (undefined method `trajectory' for #<Sound:0x2486d70>) on line #11 of app/views/sounds/show.html.erb:
+8: 
+9: <div id='showsound'>
+10: 	<p id='showfeatures'>
+11: 		<%= feature_chart('loudness', @sound.trajectory(:loudness)[0], 0, 'ab4444') %><br/>
+12: 		<%= feature_chart('temporal sparsity', @sound.trajectory(:temporal_sparsity)[0], 'auto', '44ab44') %><br/>
+13: 		<%= feature_chart('spectral sparsity', @sound.trajectory(:spectral_sparsity)[0], 'auto', '4444ab') %><br/>
+14: 		<%= feature_chart('spectral centroid', @sound.trajectory(:spectral_centroid)[0], 'auto', 'abab44') %><br/>
+
+    app/views/sounds/show.html.erb:11
+    app/controllers/sounds_controller.rb:15:in `show'
+
+Rendered rescues/_trace (65.3ms)
+Rendered rescues/_request_and_response (2.1ms)
+Rendering rescues/layout (internal_server_error)
+
+
+Processing SoundsController#show (for 127.0.0.1 at 2009-06-24 21:51:46) [GET]
+  Parameters: {"id"=>"1"}
+  [4;36;1mSound Load (0.8ms)[0m   [0;1mSELECT * FROM "sounds" [0m
+  [4;35;1mSound Load (0.5ms)[0m   [0mSELECT * FROM "sounds" WHERE ("sounds"."id" = 1) [0m
+Rendering template within layouts/sounds
+Rendering sounds/show
+
+ActionView::TemplateError (You have a nil object when you didn't expect it!
+You might have expected an instance of ActiveRecord::Base.
+The error occurred while evaluating nil.[]) on line #11 of app/views/sounds/show.html.erb:
+8: 
+9: <div id='showsound'>
+10: 	<p id='showfeatures'>
+11: 		<%= feature_chart('loudness', @sound.features[:loudness], 0, 'ab4444') %><br/>
+12: 		<%= feature_chart('temporal sparsity', @sound.features[:temporal_sparsity], 'auto', '44ab44') %><br/>
+13: 		<%= feature_chart('spectral sparsity', @sound.features[:spectral_sparsity], 'auto', '4444ab') %><br/>
+14: 		<%= feature_chart('spectral centroid', @sound.features[:spectral_centroid], 'auto', 'abab44') %><br/>
+
+    app/views/sounds/show.html.erb:11
+    app/controllers/sounds_controller.rb:15:in `show'
+
+Rendered rescues/_trace (181.2ms)
+Rendered rescues/_request_and_response (0.3ms)
+Rendering rescues/layout (internal_server_error)
+
+
+Processing SoundsController#index (for 127.0.0.1 at 2009-06-24 21:53:21) [GET]
+  [4;36;1mSound Load (0.8ms)[0m   [0;1mSELECT * FROM "sounds" [0m
+Rendering template within layouts/sounds
+Rendering sounds/index
+Completed in 42ms (View: 32, DB: 1) | 200 OK [http://localhost/sounds/]
+
+
+Processing SoundsController#show (for 127.0.0.1 at 2009-06-24 21:53:24) [GET]
+  Parameters: {"id"=>"1"}
+  [4;35;1mSound Load (0.8ms)[0m   [0mSELECT * FROM "sounds" [0m
+  [4;36;1mSound Load (0.5ms)[0m   [0;1mSELECT * FROM "sounds" WHERE ("sounds"."id" = 1) [0m
+Rendering template within layouts/sounds
+Rendering sounds/show
+
+ActionView::TemplateError (You have a nil object when you didn't expect it!
+You might have expected an instance of ActiveRecord::Base.
+The error occurred while evaluating nil.[]) on line #11 of app/views/sounds/show.html.erb:
+8: 
+9: <div id='showsound'>
+10: 	<p id='showfeatures'>
+11: 		<%= feature_chart('loudness', @sound.features[:loudness], 0, 'ab4444') %><br/>
+12: 		<%= feature_chart('temporal sparsity', @sound.features[:temporal_sparsity], 'auto', '44ab44') %><br/>
+13: 		<%= feature_chart('spectral sparsity', @sound.features[:spectral_sparsity], 'auto', '4444ab') %><br/>
+14: 		<%= feature_chart('spectral centroid', @sound.features[:spectral_centroid], 'auto', 'abab44') %><br/>
+
+    app/views/sounds/show.html.erb:11
+    app/controllers/sounds_controller.rb:15:in `show'
+
+Rendered rescues/_trace (58.8ms)
+Rendered rescues/_request_and_response (0.4ms)
+Rendering rescues/layout (internal_server_error)

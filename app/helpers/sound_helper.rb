@@ -7,7 +7,7 @@ module SoundHelper
   		:title => title, 
   		:bar_colors => color,
   		:axis_with_labels => 'x,y',
-  		:axis_labels => [("0|"+data.length.to_s),'0|1'],
+  		:axis_labels => [("0|"+data.length.to_s), '0|1'],
   		:bg => 'FFFFFF00',
   	  :data => data,
   		:max_value => max_value)
