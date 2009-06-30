@@ -5,7 +5,7 @@ require File.join(File.dirname(__FILE__), 'boot')
 Rails::Initializer.run do |config|  
   # config.load_paths += %W( #{RAILS_ROOT}/extras )
 
-  config.gem "geokit"
+  config.gem "andre-geokit", :source => "http://gems.github.com", :lib => "geokit"
   #config.gem "plant-sirens-ruby", :source => "http://gems.github.com", :lib => "sirens-ruby"
   config.gem "mbleigh-acts-as-taggable-on", :source => "http://gems.github.com", :lib => "acts-as-taggable-on"
   config.gem "rubyist-aasm", :source => "http://gems.github.com", :lib => "aasm"
