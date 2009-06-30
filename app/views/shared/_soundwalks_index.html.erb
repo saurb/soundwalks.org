@@ -7,7 +7,7 @@
 	</tr>
 <% @soundwalks.each do |soundwalk| %>
 	<tr>
-		<td><%= link_to soundwalk.title, user_soundwalk_path(@user, soundwalk) %></td>
+		<td><%= link_to soundwalk.title, soundwalk %></td>
 		<td><%= soundwalk.description %></td>
 		<td><%= soundwalk.created_at %></td>
 		<td><%= soundwalk.updated_at %></td>

@@ -1,19 +1,15 @@
 class SoundwalksController < ApplicationController
-  append_before_filter :get_user
   append_before_filter :get_soundwalk, :except => ['index', 'new', 'create']
   append_before_filter :get_soundwalks, :only => 'index'
   
   # Before filters.
-  def get_user
-    @user = User.find(params[:user_id])
-  end
   
   def get_soundwalk
-      @soundwalk = @user.soundwalks.find(params[:id])
+      @soundwalk = Soundwalk.find(params[:id])
   end
   
   def get_soundwalks
-    @soundwalks = @user.soundwalks.find(:all)
+    @soundwalks = Soundwalk.find(:all)
   end
   
   # Methods.
@@ -34,7 +30,7 @@ class SoundwalksController < ApplicationController
   end
   
   def new
-    @soundwalk = @user.soundwalks.build
+    @soundwalk = Soundwalk.new
     
     respond_to do |format|
       format.html
@@ -43,12 +39,12 @@ class SoundwalksController < ApplicationController
   end
   
   def create
-    @soundwalk = @user.soundwalks.build(params[:soundwalk])
+    @soundwalk = Soundwalk.new(params[:soundwalk])
     @soundwalk.locations_file = params[:upload]['locations_file']
     
     respond_to do |format|    
       if @soundwalk.save
-        format.html {redirect_to user_soundwalk_url(@user, @soundwalk)}
+        format.html {redirect_to @soundwalk}
         format.xml {render :xml => @soundwalk, :status => :created, :location => @soundwalk}
       else
         format.html {render :action => 'new'}
@@ -61,7 +57,7 @@ class SoundwalksController < ApplicationController
     @soundwalk.destroy
     
     respond_to do |format|
-      format.html {redirect_to(user_soundwalks_url(@user))}
+      format.html {redirect_to soundwalks_url}
       format.xml {head :ok}
     end
   end
@@ -75,7 +71,7 @@ class SoundwalksController < ApplicationController
     respond_to do |format|
       if @soundwalk.update_attributes(params[:soundwalk])
         flash[:notice] = 'Soundwalk was successfully updated.'
-        format.html {redirect_to(@soundwalk)}
+        format.html {redirect_to @soundwalk}
         format.xml {head :ok}
       else
         format.html {render :action => "edit"}

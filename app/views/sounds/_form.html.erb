@@ -16,6 +16,9 @@
 		<%= form.text_field :lng %><br />
 	</p>
 	<p>
+		<%= form.label :recorded_at %><br />
+		<%= datetime_select ('sound', :recorded_at) %>
+	<p>
 		<%= form.submit 'Save' %>
 	</p>
 <% end %>

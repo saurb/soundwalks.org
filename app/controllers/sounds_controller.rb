@@ -1,21 +1,13 @@
+Mime::Type.register 'application/wav', :wav
+
 class SoundsController < ApplicationController
-  append_before_filter :get_user, :except => ['new', 'create']
-  append_before_filter :get_user_soundwalk, :except => ['new', 'create']
-  append_before_filter :get_soundwalk, :only => ['new', 'create']
+  append_before_filter :get_soundwalk
   append_before_filter :get_sounds, :only => ['index', 'show']
   append_before_filter :get_sound, :except => ['index', 'new', 'create']
   
   # Before filters.  
   def get_soundwalk
     @soundwalk = Soundwalk.find(params[:soundwalk_id])
-  end
-  
-  def get_user_soundwalk
-    @soundwalk = @user.soundwalks.find(params[:soundwalk_id])
-  end
-  
-  def get_user
-    @user = @soundwalk.user #User.find(params[:user_id])
   end
   
   def get_sound
@@ -38,6 +30,25 @@ class SoundsController < ApplicationController
     respond_to do |format|
       format.html
       format.xml {render :xml => @sound}
+      format.wav {send_file @sound.sound_path, :type => 'application/wav'}
+    end
+  end
+  
+  def edit
+  end
+  
+  def update    
+    @sound.file = params[:upload]['file']
+    
+    respond_to do |format|
+      if @sound.update_attributes(params[:sound])
+        flash[:notice] = 'Sound was successfully updated.'
+        format.html {redirect_to soundwalk_sound_url(@soundwalk, @sound)}
+        format.xml {head :ok}
+      else
+        format.html {render :action => "edit"}
+        format.xml {render :xml => @sound.errors, :status => :unprocessable_entity}
+      end
     end
   end
   
@@ -56,7 +67,7 @@ class SoundsController < ApplicationController
     
     respond_to do |format|    
       if @sound.save
-        format.html {redirect_to user_soundwalk_sound_url(@user, @soundwalk, @sound)}
+        format.html {redirect_to soundwalk_sound_url(@soundwalk, @sound)}
         format.xml {render :xml => @sound, :status => :created, :location => @sound}
       else
         format.html {render :action => 'new'}
@@ -69,7 +80,7 @@ class SoundsController < ApplicationController
     @sound.destroy
     
     respond_to do |format|
-      format.html {redirect_to user_soundwalk_sounds_url(@user, @soundwalk)}
+      format.html {redirect_to soundwalk_sounds_url(@soundwalk)}
       format.xml {head :ok}
     end
   end

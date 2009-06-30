@@ -40,9 +40,6 @@ class Sound < ActiveRecord::Base
     path = sound_path
     File.open(path, 'wb') {|f| f.write(file.read)}
     
-    # File properties.
-    self.recorded_at = Time.parse(IO.popen("stat -n -f '%SB' #{path}").readlines.first)
-    
     # Sirens properties.
     sound_file = Sirens::Sound.new
     sound_file.frameLength = 0.04

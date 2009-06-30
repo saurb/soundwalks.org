@@ -17,10 +17,10 @@ module SoundHelper
     return 'http://localhost:3000/data/sounds/' + sound.filename
   end
   
-  def embed_sound_tag(sound)
+  def embed_sound_tag(soundwalk, sound)
     return "<embed 
       type='application/x-shockwave-flash' 
-      src='http://www.google.com/reader/ui/3247397568-audio-player.swf?audioUrl=#{sound_file_path(sound)}' 
+      src='http://www.google.com/reader/ui/3247397568-audio-player.swf?audioUrl=#{soundwalk_sound_url(soundwalk, sound)}.wav' 
       style='width: 400px; height: 27px'
       allowscriptaccess='never' 
       quality='best' 

@@ -9,12 +9,12 @@
 	
 	<% @sounds.each do |sound| %>
 	<tr>
-		<td><%= link_to sound.filename, user_soundwalk_sound_path(@user, sound.soundwalk, sound) %></td>
+		<td><%= link_to sound.filename, soundwalk_sound_path(@soundwalk, sound) %></td>
 		<td><%= sprintf('%.2f', sound.samples.to_f / sound.sample_rate.to_f) %>s</td>
 		<td><%= coordinates_text(:latitude, sound.lat) %></td>
 		<td><%= coordinates_text(:longitude, sound.lng) %></td>
 		<td><%= sound.recorded_at %></td>
-		<th><%= link_to 'delete', user_soundwalk_sound_path(@user, sound.soundwalk, sound), :method => :delete %>
+		<th><%= link_to 'delete', soundwalk_sound_path(@soundwalk, sound), :method => :delete %>
 	</tr>
 	<% end %>
 </table>

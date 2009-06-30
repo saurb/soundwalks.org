@@ -1,9 +1,9 @@
-<h1><%= link_to @user.name, @user %>'s <%=h @soundwalk.title %></h1>
+<h1><%=h @soundwalk.title %></h1>
 
 <p><%=h @soundwalk.description %></p>
 
 <p>
-	<%= link_to 'Upload sound', soundwalk_sound_path(@soundwalk, @sound) %> | <%= link_to 'Edit', edit_user_soundwalk_path(@user, @soundwalk) %> | <%= link_to 'Delete', user_soundwalk_path(@user, @soundwalk), :method => :delete %>
+	<%= link_to 'Upload sound', new_soundwalk_sound_path(@soundwalk, @sound) %> | <%= link_to 'Edit', edit_soundwalk_path(@soundwalk) %> | <%= link_to 'Delete', @soundwalk, :method => :delete %>
 </p>
 
 <%= render :partial => 'shared/sounds_map' %>
