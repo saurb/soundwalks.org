@@ -8,10 +8,10 @@ require File.join(File.dirname(__FILE__), 'boot')
 
 Rails::Initializer.run do |config|
   ActionMailer::Base.delivery_method = :smtp
-  ActionMailer::Base.server_settings = {
-    :address => "mail.cherem.org",
+  ActionMailer::Base.smtp_settings = {
+    :address => "smtp.gmail.com",
     :port => 25,
-    :domain => "cherem.org",
+    :domain => "soundwalks.org",
     :user_name => "brandon",
     :password => "35076202",
     :authentication => :login
