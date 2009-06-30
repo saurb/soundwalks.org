@@ -1,5 +1,4 @@
 class SoundsController < ApplicationController
-  before_filter :login_required
   append_before_filter :get_user, :except => ['new', 'create']
   append_before_filter :get_user_soundwalk, :except => ['new', 'create']
   append_before_filter :get_soundwalk, :only => ['new', 'create']

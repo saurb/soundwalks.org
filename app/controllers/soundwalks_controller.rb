@@ -1,5 +1,4 @@
 class SoundwalksController < ApplicationController
-  before_filter :login_required
   append_before_filter :get_user
   append_before_filter :get_soundwalk, :except => ['index', 'new', 'create']
   append_before_filter :get_soundwalks, :only => 'index'
