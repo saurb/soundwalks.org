@@ -1,32 +1,10 @@
-<h1>All Sounds</h1>
+<h1>Sounds for <%= @soundwalk.title %></h1>
 
-<p>
-	<%= link_to 'upload sound', new_sound_path %>
-</p>
-
-<table>
-	<tr>
-		<th>Filename</th>
-		<th>Duration</th>
-		<th>Sample rate</th>
-		<th>Latitude</th>
-		<th>Longitude</th>
-		<th>Recorded at</th>
-		<th>Created at</th>
-		<th>Updated at</th>
-	</tr>
+<div id='indexcontainer'>
+	<p>
+		<%= link_to 'upload sound', new_soundwalk_sound_path(@soundwalk) %>
+	</p>
 	
-<% @sounds.each do |sound| %>
-	<tr>
-		<td><%= link_to sound.filename, sound %></td>
-		<td><%= sprintf('%.2f', sound.samples.to_f / sound.sample_rate.to_f) %>s</td>
-		<td><%= sound.sample_rate %> Hz</td>
-		<td><%= sound.latitude %></td>
-		<td><%= sound.longitude %></td>
-		<td><%= sound.recorded_at %></td>
-		<td><%= sound.created_at %></td>
-		<td><%= sound.updated_at %></td>
-		<th><%= link_to 'delete', sound, :method => :delete %>
-	</tr>
-<% end %>
-</table>
+	<%= render :partial => 'shared/sounds_map' %>
+	<%= render :partial => 'shared/sounds_index' %>
+</div>

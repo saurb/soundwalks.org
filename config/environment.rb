@@ -7,6 +7,16 @@ RAILS_GEM_VERSION = '2.3.2' unless defined? RAILS_GEM_VERSION
 require File.join(File.dirname(__FILE__), 'boot')
 
 Rails::Initializer.run do |config|
+  ActionMailer::Base.delivery_method = :smtp
+  ActionMailer::Base.server_settings = {
+    :address => "mail.cherem.org",
+    :port => 25,
+    :domain => "cherem.org",
+    :user_name => "brandon",
+    :password => "35076202",
+    :authentication => :login
+  }
+  
   # Settings in config/environments/* take precedence over those specified here.
   # Application configuration should go into files in config/initializers
   # -- all .rb files in that directory are automatically loaded.
@@ -15,13 +25,17 @@ Rails::Initializer.run do |config|
   # config.load_paths += %W( #{RAILS_ROOT}/extras )
 
   # Specify gems that this application depends on and have them installed with rake gems:install
-  # config.gem "bj"
+  # config.gem "sirens-ruby"
   # config.gem "hpricot", :version => '0.6', :source => "http://code.whytheluckystiff.net"
   # config.gem "sqlite3-ruby", :lib => "sqlite3"
   # config.gem "aws-s3", :lib => "aws/s3"
-
+  config.gem "geokit"
+  config.gem "mbleigh-acts-as-taggable-on", :source => "http://gems.github.com", :lib => "acts-as-taggable-on"
+  
   # Only load the plugins named here, in the order given (default is alphabetical).
   # :all can be used as a placeholder for all plugins not explicitly named
+  # config.plugins = [:geokit, :google_maps]
+  
   # config.plugins = [ :exception_notification, :ssl_requirement, :all ]
 
   # Skip frameworks you're not going to use. To use Rails without a database,

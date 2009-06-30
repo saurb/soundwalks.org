@@ -1,42 +1,63 @@
 <% 
 
+require 'google_map'
+
 sound_index = @sounds.index(@sound)
 previous_index = sound_index > 0 ? sound_index - 1 : @sounds.size - 1;
 next_index = sound_index < @sounds.size - 1 ? sound_index + 1 : 0;
+
+map = GoogleMap.new(:controls => [:zoom, :scale], :map_type => 'G_HYBRID_MAP')
+map.markers << GoogleMapMarker.new(:map => map, :lat => @sound.lat, :lng => @sound.lng, :html => 'Sound ' + @sound.id.to_s)
 
 %>
 
 <div id='showsound'>
 	<p id='showfeatures'>
-		<%= feature_chart('loudness', @sound.features[:loudness], 0, 'ab4444') %><br/>
-		<%= feature_chart('temporal sparsity', @sound.features[:temporal_sparsity], 'auto', '44ab44') %><br/>
-		<%= feature_chart('spectral sparsity', @sound.features[:spectral_sparsity], 'auto', '4444ab') %><br/>
-		<%= feature_chart('spectral centroid', @sound.features[:spectral_centroid], 'auto', 'abab44') %><br/>
-		<%= feature_chart('transient index', @sound.features[:transient_index], 'auto', '44abab') %><br/>
-		<%= feature_chart('harmonicity', @sound.features[:harmonicity], 'auto', 'ab44ab') %><br/>
+		<%= feature_chart('loudness', limit_granularity(filter_feature_values(@sound.features[:loudness])), 0, 'ab4444') %><br/>
+		<%= feature_chart('temporal sparsity', limit_granularity(@sound.features[:temporal_sparsity]), 'auto', '44ab44') %><br/>
+		<%= feature_chart('spectral sparsity', limit_granularity(@sound.features[:spectral_sparsity]), 'auto', '4444ab') %><br/>
+		<%= feature_chart('spectral centroid', limit_granularity(@sound.features[:spectral_centroid]), 'auto', 'abab44') %><br/>
+		<%= feature_chart('transient index', limit_granularity(@sound.features[:transient_index]), 'auto', '44abab') %><br/>
+		<%= feature_chart('harmonicity', limit_granularity(@sound.features[:harmonicity]), 'auto', 'ab44ab') %><br/>
 	</p>
+
+	<h1>
+		<%= @soundwalk.title %>
+	</h1>
 	
 	<div id='shownavigation'>
-		<h1 id='previous'><%= link_to @sounds[previous_index].id, @sounds[previous_index] %>
+		<h1 id='previous'><%= link_to @sounds[previous_index].id, soundwalk_sounds_path(@soundwalk, @sounds[previous_index]) %>
 		<h1 id='current'><%= @sound.id %>
-		<h1 id='next'><%= link_to @sounds[next_index].id, @sounds[next_index] %>
+		<h1 id='next'><%= link_to @sounds[next_index].id, soundwalk_sounds_path(@soundwalk, @sounds[next_index]) %>
 	</div>
+	
+	<p id='showdescription'>
+		<%=h @sound.description %>
+	</p>
 	
 	<p id='showdetails'>
 		<b>Filename: </b><%=h @sound.filename %><br/>
-		<b>Duration: </b><%=h sprintf('%.2f', @sound.samples.to_f / @sound.sample_rate.to_f) %>s (<%= @sound.samples %> samples, <%= @sound.frames %> frames)<br/>
-		<b>Sample rate: </b><%=h @sound.sample_rate %><br/>
-		<b>Frame length: </b><%=h @sound.frame_length %>s (<%= @sound.frame_size %> samples)<br/>
-		<b>Hop size: </b><%=h @sound.hop_length %>s (<%= @sound.hop_size%> samples)<br/>
-		<b>Spectrum size: </b><%=h @sound.spectrum_size %><br/>
-		<b>Recorded at: </b><%=h @sound.recorded_at %><br/>
-		<b>Created at: </b><%=h @sound.created_at %><br/>
-		<b>Updated at: </b><%=h @sound.updated_at %>
+		<b>Duration: </b><%= sprintf('%.2f', @sound.samples.to_f / @sound.sample_rate.to_f) %>s (<%= @sound.samples %> samples, <%= @sound.frames %> frames)<br/>
+		<b>Sample rate: </b><%= @sound.sample_rate %><br/>
+		<b>Frame length: </b><%= @sound.frame_length %>s (<%= @sound.frame_size %> samples)<br/>
+		<b>Hop size: </b><%= @sound.hop_length %>s (<%= @sound.hop_size %> samples)<br/>
+		<b>Spectrum size: </b><%= @sound.spectrum_size %><br/>
+		<b>Recorded at: </b><%= @sound.recorded_at %><br/>
+		<b>Created at: </b><%= @sound.created_at %><br/>
+		<b>Updated at: </b><%= @sound.updated_at %>
 	</p>
 	
+	<%= map.to_html %>
+  	<div id='showmap'>
+    	<%= map.div %>
+  	</div>
 	
 	<p>
-	<%= link_to 'Sound index', sounds_path %><br/>
-	<%= link_to 'Delete sound', @sound, :confirm => 'Are you sure?', :method => :delete %>
+	<%= link_to 'Edit sound', edit_soundwalk_sound_path(@soundwalk, @sound) %>
+	<%= link_to 'Delete sound', soundwalk_sound_path(@soundwalk, @sound), :confirm => 'Are you sure?', :method => :delete %>
+	</p>
+	
+	<p>
+		<%= link_to @soundwalk.title + ' index', soundwalk_sounds_path(@soundwalk) %>
 	</p>
 </div>

@@ -1,6 +1,10 @@
-require 'soundwalk'
+require 'sirens'
 
 class Sound < ActiveRecord::Base
+  acts_as_taggable_on :tags
+  belongs_to :soundwalk
+  acts_as_mappable
+  
   serialize :features, Hash
   attr_accessor :file
   
@@ -28,7 +32,6 @@ class Sound < ActiveRecord::Base
   
   def before_destroy
     File.delete sound_path
-    File.delete feature_path
   end
   
   def before_validation_on_create
@@ -40,8 +43,8 @@ class Sound < ActiveRecord::Base
     # File properties.
     self.recorded_at = Time.parse(IO.popen("stat -n -f '%SB' #{path}").readlines.first)
     
-    # Soundwalk properties.
-    sound_file = Soundwalk::Sound.new
+    # Sirens properties.
+    sound_file = Sirens::Sound.new
     sound_file.frameLength = 0.04
     sound_file.hopLength = 0.02
     sound_file.open path
@@ -54,28 +57,30 @@ class Sound < ActiveRecord::Base
     self.hop_size = sound_file.samplesPerHop
     self.spectrum_size = sound_file.spectrumSize
     self.frames = sound_file.frames
+    
+    analyze_sound
   end
   
-  def after_create
-    sound_file = Soundwalk::Sound.new
+  def analyze_sound
+    sound_file = Sirens::Sound.new
     sound_file.frameLength = self.frame_length
     sound_file.hopLength = self.hop_length
     sound_file.open sound_path
 
     # Initialize features.
-    loudness = Soundwalk::LoudnessFeature.new
-    temporal_sparsity = Soundwalk::TemporalSparsityFeature.new
-    spectral_sparsity = Soundwalk::SpectralSparsityFeature.new
-    spectral_centroid = Soundwalk::SpectralCentroidFeature.new
+    loudness = Sirens::LoudnessFeature.new
+    temporal_sparsity = Sirens::TemporalSparsityFeature.new
+    spectral_sparsity = Sirens::SpectralSparsityFeature.new
+    spectral_centroid = Sirens::SpectralCentroidFeature.new
     
-    harmonicity = Soundwalk::HarmonicityFeature.new
+    harmonicity = Sirens::HarmonicityFeature.new
     harmonicity.absThreshold = 1
     harmonicity.threshold = 0.1
     harmonicity.searchRegionLength = 5
     harmonicity.maxPeaks = 3
     harmonicity.lpfCoefficient = 0.7
 
-    transient_index = Soundwalk::TransientIndexFeature.new
+    transient_index = Sirens::TransientIndexFeature.new
     transient_index.mels = 15
     transient_index.filters = 30
     

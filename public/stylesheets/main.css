@@ -8,8 +8,27 @@ body {
 strong, em, b, i {
 	font-family: "Lucida Sans", "Lucida Sans Unicode", "Lucida Grande", Verdana, Arial, Helvetica, sans-serif;
 }
+
 #notice {
 	color: green;
+}
+
+#indexmap {
+	width: 100%;
+	height: 250px;
+}
+
+#indextable {
+	width: 100%;
+}
+
+#indexcontainer {
+	width: 100%;
+}
+
+#showmap {
+	width: 318px;
+	height: 318px;
 }
 
 #showsound {

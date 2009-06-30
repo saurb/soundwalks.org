@@ -1,17 +1,41 @@
 class SoundsController < ApplicationController
+  before_filter :login_required
+  append_before_filter :get_user, :except => ['new', 'create']
+  append_before_filter :get_user_soundwalk, :except => ['new', 'create']
+  append_before_filter :get_soundwalk, :only => ['new', 'create']
+  append_before_filter :get_sounds, :only => ['index', 'show']
+  append_before_filter :get_sound, :except => ['index', 'new', 'create']
+  
+  # Before filters.  
+  def get_soundwalk
+    @soundwalk = Soundwalk.find(params[:soundwalk_id])
+  end
+  
+  def get_user_soundwalk
+    @soundwalk = @user.soundwalks.find(params[:soundwalk_id])
+  end
+  
+  def get_user
+    @user = @soundwalk.user #User.find(params[:user_id])
+  end
+  
+  def get_sound
+    @sound = @soundwalk.sounds.find(params[:id])
+  end
+  
+  def get_sounds
+    @sounds = @soundwalk.sounds.find(:all)
+  end
+  
+  # Methods.
   def index
-    @sounds = Sound.find(:all)
-    
     respond_to do |format|
       format.html
-      format.xml {render :xml => @sound}
+      format.xml {render :xml => @sounds}
     end
   end
   
-  def show
-    @sounds = Sound.find(:all)
-    @sound = Sound.find(params[:id])
-    
+  def show    
     respond_to do |format|
       format.html
       format.xml {render :xml => @sound}
@@ -19,21 +43,21 @@ class SoundsController < ApplicationController
   end
   
   def new
-    @sound = Sound.new
-    
-    respond_to do |format|
-      format.html
-      format.xml {render :xml => @sound}
-    end
+     @sound = @soundwalk.sounds.build
+     
+     respond_to do |format|
+       format.html
+       format.xml {render :xml => @sound}
+     end
   end
   
   def create
-    @sound = Sound.new(params[:sound])
+    @sound = @soundwalk.sounds.build(params[:sound])
     @sound.file = params[:upload]['file']
     
     respond_to do |format|    
       if @sound.save
-        format.html {redirect_to(@sound)}
+        format.html {redirect_to user_soundwalk_sound_url(@user, @soundwalk, @sound)}
         format.xml {render :xml => @sound, :status => :created, :location => @sound}
       else
         format.html {render :action => 'new'}
@@ -42,39 +66,12 @@ class SoundsController < ApplicationController
     end
   end
   
-  # PUT /posts/1
-  # PUT /posts/1.xml
-  #def update
-  #  @post = Post.find(params[:id])#
-  #
-  #  respond_to do |format|
-  #    if @post.update_attributes(params[:post])
-  #      flash[:notice] = 'Post was successfully updated.'
-  #      format.html { redirect_to(@post) }
-  #      format.xml  { head :ok }
-  #    else
-  #      format.html { render :action => "edit" }
-  #      format.xml  { render :xml => @post.errors, :status => :unprocessable_entity }
-  #    end
-  #  end
-  #end
-  
-  def destroy
-    @sound = Sound.find(params[:id])
+  def destroy    
     @sound.destroy
     
     respond_to do |format|
-      format.html { redirect_to(sounds_url) }
-      format.xml { head :ok }
-    end
-  end
-  
-  def trajectory
-    @sound = Sound.find(params[:id])
-    @feature_set = @sound.trajectory params[:type]
-    
-    respond_to do |format|
-      format.xml
+      format.html {redirect_to user_soundwalk_sounds_url(@user, @soundwalk)}
+      format.xml {head :ok}
     end
   end
 end

@@ -2,6 +2,11 @@ class CreateSounds < ActiveRecord::Migration
   def self.up
     create_table :sounds do |t|
       t.string :filename
+      t.text :description
+      t.timestamp :recorded_at
+      t.timestamps
+      
+      # Sirens information.
       t.integer :samples
       t.integer :sample_rate
       t.integer :frame_size
@@ -11,16 +16,14 @@ class CreateSounds < ActiveRecord::Migration
       t.decimal :frame_length
       t.decimal :hop_length
       
-      # New
-      t.text :description
-      t.decimal :longitude
-      t.decimal :latitude
-      
+      # Serialized
       t.text :features
       
-      t.timestamp :recorded_at
-
-      t.timestamps
+      t.references :soundwalk
+      
+      # Geokit
+      t.decimal :lng
+      t.decimal :lat      
     end
   end
 
