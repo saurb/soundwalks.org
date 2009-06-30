@@ -1,0 +1,12 @@
+<% form_for @user do |form| %>
+	<%= form.error_messages %>
+	
+	<p>
+		<%= form.label :name %><br />
+		<%= form.text_field :name %>
+	<p>
+	
+	<p>
+		<%= form.submit 'Save' %>
+	</p>
+<% end %>

@@ -1,0 +1,20 @@
+<table id='indextable'>
+	<tr>
+		<th>Filename</th>
+		<th>Duration</th>
+		<th>Latitude</th>
+		<th>Longitude</th>
+		<th>Recorded at</th>
+	</tr>
+	
+	<% @sounds.each do |sound| %>
+	<tr>
+		<td><%= link_to sound.filename, user_soundwalk_sound_path(@user, sound.soundwalk, sound) %></td>
+		<td><%= sprintf('%.2f', sound.samples.to_f / sound.sample_rate.to_f) %>s</td>
+		<td><%= coordinates_text(:latitude, sound.lat) %></td>
+		<td><%= coordinates_text(:longitude, sound.lng) %></td>
+		<td><%= sound.recorded_at %></td>
+		<th><%= link_to 'delete', user_soundwalk_sound_path(@user, sound.soundwalk, sound), :method => :delete %>
+	</tr>
+	<% end %>
+</table>

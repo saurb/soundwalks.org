@@ -1,0 +1,20 @@
+<% form_for([@user, @soundwalk], :html => {:multipart => true}) do |form| %>
+	<%= form.error_messages %>
+	
+	<p>
+		<%= label_tag 'GPS file' %><br />
+		<%= file_field :upload, :locations_file %>
+	</p>
+
+	<p>
+		<%= form.label :title %><br />
+		<%= form.text_field :title %>
+	<p>
+	<p>
+		<%= form.label :description %><br />
+		<%= form.text_area :description %>
+	</p>
+	<p>
+		<%= form.submit 'Save' %>
+	</p>
+<% end %>

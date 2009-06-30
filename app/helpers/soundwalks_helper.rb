@@ -1,0 +1,2 @@
+module SoundwalksHelper
+end

@@ -1,0 +1,21 @@
+<% form_for [@soundwalk, @sound], :html => {:multipart => true} do |form| %>
+	<%= form.error_messages %>
+	
+	<p>
+		<%= label_tag 'Sound File' %><br />
+		<%= file_field :upload, :file %>
+	</p>
+	<p>
+		<%= form.label :description %><br />
+		<%= form.text_area :description %>
+	<p>
+	<p>
+		<%= form.label :lat %><br />
+		<%= form.text_field :lat %><br />
+		<%= form.label :lng %><br />
+		<%= form.text_field :lng %><br />
+	</p>
+	<p>
+		<%= form.submit 'Save' %>
+	</p>
+<% end %>

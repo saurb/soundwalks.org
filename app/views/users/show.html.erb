@@ -1,0 +1,7 @@
+<h1><%=h @user.name %></h1>
+
+<p>
+	<%= link_to 'New soundwalk', new_user_soundwalk_path(@user, @soundwalk) %> | <%= link_to 'Edit', edit_user_path(@user) %> | <%= link_to 'Delete', @user, :method => :delete %>
+</p>
+
+<%= render :partial => 'shared/soundwalks_index' %>
