@@ -37,6 +37,21 @@ class SoundsController < ApplicationController
   def edit
   end
   
+  def recalculate
+    @sound.analyze_sound
+    
+    respond_to do |format|
+      if @sound.save
+        format.html {redirect_to soundwalk_sound_url(@soundwalk, @sound)}
+        format.xml {render :xml => @sound, :status => :updated, :location => @sound}
+      else
+        flash[:errors] = 'Problem recalculating feature values.'
+        format.html {redirect_to soundwalk_sound_url(@soundwalk, @sound)}
+        format.xml {render :xml => @sound.errors, :status => :unprocessible_entity}
+      end
+    end
+  end
+  
   def update    
     @sound.file = params[:upload]['file']
     

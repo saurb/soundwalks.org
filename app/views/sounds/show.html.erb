@@ -26,9 +26,9 @@ map.markers << GoogleMapMarker.new(:map => map, :lat => @sound.lat, :lng => @sou
 	</h1>
 	
 	<div id='shownavigation'>
-		<h1 id='previous'><%= link_to @sounds[previous_index].id, soundwalk_sounds_path(@soundwalk, @sounds[previous_index]) %>
+		<h1 id='previous'><%= link_to @sounds[previous_index].id, soundwalk_sound_path(@soundwalk, @sounds[previous_index]) %>
 		<h1 id='current'><%= @sound.id %>
-		<h1 id='next'><%= link_to @sounds[next_index].id, soundwalk_sounds_path(@soundwalk, @sounds[next_index]) %>
+		<h1 id='next'><%= link_to @sounds[next_index].id, soundwalk_sound_path(@soundwalk, @sounds[next_index]) %>
 	</div>
 	
 	<p id='showdescription'>
@@ -55,6 +55,7 @@ map.markers << GoogleMapMarker.new(:map => map, :lat => @sound.lat, :lng => @sou
 	<p>
 	<%= link_to 'Edit sound', edit_soundwalk_sound_path(@soundwalk, @sound) %>
 	<%= link_to 'Delete sound', soundwalk_sound_path(@soundwalk, @sound), :confirm => 'Are you sure?', :method => :delete %>
+	<%= link_to 'Recalculate features', :controller => 'sounds', :action => 'recalculate', :id => @sound.id, :soundwalk_id => @soundwalk.id %>
 	</p>
 	
 	<p>
