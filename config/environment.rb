@@ -2,6 +2,7 @@
 
 require File.join(File.dirname(__FILE__), 'boot')
 
+ENV['GEM_PATH'] = '/home/brandon/.gem/ruby/gems/1.8:/usr/local/lib/ruby/gems/1.8'
 Rails::Initializer.run do |config|  
   # config.load_paths += %W( #{RAILS_ROOT}/extras )
   
