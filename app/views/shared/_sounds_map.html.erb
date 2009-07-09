@@ -15,12 +15,13 @@ end
 
 # Sounds
 @sounds.each do |sound|
-	html = 'Sound ' + sound.id.to_s + '<br />' + embed_sound_tag(@soundwalk, sound)
+	html = '<h3>Sound ' + sound.id.to_s + ': bicycle, voices, laughing, chatting</h3>' + embed_sound_tag(@soundwalk, sound)
 	map.markers << GoogleMapMarker.new(:map => map, :lat => sound.lat, :lng => sound.lng, :html => html, :icon => medium_marker_icon)
 end
 
 
-map.overlays << GoogleMapPolyline.new(:vertices => vertices, :color => '#22bc22', :weight => 4, :opacity => 0.75)
+#map.overlays << GoogleMapPolyline.new(:vertices => vertices, :color => '#22bc22', :weight => 4, :opacity => 0.75)
+map.overlays << GoogleMapPolyline.new(:vertices => vertices, :color => '#55ef55', :weight => 4, :opacity => 0.75)
 
 #map.bounds.clear
 
