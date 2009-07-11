@@ -82,6 +82,7 @@ class SoundsController < ApplicationController
     
     respond_to do |format|    
       if @sound.save
+        flash[:notice] = 'Sound was successfully created.'
         format.html {redirect_to soundwalk_sound_url(@soundwalk, @sound)}
         format.xml {render :xml => @sound, :status => :created, :location => @sound}
       else
