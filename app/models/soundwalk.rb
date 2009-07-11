@@ -14,7 +14,7 @@ class Soundwalk < ActiveRecord::Base
     lines.each do |line|
       components = line.split(',')
             
-      self.locations[components[0].to_i] = Array[components[1].to_f, components[2].to_f]
+      self.locations[components[0].to_i] = [components[1].to_f, components[2].to_f]
     end
   end
 end

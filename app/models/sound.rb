@@ -48,7 +48,7 @@ class Sound < ActiveRecord::Base
     sound_file.hopLength = 0.02
     sound_file.open path
     
-    puts path
+    RAILS_DEFAULT_LOGGER.info "New sound uploaded: " + path
     
     self.sample_rate = sound_file.sampleRate
     self.samples = sound_file.samples
@@ -59,12 +59,13 @@ class Sound < ActiveRecord::Base
     self.spectrum_size = sound_file.spectrumSize
     self.frames = sound_file.frames
     
-    puts self.sample_rate
+    RAILS_DEFAULT_LOGGER.info "At sample rate: " + self.sample_rate.to_s
     
     analyze_sound
   end
   
   def analyze_sound
+    RAILS_DEFAULT_LOGGER.info "Enter analyze_sound"
     sound_file = Sirens::Sound.new
     sound_file.frameLength = self.frame_length
     sound_file.hopLength = self.hop_length
@@ -110,5 +111,6 @@ class Sound < ActiveRecord::Base
       :transient_index => transient_index.history,
       :harmonicity => harmonicity.history
     }
+    RAILS_DEFAULT_LOGGER.info "Exit analyze_sound"
   end
 end
