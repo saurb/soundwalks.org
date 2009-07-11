@@ -3,7 +3,7 @@
 <p><%=h @soundwalk.description %></p>
 
 <p>
-	<%= link_to 'Upload sound', new_soundwalk_sound_path(@soundwalk, @sound) %> | <%= link_to 'Edit', edit_soundwalk_path(@soundwalk) %> | <%= link_to 'Delete', @soundwalk, :method => :delete %>
+	<%= link_to 'Upload sound', new_soundwalk_sound_path(@soundwalk) %> | <%= link_to 'Edit', edit_soundwalk_path(@soundwalk) %> | <%= link_to 'Delete', @soundwalk, :method => :delete %>
 </p>
 
 <%= render :partial => 'shared/sounds_map' %>

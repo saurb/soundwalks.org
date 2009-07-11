@@ -5,7 +5,7 @@ class SoundwalksController < ApplicationController
   # Before filters.
   
   def get_soundwalk
-      @soundwalk = Soundwalk.find(params[:id])
+    @soundwalk = Soundwalk.find(params[:id])
   end
   
   def get_soundwalks
@@ -22,6 +22,7 @@ class SoundwalksController < ApplicationController
   
   def show
     @sounds = @soundwalk.sounds
+    @sound = Sound.new
     
     respond_to do |format|
       format.html
