@@ -20,4 +20,4 @@ production:
   database: soundwalks
   username: soundwalks
   password: 35076202
-  host: mysql.cherem.org
+  host: mysql.soundwalks.org
