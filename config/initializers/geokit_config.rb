@@ -26,8 +26,12 @@ if defined? Geokit
 	# This is your Google Maps geocoder key. 
 	# See http://www.google.com/apis/maps/signup.html
 	# and http://www.google.com/apis/maps/documentation/#Geocoding_Examples
-	Geokit::Geocoders::google = 'ABQIAAAA3HdfrnxFAPWyY-aiJUxmqRTJQa0g3IQ9GZqIMmInSLzwtGDKaBQ0KYLwBEKSM7F9gCevcsIf6WPuIQ'
-    
+	if ENV['RAILS_ENV'] == 'development'
+	  Geokit::Geocoders::google = 'ABQIAAAA3HdfrnxFAPWyY-aiJUxmqRTJQa0g3IQ9GZqIMmInSLzwtGDKaBQ0KYLwBEKSM7F9gCevcsIf6WPuIQ'
+  else
+    Geokit::Geocoders::google = 'ABQIAAAA91SusluKAGjWOloL75RU6BSzCNJpVkPUOl0CP8f6M-W5Jpf0CRSJs9zvlMrNEzSuDmfcARrnM4UoZA'
+  end
+  
 	# This is your username and password for geocoder.us.
 	# To use the free service, the value can be set to nil or false.  For 
 	# usage tied to an account, the value should be set to username:password.
