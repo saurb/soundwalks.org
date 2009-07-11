@@ -1,5 +1,3 @@
-RAILS_GEM_VERSION = '2.3.2' unless defined? RAILS_GEM_VERSION
-
 require File.join(File.dirname(__FILE__), 'boot')
 
 ENV['GEM_PATH'] = '/home/brandon/.gem/ruby/gems/1.8:/usr/local/lib/ruby/gems/1.8'
