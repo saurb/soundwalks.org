@@ -86,6 +86,7 @@ class SoundsController < ApplicationController
         format.html {redirect_to soundwalk_sound_url(@soundwalk, @sound)}
         format.xml {render :xml => @sound, :status => :created, :location => @sound}
       else
+        flash[:notice] = 'There was an error creating the sound.'
         format.html {render :action => 'new'}
         format.xml {render :xml => @sound.errors, :status => :unprocessible_entity}
       end
