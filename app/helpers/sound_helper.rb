@@ -76,7 +76,6 @@ module SoundHelper
         new_values[i] = interpolate(values, (i.to_f / (max_size - 1).to_f) * values.size.to_f)
       end
       
-      puts new_values
       return new_values
     else
       return values
