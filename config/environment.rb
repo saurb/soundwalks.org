@@ -8,10 +8,9 @@ Rails::Initializer.run do |config|
   
   config.gem "geokit"
   config.gem "plant-sirens", :source => "http://gems.github.com", :lib => "sirens"
-  
-  #config.gem "mbleigh-acts-as-taggable-on", :source => "http://gems.github.com", :lib => "acts-as-taggable-on"
-  #config.gem "rubyist-aasm", :source => "http://gems.github.com", :lib => "aasm"
-  #config.gem "mattetti-googlecharts", :source => "http://gems.github.com", :lib => "googlecharts"
+  config.gem "mbleigh-acts-as-taggable-on", :source => "http://gems.github.com", :lib => "acts-as-taggable-on"
+  config.gem "rubyist-aasm", :source => "http://gems.github.com", :lib => "aasm"
+  config.gem "mattetti-googlecharts", :source => "http://gems.github.com", :lib => "googlecharts"
   
   #config.plugins = [:geokit, :google_maps, :all]
 
