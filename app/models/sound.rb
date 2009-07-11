@@ -46,6 +46,8 @@ class Sound < ActiveRecord::Base
     sound_file.hopLength = 0.02
     sound_file.open path
     
+    puts path
+    
     self.sample_rate = sound_file.sampleRate
     self.samples = sound_file.samples
     self.frame_length = sound_file.frameLength
@@ -54,6 +56,8 @@ class Sound < ActiveRecord::Base
     self.hop_size = sound_file.samplesPerHop
     self.spectrum_size = sound_file.spectrumSize
     self.frames = sound_file.frames
+    
+    puts self.sample_rate
     
     analyze_sound
   end
