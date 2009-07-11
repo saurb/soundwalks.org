@@ -77,15 +77,19 @@ class SoundsController < ApplicationController
   end
   
   def create
+    RAILS_DEFAULT_LOGGER.info "Create"
     @sound = @soundwalk.sounds.build(params[:sound])
+    RAILS_DEFAULT_LOGGER.info "Built"
     @sound.file = params[:upload]['file']
-    
+    RAILS_DEFAULT_LOGGER.info "File set " + @sound.file
     respond_to do |format|    
       if @sound.save
+        RAILS_DEFAULT_LOGGER.info "sound.save"
         flash[:notice] = 'Sound was successfully created.'
         format.html {redirect_to soundwalk_sound_url(@soundwalk, @sound)}
         format.xml {render :xml => @sound, :status => :created, :location => @sound}
       else
+        RAILS_DEFAULT_LOGGER.info "sound did not save"
         flash[:notice] = 'There was an error creating the sound.'
         format.html {render :action => 'new'}
         format.xml {render :xml => @sound.errors, :status => :unprocessible_entity}
