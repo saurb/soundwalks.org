@@ -86,7 +86,7 @@ class Sound < ActiveRecord::Base
     transient_index.filters = 30
     
     Array[loudness, temporal_sparsity, spectral_sparsity, spectral_centroid, harmonicity, transient_index].each do |feature|
-      feature.historySize = sound_file.frames
+      feature.maxHistorySize = sound_file.frames
     end
 
     Array[spectral_centroid, harmonicity, transient_index].each do |feature|
