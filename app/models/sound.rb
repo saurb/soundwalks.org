@@ -1,11 +1,13 @@
 require 'sirens'
 
 class Sound < ActiveRecord::Base
-  #acts_as_taggable_on :tags
   belongs_to :soundwalk
+  
+  acts_as_taggable_on :tags
   acts_as_mappable
   
   serialize :features, Hash
+  
   attr_accessor :file
   
   validates_presence_of :recorded_at, :sample_rate, :samples, 
@@ -85,11 +87,11 @@ class Sound < ActiveRecord::Base
     transient_index.mels = 15
     transient_index.filters = 30
     
-    Array[loudness, temporal_sparsity, spectral_sparsity, spectral_centroid, harmonicity, transient_index].each do |feature|
+    [loudness, temporal_sparsity, spectral_sparsity, spectral_centroid, harmonicity, transient_index].each do |feature|
       feature.maxHistorySize = sound_file.frames
     end
 
-    Array[spectral_centroid, harmonicity, transient_index].each do |feature|
+    [spectral_centroid, harmonicity, transient_index].each do |feature|
       feature.sampleRate = sound_file.sampleRate
       feature.spectrumSize = sound_file.spectrumSize
     end
