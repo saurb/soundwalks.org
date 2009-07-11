@@ -81,7 +81,7 @@ class SoundsController < ApplicationController
     @sound = @soundwalk.sounds.build(params[:sound])
     RAILS_DEFAULT_LOGGER.info "Built"
     @sound.file = params[:upload]['file']
-    RAILS_DEFAULT_LOGGER.info "File set " + @sound.file
+
     respond_to do |format|    
       if @sound.save
         RAILS_DEFAULT_LOGGER.info "sound.save"
