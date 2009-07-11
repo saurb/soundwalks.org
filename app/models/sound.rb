@@ -65,19 +65,19 @@ class Sound < ActiveRecord::Base
     sound_file.open sound_path
 
     # Initialize features.
-    loudness = Sirens::LoudnessFeature.new
-    temporal_sparsity = Sirens::TemporalSparsityFeature.new
-    spectral_sparsity = Sirens::SpectralSparsityFeature.new
-    spectral_centroid = Sirens::SpectralCentroidFeature.new
+    loudness = Sirens::Loudness.new
+    temporal_sparsity = Sirens::TemporalSparsity.new
+    spectral_sparsity = Sirens::SpectralSparsity.new
+    spectral_centroid = Sirens::SpectralCentroid.new
     
-    harmonicity = Sirens::HarmonicityFeature.new
+    harmonicity = Sirens::Harmonicity.new
     harmonicity.absThreshold = 1
     harmonicity.threshold = 0.1
     harmonicity.searchRegionLength = 5
     harmonicity.maxPeaks = 3
     harmonicity.lpfCoefficient = 0.7
 
-    transient_index = Sirens::TransientIndexFeature.new
+    transient_index = Sirens::TransientIndex.new
     transient_index.mels = 15
     transient_index.filters = 30
     
