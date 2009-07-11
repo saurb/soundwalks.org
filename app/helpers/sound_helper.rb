@@ -45,7 +45,7 @@ module SoundHelper
   end
   
   def medium_marker_icon
-    return GoogleMapIcon.new(:width => 24, :height => 24, :shadow_width => 0, :shadow_height => 0, :image_url => '/images/medium_marker_75_2.png')
+    return GoogleMapIcon.new(:width => 24, :height => 24, :shadow_width => 0, :shadow_height => 0, :image_url => '/images/medium_marker_75.png')
   end
   
   def filter_feature_values(values)
