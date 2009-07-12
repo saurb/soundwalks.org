@@ -1,5 +1,7 @@
 require File.join(File.dirname(__FILE__), 'boot')
 
+RAILS_GEM_VERSION = '2.3.2' unless defined? RAILS_GEM_VERSION
+
 ENV['GEM_PATH'] = '/home/brandon/.gem/ruby/gems/1.8:/usr/local/lib/ruby/gems/1.8'
 
 Rails::Initializer.run do |config|  

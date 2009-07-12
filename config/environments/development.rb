@@ -1,7 +1,5 @@
 # Settings specified here will take precedence over those in config/environment.rb
 
-RAILS_GEM_VERSION = '2.3.2' unless defined? RAILS_GEM_VERSION
-
 # In the development environment your application's code is reloaded on
 # every request.  This slows down response time but is perfect for development
 # since you don't have to restart the webserver when you make code changes.
