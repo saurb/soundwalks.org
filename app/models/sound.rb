@@ -61,10 +61,10 @@ class Sound < ActiveRecord::Base
     
     RAILS_DEFAULT_LOGGER.info "At sample rate: " + self.sample_rate.to_s
     
-    analyze_sound sound
+    analyze_sound sound_file
   end
   
-  def analyze_sound sound
+  def analyze_sound sound_file
     RAILS_DEFAULT_LOGGER.info "Enter analyze_sound"
     
     # Initialize features.
