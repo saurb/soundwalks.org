@@ -13,8 +13,9 @@ class CreateSounds < ActiveRecord::Migration
       t.integer :hop_size
       t.integer :spectrum_size
       t.integer :frames
-      t.decimal :frame_length
-      t.decimal :hop_length
+      
+      t.decimal :frame_length, :precision = 10, :scale = 10
+      t.decimal :hop_length, :precision = 10, :scale = 10
       
       # Serialized
       t.text :features
@@ -22,8 +23,8 @@ class CreateSounds < ActiveRecord::Migration
       t.references :soundwalk
       
       # Geokit
-      t.decimal :lng
-      t.decimal :lat      
+      t.decimal :lng, :precision = 10, :scale = 10
+      t.decimal :lat, :precision = 10, :scale = 10
     end
   end
 
