@@ -107,6 +107,7 @@ class Sound < ActiveRecord::Base
       :transient_index => transient_index.history,
       :harmonicity => harmonicity.history
     }
+    RAILS_DEFAULT_LOGGER.info self.features[:loudness]
     RAILS_DEFAULT_LOGGER.info "Exit analyze_sound"
   end
 end
