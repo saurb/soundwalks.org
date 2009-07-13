@@ -1,6 +1,7 @@
 Mime::Type.register 'application/wav', :wav
 
 class SoundsController < ApplicationController
+  before_filter :login_required  
   append_before_filter :get_soundwalk
   append_before_filter :get_sounds, :only => ['index', 'show']
   append_before_filter :get_sound, :except => ['index', 'new', 'create']
