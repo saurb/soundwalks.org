@@ -10,19 +10,19 @@ class Sound < ActiveRecord::Base
   
   attr_accessor :file
   
-  validates_presence_of :recorded_at, :sample_rate, :samples, 
-    :frame_size, :hop_size, :spectrum_size, :frame_length, 
-    :hop_length, :filename, :frames
+  #validates_presence_of :recorded_at, :sample_rate, :samples, 
+  #  :frame_size, :hop_size, :spectrum_size, :frame_length, 
+  #  :hop_length, :filename, :frames
     
-  validates_numericality_of :recorded_at, :greater_than => 0
-  validates_numericality_of :sample_rate, :greater_than => 0
-  validates_numericality_of :samples, :greater_than => 0
-  validates_numericality_of :frame_size, :greater_than => 0
-  validates_numericality_of :hop_size, :greater_than => 0
-  validates_numericality_of :frame_length, :greater_than => 0
-  validates_numericality_of :hop_length, :greater_than => 0
-  validates_numericality_of :spectrum_size, :greater_than => 0
-  validates_numericality_of :frames, :greater_than => 0
+  #validates_numericality_of :recorded_at, :greater_than => 0
+  #validates_numericality_of :sample_rate, :greater_than => 0
+  #validates_numericality_of :samples, :greater_than => 0
+  #validates_numericality_of :frame_size, :greater_than => 0
+  #validates_numericality_of :hop_size, :greater_than => 0
+  #validates_numericality_of :frame_length, :greater_than => 0
+  #validates_numericality_of :hop_length, :greater_than => 0
+  #validates_numericality_of :spectrum_size, :greater_than => 0
+  #validates_numericality_of :frames, :greater_than => 0
   
   def feature_path
     return File.join('public/data/features/', self.filename.split('.')[0] + '.csv')
@@ -43,25 +43,25 @@ class Sound < ActiveRecord::Base
     File.open(path, 'wb') {|f| f.write(file.read)}
     
     # Sirens properties.
-    sound_file = Sirens::Sound.new
-    sound_file.frameLength = 0.04
-    sound_file.hopLength = 0.02
-    sound_file.open path
+    #sound_file = Sirens::Sound.new
+    #sound_file.frameLength = 0.04
+    #sound_file.hopLength = 0.02
+    #sound_file.open path
     
     RAILS_DEFAULT_LOGGER.info "New sound uploaded: " + path
     
-    self.sample_rate = sound_file.sampleRate
-    self.samples = sound_file.samples
-    self.frame_length = sound_file.frameLength
-    self.hop_length = sound_file.hopLength
-    self.frame_size = sound_file.samplesPerFrame
-    self.hop_size = sound_file.samplesPerHop
-    self.spectrum_size = sound_file.spectrumSize
-    self.frames = sound_file.frames
+    #self.sample_rate = sound_file.sampleRate
+    #self.samples = sound_file.samples
+    #self.frame_length = sound_file.frameLength
+    #self.hop_length = sound_file.hopLength
+    #self.frame_size = sound_file.samplesPerFrame
+    #self.hop_size = sound_file.samplesPerHop
+    #self.spectrum_size = sound_file.spectrumSize
+    #self.frames = sound_file.frames
     
     RAILS_DEFAULT_LOGGER.info "At sample rate: " + self.sample_rate.to_s
     
-    analyze_sound
+    #analyze_sound
   end
   
   def analyze_sound
