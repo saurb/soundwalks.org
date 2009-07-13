@@ -10,19 +10,19 @@ class Sound < ActiveRecord::Base
   
   attr_accessor :file
   
-  #validates_presence_of :recorded_at, :sample_rate, :samples, 
-  #  :frame_size, :hop_size, :spectrum_size, :frame_length, 
-  #  :hop_length, :filename, :frames
+  validates_presence_of :recorded_at, :sample_rate, :samples, 
+    :frame_size, :hop_size, :spectrum_size, :frame_length, 
+    :hop_length, :filename, :frames
     
-  #validates_numericality_of :recorded_at, :greater_than => 0
-  #validates_numericality_of :sample_rate, :greater_than => 0
-  #validates_numericality_of :samples, :greater_than => 0
-  #validates_numericality_of :frame_size, :greater_than => 0
-  #validates_numericality_of :hop_size, :greater_than => 0
-  #validates_numericality_of :frame_length, :greater_than => 0
-  #validates_numericality_of :hop_length, :greater_than => 0
-  #validates_numericality_of :spectrum_size, :greater_than => 0
-  #validates_numericality_of :frames, :greater_than => 0
+  validates_numericality_of :recorded_at, :greater_than => 0
+  validates_numericality_of :sample_rate, :greater_than => 0
+  validates_numericality_of :samples, :greater_than => 0
+  validates_numericality_of :frame_size, :greater_than => 0
+  validates_numericality_of :hop_size, :greater_than => 0
+  validates_numericality_of :frame_length, :greater_than => 0
+  validates_numericality_of :hop_length, :greater_than => 0
+  validates_numericality_of :spectrum_size, :greater_than => 0
+  validates_numericality_of :frames, :greater_than => 0
   
   def feature_path
     return File.join('public/data/features/', self.filename.split('.')[0] + '.csv')
@@ -61,16 +61,12 @@ class Sound < ActiveRecord::Base
     
     RAILS_DEFAULT_LOGGER.info "At sample rate: " + self.sample_rate.to_s
     
-    #analyze_sound
+    analyze_sound sound
   end
   
-  def analyze_sound
+  def analyze_sound sound
     RAILS_DEFAULT_LOGGER.info "Enter analyze_sound"
-    sound_file = Sirens::Sound.new
-    sound_file.frameLength = self.frame_length
-    sound_file.hopLength = self.hop_length
-    sound_file.open sound_path
-
+    
     # Initialize features.
     loudness = Sirens::Loudness.new
     temporal_sparsity = Sirens::TemporalSparsity.new
