@@ -5,8 +5,8 @@ class CreateSoundwalks < ActiveRecord::Migration
       t.text :description
       t.text :locations
       
-      t.decimal :lat, :precision => 10, :scale => 10
-      t.decimal :lng, :precision => 10, :scale => 10
+      t.decimal :lat, :precision => 15, :scale => 12
+      t.decimal :lng, :precision => 15, :scale => 12
       
       t.references :user
       
