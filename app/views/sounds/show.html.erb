@@ -13,13 +13,12 @@ map.markers << GoogleMapMarker.new(:map => map, :lat => @sound.lat, :lng => @sou
 
 <div id='showsound'>
 	<p id='showfeatures'>
-		<%#= feature_chart('loudness', limit_granularity(filter_feature_values(@sound.features[:loudness])), 0, 'ab4444') %><br/>
-		<%#= feature_chart('temporal sparsity', limit_granularity(@sound.features[:temporal_sparsity]), 'auto', '44ab44') %><br/>
-		<%#= feature_chart('spectral sparsity', limit_granularity(@sound.features[:spectral_sparsity]), 'auto', '4444ab') %><br/>
-		<%#= feature_chart('spectral centroid', limit_granularity(@sound.features[:spectral_centroid]), 'auto', 'abab44') %><br/>
-		<%#= feature_chart('transient index', limit_granularity(@sound.features[:transient_index]), 'auto', '44abab') %><br/>
-		<%#= feature_chart('harmonicity', limit_granularity(@sound.features[:harmonicity]), 'auto', 'ab44ab') %><br/>
-		<%= @sound.features[:loudness] %>
+		<%= feature_chart('loudness', limit_granularity(filter_feature_values(@sound.features[:loudness])), 0, 'ab4444') %><br/>
+		<%= feature_chart('temporal sparsity', limit_granularity(@sound.features[:temporal_sparsity]), 'auto', '44ab44') %><br/>
+		<%= feature_chart('spectral sparsity', limit_granularity(@sound.features[:spectral_sparsity]), 'auto', '4444ab') %><br/>
+		<%= feature_chart('spectral centroid', limit_granularity(@sound.features[:spectral_centroid]), 'auto', 'abab44') %><br/>
+		<%= feature_chart('transient index', limit_granularity(@sound.features[:transient_index]), 'auto', '44abab') %><br/>
+		<%= feature_chart('harmonicity', limit_granularity(@sound.features[:harmonicity]), 'auto', 'ab44ab') %><br/>
 	</p>
 
 	<h1>

@@ -47,9 +47,7 @@ class Sound < ActiveRecord::Base
     sound_file.frameLength = 0.04
     sound_file.hopLength = 0.02
     sound_file.open path
-    
-    RAILS_DEFAULT_LOGGER.info "New sound uploaded: " + path
-    
+        
     self.sample_rate = sound_file.sampleRate
     self.samples = sound_file.samples
     self.frame_length = sound_file.frameLength
@@ -58,15 +56,11 @@ class Sound < ActiveRecord::Base
     self.hop_size = sound_file.samplesPerHop
     self.spectrum_size = sound_file.spectrumSize
     self.frames = sound_file.frames
-    
-    RAILS_DEFAULT_LOGGER.info "At sample rate: " + self.sample_rate.to_s
-    
+        
     analyze_sound sound_file
   end
   
-  def analyze_sound sound_file
-    RAILS_DEFAULT_LOGGER.info "Enter analyze_sound"
-    
+  def analyze_sound sound_file    
     # Initialize features.
     loudness = Sirens::Loudness.new
     temporal_sparsity = Sirens::TemporalSparsity.new
@@ -99,8 +93,6 @@ class Sound < ActiveRecord::Base
     # Extract features.
     sound_file.extractFeatures
     
-    RAILS_DEFAULT_LOGGER.info loudness.history.to_s
-    
     self.features = {
       :loudness => loudness.history, 
       :temporal_sparsity => temporal_sparsity.history,
@@ -109,7 +101,5 @@ class Sound < ActiveRecord::Base
       :transient_index => transient_index.history,
       :harmonicity => harmonicity.history
     }
-    
-    RAILS_DEFAULT_LOGGER.info "Exit analyze_sound"
   end
 end
