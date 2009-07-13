@@ -99,6 +99,8 @@ class Sound < ActiveRecord::Base
     # Extract features.
     sound_file.extractFeatures
     
+    RAILS_DEFAULT_LOGGER.info loudness.history.to_s
+    
     self.features = {
       :loudness => loudness.history, 
       :temporal_sparsity => temporal_sparsity.history,
@@ -107,7 +109,7 @@ class Sound < ActiveRecord::Base
       :transient_index => transient_index.history,
       :harmonicity => harmonicity.history
     }
-    RAILS_DEFAULT_LOGGER.info self.features[:loudness]
+    
     RAILS_DEFAULT_LOGGER.info "Exit analyze_sound"
   end
 end
