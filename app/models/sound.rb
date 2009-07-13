@@ -42,12 +42,15 @@ class Sound < ActiveRecord::Base
     path = sound_path
     File.open(path, 'wb') {|f| f.write(file.read)}
     
-    # Sirens properties.
+    analyze_sound
+  end
+  
+  def analyze_sound
     sound_file = Sirens::Sound.new
     sound_file.frameLength = 0.04
     sound_file.hopLength = 0.02
-    sound_file.open path
-        
+    sound_file.open sound_path
+     
     self.sample_rate = sound_file.sampleRate
     self.samples = sound_file.samples
     self.frame_length = sound_file.frameLength
@@ -56,11 +59,7 @@ class Sound < ActiveRecord::Base
     self.hop_size = sound_file.samplesPerHop
     self.spectrum_size = sound_file.spectrumSize
     self.frames = sound_file.frames
-        
-    analyze_sound sound_file
-  end
-  
-  def analyze_sound sound_file    
+     
     # Initialize features.
     loudness = Sirens::Loudness.new
     temporal_sparsity = Sirens::TemporalSparsity.new
@@ -92,6 +91,7 @@ class Sound < ActiveRecord::Base
     
     # Extract features.
     sound_file.extractFeatures
+    sound_file.close
     
     self.features = {
       :loudness => loudness.history, 
