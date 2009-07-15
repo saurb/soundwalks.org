@@ -1,16 +1,32 @@
+<%
+
+username_label = 'Username'
+password_label = 'Password (<a href="/login">Forgot?</a>)'
+username_label += "<br /><span class='error'>#{flash[:login_error]}</span>" if flash[:login_error]
+password_label += "<br /><span class='error'>#{flash[:password_error]}</span>" if flash[:password_error]
+
+%>
+
 <h1>Log In</h1>
 
-<% form_tag session_path do -%>
-<p><%= label_tag 'login' %><br />
-<%= text_field_tag 'login', @login %></p>
 
-<p><%= label_tag 'password' %><br/>
-<%= password_field_tag 'password', nil %></p>
+<% form_tag session_path do %>
+	<p class='field'>
+		<%= label_tag 'login', username_label %>
+		<%= text_field_tag 'login', @login %>
+	</p>
 
-<!-- Uncomment this if you want this functionality
-<p><%= label_tag 'remember_me', 'Remember me' %>
-<%= check_box_tag 'remember_me', '1', @remember_me %></p>
--->
+	<p class='field'>
+		<%= label_tag 'password', password_label %>
+		<%= password_field_tag 'password', nil %>
+	</p>
 
-<p><%= submit_tag 'Log in' %></p>
-<% end -%>
+	<p class='field_nofloat'>
+		<%= check_box_tag 'remember_me', '1', @remember_me %>
+		<%= label_tag 'remember_me', 'Remember me' %>
+	</p>
+
+	<p class='submit'>
+		<%= submit_tag 'Log in', :class => 'submit' %>
+	</p>
+<% end %>

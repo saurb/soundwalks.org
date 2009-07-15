@@ -1,16 +1,21 @@
 <table>
-	<tr>
-		<th>Title</th>
-		<th>Description</th>
-		<th>Created at</th>
-		<th>Updated at</th>
-	</tr>
-<% @soundwalks.each do |soundwalk| %>
-	<tr>
-		<td><%= link_to soundwalk.title, soundwalk %></td>
-		<td><%= soundwalk.description %></td>
-		<td><%= soundwalk.created_at %></td>
-		<td><%= soundwalk.updated_at %></td>
-	</tr>
-<% end %>
+	<div id='stream'>
+		<div id='map'>
+			<%= render :partial => '/shared/soundwalks_map' %>
+		</div>
+		
+		<% if defined? new_soundwalk_option %>
+		<p><%= link_to 'Upload soundwalk', new_soundwalk_path %></p>
+		<% end %>
+		
+		<% @soundwalks.each do |soundwalk| %>
+		<div class='stream_item'>
+			<span class='soundwalk_date'><%= relative_date_in_past(soundwalk.created_at) %></span>
+			<span class='soundwalk_title'><%= link_to soundwalk.title, soundwalk %></span>
+			<span class='soundwalk_description'><%= soundwalk.description %></span>
+		</div>
+		<% end %>
+		
+		<div class='clear'></div>
+	</div>
 </table>
