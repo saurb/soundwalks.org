@@ -7,6 +7,7 @@ ENV['GEM_PATH'] = '/home/brandon/.gem/ruby/gems/1.8:/usr/local/lib/ruby/gems/1.8
 Rails::Initializer.run do |config|  
   # config.load_paths += %W( #{RAILS_ROOT}/extras )
   
+  config.gem "avatar"
   config.gem "geokit"
   config.gem "mbleigh-acts-as-taggable-on", :source => "http://gems.github.com", :lib => "acts-as-taggable-on"
   config.gem "rubyist-aasm", :source => "http://gems.github.com", :lib => "aasm"
@@ -17,4 +18,8 @@ Rails::Initializer.run do |config|
   config.time_zone = 'UTC'
   
   config.active_record.observers = :user_observer
+  
+  config.action_view.field_error_proc = Proc.new { |html_tag, instance|
+    "<span class=\"fieldWithErrors\">#{html_tag}</span>" 
+  }
 end

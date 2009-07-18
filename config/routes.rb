@@ -3,13 +3,18 @@ ActionController::Routing::Routes.draw do |map|
   map.login '/login', :controller => 'sessions', :action => 'new'
   map.register '/register', :controller => 'users', :action => 'create'
   map.signup '/signup', :controller => 'users', :action => 'new'
+  map.activate '/activate/:activation_code', :controller => 'users', :action => 'activate', :activation_code => nil
   
-  map.resources :users, :member => {:suspend => :put, :unsuspend => :put, :purge => :delete}
+  map.public_stream '/public', :controller => 'soundwalks', :action => 'public'
+  map.friend_stream '/friends', :controller => 'soundwalks', :action => 'friends'
+  map.settings '/settings', :controller => 'users', :action => 'settings'
+  
+  map.resources :users, :member => {:suspend => :put, :unsuspend => :put, :purge => :delete}, :has_many => :soundwalks
   map.resource :session
-
-  map.resources :soundwalks, :has_many => :sounds  
-  map.root :controller => 'soundwalks'
   
-  map.connect ':controller/:action/:id'
-  map.connect ':controller/:action/:id.:format' 
+  map.resources :soundwalks, :has_many => :sounds
+  map.root :controller => 'soundwalks', :action => 'public'
+  
+  #map.connect ':controller/:action/:id'
+  #map.connect ':controller/:action/:id.:format' 
 end
