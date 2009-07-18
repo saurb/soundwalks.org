@@ -1,7 +1,9 @@
 class UsersController < ApplicationController  
-  # Protect these actions behind an admin login
+  layout 'user', :except => [:edit, :update, :show]
+  
   # before_filter :admin_required, :only => [:suspend, :unsuspend, :destroy, :purge]
-  before_filter :find_user, :only => [:suspend, :unsuspend, :destroy, :purge]
+  before_filter :login_required, :only => :settings
+  before_filter :find_user, :only => [:suspend, :unsuspend, :destroy, :purge, :show, :edit, :update]
   
   # render new.rhtml
   def new
@@ -15,7 +17,7 @@ class UsersController < ApplicationController
     success = @user && @user.valid?
     if success && @user.errors.empty?
       redirect_back_or_default('/')
-      flash[:notice] = "Thanks for signing up!  We're sending you an email with your activation code."
+      flash[:notice] = "Thanks for signing up!  We're sending you an email with a link to activate your account. In the mean time, feel free to explore all the publicly available soundwalks."
     else
       flash[:error]  = "We couldn't set up that account, sorry.  Please try again, or contact an admin (link is above)."
       render :action => 'new'
@@ -43,26 +45,71 @@ class UsersController < ApplicationController
     @user.suspend! 
     redirect_to users_path
   end
-
+  
   def unsuspend
     @user.unsuspend! 
     redirect_to users_path
   end
-
+  
   def destroy
     @user.delete!
     redirect_to users_path
   end
-
+  
   def purge
     @user.destroy
     redirect_to users_path
   end
   
-  # There's no page here to update or destroy a user.  If you add those, be
-  # smart -- make sure you check that the visitor is authorized to do so, that they
-  # supply their old password along with a new one to update it, etc.
-
+  def show
+    @soundwalks = @user.soundwalks.find(:all)
+    
+    respond_to do |format|
+      format.html {render :layout => 'site'}
+      format.xml {render :xml => @user}
+    end
+  end
+  
+  def settings
+    if logged_in?
+      redirect_to edit_user_path(current_user)
+    else
+      respond_to do |format|
+        format.html {
+          flash[:error] = 'Cannot access settings because you are not logged in.'
+          redirect_back_or_default('/')
+        }
+      end
+    end
+  end
+  
+  def edit
+    if current_user.id != @user.id
+      flash[:error] = "You are not authorized to access this account."
+      redirect_back_or_default('/')
+    end
+    
+    render :layout => 'site'
+  end
+  
+  def update
+    if current_user.id != @user.id
+      flash[:error] = "You are not authorized to access this account."
+      redirect_back_or_default('/')
+    else
+      respond_to do |format|
+        if @user.update_attributes(params[:user])
+          flash[:notice] = "Your profile has been updated."
+          format.html {render :layout => 'site', :action => "edit"}
+          format.xml {render :xml => :ok}
+        else
+          format.html {render :layout => 'site', :action => "edit"}
+          format.xml {render :xml => @user.errors, :status => :unprocessable_entity}
+        end
+      end
+    end
+  end
+  
 protected
   def find_user
     @user = User.find(params[:id])

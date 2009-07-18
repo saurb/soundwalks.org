@@ -11,22 +11,26 @@ password_label += "<br /><span class='error'>#{flash[:password_error]}</span>" i
 
 
 <% form_tag session_path do %>
-	<p class='field'>
-		<%= label_tag 'login', username_label %>
-		<%= text_field_tag 'login', @login %>
-	</p>
+	<div>
+		<%= label_tag 'login', username_label, :class => 'field' %>
+		<%= text_field_tag 'login', @login, :class => 'field' %>
+	</div>
 
-	<p class='field'>
-		<%= label_tag 'password', password_label %>
-		<%= password_field_tag 'password', nil %>
-	</p>
+	<div>
+		<%= label_tag 'password', password_label, :class => 'field' %>
+		<%= password_field_tag 'password', nil, :class => 'field' %>
+	</div>
 
-	<p class='field_nofloat'>
-		<%= check_box_tag 'remember_me', '1', @remember_me %>
-		<%= label_tag 'remember_me', 'Remember me' %>
-	</p>
+	<div>
+		<%= check_box_tag 'remember_me', '1', @remember_me, :class => 'field-nofloat' %>
+		<%= label_tag 'remember_me', 'Remember me', :class => 'field-nofloat' %>
+	</div>
 
-	<p class='submit'>
-		<%= submit_tag 'Log in', :class => 'submit' %>
-	</p>
+	<div>
+		<%= submit_tag 'Log in', :class => 'submit', :class => 'submit' %>
+	</div>
+	
+	<div style='text-align: center'>
+		New to Soundwalks? <%= link_to "See what it's all about!", new_user_path %>
+	</div>
 <% end %>

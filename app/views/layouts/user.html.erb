@@ -1,0 +1,30 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+       "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+	<head>
+		<meta http-equiv="content-type" content="text/html;charset=UTF-8" />
+		<title>Soundwalks: <%= controller.action_name %></title>
+		<%= stylesheet_link_tag 'main' %>
+		<%= javascript_include_tag :defaults, 'jquery.flot' %>
+	</head>
+
+	<body>
+		<div id='strip' class='little'>
+			<img src='/images/soundwalks-big.png'>
+		</div>
+		
+		<div id='body' class='little'>
+			<% if flash[:notice] %>
+				<p class='notice'>
+					<%= flash[:notice] %>
+				</p>
+			<% end %>
+			<%= yield %>
+			<div class='clear'></div>
+			<div id='footer'>
+				Soundwalks is developed with support from the Arizona State University Arts, Media and Engineering program and the National Science Foundation.
+			</div>
+		</div>
+	</body>
+</html>

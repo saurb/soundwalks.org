@@ -1,27 +1,42 @@
 class SoundwalksController < ApplicationController
-  before_filter :login_required
-  append_before_filter :get_soundwalk, :except => ['index', 'new', 'create']
-  append_before_filter :get_soundwalks, :only => 'index'
+  layout 'site'
   
-  # Before filters.
+  before_filter :login_required, :except => 'public'
   
-  def get_soundwalk
-    @soundwalk = Soundwalk.find(params[:id])
-  end
-  
-  def get_soundwalks
+  # GET /friends
+  def friends
     @soundwalks = Soundwalk.find(:all)
-  end
-  
-  # Methods.
-  def index  
+    
     respond_to do |format|
       format.html
       format.xml {render :xml => @soundwalks}
     end
   end
   
+  # GET /public
+  def public
+    @soundwalks = Soundwalk.find(:all)
+    
+    respond_to do |format|
+      format.html
+      format.xml {render :xml => @soundwalks}
+    end
+  end
+  
+  # GET /users/:user_id/soundwalks
+  def user
+    @user = User.find(params[:user_id])
+    @soundwalks = @user.soundwalks.find(:all)
+    
+    respond_to do |format|
+      format.html
+      format.xml {render :xml => @soundwalks}
+    end
+  end
+  
+  # GET /soundwalks/:id
   def show
+    @soundwalk = Soundwalk.find(params[:id])
     @sounds = @soundwalk.sounds
     @sound = Sound.new
     
@@ -31,8 +46,9 @@ class SoundwalksController < ApplicationController
     end
   end
   
+  # GET /soundwalks/new
   def new
-    @soundwalk = Soundwalk.new
+    @soundwalk = @current_user.soundwalks.build
     
     respond_to do |format|
       format.html
@@ -40,12 +56,20 @@ class SoundwalksController < ApplicationController
     end
   end
   
+  # POST /soundwalks
   def create
-    @soundwalk = Soundwalk.new(params[:soundwalk])
-    @soundwalk.locations_file = params[:upload]['locations_file']
+    @soundwalk = @current_user.soundwalks.build(params[:soundwalk])
+    failed = false
+    
+    if params[:upload]
+      @soundwalk.locations_file = params[:upload]['locations_file']
+      failed = true if !@soundwalk.save
+    else
+      failed = true
+    end
     
     respond_to do |format|    
-      if @soundwalk.save
+      if !failed
         format.html {redirect_to @soundwalk}
         format.xml {render :xml => @soundwalk, :status => :created, :location => @soundwalk}
       else
@@ -55,6 +79,7 @@ class SoundwalksController < ApplicationController
     end
   end
   
+  # DELETE /soundwalks/:id
   def destroy    
     @soundwalk.destroy
     
@@ -64,9 +89,11 @@ class SoundwalksController < ApplicationController
     end
   end
   
+  # GET /soundwalks/:id/edit
   def edit
   end
   
+  # POST /soundwalks/:id
   def update    
     @soundwalk.locations_file = params[:upload]['locations_file']
     

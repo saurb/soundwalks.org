@@ -1,0 +1,15 @@
+<%
+
+map = GoogleMap.new(:scroll_wheel_zoom => true, :controls => [:zoom, :scale], :map_type => 'G_HYBRID_MAP')
+
+@soundwalks.each do |soundwalk|
+	html = '<h3>Soundwalk ' + soundwalk.id.to_s + '</h3>'
+	map.markers << GoogleMapMarker.new(:map => map, :lat => soundwalk.lat, :lng => soundwalk.lng, :html => html)
+end
+
+%>
+
+<%#= map.to_html %>
+<div id='soundwalk-index-map'>
+	<%#= map.div %>
+</div>

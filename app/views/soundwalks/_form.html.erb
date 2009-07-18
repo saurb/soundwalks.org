@@ -1,24 +1,23 @@
 <% form_for(@soundwalk, :html => {:multipart => true}) do |form| %>
-	<p class='field'>
-		<%= label_tag 'GPS file', label_with_errors(@soundwalk, 'upload', 'GPS file') %>
-		<label class='file_wrapper'>
-			(Click to upload file.)
+	<div>
+		<%= label_tag 'GPS file', label_with_errors(@soundwalk, 'upload', 'GPS file'), :class => 'field' %>
+		<div class='fileinput'>
 			<%= file_field :upload, :locations_file, :class => 'file' %>
-		</label>
-	</p>
-	<p class='field'>
-		<%= form.label :title, label_with_errors(@soundwalk, 'title', 'Title') %>
-		<%= form.text_field :title %>
-	<p>
-	<p class='field'>
-		<%= form.label :description, label_with_errors(@soundwalk, 'description', 'Description') %>
-		<%= form.text_area :description %>
-	</p>
-	<p class='submit'>
-		<%= form.submit 'Save' %>
-	</p>
+		</div>
+	</div>
+	<div>
+		<%= form.label :title, label_with_errors(@soundwalk, 'title', 'Title'), :class => 'field' %>
+		<%= form.text_field :title, :class => 'field' %>
+	</div>
+	<div>
+		<%= form.label :description, label_with_errors(@soundwalk, 'description', 'Description'), :class => 'field' %>
+		<%= form.text_area :description, :class => 'field' %>
+	</div>
+	<div>
+		<%= form.submit 'Save', :class => 'submit' %>
+	</div>
 <% end %>
 
 <script type='text/javascript'>
-	SI.Files.stylizeAll();
+	initFileUploads();
 </script>

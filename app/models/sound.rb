@@ -2,6 +2,7 @@ require 'sirens'
 
 class Sound < ActiveRecord::Base
   belongs_to :soundwalk
+  belongs_to :user
   
   acts_as_taggable_on :tags
   acts_as_mappable

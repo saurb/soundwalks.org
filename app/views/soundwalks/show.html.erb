@@ -1,10 +1,11 @@
 <h1><%=h @soundwalk.title %></h1>
 
-<p><%=h @soundwalk.description %></p>
+<%= render :partial => 'shared/sounds_map' %>
 
 <p>
 	<%= link_to 'Upload sound', new_soundwalk_sound_path(@soundwalk) %> | <%= link_to 'Edit', edit_soundwalk_path(@soundwalk) %> | <%= link_to 'Delete', @soundwalk, :method => :delete %>
 </p>
 
-<%= render :partial => 'shared/sounds_map' %>
+<p><%=h @soundwalk.description %></p>
+
 <%= render :partial => 'shared/sounds_index' %>

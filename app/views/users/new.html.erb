@@ -1,28 +1,32 @@
 <h1>Sign up to listen in</h1>
 <% @user.password = nil %>
 
+<p style='text-align: center'>
+	Soundwalks is a free social network for sharing and experiencing soundscapes through field recordings. To start recording, sharing, and listening, sign up for a free account!
+</p>
+
 <% form_for :user, :url => users_path do |f| -%>
-	<p class='field'>
-		<%= f.label :name, label_with_errors(@user, 'name', 'Full name') %>
-		<%= f.text_field :name %>
-	</p>
+	<div>
+		<%= f.label :name, label_with_errors(@user, 'name', 'Full name'), :class => 'field' %>
+		<%= f.text_field :name, :class => 'field' %>
+	</div>
 	
-	<p class='field'>
-		<%= f.label :login, label_with_errors(@user, 'login', 'Username') %>
-		<%= f.text_field :login %>
-	</p>
+	<div>
+		<%= f.label :login, label_with_errors(@user, 'login', 'Username'), :class => 'field' %>
+		<%= f.text_field :login, :class => 'field' %>
+	</div>
 
-	<p class='field'>
-		<%= f.label :email, label_with_errors(@user, 'email', 'Email') %>
-		<%= f.text_field :email %>
-	</p>
+	<div>
+		<%= f.label :email, label_with_errors(@user, 'email', 'Email'), :class => 'field' %>
+		<%= f.text_field :email, :class => 'field' %>
+	</div>
 
-	<p class='field'>
-		<%= f.label :password, label_with_errors(@user, 'password', 'Password') %>
-		<%= f.password_field :password %>
-	</p>
+	<div>
+		<%= f.label :password, label_with_errors(@user, 'password', 'Password'), :class => 'field' %>
+		<%= f.password_field :password, :class => 'field' %>
+	</div>
 
-	<p class='submit'>
-		<%= submit_tag 'Sign up' %>
-	</p>
+	<div>
+		<%= submit_tag 'Sign up', :class => 'submit' %>
+	</div>
 <% end -%>
