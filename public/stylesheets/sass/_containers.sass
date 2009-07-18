@@ -1,0 +1,49 @@
+@import variables.sass
+
+#strip
+	width = !big_width
+	margin: 2em auto 0 auto
+	padding: 0 1em 0 1em
+	border-bottom: 0.125em solid #{!dark_blue}
+	text-align: center
+
+	#user-panel
+		float: right
+		color = !dark_blue
+		width: 45em
+		margin: 0
+		padding: 1.5em 0 0 1.5em
+		text-align: left
+
+		a
+			color = !red
+			text-decoration: none
+			font-weight: bold
+	
+	&.little
+		width = !little_width
+
+	
+		
+#body
+	width = !big_width
+	margin: 0 auto 0 auto
+	padding: 1em
+	border: 1px solid #{!light_blue}
+	background-color: white
+	text-align: left
+
+	#menu 
+		text-align: left
+		margin-bottom: 1em
+	
+	#footer
+		margin-top: 1em
+		padding: 1em
+		bottom: 0
+		border-top = !dashed_border
+		font-size: 0.7em
+		text-align: right
+
+	&.little
+		width = !little_width
