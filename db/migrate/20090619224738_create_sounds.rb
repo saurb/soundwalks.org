@@ -21,6 +21,7 @@ class CreateSounds < ActiveRecord::Migration
       t.text :features
       
       t.references :soundwalk
+      t.references :user
       
       # Geokit
       t.decimal :lng, :precision => 15, :scale => 12
