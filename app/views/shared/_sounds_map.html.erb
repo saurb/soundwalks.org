@@ -2,36 +2,18 @@
 
 map = GoogleMap.new(:scroll_wheel_zoom => true, :controls => [:zoom, :scale], :map_type => 'G_HYBRID_MAP')
 
-# GPS path
-vertices = Array.new(@soundwalk.locations.size) { |value|
-	value = Array[0, 0]
-}
-
-sorted = @soundwalk.locations.sort
-
-sorted.each_with_index do |value, index|
-	vertices[index] = value[1]
-end
-
-# Sounds
+# Sounds.
 @sounds.each do |sound|
-	html = '<h3>Sound ' + sound.id.to_s + ': bicycle, voices, laughing, chatting</h3>' + embed_sound_tag(@soundwalk, sound)
+	html = 'Sound ' + sound.id.to_s + '<br />' + embed_sound_tag(@soundwalk, sound, 20, 1.6)
 	map.markers << GoogleMapMarker.new(:map => map, :lat => sound.lat, :lng => sound.lng, :html => html, :icon => medium_marker_icon)
 end
 
-
-#map.overlays << GoogleMapPolyline.new(:vertices => vertices, :color => '#22bc22', :weight => 4, :opacity => 0.75)
-map.overlays << GoogleMapPolyline.new(:vertices => vertices, :color => '#55ef55', :weight => 4, :opacity => 0.75)
-
-#map.bounds.clear
-
-#vertices.each do |lat, lng|
-#	map.bounds << [lat, lng]
-#end
+# GPS track.
+map.overlays << GoogleMapPolyline.new(:vertices => @soundwalk.vertices, :color => '#55ef55', :weight => 4, :opacity => 0.75)
 
 %>
 
-<%#= map.to_html %>
+<%= map.to_html %>
 <div id='soundwalk-map'>
-	<%#= map.div %>
+	<%= map.div %>
 </div>

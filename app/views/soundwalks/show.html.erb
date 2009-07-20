@@ -1,11 +1,17 @@
-<h1><%=h @soundwalk.title %></h1>
+<%= render :partial => 'shared/user_profile', :locals => {:user => @soundwalk.user, :side => 'right'} %>
+
+<h2><%=h @soundwalk.title %></h2>
 
 <%= render :partial => 'shared/sounds_map' %>
 
-<p>
-	<%= link_to 'Upload sound', new_soundwalk_sound_path(@soundwalk) %> | <%= link_to 'Edit', edit_soundwalk_path(@soundwalk) %> | <%= link_to 'Delete', @soundwalk, :method => :delete %>
-</p>
+<% if @soundwalk.user.id == current_user.id %>
+	<p>
+		<%= link_to 'Upload sound', new_soundwalk_sound_path(@soundwalk) %> | <%= link_to 'Edit', edit_soundwalk_path(@soundwalk) %> | <%= link_to 'Delete', @soundwalk, :method => :delete %>
+	</p>
+<% end %>
 
 <p><%=h @soundwalk.description %></p>
+<p>Posted <%= post_date @soundwalk %></p> 
+<p>Recorded <%= time_span @soundwalk %></p>
 
 <%= render :partial => 'shared/sounds_index' %>

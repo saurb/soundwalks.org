@@ -1,7 +1,3 @@
-<div id='user-profile'>
-	<div id='profile-avatar'><%= avatar_tag(@user, :size => 92) %></div>
-	<h1><%= @user.name %></h1>
-	<p>User since <%= relative_date_in_past(@user.created_at) %></p>
-	
-	<%= render :partial => '/shared/soundwalks_index' %>
-</div>
+<%= render :partial => 'shared/user_profile', :locals => {:user => @user, :side => 'left'} %>
+
+<%= render :partial => '/shared/soundwalks_index' %>

@@ -1,10 +1,11 @@
-<table id='indextable'>
+<table id='sound-index'>
 	<tr>
 		<th>Filename</th>
 		<th>Duration</th>
 		<th>Latitude</th>
 		<th>Longitude</th>
-		<th>Recorded at</th>
+		<th>Time</th>
+		<th></th>
 	</tr>
 	
 	<% @sounds.each do |sound| %>
@@ -13,8 +14,8 @@
 		<td><%= sprintf('%.2f', sound.samples.to_f / sound.sample_rate.to_f) %>s</td>
 		<td><%= coordinates_text(:latitude, sound.lat) %></td>
 		<td><%= coordinates_text(:longitude, sound.lng) %></td>
-		<td><%= sound.recorded_at %></td>
-		<th><%= link_to 'delete', soundwalk_sound_path(@soundwalk, sound), :method => :delete %>
+		<td><%= prettier_time(sound.recorded_at.getlocal) %></td>
+		<td><%= link_to 'delete', soundwalk_sound_path(@soundwalk, sound), :method => :delete %></td>
 	</tr>
 	<% end %>
 </table>

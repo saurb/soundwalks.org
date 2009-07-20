@@ -15,7 +15,7 @@ class SoundwalksController < ApplicationController
   
   # GET /public
   def public
-    @soundwalks = Soundwalk.find(:all)
+    @soundwalks = Soundwalk.find(:all, :limit => 20, :order => "created_at DESC, title")
     
     respond_to do |format|
       format.html
@@ -26,7 +26,7 @@ class SoundwalksController < ApplicationController
   # GET /users/:user_id/soundwalks
   def user
     @user = User.find(params[:user_id])
-    @soundwalks = @user.soundwalks.find(:all)
+    @soundwalks = @user.soundwalks.find(:all, :limit => 20, :order => "created_at DESC, title")
     
     respond_to do |format|
       format.html
@@ -91,11 +91,16 @@ class SoundwalksController < ApplicationController
   
   # GET /soundwalks/:id/edit
   def edit
+    @soundwalk = Soundwalk.find(params[:id])
   end
   
   # POST /soundwalks/:id
   def update    
-    @soundwalk.locations_file = params[:upload]['locations_file']
+    @soundwalk = Soundwalk.find(params[:id])
+    
+    if (params[:upload])
+      @soundwalk.locations_file = params[:upload]['locations_file']
+    end
     
     respond_to do |format|
       if @soundwalk.update_attributes(params[:soundwalk])

@@ -1,9 +1,25 @@
 require 'gchart'
 
 module SoundHelper
+  def label_with_errors sound, attribute, label
+    error_text = nil
+ 
+    sound.errors.each do |attr, error|
+      if attr.eql? attribute
+        error_text = error
+        break
+      end
+    end
+    
+    label_text = label
+    label_text += "<br /><span class='error'>#{error_text}</span>" if error_text
+    
+    return label_text
+  end
+  
   def feature_chart(title, data, max_value, color)
     image_tag Gchart.line(
-  		:size => '600x100',
+  		:size => '400x75',
   		:title => title, 
   		:bar_colors => color,
   		:axis_with_labels => 'x,y',
@@ -17,11 +33,11 @@ module SoundHelper
     return 'http://localhost:3000/data/sounds/' + sound.filename
   end
   
-  def embed_sound_tag(soundwalk, sound)
+  def embed_sound_tag(soundwalk, sound, width, height)
     return "<embed 
       type='application/x-shockwave-flash' 
       src='http://www.google.com/reader/ui/3247397568-audio-player.swf?audioUrl=#{soundwalk_sound_url(soundwalk, sound)}.wav' 
-      style='width: 400px; height: 27px'
+      style='width: #{width}em; height: #{height}em'
       allowscriptaccess='never' 
       quality='best' 
       bgcolor='#ffffff' 

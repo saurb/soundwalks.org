@@ -9,13 +9,12 @@ class Sound < ActiveRecord::Base
   
   serialize :features, Hash
   
-  attr_accessor :file
+  attr_accessor :sound_file
   
   validates_presence_of :recorded_at, :sample_rate, :samples, 
     :frame_size, :hop_size, :spectrum_size, :frame_length, 
     :hop_length, :filename, :frames
     
-  validates_numericality_of :recorded_at, :greater_than => 0
   validates_numericality_of :sample_rate, :greater_than => 0
   validates_numericality_of :samples, :greater_than => 0
   validates_numericality_of :frame_size, :greater_than => 0
@@ -34,16 +33,28 @@ class Sound < ActiveRecord::Base
   end
   
   def before_destroy
-    File.delete sound_path
+    begin
+      File.delete sound_path
+    rescue
+    end
   end
   
   def before_validation_on_create
-    self.filename = file.original_filename
+    self.filename = sound_file.original_filename
     
     path = sound_path
-    File.open(path, 'wb') {|f| f.write(file.read)}
+    File.open(path, 'wb') {|f| f.write(sound_file.read)}
+    
+    #puts "Recorded at: " + self.recorded_at
     
     analyze_sound
+    
+    if (!self.lat || !self.lng) && self.recorded_at && self.soundwalk
+      point = self.soundwalk.interpolate(self.recorded_at)
+      
+      self.lat = point.first
+      self.lng = point.second
+    end
   end
   
   def analyze_sound

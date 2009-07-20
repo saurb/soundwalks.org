@@ -21,7 +21,7 @@
 				<% end %>
 			</div>
 			
-			<img src='/images/soundwalks.png'>
+			<a href='/'><img src='/images/soundwalks.png' alt='soundwalks'></a>
 		</div>
 
 		<div id='body'>
@@ -38,7 +38,9 @@
 				<%= link_to 'Public stream', public_stream_path %> | 
 				<%= link_to 'Friends', friend_stream_path %>
 			</div>
-			<%= yield %>
+			<div id='content'>
+				<%= yield %>
+			</div>
 			<div class='clear'></div>
 			<div id='footer'>
 				Soundwalks is developed with support from the Arizona State University Arts, Media and Engineering program and the National Science Foundation.

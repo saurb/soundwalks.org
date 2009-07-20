@@ -4,32 +4,23 @@ class SoundsController < ApplicationController
   layout 'site'
   
   before_filter :login_required  
-  append_before_filter :get_soundwalk
-  append_before_filter :get_sounds, :only => ['index', 'show']
-  append_before_filter :get_sound, :except => ['index', 'new', 'create']
-  
-  # Before filters.  
-  def get_soundwalk
-    @soundwalk = Soundwalk.find(params[:soundwalk_id])
-  end
-  
-  def get_sound
-    @sound = @soundwalk.sounds.find(params[:id])
-  end
-  
-  def get_sounds
-    @sounds = @soundwalk.sounds.find(:all)
-  end
   
   # Methods.
   def index
+    @soundwalk = Soundwalk.find(params[:soundwalk_id])
+    @sounds = @soundwalk.sounds.find(:all)
+    
     respond_to do |format|
-      format.html
+      format.html {redirect_to @soundwalk}
       format.xml {render :xml => @sounds}
     end
   end
   
   def show    
+    @soundwalk = Soundwalk.find(params[:soundwalk_id])
+    @sounds = @soundwalk.sounds
+    @sound = @soundwalk.sounds.find(params[:id])
+    
     respond_to do |format|
       format.html
       format.xml {render :xml => @sound}
@@ -41,6 +32,8 @@ class SoundsController < ApplicationController
   end
   
   def recalculate
+    @soundwalk = @current_user.soundwalks.find(params[:soundwalk_id])
+    @sound = @soundwalk.sounds.find(params[:id])
     @sound.analyze_sound
     
     respond_to do |format|
@@ -55,13 +48,18 @@ class SoundsController < ApplicationController
     end
   end
   
-  def update    
-    @sound.file = params[:upload]['file']
+  def update
+    @soundwalk = @current_user.soundwalks.find(:soundwalk_id)
+    @sound = @soundwalk.sounds.find(params[:id])
+    
+    if params[:upload]
+      @soundwalk.file = params[:upload]['sound_file']
+    end
     
     respond_to do |format|
       if @sound.update_attributes(params[:sound])
         flash[:notice] = 'Sound was successfully updated.'
-        format.html {redirect_to soundwalk_sound_url(@soundwalk, @sound)}
+        format.html {redirect_to soundwalk_sound_path(@soundwalk, @sound)}
         format.xml {head :ok}
       else
         format.html {render :action => "edit"}
@@ -71,32 +69,48 @@ class SoundsController < ApplicationController
   end
   
   def new
-     @sound = @soundwalk.sounds.build
-     
-     respond_to do |format|
-       format.html
-       format.xml {render :xml => @sound}
-     end
+    @soundwalk = @current_user.soundwalks.find(params[:soundwalk_id])
+    @sound = @soundwalk.sounds.build
+ 
+    respond_to do |format|
+      format.html
+      format.xml {render :xml => @sound}
+    end
   end
   
   def create
+    @soundwalk = @current_user.soundwalks.find(params[:soundwalk_id])
+    
+    if params[:sound]
+      if params[:sound]['recorded_at']
+        params[:sound]['recorded_at'] = Time.at(params[:sound]['recorded_at'].to_i)
+      end
+    end
+    
     @sound = @soundwalk.sounds.build(params[:sound])
-    @sound.file = params[:upload]['file']
-
+    failed = false
+    
+    if params[:upload]      
+      @sound.sound_file = params[:upload]['sound_file']
+      failed = true if !@sound.save
+    else
+      failed = true
+    end
+    
     respond_to do |format|    
-      if @sound.save
-        flash[:notice] = 'Sound was successfully created.'
-        format.html {redirect_to soundwalk_sound_url(@soundwalk, @sound)}
-        format.xml {render :xml => @sound, :status => :created, :location => @sound}
+      if !failed
+        format.html {redirect_to @soundwalk}#soundwalk_sound_path(@soundwalk, @sound)}
+        format.xml {render :xml => @sound, :status => :created, :location => soundwalk_sound_path(@soundwalk, @sound)}
       else
-        flash[:notice] = 'There was an error creating the sound.'
         format.html {render :action => 'new'}
         format.xml {render :xml => @sound.errors, :status => :unprocessible_entity}
       end
     end
   end
   
-  def destroy    
+  def destroy  
+    @soundwalk = @current_user.soundwalks.find(params[:soundwalk_id])
+    @sound = @soundwalk.sounds.find(params[:id])  
     @sound.destroy
     
     respond_to do |format|
