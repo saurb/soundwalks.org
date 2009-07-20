@@ -12,6 +12,8 @@ ActionController::Routing::Routes.draw do |map|
   map.resources :users, :member => {:suspend => :put, :unsuspend => :put, :purge => :delete}, :has_many => :soundwalks
   map.resource :session
   
+  map.recalculate '/soundwalks/:soundwalk_id/sounds/:id/recalculate', :controller => 'sounds', :action => 'recalculate'
+  
   map.resources :soundwalks, :has_many => :sounds
   map.root :controller => 'soundwalks', :action => 'public'
   
