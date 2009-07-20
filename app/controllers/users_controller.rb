@@ -11,16 +11,22 @@ class UsersController < ApplicationController
   end
  
   def create
-    logout_keeping_session!
-    @user = User.new(params[:user])
-    @user.register! if @user && @user.valid?
-    success = @user && @user.valid?
-    if success && @user.errors.empty?
-      redirect_back_or_default('/')
-      flash[:notice] = "Thanks for signing up!  We're sending you an email with a link to activate your account. In the mean time, feel free to explore all the publicly available soundwalks."
-    else
-      flash[:error]  = "We couldn't set up that account, sorry.  Please try again, or contact an admin (link is above)."
+    if params[:user]['secret'] != '52521082'
+      @user = User.new(params[:user])
+      flash[:error] = "Incorrect secret phrase."
       render :action => 'new'
+    else
+      logout_keeping_session!
+      @user = User.new(params[:user])
+      @user.register! if @user && @user.valid?
+      success = @user && @user.valid?
+      if success && @user.errors.empty?
+        redirect_back_or_default('/')
+        flash[:notice] = "Thanks for signing up!  We're sending you an email with a link to activate your account. In the mean time, feel free to explore all the publicly available soundwalks."
+      else
+        flash[:error]  = "There were some problems making your account. Please review any errors and try again."
+        render :action => 'new'
+      end
     end
   end
 

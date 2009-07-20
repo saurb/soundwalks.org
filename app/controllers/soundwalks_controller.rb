@@ -1,7 +1,7 @@
 class SoundwalksController < ApplicationController
   layout 'site'
   
-  before_filter :login_required, :except => 'public'
+  before_filter :login_required#, :except => 'public'
   
   # GET /friends
   def friends

@@ -2,8 +2,19 @@
 <% @user.password = nil %>
 
 <p style='text-align: center'>
-	Soundwalks is a free social network for sharing and experiencing soundscapes through field recordings. To start recording, sharing, and listening, sign up for a free account!
+	Soundwalks is a free social network for sharing and experiencing soundscapes through field recordings. Soundwalks is currently in private beta, so you need a secret phrase to sign up for an account.
 </p>
+
+<% if flash[:notice] %>
+	<p class='notice'>
+		<%= flash[:notice] %>
+	</p>
+<% end %>
+<% if flash[:error] %>
+	<p class='error'>
+		<%= flash[:error] %>
+	</p>
+<% end %>
 
 <% form_for :user, :url => users_path do |f| -%>
 	<div>
@@ -25,7 +36,12 @@
 		<%= f.label :password, label_with_errors(@user, 'password', 'Password'), :class => 'field' %>
 		<%= f.password_field :password, :class => 'field' %>
 	</div>
-
+	
+	<div>
+		<%= f.label :secret, label_with_errors(@user, 'secret', 'Secret'), :class => 'field' %>
+		<%= f.text_field :secret, :class => 'field' %>
+	</div>
+	
 	<div>
 		<%= submit_tag 'Sign up', :class => 'submit' %>
 	</div>

@@ -15,11 +15,6 @@
 		</div>
 		
 		<div id='body' class='little'>
-			<% if flash[:notice] %>
-				<p class='notice'>
-					<%= flash[:notice] %>
-				</p>
-			<% end %>
 			<%= yield %>
 			<div class='clear'></div>
 			<div id='footer'>

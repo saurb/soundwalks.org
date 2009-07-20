@@ -9,6 +9,16 @@ password_label += "<br /><span class='error'>#{flash[:password_error]}</span>" i
 
 <h1>Log In</h1>
 
+<% if flash[:notice] %>
+	<p class='notice'>
+		<%= flash[:notice] %>
+	</p>
+<% end %>
+<% if flash[:error] %>
+	<p class='error'>
+		<%= flash[:error] %>
+	</p>
+<% end %>
 
 <% form_tag session_path do %>
 	<div>
