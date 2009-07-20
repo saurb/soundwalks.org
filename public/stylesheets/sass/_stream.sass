@@ -1,27 +1,68 @@
 @import variables.sass
 
-.stream_item
-	width: 30em
-	margin-top: 0.5em
-	padding: 0.5em
-	border = !dashed_border
+#stream
+	display: table
+	margin: none
+	padding: none
+	padding-left: 0
+	
+	width: 35em
+	border-spacing: 0
+	
+	li
+		display: table-row
+		list-style: none
+		margin: none
+		padding: none
 
-.soundwalk_title
-	display: block
-	margin-bottom: 0.5em
-	border-bottom = !dashed_border
-	font-weight: bold
-	text-align: left
+		
+		&:hover
+			background-color = !very_light_blue
+		
+div.map_item
+	display: table
+	width: 15em
+	margin: 0
+	padding: 0
+	
+	a img
+		border: none
+	
+	font-size: 0.8em
+	
+div
+	&.update_avatar
+		display: table-cell
+		width: 4em
+		text-align: center
+		padding-top: 0.5em
+		border-bottom = !dashed_border
+		padding-bottom: 0.5em
+		
+	&.update_content
+		display: table-cell
+		vertical-align: top
+		padding-top: 0.5em
+		padding-bottom: 0.5em
+		border-bottom = !dashed_border
 
-.soundwalk_date
-	display: block
-	text-align: left
-	float: right
-	color = !gray
-	font-size: .8em
-	font-style: italic
+span
+	&.soundwalk_title
+		display: block
+		margin-bottom: 0.5em
+		font-weight: bold
+		text-align: left
 
-.soundwalk_description 
-	display: block
-	text-align: left
+	&.soundwalk_date
+		width: 11em
+		margin: 0.5em
+		display: block
+		text-align: left
+		float: right
+		color = !gray
+		font-size: .8em
+		font-style: italic
 
+	&.soundwalk_description 
+		display: block
+		text-align: left

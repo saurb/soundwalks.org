@@ -3,10 +3,10 @@
 #strip
 	width = !big_width
 	margin: 2em auto 0 auto
-	padding: 0 1em 0 1em
+	padding: 0
 	border-bottom: 0.125em solid #{!dark_blue}
 	text-align: center
-
+		
 	#user-panel
 		float: right
 		color = !dark_blue
@@ -28,15 +28,22 @@
 #body
 	width = !big_width
 	margin: 0 auto 0 auto
-	padding: 1em
+	padding: 0
 	border: 1px solid #{!light_blue}
 	background-color: white
 	text-align: left
 
 	#menu 
 		text-align: left
+		margin: 0
+		padding: 0.5em
 		margin-bottom: 1em
-	
+		background-color = !very_light_blue
+		border-bottom = !dashed_border
+		
+	#content
+		padding: 1em
+		
 	#footer
 		margin-top: 1em
 		padding: 1em
