@@ -1,0 +1,5 @@
+<h1>Public timeline</h1>
+
+<%= render :partial => 'shared/soundwalks_map', :locals => {:soundwalks => @soundwalks} %>
+<%= render :partial => 'shared/soundwalks_index', :locals => {:show_users => :true, :soundwalks => @soundwalks} %>
+<%= render :partial => 'shared/pagination', :locals => {:page => @page, :pages => @pages, :options => {:controller => :soundwalks}} %>

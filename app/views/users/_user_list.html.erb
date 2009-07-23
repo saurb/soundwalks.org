@@ -1,0 +1,15 @@
+<div id='friend-list'>
+<% users.each do |friend| %>
+	<div class='friend-box'>
+		<p class='avatar'><%= avatar_tag(friend, :size => 92, :alt => friend.name) %></p>
+		<p class='name'><%= link_to friend.name, user_path(friend) %></p>
+		<p><%= render :partial => 'shared/follow_button', :locals => {:user => friend} %></p>
+		<% if friend.soundwalks.size > 0 %>
+			<p class='soundwalks'><%= link_to pluralize(friend.soundwalks.count, "soundwalk"), user_path(friend) %></p>
+			<%# <p class='latest'><%= link_to "Last active #{relative_date_in_past friend.soundwalks.last.created_at}", soundwalk_path(friend.soundwalks.last) %><%#></p> %>
+		<% end %>
+		<p class='following'>Following <%= link_to pluralize(friend.friends.count, 'person'), user_following_path(friend) %>.</p>
+		<p class='followers'>Followed by <%= link_to pluralize(friend.inverse_friends.count, 'person'), user_followers_path(friend) %>.</p>
+	</div>
+<% end %>
+</div>

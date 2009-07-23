@@ -1,19 +1,19 @@
 class UsersController < ApplicationController  
   layout 'user', :except => [:edit, :update, :show]
   
-  # before_filter :admin_required, :only => [:suspend, :unsuspend, :destroy, :purge]
-  before_filter :login_required, :only => :settings
-  before_filter :find_user, :only => [:suspend, :unsuspend, :destroy, :purge, :show, :edit, :update]
+  before_filter :login_required, :only => [:settings]
+  before_filter :get_user, :except => [:create, :activate, :settings]
   
-  # render new.rhtml
+  # GET /users/new, /signup
   def new
     @user = User.new
   end
- 
+  
+  # POST /users/new
   def create
     if params[:user]['secret'] != '52521082'
       @user = User.new(params[:user])
-      flash[:error] = "Incorrect secret phrase."
+      flash.now[:error] = "Incorrect secret phrase."
       render :action => 'new'
     else
       logout_keeping_session!
@@ -21,15 +21,16 @@ class UsersController < ApplicationController
       @user.register! if @user && @user.valid?
       success = @user && @user.valid?
       if success && @user.errors.empty?
-        redirect_back_or_default('/')
         flash[:notice] = "Thanks for signing up!  We're sending you an email with a link to activate your account. In the mean time, feel free to explore all the publicly available soundwalks."
+        redirect_back_or_default('/')
       else
-        flash[:error]  = "There were some problems making your account. Please review any errors and try again."
+        flash.now[:error]  = "There were some problems making your account. Please review any errors and try again."
         render :action => 'new'
       end
     end
   end
-
+  
+  # GET /users/activate/:activation_code
   def activate
     logout_keeping_session!
     user = User.find_by_activation_code(params[:activation_code]) unless params[:activation_code].blank?
@@ -46,17 +47,20 @@ class UsersController < ApplicationController
       redirect_back_or_default('/')
     end
   end
-
+  
+  # PUT /users/:id/suspend
   def suspend
     @user.suspend! 
     redirect_to users_path
   end
   
+  # PUT /users/:id/unsuspend
   def unsuspend
     @user.unsuspend! 
     redirect_to users_path
   end
   
+  # DELETE /users/:id
   def destroy
     @user.delete!
     redirect_to users_path
@@ -67,37 +71,25 @@ class UsersController < ApplicationController
     redirect_to users_path
   end
   
+  # GET /users/:id, /:login
   def show
-    @soundwalks = @user.soundwalks.find(:all)
-    
     respond_to do |format|
       format.html {render :layout => 'site'}
       format.xml {render :xml => @user}
     end
   end
   
-  def settings
-    if logged_in?
-      redirect_to edit_user_path(current_user)
-    else
-      respond_to do |format|
-        format.html {
-          flash[:error] = 'Cannot access settings because you are not logged in.'
-          redirect_back_or_default('/')
-        }
-      end
-    end
-  end
-  
+  # GET /users/:id/edit
   def edit
     if current_user.id != @user.id
       flash[:error] = "You are not authorized to access this account."
       redirect_back_or_default('/')
+    else
+      render :layout => 'site'
     end
-    
-    render :layout => 'site'
   end
   
+  # POST /users/:id/edit
   def update
     if current_user.id != @user.id
       flash[:error] = "You are not authorized to access this account."
@@ -105,8 +97,10 @@ class UsersController < ApplicationController
     else
       respond_to do |format|
         if @user.update_attributes(params[:user])
-          flash[:notice] = "Your profile has been updated."
-          format.html {render :layout => 'site', :action => "edit"}
+          format.html {
+            flash.now[:notice] = "Your profile has been updated."
+            render :layout => 'site', :action => "edit"
+          }
           format.xml {render :xml => :ok}
         else
           format.html {render :layout => 'site', :action => "edit"}
@@ -116,8 +110,21 @@ class UsersController < ApplicationController
     end
   end
   
+  # GET /:login/followers
+  def followers
+    render :layout => 'site'
+  end
+  
+  # GET /:login/following
+  def following
+    render :layout => 'site'
+  end
 protected
-  def find_user
-    @user = User.find(params[:id])
+  def get_user
+    if params[:id]
+      @user = User.find(params[:id])
+    elsif params[:username]
+      @user = User.find(:first, :conditions => {:login => params[:username]})
+    end
   end
 end

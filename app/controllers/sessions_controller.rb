@@ -1,10 +1,12 @@
 # This controller handles the login/logout function of the site.  
 class SessionsController < ApplicationController
   layout 'user'
-  # render new.rhtml
+  
+  # GET /sessions/new, /login
   def new
   end
-
+  
+  # POST /sessions
   def create
     logout_keeping_session!
     user = User.authenticate(params[:login], params[:password])
@@ -18,10 +20,11 @@ class SessionsController < ApplicationController
       handle_remember_cookie! new_cookie_flag
       redirect_back_or_default('/')
     else
+      flash.now[:error] = "There were some problems logging into your account. Please review the errors and try again."
       if User.valid_login?(params[:login])
-        flash[:password_error] = 'incorrect'
+        flash.now[:password_error] = 'incorrect'
       else
-        flash[:login_error] = "user doesn't exist"
+        flash.now[:login_error] = "user doesn't exist"
       end
       
       note_failed_signin
@@ -32,6 +35,7 @@ class SessionsController < ApplicationController
     end
   end
 
+  # DELETE /sessions/:id
   def destroy
     logout_killing_session!
     flash[:notice] = "You have been logged out."

@@ -3,24 +3,16 @@ Mime::Type.register 'application/wav', :wav
 class SoundsController < ApplicationController
   layout 'site'
   
-  before_filter :login_required  
+  before_filter :login_required
+  append_before_filter :get_soundwalk, 
+    :only => ['show']
+  append_before_filter :get_soundwalk_from_current_user,
+    :only => ['edit', 'update', 'new', 'create', 'destroy', 'recalculate']
+  append_before_filter :get_sound_from_soundwalk,
+    :only => ['show', 'edit', 'update', 'destroy', 'recalculate']
   
-  # Methods.
-  def index
-    @soundwalk = Soundwalk.find(params[:soundwalk_id])
-    @sounds = @soundwalk.sounds.find(:all)
-    
-    respond_to do |format|
-      format.html {redirect_to @soundwalk}
-      format.xml {render :xml => @sounds}
-    end
-  end
-  
-  def show    
-    @soundwalk = Soundwalk.find(params[:soundwalk_id])
-    @sounds = @soundwalk.sounds
-    @sound = @soundwalk.sounds.find(params[:id])
-    
+  # GET /soundwalks/:soundwalk_id/sounds/:id
+  def show        
     respond_to do |format|
       format.html
       format.xml {render :xml => @sound}
@@ -28,30 +20,12 @@ class SoundsController < ApplicationController
     end
   end
   
+  # GET /soundwalks/:soundwalk_id/sounds/:id/edit
   def edit
   end
   
-  def recalculate
-    @soundwalk = @current_user.soundwalks.find(params[:soundwalk_id])
-    @sound = @soundwalk.sounds.find(params[:id])
-    @sound.analyze_sound
-    
-    respond_to do |format|
-      if @sound.save
-        format.html {redirect_to soundwalk_sound_url(@soundwalk, @sound)}
-        format.xml {render :xml => @sound, :status => :updated, :location => @sound}
-      else
-        flash[:errors] = 'Problem recalculating feature values.'
-        format.html {redirect_to soundwalk_sound_url(@soundwalk, @sound)}
-        format.xml {render :xml => @sound.errors, :status => :unprocessible_entity}
-      end
-    end
-  end
-  
-  def update
-    @soundwalk = @current_user.soundwalks.find(:soundwalk_id)
-    @sound = @soundwalk.sounds.find(params[:id])
-    
+  # POST /soundwalks/:soundwalk_id/sounds/:id
+  def update    
     if params[:upload]
       @soundwalk.file = params[:upload]['sound_file']
     end
@@ -68,8 +42,8 @@ class SoundsController < ApplicationController
     end
   end
   
+  # GET /soundwalks/:soundwalk_id/sounds/new
   def new
-    @soundwalk = @current_user.soundwalks.find(params[:soundwalk_id])
     @sound = @soundwalk.sounds.build
  
     respond_to do |format|
@@ -78,9 +52,8 @@ class SoundsController < ApplicationController
     end
   end
   
-  def create
-    @soundwalk = @current_user.soundwalks.find(params[:soundwalk_id])
-    
+  # POST /soundwalks/:soundwalk_id/sounds
+  def create    
     if params[:sound]
       if params[:sound]['recorded_at']
         params[:sound]['recorded_at'] = Time.at(params[:sound]['recorded_at'].to_i)
@@ -108,14 +81,43 @@ class SoundsController < ApplicationController
     end
   end
   
+  # DELETE /soundwalks/:soundwalk_id/sounds/:id
   def destroy  
-    @soundwalk = @current_user.soundwalks.find(params[:soundwalk_id])
-    @sound = @soundwalk.sounds.find(params[:id])  
     @sound.destroy
     
     respond_to do |format|
-      format.html {redirect_to soundwalk_sounds_url(@soundwalk)}
+      format.html {redirect_to soundwalk_url(@soundwalk)}
       format.xml {head :ok}
+      format.js
     end
+  end
+  
+  # POST /soundwalks/:soundwalk_id/sounds/:id/recalculate
+  def recalculate    
+    @sound.analyze_sound
+    
+    respond_to do |format|
+      if @sound.save
+        format.html {redirect_to soundwalk_sound_url(@soundwalk, @sound)}
+        format.xml {render :xml => @sound, :status => :updated, :location => @sound}
+      else
+        flash[:errors] = 'Problem recalculating feature values.'
+        format.html {redirect_to soundwalk_sound_url(@soundwalk, @sound)}
+        format.xml {render :xml => @sound.errors, :status => :unprocessible_entity}
+      end
+    end
+  end
+  
+  protected
+  def get_soundwalk
+    @soundwalk = Soundwalk.find(params[:soundwalk_id])
+  end
+  
+  def get_soundwalk_from_current_user
+    @soundwalk = current_user.soundwalks.find(params[:soundwalk_id])
+  end
+  
+  def get_sound_from_soundwalk
+    @sound = @soundwalk.sounds.find(params[:id])
   end
 end

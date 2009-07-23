@@ -5,7 +5,12 @@ class User < ActiveRecord::Base
   include Authentication::ByPassword
   include Authentication::ByCookieToken
   include Authorization::AasmRoles
-
+  
+  has_many :friendships
+  has_many :friends, :through => :friendships
+  has_many :inverse_friendships, :class_name => "Friendship", :foreign_key => "friend_id"
+  has_many :inverse_friends, :through => :inverse_friendships, :source => :user
+  
   has_many :soundwalks
   has_many :sounds, :through => :soundwalks
   
@@ -26,7 +31,7 @@ class User < ActiveRecord::Base
     
   # anything else you want your user to change should be added here.
   attr_accessible :login, :email, :name, :password
-
+  
   # Authenticates a user by their login name and unencrypted password.  Returns the user or nil.
   def self.authenticate(login, password)
     return nil if login.blank? || password.blank?
@@ -36,7 +41,7 @@ class User < ActiveRecord::Base
   
   def self.valid_login?(login)
     return false if login.blank?
-    return find_in_state :first, :active, :conditions => {:login => login.downcase}
+    return find_in_state(:first, :active, :conditions => {:login => login.downcase})
   end
   
   def login=(value)
@@ -46,7 +51,17 @@ class User < ActiveRecord::Base
   def email=(value)
     write_attribute :email, (value ? value.downcase : nil)
   end
-
+  
+  def friends_soundwalks(options = {})
+    options[:order] = 'created_at DESC, title'
+    Soundwalk.from_users(self.friendships.map{|friendship| friendship.friend_id}.compact, options)
+  end
+  
+  def inverse_friends_soundwalks(options = {})
+    options[:order] = 'created_at DESC, title'
+    Soundwalk.from_users(self.inverse_friendships.map{|friendship| friendship.friend_id}.compact, options)
+  end
+  
   protected
     
   def make_activation_code

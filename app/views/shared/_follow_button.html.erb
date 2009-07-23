@@ -1,0 +1,12 @@
+<% 
+if logged_in? && user.id != current_user.id
+	text = ""
+	if current_user.friends.index(user)
+		friendship = current_user.friendships.find(:all, :conditions => {:friend_id => user}).first
+		text = link_to_remote 'Stop&nbsp;following', :method => :delete, :url => friendship
+	else
+		text = link_to_remote 'Follow', :url => {:controller => 'friendships', :friend_id => user}
+	end
+%>
+	<span class='follow_button' id='follow-<%= user.id %>'><%= text %></span>
+<% end %>

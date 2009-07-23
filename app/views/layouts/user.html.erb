@@ -6,7 +6,6 @@
 		<meta http-equiv="content-type" content="text/html;charset=UTF-8" />
 		<title>Soundwalks: <%= controller.action_name %></title>
 		<%= stylesheet_link_tag 'main' %>
-		<%= javascript_include_tag :defaults, 'jquery.flot' %>
 	</head>
 
 	<body>
@@ -15,7 +14,9 @@
 		</div>
 		
 		<div id='body' class='little'>
-			<%= yield %>
+			<div id='content'>
+				<%= yield %>
+			</div>
 			<div class='clear'></div>
 			<div id='footer'>
 				Soundwalks is developed with support from the Arizona State University Arts, Media and Engineering program and the National Science Foundation.

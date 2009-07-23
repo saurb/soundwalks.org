@@ -71,7 +71,7 @@ class Sound < ActiveRecord::Base
     self.hop_size = sound_file.samplesPerHop
     self.spectrum_size = sound_file.spectrumSize
     self.frames = sound_file.frames
-     
+    
     # Initialize features.
     loudness = Sirens::Loudness.new
     temporal_sparsity = Sirens::TemporalSparsity.new

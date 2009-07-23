@@ -2,26 +2,6 @@ module UsersHelper
   include Avatar::View::ActionViewSupport
   include ActionView::Helpers::FormTagHelper
   
-def label_with_errors user, attribute, label
-  error_text = nil
-
-  user.errors.each do |attr, error|
-  if attr.eql? attribute
-    if (attr.eql? 'secret')
-      error_text = 'Incorrect'
-    else
-      error_text = error
-    end
-    break
-  end
-  end
-
-  label_text = label
-  label_text += "<br /><span class='error'>#{error_text}</span>" if error_text
-
-  return label_text
-end
-  
   #
   # Use this to wrap view elements that the user can't access.
   # !! Note: this is an *interface*, not *security* feature !!
@@ -33,6 +13,7 @@ end
   # <%= if_authorized?(:destroy, @user) do link_to 'Destroy', @user, :confirm => 'Are you sure?', :method => :delete end %> 
   #
   #
+  
   def if_authorized?(action, resource, &block)
     if authorized?(action, resource)
       yield action, resource

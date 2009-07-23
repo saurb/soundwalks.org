@@ -9,6 +9,13 @@ class Soundwalk < ActiveRecord::Base
   serialize :locations, Array
   validates_presence_of :title, :description
   
+  named_scope :from_users, lambda { |user_ids, options| 
+    id_string = user_ids.map{|id| "#{id}, "}.to_s.chomp(', ')
+    options[:conditions] = "user_id in (#{id_string})"
+    puts options
+    return options
+  }
+    
   def temp_gpx_path filename
     return File.join('public/data/temp/', filename)
   end

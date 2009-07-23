@@ -1,0 +1,23 @@
+<%
+
+previous_options = Hash.new(options)
+previous_options[:page] = page + 1
+
+next_options = Hash.new(options)
+next_options[:page] = page - 1 if page != 1
+
+%>
+
+<div class='pages'>
+	<% if pages > 1 && page < pages - 1 %>
+		<span class='previous'>&laquo; <%= link_to 'Older', previous_options %></span>
+	<% end %>
+	
+	<% if pages > 1 && page < pages - 1 && page > 0 %>
+		|
+	<% end %>
+	
+	<% if page > 0 %>
+		<span class='next'><%= link_to 'Newer', next_options %> &raquo;</span>
+	<% end %>
+</div>

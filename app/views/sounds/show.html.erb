@@ -2,18 +2,18 @@
 
 require 'google_map'
 
-sound_index = @sounds.index(@sound)
-previous_index = sound_index > 0 ? sound_index - 1 : @sounds.size - 1;
-next_index = sound_index < @sounds.size - 1 ? sound_index + 1 : 0;
+sound_index = @sound.soundwalk.sounds.index(@sound)
+previous_index = sound_index > 0 ? sound_index - 1 : @sound.soundwalk.sounds.size - 1;
+next_index = sound_index < @sound.soundwalk.sounds.size - 1 ? sound_index + 1 : 0;
 
 map = GoogleMap.new(:controls => [:zoom, :scale], :map_type => 'G_HYBRID_MAP')
 map.markers << GoogleMapMarker.new(:map => map, :lat => @sound.lat, :lng => @sound.lng, :html => 'Sound ' + @sound.id.to_s)
 
 %>
 
-<%= render :partial => 'shared/user_profile', :locals => {:user => @soundwalk.user, :side => 'right'} %>
+<%= render :partial => 'shared/user_profile', :locals => {:user => @sound.soundwalk.user, :side => 'right'} %>
 
-<h2><%= link_to @soundwalk.title, user_soundwalk_path(@soundwalk.user, @soundwalk) %> - <%= link_to 'Sound ' + @sound.id.to_s, soundwalk_sound_path(@soundwalk, @sound) %></h2>
+<h2><%= link_to @sound.soundwalk.title, soundwalk_path(@sound.soundwalk) %> - <%= link_to 'Sound ' + @sound.id.to_s, soundwalk_sound_path(@sound.soundwalk, @sound) %></h2>
 
 <%= map.to_html %>
 <div id='sound-map'>
@@ -21,9 +21,9 @@ map.markers << GoogleMapMarker.new(:map => map, :lat => @sound.lat, :lng => @sou
 </div>
 
 <div id='sound-navigation'>
-	<span class='previous'><%= link_to @sounds[previous_index].id, soundwalk_sound_path(@soundwalk, @sounds[previous_index]) %></span>
+	<span class='previous'><%= link_to @sound.soundwalk.sounds[previous_index].id, soundwalk_sound_path(@sound.soundwalk, @sound.soundwalk.sounds[previous_index]) %></span>
 	<span class='current'><%= @sound.id %></span>
-	<span class='next'><%= link_to @sounds[next_index].id, soundwalk_sound_path(@soundwalk, @sounds[next_index]) %></span>
+	<span class='next'><%= link_to @sound.soundwalk.sounds[next_index].id, soundwalk_sound_path(@sound.soundwalk, @sound.soundwalk.sounds[next_index]) %></span>
 </div>
 
 <p id='sound-description'>
@@ -31,7 +31,7 @@ map.markers << GoogleMapMarker.new(:map => map, :lat => @sound.lat, :lng => @sou
 </p>
 	
 <p id='sound-details'>
-	<%= embed_sound_tag(@soundwalk, @sound, 30, 1.6) %><br />
+	<%= embed_sound_tag(@sound.soundwalk, @sound, 30, 1.6) %><br />
 	<b>Filename: </b><%=h @sound.filename %><br/>
 	<b>Duration: </b><%= sprintf('%.2f', @sound.samples.to_f / @sound.sample_rate.to_f) %>s (<%= @sound.samples %> samples, <%= @sound.frames %> frames)<br/>
 	<b>Sample rate: </b><%= @sound.sample_rate %><br/>
@@ -43,13 +43,13 @@ map.markers << GoogleMapMarker.new(:map => map, :lat => @sound.lat, :lng => @sou
 	<b>Updated at: </b><%= @sound.updated_at %>
 </p>
 
-<p>
-	<%= link_to 'Edit sound', edit_soundwalk_sound_path(@soundwalk, @sound) %><br />
-	<%= link_to 'Delete sound', soundwalk_sound_path(@soundwalk, @sound), :confirm => 'Are you sure?', :method => :delete %><br />
-	<%= link_to 'Recalculate features', :controller => 'sounds', :action => 'recalculate', :id => @sound.id, :soundwalk_id => @soundwalk.id %>
-</p>
-	
-<p><%= link_to @soundwalk.title + ' index', soundwalk_sounds_path(@soundwalk) %></p>
+<% if logged_in? && current_user.id == @sound.soundwalk.user.id %>
+	<p>
+		<%= link_to 'Edit sound', edit_soundwalk_sound_path(@sound.soundwalk, @sound) %><br />
+		<%= link_to 'Delete sound', soundwalk_sound_path(@sound.soundwalk, @sound), :confirm => 'Are you sure?', :method => :delete %><br />
+		<%= link_to 'Recalculate features', :controller => 'sounds', :action => 'recalculate', :id => @sound.id, :soundwalk_id => @sound.soundwalk.id %>
+	</p>
+<% end %>	
 
 <div class='clear'></div>
 

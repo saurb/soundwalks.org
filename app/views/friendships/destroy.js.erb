@@ -1,0 +1,5 @@
+$("#follow-<%= @friendship.friend.id %>").find("a").fadeOut("slow", function() {
+	$("#follow-<%= @friendship.friend.id %>").html("<%= escape_javascript(link_to_remote 'Follow', :url => {:controller => 'friendships', :friend_id => @friendship.friend}) %>");
+	$("#follow-<%= @friendship.friend.id %>").find("a").hide();
+	$("#follow-<%= @friendship.friend.id %>").find("a").fadeIn("slow");
+});

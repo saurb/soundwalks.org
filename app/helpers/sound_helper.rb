@@ -1,22 +1,6 @@
 require 'gchart'
 
 module SoundHelper
-  def label_with_errors sound, attribute, label
-    error_text = nil
- 
-    sound.errors.each do |attr, error|
-      if attr.eql? attribute
-        error_text = error
-        break
-      end
-    end
-    
-    label_text = label
-    label_text += "<br /><span class='error'>#{error_text}</span>" if error_text
-    
-    return label_text
-  end
-  
   def feature_chart(title, data, max_value, color)
     image_tag Gchart.line(
   		:size => '400x75',
@@ -70,32 +54,6 @@ module SoundHelper
     end
     
     return values
-  end
-  
-  def interpolate(values, x)
-    if x > values.size - 1
-      return values[values.size - 1]
-    else
-      low = x.floor
-      high = low + 1
-      
-      alpha = 1.0 - (x - low.to_f)
-      return alpha * values[low] + (1.0 - alpha) * values[high]
-    end
-  end
-  
-  def limit_granularity(values, max_size = 500)    
-    if (values.size > max_size)
-      new_values = Array.new(max_size, 0)
-      
-      for i in 0..max_size - 1
-        new_values[i] = interpolate(values, (i.to_f / (max_size - 1).to_f) * values.size.to_f)
-      end
-      
-      return new_values
-    else
-      return values
-    end
   end
 end
 

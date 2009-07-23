@@ -4,16 +4,34 @@
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
 	<head>
 		<meta http-equiv="content-type" content="text/html;charset=UTF-8" />
-		<title>Soundwalks: <%= controller.action_name %></title>
+		<meta content="en-us" http-equiv="Content-Language" />
+		<% if defined? @meta[:description] %>
+			<meta content="<%=h @meta_description %>" name="description">
+		<% end %>
+		
+		<% if logged_in? %>
+			<meta content="<%=h current_user.id %>" name="current-user-id" />
+			<meta content="<%=h current_user.login %>" name="current-user-login" />
+		<% end %>
+		
+		<% if defined? @user %>
+			<meta content="<%=h @user.login %>" name='page-user-login' />
+		<% elsif defined? @soundwalk %>
+			<meta content="<%=h @soundwalk.user.login %>" name='page-user-login' />
+		<% elsif defined? @sound %>
+			<meta content="<%=h @sound.user.login %>" name='page-user-login' />
+		<% end %>
+		
+		<title>Soundwalks: <%=h @meta[:title] %></title>
 		<%= stylesheet_link_tag 'main' %>
-		<%= javascript_include_tag :defaults, 'jquery.flot', 'fileinput' %>
+		<%= javascript_include_tag 'jquery', 'jquery-ui', 'jrails', 'fileinput', 'application' %>
 	</head>
 	
 	<body>
 		<div id='strip'>
 			<div id='user-panel'>
 				<% if logged_in? %>
-					Hi, <%= current_user.login %>! &nbsp;&nbsp;
+					Hi, <%= first_name current_user, :force_third_person => true %>! &nbsp;&nbsp;
 					<a href="/settings">Settings</a> | <a href="/logout">Logout</a>
 				<% else %>
 					<a href="/login">Login</a> or
@@ -25,25 +43,32 @@
 		</div>
 
 		<div id='body'>
-			<% if flash[:notice] %>
-				<p class='notice'>
-					<%= flash[:notice] %>
-				</p>
-			<% end %>
 			<div id='menu'>
 				<% if logged_in? %>
-					<%= link_to 'New soundwalk', new_user_soundwalk_path(current_user) %> | 
-					<%= link_to 'My profile', user_path(current_user) %> |
+					<%= link_to 'New soundwalk', new_soundwalk_path %> | 
+					<%= link_to 'My profile', user_name_path(current_user) %> |
+					<%= link_to 'Followed timeline', '/' %> | 
 				<% end %>
-				<%= link_to 'Public stream', public_stream_path %> | 
-				<%= link_to 'Friends', friend_stream_path %>
+				<%= link_to 'Public timeline', soundwalks_path %>
 			</div>
 			<div id='content'>
+				<% if flash[:notice] %>
+					<p class='notice'>
+						<%= flash[:notice] %>
+					</p>
+				<% end %>
+				
+				<% if flash[:error] %>
+					<p class='error'>
+						<%= flash[:error] %>
+					</p>
+				<% end %>
+				
 				<%= yield %>
 			</div>
 			<div class='clear'></div>
 			<div id='footer'>
-				Soundwalks is developed with support from the Arizona State University Arts, Media and Engineering program and the National Science Foundation.
+				Soundwalks is developed with support from the <a href='http://ame.asu.edu'>Arizona State University Arts, Media and Engineering</a> program and the <a href='http://nsf.gov'>National Science Foundation</a>.
 			</div>
 		</div>
 	</body>

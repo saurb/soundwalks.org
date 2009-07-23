@@ -1,0 +1,8 @@
+<%= render :partial => 'user_profile', :locals => {:user => @user } %>
+
+<% if @user.inverse_friendships.size > 0 %>
+	<h2><%= first_name @user %> <%= first_name_verb @user %> followed by <%= pluralize(@user.inverse_friendships.size, 'person') %>.</h2>
+	<%= render :partial => 'user_list', :locals => {:user => @user, :users => @user.inverse_friends} %>
+<% else %>
+	<h2><%= first_name @user %> <%= first_name_verb_negative @user %> followed by anyone.</h2>
+<% end %>

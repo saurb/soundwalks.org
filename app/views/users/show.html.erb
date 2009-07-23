@@ -1,3 +1,8 @@
-<%= render :partial => 'shared/user_profile', :locals => {:user => @user, :side => 'left'} %>
+<%= render :partial => 'user_profile', :locals => {:user => @user } %>
 
-<%= render :partial => '/shared/soundwalks_index' %>
+<% if !@user.soundwalks.empty? %>
+	<%= render :partial => '/shared/soundwalks_map', :locals => {:soundwalks => @user.soundwalks} %>
+	<%= render :partial => '/shared/soundwalks_index', :locals => {:soundwalks => @user.soundwalks} %>
+<% else %>
+	<p><%= @user.name.split(' ').first %> hasn't posted any soundwalks yet.</p>
+<% end %>

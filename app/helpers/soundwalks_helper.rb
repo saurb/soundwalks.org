@@ -1,20 +1,4 @@
-module SoundwalksHelper
-  def label_with_errors soundwalk, attribute, label
-    error_text = nil
- 
-    soundwalk.errors.each do |attr, error|
-      if attr.eql? attribute
-        error_text = error
-        break
-      end
-    end
-    
-    label_text = label
-    label_text += "<br /><span class='error'>#{error_text}</span>" if error_text
-    
-    return label_text
-  end
-  
+module SoundwalksHelper  
   def time_span soundwalk
     return relative_time_span(soundwalk.times.collect {|time| time.getlocal})
   end
@@ -37,12 +21,12 @@ module SoundwalksHelper
   
   def stream_item soundwalk, show_users, list_item  
     # Avatar.
-		avatar = show_users ? "<div class='update_avatar'>" + link_to(avatar_tag(soundwalk.user, :size => 50), soundwalk.user) + "</div>" : ""
+		avatar = show_users ? "<div class='update_avatar'>" + link_to(avatar_tag(soundwalk.user, :size => 50), user_name_path(soundwalk.user)) + "</div>" : ""
 		
 		# Content.
 		date = "<span class='soundwalk_date'>Posted: #{post_date soundwalk}<br />Recorded: #{time_span soundwalk}</span>"
 		title = "<span class='soundwalk_title'>"
-		title += link_to(soundwalk.user.login, soundwalk.user) + " - " if show_users
+		title += link_to(soundwalk.user.login, user_name_path(soundwalk.user)) + " - " if show_users
 		title += link_to(soundwalk.title, soundwalk) + "</span>"
     description = "<span class='soundwalk_description'>#{soundwalk.description}</span>"
     content = "<div class='update_content'>#{date}#{title}#{description}</div>"

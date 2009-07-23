@@ -5,17 +5,18 @@
 		<th>Latitude</th>
 		<th>Longitude</th>
 		<th>Time</th>
-		<th></th>
 	</tr>
 	
-	<% @sounds.each do |sound| %>
-	<tr>
-		<td><%= link_to sound.filename, soundwalk_sound_path(@soundwalk, sound) %></td>
+	<% sounds.each do |sound| %>
+	<tr id='sound-<%= sound.id %>'>
+		<td><%= link_to sound.filename, soundwalk_sound_path(sound.soundwalk, sound) %></td>
 		<td><%= sprintf('%.2f', sound.samples.to_f / sound.sample_rate.to_f) %>s</td>
 		<td><%= coordinates_text(:latitude, sound.lat) %></td>
 		<td><%= coordinates_text(:longitude, sound.lng) %></td>
 		<td><%= prettier_time(sound.recorded_at.getlocal) %></td>
-		<td><%= link_to 'delete', soundwalk_sound_path(@soundwalk, sound), :method => :delete %></td>
+		<% if logged_in? && sound.soundwalk.user.id == current_user.id %>
+			<td><%= link_to_remote 'delete', :method => :delete, :url => soundwalk_sound_url(sound.soundwalk, sound) %></td>
+		<% end %>
 	</tr>
 	<% end %>
 </table>

@@ -3,11 +3,17 @@
 
 class ApplicationController < ActionController::Base  
   include AuthenticatedSystem
-  
+  include FormLabelHelper
+  include PathHelper
   helper :all
   protect_from_forgery
-
   filter_parameter_logging :password
   
-  #session :session_key => '_authenticator_session_id'
+  def create_meta
+    @meta = Hash.new
+    @meta[:title] = nil
+    @meta[:description] = nil
+  end
+  
+  before_filter :create_meta
 end

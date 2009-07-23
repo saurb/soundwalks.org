@@ -2,7 +2,7 @@
 
 map = GoogleMap.new(:scroll_wheel_zoom => true, :controls => [:zoom, :scale], :map_type => 'G_HYBRID_MAP')
 
-@soundwalks.each do |soundwalk|
+soundwalks.each do |soundwalk|
 	html = stream_item(soundwalk, true, false)
 	map.markers << GoogleMapMarker.new(:map => map, :lat => soundwalk.lat, :lng => soundwalk.lng, :html => html)
 	#map.overlays << GoogleMapPolyline.new(:vertices => soundwalk.vertices, :color => '#55ef55', :weight => 4, :opacity => 0.75)
