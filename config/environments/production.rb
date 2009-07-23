@@ -28,3 +28,5 @@ config.gem "plant-sirens", :source => "http://gems.github.com", :lib => "sirens"
 
 # Enable threaded mode
 # config.threadsafe!
+
+$HOST_PATH = 'http://soundwalks.org'
