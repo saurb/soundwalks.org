@@ -16,6 +16,7 @@ module ActiveReload
     }
 
     def relative_date(time, in_past = false)
+      time = time.getlocal
       date  = time.to_date
       today = time_class.now.to_date
       if date == today
@@ -56,13 +57,14 @@ module ActiveReload
     end
     
     def relative_time_span(times)
+      times = times.collect {|time| time.getlocal}
       times = [times.first, times.last].collect!(&:to_time)
       times.sort!
       if times.first == times.last
-        "#{prettier_time(times.first)} #{relative_date(times.first)}"
+        "#{prettier_time(times.first)} #{relative_date(times.first)} #{times.last.zone}"
       elsif times.first.to_date == times.last.to_date
           same_half = (times.first.hour/12 == times.last.hour/12)
-          "#{prettier_time(times.first, !same_half)} - #{prettier_time(times.last)} #{relative_date(times.first)}"
+          "#{prettier_time(times.first, !same_half)} - #{prettier_time(times.last)} #{relative_date(times.first)} #{times.last.zone}"
 
       else
         first = times.first; last = times.last; now = time_class.now        
