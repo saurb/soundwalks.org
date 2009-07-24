@@ -1,6 +1,8 @@
 class HomeController < ApplicationController
   layout 'site'
   
+  before_filter :login_required
+  
   def index
     if logged_in?
       ids =
