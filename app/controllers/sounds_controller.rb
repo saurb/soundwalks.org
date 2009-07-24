@@ -1,4 +1,4 @@
-Mime::Type.register 'application/wav', :wav
+require 'mime/types'
 
 class SoundsController < ApplicationController
   layout 'site'
@@ -62,9 +62,11 @@ class SoundsController < ApplicationController
       if @sound.save
         format.html {redirect_to @soundwalk}#soundwalk_sound_path(@soundwalk, @sound)}
         format.xml {render :xml => @sound, :status => :created, :location => soundwalk_sound_path(@soundwalk, @sound)}
+        wants.json {:result => 'success', :sound => @sound.id}
       else
         format.html {render :action => 'new'}
         format.xml {render :xml => @sound.errors, :status => :unprocessible_entity}
+        wants.json {:result => 'error', :error => @sound.errors.full_messages.to_sentence}
       end
     end
   end
