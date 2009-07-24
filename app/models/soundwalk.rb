@@ -1,24 +1,28 @@
 require 'gpx'
 
 class Soundwalk < ActiveRecord::Base
-  attr_accessor :locations_file
-  
   belongs_to :user
   has_many :sounds
   
   serialize :locations, Array
   validates_presence_of :title, :description
+    
+  has_attachment :content_type => ['application/gpx+xml', 'text/xml'],
+                 :storage => :file_system,
+                 :max_size => 10.megabytes,
+                 :path_prefix => 'public/data/gps'
+  
+  after_attachment_saved do |record|
+    record.extract_locations
+  end
+             
+  validates_as_attachment
   
   named_scope :from_users, lambda { |user_ids, options| 
     id_string = user_ids.map{|id| "#{id}, "}.to_s.chomp(', ')
     options[:conditions] = "user_id in (#{id_string})"
-    puts options
     return options
   }
-    
-  def temp_gpx_path filename
-    return File.join('public/data/temp/', filename)
-  end
   
   def times
     return self.locations.collect {|point| point.first}
@@ -81,34 +85,24 @@ class Soundwalk < ActiveRecord::Base
     end 
   end
   
-  def before_save
-    if locations_file
-      # Copy the GPX file to disk temporarily.
-      filename = locations_file.original_filename
-      path = temp_gpx_path filename
-      File.open(path, 'wb') {|f| f.write(locations_file.read)}
-      
-      # Extract the track data.
-      self.locations = Array.new
-      
-      gpx_file = GPX::GPXFile.new(:gpx_file => path)
-      gpx_file.tracks.each do |track|
-        track.points.each do |point|
-          if point.time && point.lat && point.lon
-            self.locations.push [point.time, point.lat, point.lon]
-          end
+  def extract_locations
+    # Extract the track data.
+    self.locations = Array.new
+    
+    gpx_file = GPX::GPXFile.new(:gpx_file => File.join('public', public_filename))
+    gpx_file.tracks.each do |track|
+      track.points.each do |point|
+        if point.time && point.lat && point.lon
+          self.locations.push [point.time, point.lat, point.lon]
         end
       end
-      
-      if self.locations.size
-        self.locations = self.locations.sort
-        
-        self.lat = self.locations[0][1]
-        self.lng = self.locations[0][2]
-      end
-      
-      # Delete the temporary GPX file.
-      File.delete(path) 
     end
+    
+    if self.locations.size
+      self.locations = self.locations.sort
+      
+      self.lat = self.locations[0][1]
+      self.lng = self.locations[0][2]
+    end 
   end
 end

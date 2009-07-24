@@ -24,6 +24,15 @@ module ApplicationHelper
     end
   end
   
+  def truncate_words(input, words, symbol)
+    inputs = input.split(' ')
+    if inputs.size <= words
+      return input
+    else
+      return (0..words - 1).map {|i| inputs[i]}.join(' ') + " #{symbol}"
+    end
+  end
+  
   def interpolate(values, x)
     if x > values.size - 1
       return values[values.size - 1]

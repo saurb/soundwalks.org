@@ -24,15 +24,24 @@ module SoundwalksHelper
 		avatar = show_users ? "<div class='update_avatar'>" + link_to(avatar_tag(soundwalk.user, :size => 50), user_name_path(soundwalk.user)) + "</div>" : ""
 		
 		# Content.
-		date = "<span class='soundwalk_date'>Posted: #{post_date soundwalk}<br />Recorded: #{time_span soundwalk}</span>"
+		delete_button = ""
+		if logged_in? && current_user.id == soundwalk.user.id
+		  delete_button = "<div class='soundwalk_delete'>"
+		  delete_button += link_to_remote '<span class="delete_button">X</span> Delete', :method => :delete, :url => soundwalk_url(soundwalk), :before => "cancelProp(event);"
+		  delete_button += "</div>"
+		end
+		
+		date = "<div class='soundwalk_meta'>Posted: #{post_date soundwalk}<br />Recorded: #{time_span soundwalk}</div>"
 		title = "<span class='soundwalk_title'>"
-		title += link_to(soundwalk.user.login, user_name_path(soundwalk.user)) + " - " if show_users
-		title += link_to(soundwalk.title, soundwalk) + "</span>"
-    description = "<span class='soundwalk_description'>#{soundwalk.description}</span>"
-    content = "<div class='update_content'>#{date}#{title}#{description}</div>"
+		title += link_to(soundwalk.user.login, user_name_path(soundwalk.user), :onclick => "cancelProp(event);") + " - " if show_users
+		title += link_to(soundwalk.title, soundwalk, :onclick => "cancelProp(event);") + "</span>"
+		
+		description_text = truncate_words(soundwalk.description, 20, "&hellip;")
+    description = "<span class='soundwalk_description'>#{description_text}</span>"
+    content = "<div class='update_content'>#{date}#{delete_button}#{title}#{description}</div>"
     
     if list_item
-      return "<li onclick='window.location=\"#{soundwalk_path(soundwalk)}\"'>#{avatar}#{content}</li>"
+      return "<li id='soundwalk-#{soundwalk.id}' onclick='window.location=\"#{soundwalk_path(soundwalk)}\"'>#{avatar}#{content}</li>"
     else
       return "<div class='map_item'>#{avatar}#{content}</div>"
     end

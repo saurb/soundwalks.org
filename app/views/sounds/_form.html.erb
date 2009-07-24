@@ -2,9 +2,9 @@
 	<%= form.error_messages %>
 	
 	<div>
-		<%= label_tag 'upload_sound_file', label_with_errors(@sound, 'upload', 'Sound file'), :class => 'field' %>
+		<%= label_tag 'sound_uploaded_data', label_with_errors(@sound, 'sound_uploaded_data', 'Sound file'), :class => 'field' %>
 		<div class='fileinput'>
-			<%= file_field :upload, :sound_file, :class => 'file' %>
+			<%= form.file_field :uploaded_data, :class => 'file' %>
 		</div>
 	</div>
 	<div>

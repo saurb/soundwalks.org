@@ -11,7 +11,7 @@ map.markers << GoogleMapMarker.new(:map => map, :lat => @sound.lat, :lng => @sou
 
 %>
 
-<%= render :partial => 'shared/user_profile', :locals => {:user => @sound.soundwalk.user, :side => 'right'} %>
+<%= render :partial => 'shared/soundwalk_profile', :locals => {:soundwalk => @sound.soundwalk} %>
 
 <h2><%= link_to @sound.soundwalk.title, soundwalk_path(@sound.soundwalk) %> - <%= link_to 'Sound ' + @sound.id.to_s, soundwalk_sound_path(@sound.soundwalk, @sound) %></h2>
 

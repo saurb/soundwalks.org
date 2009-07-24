@@ -46,18 +46,9 @@ class SoundwalksController < ApplicationController
     @meta[:title] = "New Soundwalk"
     
     @soundwalk = current_user.soundwalks.build(params[:soundwalk])
-    
-    failed = false
-    
-    if params[:upload]
-      @soundwalk.locations_file = params[:upload]['locations_file']
-      failed = true if !@soundwalk.save
-    else
-      failed = true
-    end
-    
+        
     respond_to do |format|    
-      if !failed
+      if @soundwalk.save
         format.html {redirect_to @soundwalk}
         format.xml {render :xml => @soundwalk, :status => :created, :location => @soundwalk}
       else
@@ -73,11 +64,12 @@ class SoundwalksController < ApplicationController
     
     respond_to do |format|
       format.html {
-        flash[:notice] = "Your &quot;#{h @soundwalk.title}&quot; soundwalk was deleted."
+        flash[:notice] = "Your &quot;#{@soundwalk.title}&quot; soundwalk was deleted."
         
         redirect_back_or_default(user_name_path(current_user))
       }
       format.xml {head :ok}
+      format.js
     end
   end
   
@@ -90,10 +82,6 @@ class SoundwalksController < ApplicationController
   def update
     @meta[:title] = @soundwalk.title + ': Edit'
     
-    if (params[:upload])
-      @soundwalk.locations_file = params[:upload]['locations_file']
-    end
-  
     respond_to do |format|
       if @soundwalk.update_attributes(params[:soundwalk])
         flash[:notice] = 'Soundwalk was successfully updated.'

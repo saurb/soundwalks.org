@@ -6,47 +6,21 @@ class Sound < ActiveRecord::Base
   
   acts_as_taggable_on :tags
   acts_as_mappable
+  has_attachment :content_type => 'audio/x-wav',
+                 :storage => :file_system,
+                 :max_size => 10.megabytes,
+                 :path_prefix => 'public/data/sounds'
   
+  after_attachment_saved do |record|
+    record.process_sound
+  end
+  
+  validates_as_attachment
+  validates_presence_of :recorded_at
+    
   serialize :features, Hash
   
-  attr_accessor :sound_file
-  
-  validates_presence_of :recorded_at, :sample_rate, :samples, 
-    :frame_size, :hop_size, :spectrum_size, :frame_length, 
-    :hop_length, :filename, :frames
-    
-  validates_numericality_of :sample_rate, :greater_than => 0
-  validates_numericality_of :samples, :greater_than => 0
-  validates_numericality_of :frame_size, :greater_than => 0
-  validates_numericality_of :hop_size, :greater_than => 0
-  validates_numericality_of :frame_length, :greater_than => 0
-  validates_numericality_of :hop_length, :greater_than => 0
-  validates_numericality_of :spectrum_size, :greater_than => 0
-  validates_numericality_of :frames, :greater_than => 0
-  
-  def feature_path
-    return File.join('public/data/features/', self.filename.split('.')[0] + '.csv')
-  end
-  
-  def sound_path
-    return File.join('public/data/sounds/', self.filename)
-  end
-  
-  def before_destroy
-    begin
-      File.delete sound_path
-    rescue
-    end
-  end
-  
-  def before_validation_on_create
-    self.filename = sound_file.original_filename
-    
-    path = sound_path
-    File.open(path, 'wb') {|f| f.write(sound_file.read)}
-    
-    #puts "Recorded at: " + self.recorded_at
-    
+  def process_sound
     analyze_sound
     
     if (!self.lat || !self.lng) && self.recorded_at && self.soundwalk
@@ -61,7 +35,7 @@ class Sound < ActiveRecord::Base
     sound_file = Sirens::Sound.new
     sound_file.frameLength = 0.04
     sound_file.hopLength = 0.02
-    sound_file.open sound_path
+    sound_file.open File.join('public', public_filename)
      
     self.sample_rate = sound_file.sampleRate
     self.samples = sound_file.samples

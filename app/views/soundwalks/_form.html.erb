@@ -1,8 +1,9 @@
 <% form_for(@soundwalk, :html => {:multipart => true}) do |form| %>
+	<%= form.error_messages %>
 	<div>
-		<%= label_tag 'GPS file', label_with_errors(@soundwalk, 'upload', 'GPS file'), :class => 'field' %>
+		<%= label_tag 'GPS file', label_with_errors(@soundwalk, 'uploaded_data', 'GPS file'), :class => 'field' %>
 		<div class='fileinput'>
-			<%= file_field :upload, :locations_file, :class => 'file' %>
+			<%= form.file_field :uploaded_data, :class => 'file' %>
 		</div>
 	</div>
 	<div>

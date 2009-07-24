@@ -25,11 +25,7 @@ class SoundsController < ApplicationController
   end
   
   # POST /soundwalks/:soundwalk_id/sounds/:id
-  def update    
-    if params[:upload]
-      @soundwalk.file = params[:upload]['sound_file']
-    end
-    
+  def update
     respond_to do |format|
       if @sound.update_attributes(params[:sound])
         flash[:notice] = 'Sound was successfully updated.'
@@ -61,17 +57,9 @@ class SoundsController < ApplicationController
     end
     
     @sound = @soundwalk.sounds.build(params[:sound])
-    failed = false
-    
-    if params[:upload]      
-      @sound.sound_file = params[:upload]['sound_file']
-      failed = true if !@sound.save
-    else
-      failed = true
-    end
     
     respond_to do |format|    
-      if !failed
+      if @sound.save
         format.html {redirect_to @soundwalk}#soundwalk_sound_path(@soundwalk, @sound)}
         format.xml {render :xml => @sound, :status => :created, :location => soundwalk_sound_path(@soundwalk, @sound)}
       else

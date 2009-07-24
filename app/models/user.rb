@@ -54,12 +54,12 @@ class User < ActiveRecord::Base
   
   def friends_soundwalks(options = {})
     options[:order] = 'created_at DESC, title'
-    Soundwalk.from_users(self.friendships.map{|friendship| friendship.friend_id}.compact, options)
+    Soundwalk.from_users(self.friendships.map{|friendship| friendship.friend_id}.compact.concat([self.id]), options)
   end
   
   def inverse_friends_soundwalks(options = {})
     options[:order] = 'created_at DESC, title'
-    Soundwalk.from_users(self.inverse_friendships.map{|friendship| friendship.friend_id}.compact, options)
+    Soundwalk.from_users(self.inverse_friendships.map{|friendship| friendship.friend_id}.compact.concat([self.id]), options)
   end
   
   protected
