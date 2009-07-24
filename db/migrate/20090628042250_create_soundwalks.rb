@@ -1,6 +1,10 @@
 class CreateSoundwalks < ActiveRecord::Migration
   def self.up
     create_table :soundwalks do |t|
+      t.string :filename
+      t.string :content_type
+      t.integer :size
+      
       t.string :title
       t.text :description
       t.text :locations

@@ -2,6 +2,9 @@ class CreateSounds < ActiveRecord::Migration
   def self.up
     create_table :sounds do |t|
       t.string :filename
+      t.string :content_type
+      t.integer :size
+      
       t.text :description
       t.timestamp :recorded_at
       t.timestamps
