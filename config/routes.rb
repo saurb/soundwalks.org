@@ -5,6 +5,7 @@ ActionController::Routing::Routes.draw do |map|
   map.signup '/signup', :controller => 'users', :action => 'new'
   map.activate '/activate/:activation_code', :controller => 'users', :action => 'activate', :activation_code => nil
   map.recalculate '/soundwalks/:soundwalk_id/sounds/:id/recalculate', :controller => 'sounds', :action => 'recalculate'  
+  map.uploader '/soundwalks/:soundwalk_id/sounds/uploader', :controller => 'sounds', :action => 'uploader'
   
   map.resources :soundwalks, :has_many => :sounds
   map.resources :friendships

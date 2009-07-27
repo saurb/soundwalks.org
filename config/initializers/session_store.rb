@@ -5,9 +5,11 @@
 # Make sure the secret is at least 30 characters and all random, 
 # no regular words or you'll be exposed to dictionary attacks.
 ActionController::Base.session = {
-  :key         => '_test1_session',
-  :secret      => '82645b51555c37439e95ba66d6399c0f634e4f7d4fe79e5dead327223676cdb62b2f221a2689067bc2eb0990385ba26dd591615544dc9fce2169396228f9d88b'
+  :key => '_soundwalks_session',
+  :secret  => '82645b51555c37439e95ba66d6399c0f634e4f7d4fe79e5dead327223676cdb62b2f221a2689067bc2eb0990385ba26dd591615544dc9fce2169396228f9d88b'
 }
+
+ActionController::Dispatcher.middleware.insert_before(ActionController::Base.session_store, FlashSessionCookieMiddleware, ActionController::Base.session_options[:key])
 
 # Use the database for sessions instead of the cookie-based default,
 # which shouldn't be used to store highly confidential information

@@ -22,4 +22,6 @@ Rails::Initializer.run do |config|
   config.action_view.field_error_proc = Proc.new { |html_tag, instance|
     "<span class=\"fieldWithErrors\">#{html_tag}</span>" 
   }
+  
+  config.load_paths += %W(#{RAILS_ROOT}/app/middleware)
 end
