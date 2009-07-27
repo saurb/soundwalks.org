@@ -30,6 +30,12 @@ function initFileUploads() {
 			
 			x[i].relatedElement = clone.getElementsByTagName('input')[0];
 			
+			$(x[i]).mouseover(function() {$(clone).find('.button').trigger('mouseover');});
+			$(x[i]).mouseout(function() {$(clone).find('.button').trigger('mouseout');});
+			$(x[i]).mousedown(function() {$(clone).find('.button').trigger('mousedown');});
+			$(x[i]).mouseup(function() {$(clone).find('.button').trigger('mouseup');});
+			
+			
 			x[i].onchange = x[i].onmouseout = function () {
 				this.relatedElement.value = this.value;
 			}

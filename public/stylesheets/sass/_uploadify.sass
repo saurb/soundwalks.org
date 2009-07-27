@@ -1,0 +1,97 @@
+@import variables.sass
+
+form
+	#uploader
+		padding: 0
+		margin-top: 1em
+		text-align: center
+		
+		#file-uploader-container
+			display: inline-block
+			position: relative
+			vertical-align: middle
+			width: 200px
+			height: 80px
+		
+			#file-uploaderUploader
+				position: absolute
+				left: 0
+				top: 0
+				z-index: 2
+			
+			#browse-button
+				font-size: 1.5em
+				z-index: 1
+				position: absolute
+				margin: 0
+				left: 0
+				top: 0 
+				width: 100%
+				height: 100%
+				
+		#upload-status
+			padding-top: 1em
+			padding-left: 1em
+			font-size: 0.8em
+			vertical-align: middle
+			
+.fileUploadQueue
+	padding: 0
+	width: 31em
+			
+.fileUploadQueueItem-Active
+	+rounded_border
+	font-size: 0.8em
+	background-color: transparent
+	border = !dashed_border
+	margin-top: 0.5em
+	padding: 0.5em
+	width: 100%
+	
+	.cancel
+		+float_right
+
+.fileUploadQueueItem-Canceled
+	+rounded_border
+	font-size: 0.8em
+	background-color = !very_light_red
+	border = "1px dashed " + !red
+	margin-top: 0.5em
+	padding: 0.5em
+	width: 100%
+	
+	.fileUploadProgressBar
+		background-color = !light_red
+	
+	.cancel
+		+float_right
+
+.fileUploadQueueItem-Complete
+	+rounded_border
+	font-size: 0.8em
+	background-color: transparent
+	border = "1px dashed " + !green
+	margin-top: 0.5em
+	padding: 0.5em
+	width: 100%
+
+	.cancel
+		+float_right
+					
+.fileUploadProgress
+	background-color: white
+	border = "1px solid " + !gray
+	margin-top: 0.5em
+	width: 100%
+
+.recorded_at
+	margin-top: 0.5em
+	margin-left: 0.5em
+	color = !dark_gray
+	
+.location
+	margin-left: 0.5em
+	color = !dark_gray
+	
+.fileUploadProgressBar
+	background-color = !light_green

@@ -5,10 +5,6 @@ jQuery.ajaxSetup({
 	'beforeSend': function(xhr) {xhr.setRequestHeader("Accept", "text/javascript")}
 })
 
-$(document).ready(function() {
-
-})
-
 function cancelProp(e) {
 	e.cancelBubble = true;
 	if (e.stopPropagation) e.stopPropagation();

@@ -21,6 +21,13 @@ label
 	&.field-nofloat
 		color = !gray
 
+div.submit
+	margin-left: 10em
+	
+div.submit-options
+	margin-left: 9.5em
+	text-align: center
+	
 input
 	font-size: 1em
 
@@ -34,16 +41,14 @@ input
 	&.field-nofloat
 		margin: 0.5em
 		margin-left: 10.5em
-
-	&.submit
-		margin: 0.5em
-		margin-left: 10.5em
-		clear: left
-
+		
 	&.button
+		+rounded_border
 		width: 7.5em
 		margin: 0.5em
-
+		padding: 0.25em
+		border = "1px dashed " + !gray
+		
 	&.actualfile
 		+rounded_border
 		width: 11.5em
@@ -95,6 +100,7 @@ div
 ul.field
 	width: 20em
 	margin-left: 10.5em
+	
 	li
 		+rounded_border
 		list-style: none
