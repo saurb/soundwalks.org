@@ -1,3 +1,7 @@
+<% content_for :title do %>
+	<%= @user.name %>
+<% end %>
+
 <%= render :partial => 'user_profile', :locals => {:user => @user } %>
 
 <% if !@user.soundwalks.empty? %>

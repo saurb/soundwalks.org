@@ -1,3 +1,7 @@
+<% content_for :title do %>
+	People <%= @user.name %> is following
+<% end %>
+
 <%= render :partial => 'user_profile', :locals => {:user => @user } %>
 
 <% if @user.friendships.size > 0 %>

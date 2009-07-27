@@ -1,8 +1,19 @@
 require 'sirens'
 
 class Sound < ActiveRecord::Base
+  include AASM
+  
   belongs_to :soundwalk
   belongs_to :user
+  
+  aasm_column :state
+  aasm_initial_state :calculated
+  aasm_state :created
+  aasm_state :calculated
+  
+  aasm_event :calculate do
+    transitions :from => :created, :to => :calculated
+  end
   
   acts_as_taggable_on :tags
   acts_as_mappable
@@ -10,25 +21,25 @@ class Sound < ActiveRecord::Base
                  :storage => :file_system,
                  :max_size => 10.megabytes,
                  :path_prefix => 'public/data/sounds'
+              
+  before_validation_on_create do |record|
+    record.localize
+  end
   
   after_attachment_saved do |record|
-    record.process_sound
+    record.analyze_sound
   end
   
   validates_as_attachment
-  validates_presence_of :recorded_at
-    
+  validates_presence_of :lat, :lng, :recorded_at
+  
   serialize :features, Hash
   
-  def process_sound
-    analyze_sound
-    
-    if (!self.lat || !self.lng) && self.recorded_at && self.soundwalk
-      point = self.soundwalk.interpolate(self.recorded_at)
+  def localize
+    point = self.soundwalk.interpolate(self.recorded_at)
       
-      self.lat = point.first
-      self.lng = point.second
-    end
+    self.lat = point.first
+    self.lng = point.second
   end
   
   def analyze_sound

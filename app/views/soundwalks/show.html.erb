@@ -1,3 +1,7 @@
+<% content_for :title do %>
+	<%= @soundwalk.title %>
+<% end %>
+
 <%	
 	count = @soundwalk.sounds.count
 	
@@ -37,4 +41,4 @@
 <% end %>
 </div>
 <h2>Sounds</h2>
-<%= render :partial => 'shared/sounds_index', :locals => {:sounds => @soundwalk.sounds} %>
+<%= render :partial => 'shared/sounds_index', :locals => {:sounds => @soundwalk.sounds.find(:all, :order => 'recorded_at ASC')} %>

@@ -2,6 +2,7 @@
 	title = soundwalk.title
 	title_text = "by #{link_to soundwalk.user.name, soundwalk.user}"
 	menu = [
+		['Upload sounds', "/soundwalks/#{soundwalk.id}/sounds/uploader"],
 		['Upload sound', new_soundwalk_sound_path(soundwalk), {}],
 		['Edit', edit_soundwalk_path(soundwalk), {}],
 		['Delete', soundwalk, {:method => :delete}]

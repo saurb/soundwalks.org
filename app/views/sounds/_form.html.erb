@@ -1,12 +1,15 @@
+<% content_for :head do %>
+	<%= javascript_include_tag 'fileinput', 'form_buttons' %>
+<% end %>
+
 <% form_for [@soundwalk, @sound], :html => {:multipart => true} do |form| %>
-	<%= form.error_messages %>
-	
-	<div>
-		<%= label_tag 'sound_uploaded_data', label_with_errors(@sound, 'sound_uploaded_data', 'Sound file'), :class => 'field' %>
+	<div id='file_uploader'>
+		<%= form.label :uploaded_data, label_with_errors(@soundwalk, 'uploaded_data', 'Sound file'), :class => 'field' %>
 		<div class='fileinput'>
 			<%= form.file_field :uploaded_data, :class => 'file' %>
 		</div>
 	</div>
+	
 	<div>
 		<%= form.label :description, label_with_errors(@sound, 'description', 'Description'), :class => 'field' %>
 		<%= form.text_area :description, :class => 'field' %>
@@ -23,8 +26,8 @@
 		<%= form.label :recorded_at, label_with_errors(@sound, 'recorded_at', 'Recorded at'), :class => 'field' %>
 		<%= form.text_field :recorded_at, :class => 'field' %>
 	</div>
-	<div>
-		<%= form.submit 'Save', :class => 'submit' %>
+	<div class='submit'>
+		<%= form.submit 'Save', :class => 'button' %>
 	</div>
 <% end %>
 

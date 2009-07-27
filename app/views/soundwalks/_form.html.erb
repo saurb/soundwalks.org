@@ -1,7 +1,10 @@
+<% content_for :head do %>
+	<%= javascript_include_tag 'fileinput', 'form_buttons' %>
+<% end %>
+
 <% form_for(@soundwalk, :html => {:multipart => true}) do |form| %>
-	<%= form.error_messages %>
 	<div>
-		<%= label_tag 'GPS file', label_with_errors(@soundwalk, 'uploaded_data', 'GPS file'), :class => 'field' %>
+		<%= form.label :uploaded_data, label_with_errors(@soundwalk, 'uploaded_data', 'GPS file'), :class => 'field' %>
 		<div class='fileinput'>
 			<%= form.file_field :uploaded_data, :class => 'file' %>
 		</div>
@@ -14,9 +17,16 @@
 		<%= form.label :description, label_with_errors(@soundwalk, 'description', 'Description'), :class => 'field' %>
 		<%= form.text_area :description, :class => 'field' %>
 	</div>
-	<div>
-		<%= form.submit 'Save', :class => 'submit' %>
-	</div>
+	
+	<% if new_soundwalk %>
+		<div class='submit-options'>
+			<%= form.submit 'Add sounds', :name => 'continue', :class => 'button' %> or <%= form.submit 'Finish', :class => 'button' %>
+		</div>
+	<% else %>
+		<div class='submit'>
+			<%= form.submit 'Save', :class => 'button' %>
+		</div>
+	<% end %>
 <% end %>
 
 <script type='text/javascript'>

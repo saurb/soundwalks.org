@@ -4,8 +4,9 @@
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
 	<head>
 		<meta http-equiv="content-type" content="text/html;charset=UTF-8" />
-		<title>Soundwalks: <%= controller.action_name %></title>
+		<title>Soundwalks: <%= yield :title %></title>
 		<%= stylesheet_link_tag 'main' %>
+		<%= yield :head %>
 	</head>
 
 	<body>
@@ -19,7 +20,7 @@
 			</div>
 			<div class='clear'></div>
 			<div id='footer'>
-				Soundwalks is developed with support from the Arizona State University Arts, Media and Engineering program and the National Science Foundation.
+				Soundwalks is developed with support from the <a href='http://ame.asu.edu'>Arizona State University Arts, Media and Engineering</a> program, the <a href='http://nsf.gov'>National Science Foundation</a>, and several <a href='/about/oss'>open source software packages</a>.
 			</div>
 		</div>
 	</body>

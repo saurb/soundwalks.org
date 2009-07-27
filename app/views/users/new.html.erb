@@ -1,3 +1,11 @@
+<% content_for :title do %>
+	Sign up
+<% end %>
+
+<% content_for :head do %>
+	<%= javascript_include_tag 'jquery', 'form_buttons' %>
+<% end %>
+
 <h1>Sign up to listen in</h1>
 <% @user.password = nil %>
 
@@ -42,7 +50,7 @@
 		<%= f.text_field :secret, :class => 'field' %>
 	</div>
 	
-	<div>
-		<%= submit_tag 'Sign up', :class => 'submit' %>
+	<div class='submit'>
+		<%= submit_tag 'Sign up', :class => 'button' %>
 	</div>
 <% end -%>

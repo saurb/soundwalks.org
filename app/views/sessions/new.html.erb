@@ -1,3 +1,11 @@
+<% content_for :title do %>
+	Login
+<% end %>
+
+<% content_for :head do %>
+	<%= javascript_include_tag 'jquery', 'form_buttons' %>
+<% end %>
+
 <%
 
 username_label = 'Username'
@@ -36,8 +44,8 @@ password_label += "<br /><span class='error'>#{flash[:password_error]}</span>" i
 		<%= label_tag 'remember_me', 'Remember me', :class => 'field-nofloat' %>
 	</div>
 
-	<div>
-		<%= submit_tag 'Log in', :class => 'submit', :class => 'submit' %>
+	<div class='submit'>
+		<%= submit_tag 'Log in', :class => 'button' %>
 	</div>
 	
 	<div style='text-align: center'>

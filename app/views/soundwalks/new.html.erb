@@ -1,14 +1,19 @@
+<% content_for :title do %>
+	New Soundwalk
+<% end %>
+
 <h1>New Soundwalk</h1>
 
 <div id='new-soundwalk'>
 	<div class='help'>
+		<h2>GPS Tracks</h2>
 		<p>
-			Here is some text that will display help for uploading soundwalks to the server.
+			To make a new Soundwalk, first upload a GPS trace of your walk. Soundwalks currently only supports the GPX format, which is available from most commercial GPS devices. The <a href="http://wiki.openstreetmap.org/">OpenStreetMap wiki</a> is a great source of information on <a href="http://wiki.openstreetmap.org/wiki/Beginners_Guide_1.1.1">how to save GPX files</a> and <a href="http://wiki.openstreetmap.org/wiki/Hardware_Guide">what type of hardware</a> you can use to record GPS traces.
 		</p>
+		<h2>Sounds</h2>
 		<p>
-			This will contain help for uploading kml/gpx files as well as a link to the App
-			Store to pick up the iPhone application.
+			Once you have completed this form, you can choose to save your Soundwalk for later editing or continue to upload sounds to it. Your soundwalk will not be accessible to anyone but yourself until you have uploaded sounds.
 		</p>
 	</div>
-<%= render :partial => 'form' %>
+<%= render :partial => 'form', :locals => {:new_soundwalk => true} %>
 </div>

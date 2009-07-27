@@ -1,22 +1,33 @@
 require 'gpx'
 
 class Soundwalk < ActiveRecord::Base
+  include AASM
+  
   belongs_to :user
   has_many :sounds
   
   serialize :locations, Array
-  validates_presence_of :title, :description
-    
+  
+  aasm_column :state
+  aasm_initial_state :created
+  aasm_state :created
+  aasm_state :posted
+  
+  aasm_event :post do
+    transitions :from => :created, :to => :posted
+  end
+  
   has_attachment :content_type => ['application/gpx+xml', 'text/xml'],
                  :storage => :file_system,
                  :max_size => 10.megabytes,
                  :path_prefix => 'public/data/gps'
+             
+  validates_as_attachment
+  validates_presence_of :title, :description
   
   after_attachment_saved do |record|
     record.extract_locations
   end
-             
-  validates_as_attachment
   
   named_scope :from_users, lambda { |user_ids, options| 
     id_string = user_ids.map{|id| "#{id}, "}.to_s.chomp(', ')
@@ -58,7 +69,7 @@ class Soundwalk < ActiveRecord::Base
       return [latitudes.first + lat_slope * time_offset, longitudes.first + lng_slope * time_offset]
     elsif time > self.locations.last.first
       time_diff = times.last - times[times.size - 2]
-      lat_diff = latitudes.last - latitutdes[latitudes.size - 2]
+      lat_diff = latitudes.last - latitudes[latitudes.size - 2]
       lng_diff = longitudes.last - longitudes[longitudes.size - 2]
       
       lat_slope = lat_diff / time_diff

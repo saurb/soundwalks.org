@@ -1,3 +1,7 @@
+<% content_for :title do %>
+	People <%= @user.name %> follows
+<% end %>
+
 <%= render :partial => 'user_profile', :locals => {:user => @user } %>
 
 <% if @user.inverse_friendships.size > 0 %>

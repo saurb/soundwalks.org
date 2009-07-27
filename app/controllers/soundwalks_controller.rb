@@ -1,18 +1,14 @@
 class SoundwalksController < ApplicationController
   layout 'site'
   
-  before_filter :login_required#, :except => 'public'
+  before_filter :login_required#, :except => ['index', 'show']
   append_before_filter :get_soundwalk_from_current_user, 
     :only => ['destroy', 'edit', 'update']
   append_before_filter :get_all_soundwalks,
     :only => ['friends', 'index']
-  append_before_filter :get_soundwalk,
-    :only => ['show']
-  
-  # GET /soundwalks
-  def index
-    @meta[:title] = 'Public Timeline'
     
+  # GET /soundwalks
+  def index    
     respond_to do |format|
       format.html
       format.xml {render :xml => @soundwalks}
@@ -20,8 +16,12 @@ class SoundwalksController < ApplicationController
   end
   
   # GET /soundwalks/:id
-  def show
-    @meta[:title] = @soundwalk.title
+  def show    
+    get_soundwalk
+    
+    if !logged_in? || current_user.id != @soundwalk.user.id
+      get_public_soundwalk
+    end
     
     respond_to do |format|
       format.html
@@ -30,9 +30,7 @@ class SoundwalksController < ApplicationController
   end
   
   # GET /soundwalks/new
-  def new
-    @meta[:title] = "New Soundwalk"
-    
+  def new    
     @soundwalk = current_user.soundwalks.build
     
     respond_to do |format|
@@ -42,14 +40,18 @@ class SoundwalksController < ApplicationController
   end
   
   # POST /soundwalks
-  def create
-    @meta[:title] = "New Soundwalk"
-    
+  def create    
     @soundwalk = current_user.soundwalks.build(params[:soundwalk])
         
-    respond_to do |format|    
+    respond_to do |format|
       if @soundwalk.save
-        format.html {redirect_to @soundwalk}
+        format.html {
+          if params[:continue]
+            redirect_to "/soundwalks/#{@soundwalk.id}/sounds/uploader"
+          else
+            redirect_to @soundwalk
+          end
+        }
         format.xml {render :xml => @soundwalk, :status => :created, :location => @soundwalk}
       else
         format.html {render :action => 'new'}
@@ -75,13 +77,10 @@ class SoundwalksController < ApplicationController
   
   # GET /soundwalks/:id/edit
   def edit
-    @meta[:title] = @soundwalk.title + ': Edit'
   end
   
   # POST /soundwalks/:id
-  def update
-    @meta[:title] = @soundwalk.title + ': Edit'
-    
+  def update    
     respond_to do |format|
       if @soundwalk.update_attributes(params[:soundwalk])
         flash[:notice] = 'Soundwalk was successfully updated.'
@@ -102,10 +101,14 @@ class SoundwalksController < ApplicationController
   def get_all_soundwalks
     @pages = (Soundwalk.count / 20.0).ceil
     @page = (defined? params[:page]) ? params[:page].to_i : 0
-    @soundwalks = Soundwalk.find(:all, :limit => 20, :offset => @page * 20, :order => "created_at DESC, title")
+    @soundwalks = Soundwalk.find(:all, :limit => 20, :offset => @page * 20, :order => "created_at DESC, title", :conditions => {:state => :posted})
   end
   
   def get_soundwalk
     @soundwalk = Soundwalk.find(params[:id])
+  end
+  
+  def get_public_soundwalk
+    @soundwalk = Soundwalk.find(params[:id], :conditions => {:state => :posted})
   end
 end

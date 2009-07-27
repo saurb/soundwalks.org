@@ -22,9 +22,10 @@
 			<meta content="<%=h @sound.user.login %>" name='page-user-login' />
 		<% end %>
 		
-		<title>Soundwalks: <%=h @meta[:title] %></title>
+		<title>Soundwalks: <%= yield :title %></title>
 		<%= stylesheet_link_tag 'main' %>
-		<%= javascript_include_tag 'jquery', 'jquery-ui', 'jrails', 'fileinput', 'application' %>
+		<%= javascript_include_tag 'jquery', 'jquery-ui', 'jrails', 'application' %>
+		<%= yield :head %>
 	</head>
 	
 	<body>
@@ -68,7 +69,7 @@
 			</div>
 			<div class='clear'></div>
 			<div id='footer'>
-				Soundwalks is developed with support from the <a href='http://ame.asu.edu'>Arizona State University Arts, Media and Engineering</a> program and the <a href='http://nsf.gov'>National Science Foundation</a>.
+				Soundwalks is developed with support from the <a href='http://ame.asu.edu'>Arizona State University Arts, Media and Engineering</a> program, the <a href='http://nsf.gov'>National Science Foundation</a>, and several <a href='/about/oss'>open source software packages</a>.
 			</div>
 		</div>
 	</body>
