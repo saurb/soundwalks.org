@@ -5,6 +5,7 @@ class CreateSoundwalks < ActiveRecord::Migration
       t.string :content_type
       t.integer :size
       
+      t.string :state
       t.string :title
       t.text :description
       t.text :locations

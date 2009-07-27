@@ -5,6 +5,7 @@ class CreateSounds < ActiveRecord::Migration
       t.string :content_type
       t.integer :size
       
+      t.string :state
       t.text :description
       t.timestamp :recorded_at
       t.timestamps
