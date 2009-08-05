@@ -5,7 +5,6 @@ class CreateSounds < ActiveRecord::Migration
       t.string :content_type
       t.integer :size
       
-      t.string :state
       t.text :description
       t.timestamp :recorded_at
       t.timestamps
@@ -20,9 +19,6 @@ class CreateSounds < ActiveRecord::Migration
       
       t.decimal :frame_length, :precision => 65, :scale => 10
       t.decimal :hop_length, :precision => 65, :scale => 10
-      
-      # Serialized
-      t.text :features
       
       t.references :soundwalk
       t.references :user
