@@ -5,6 +5,10 @@ class ApplicationController < ActionController::Base
   include AuthenticatedSystem
   include FormLabelHelper
   include PathHelper
+  include ListHelper
+  include StringHelper
+  include TimeHelper
+  
   helper :all
   protect_from_forgery
   filter_parameter_logging :password

@@ -1,0 +1,26 @@
+- content_for :javascript do
+	= javascript_include_tag 'lib/jquery', 'form-buttons', 'stylize-file'
+
+- form_for [@soundwalk, @sound], :html => {:multipart => true} do |form|
+	%div#file-uploader
+		= form.label :uploaded_data, label_with_errors(@soundwalk, 'uploaded_data', 'Sound file'), :class => 'field'
+		%div.fileinput= form.file_field :uploaded_data, :class => 'file'
+	
+	%div
+		= form.label :description, label_with_errors(@sound, 'description', 'Description'), :class => 'field'
+		= form.text_area :description, :class => 'field'
+		
+	%div
+		= form.label :lat, label_with_errors(@sound, 'lat', 'Latitude'), :class => 'field'
+		= form.text_field :lat, :class => 'field'
+		
+	%div
+		= form.label :lng, label_with_errors(@sound, 'lng', 'Longitude'), :class => 'field'
+		= form.text_field :lng, :class => 'field'
+		
+	%div
+		= form.label :recorded_at, label_with_errors(@sound, 'recorded_at', 'Recorded at'), :class => 'field'
+		= form.text_field :recorded_at, :class => 'field'
+		
+	%div.submit
+		= form.submit 'Save', :class => 'button'

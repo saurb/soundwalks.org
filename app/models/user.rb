@@ -6,6 +6,8 @@ class User < ActiveRecord::Base
   include Authentication::ByCookieToken
   include Authorization::AasmRoles
   
+  acts_as_tagger
+  
   has_many :friendships
   has_many :friends, :through => :friendships
   has_many :inverse_friendships, :class_name => "Friendship", :foreign_key => "friend_id"
@@ -52,14 +54,17 @@ class User < ActiveRecord::Base
     write_attribute :email, (value ? value.downcase : nil)
   end
   
-  def friends_soundwalks(options = {})
-    options[:order] = 'created_at DESC, title'
-    Soundwalk.from_users(self.friendships.map{|friendship| friendship.friend_id}.compact.concat([self.id]), options)
+  def friend_ids(friendship_list, attribute)
+    friendship_list.map{|friendship| friendship.read_attribute(attribute)}.compact
   end
   
-  def inverse_friends_soundwalks(options = {})
-    options[:order] = 'created_at DESC, title'
-    Soundwalk.from_users(self.inverse_friendships.map{|friendship| friendship.friend_id}.compact.concat([self.id]), options)
+  def following_soundwalks(options = {})
+    double_friendship_ids = (friend_ids(self.friendships, :friend_id) & friend_ids(self.inverse_friendships, :user_id))
+    following_ids = friend_ids(self.friendships, :friend_id)
+    
+    excess_ids = following_ids - double_friendship_ids
+    
+    Soundwalk.from_friends(double_friendship_ids, excess_ids, self.id, :order => 'created_at DESC, title')
   end
   
   protected

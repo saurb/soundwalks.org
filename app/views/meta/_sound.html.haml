@@ -1,0 +1,5 @@
+- if defined? @sound
+	- if @sound && !@sound.new_record?
+		%meta{:name => 'sound_id', :content => @sound.id}
+		%meta{:name => 'sound_lat', :content => @sound.lat}
+		%meta{:name => 'sound_lng', :content => @sound.lng}

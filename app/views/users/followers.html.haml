@@ -1,0 +1,13 @@
+- content_for :title do
+	People #{@user.name} follows
+
+- content_for :javascript do
+	= javascript_include_tag 'lib/jquery'
+	
+= render :partial => 'user_profile', :locals => {:user => @user }
+
+- if @user.inverse_friendships.size > 0
+	%h2 #{first_name @user, {:capitalize => true}} #{first_name_verb @user} followed by #{pluralize(@user.inverse_friendships.size, 'person')}.
+	= render :partial => 'user_list', :locals => {:user => @user, :users => @user.inverse_friends}
+- else
+	%h2 #{first_name @user} #{first_name_verb_negative @user} followed by anyone.

@@ -1,16 +1,13 @@
 class HomeController < ApplicationController
   layout 'site'
   
-  before_filter :login_required
-  
   def index
     if logged_in?
-      ids =
       @meta[:title] = "Friends' Activity"
       
-      @pages =  (current_user.friends_soundwalks(:limit => 20, :select => 'id').count / 20.0).ceil
+      @pages =  (current_user.following_soundwalks(:limit => 20, :select => 'id').count / 20.0).ceil
       @page = (defined? params[:page]) ? params[:page].to_i : 0
-      @soundwalks = current_user.friends_soundwalks(:limit => 20, :offset => @page * 20, :order => "created_at DESC, title")
+      @soundwalks = current_user.following_soundwalks(:limit => 20, :offset => @page * 20)
       
       respond_to do |format|
         format.html
@@ -21,7 +18,7 @@ class HomeController < ApplicationController
       
       @pages =  (Soundwalk.count / 20.0).ceil
       @page = (defined? params[:page]) ? params[:page].to_i : 0
-      @soundwalks = Soundwalk.find(:all, :limit => 20, :offset => @page * 20, :order => "created_at DESC, title")
+      @soundwalks = Soundwalk.find(:all, :limit => 20, :offset => @page * 20, :order => "created_at DESC, title", :conditions => {:privacy => 'public'})
       
       respond_to do |format|
         format.html {render :template => 'soundwalks/index'}

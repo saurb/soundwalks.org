@@ -1,0 +1,12 @@
+- content_for :title do
+	Latest soundwalks
+
+- content_for :javascript do
+	= javascript_include_tag 'lib/jquery'
+	
+- if logged_in?
+	%h1 Latest soundwalks
+	
+	= render :partial => 'soundwalks/soundwalks_map', :locals => {:soundwalks => @soundwalks}
+	= render :partial => 'soundwalks/soundwalks_index', :locals => {:show_users => :true, :soundwalks => @soundwalks}
+	= render :partial => 'shared/pagination', :locals => {:page => @page, :pages => @pages, :options => {:controller => :home}}

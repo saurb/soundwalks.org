@@ -73,10 +73,16 @@ class UsersController < ApplicationController
   
   # GET /users/:id, /:login
   def show
+    get_soundwalks_from_user
+    
     respond_to do |format|
       format.html {render :layout => 'site'}
       format.xml {render :xml => @user}
     end
+  end
+  
+  def settings
+    redirect_to edit_user_path(current_user)
   end
   
   # GET /users/:id/edit
@@ -119,12 +125,23 @@ class UsersController < ApplicationController
   def following
     render :layout => 'site'
   end
+  
 protected
   def get_user
     if params[:id]
       @user = User.find(params[:id])
     elsif params[:username]
       @user = User.find(:first, :conditions => {:login => params[:username]})
+    end
+  end
+  
+  def get_soundwalks_from_user
+    if logged_in? && @user.id == current_user.id
+      @soundwalks = @user.soundwalks.find(:all)
+    elsif logged_in? && @user.friendships.find(:all, :conditions => "friend_id=#{current_user.id}")
+      @soundwalks = @user.soundwalks.find(:all, :conditions => {:privacy => ['friends', 'public']})
+    else
+      @soundwalks = @user.soundwalks.find(:all, :conditions => {:privacy => 'public'})
     end
   end
 end

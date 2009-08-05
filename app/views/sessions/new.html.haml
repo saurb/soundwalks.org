@@ -1,0 +1,37 @@
+- content_for :title do
+	Login
+
+- content_for :javascript do
+	= javascript_include_tag 'lib/jquery', 'form-buttons'
+
+- username_label = 'Username'
+- password_label = 'Password (<a title="login" href="/login">Forgot?</a>)'
+- username_label += "<br /><span class='error'>#{flash[:login_error]}</span>" if flash[:login_error]
+- password_label += "<br /><span class='error'>#{flash[:password_error]}</span>" if flash[:password_error]
+
+%h1 Log In
+
+- if flash[:notice]
+	%p.notice= flash[:notice]
+
+- if flash[:error]
+	%p.error= flash[:error]
+
+- form_tag session_path do 
+	%div
+		= label_tag 'login', username_label, :class => 'field'
+		= text_field_tag 'login', @login, :class => 'field'
+		
+	%div
+		= label_tag 'password', password_label, :class => 'field'
+		= password_field_tag 'password', nil, :class => 'field'
+		
+	%div
+		= check_box_tag 'remember_me', '1', @remember_me, :class => 'field-nofloat'
+		= label_tag 'remember_me', 'Remember me', :class => 'field-nofloat'
+		
+	%div.submit
+		= submit_tag 'Log in', :class => 'button'
+	
+	%div{:style => 'text-align: center'} New to Soundwalks? #{link_to "See what it's all about!", new_user_path}
+

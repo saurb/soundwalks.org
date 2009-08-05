@@ -1,0 +1,15 @@
+- previous_options = Hash.new(options)
+- previous_options[:page] = page + 1
+- next_options = Hash.new(options)
+- next_options[:page] = page - 1 if page != 1
+
+%div.pages
+	- if pages > 1 && page < pages - 1
+		%span.previous &laquo; #{link_to 'Older', previous_options}
+	
+	- if pages > 1 && page < pages - 1 && page > 0
+		|
+	
+	- if page > 0
+		#span.next #{link_to 'Newer', next_options} &raquo;
+

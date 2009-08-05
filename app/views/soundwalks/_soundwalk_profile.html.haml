@@ -1,0 +1,12 @@
+- if (defined? edit_title) && logged_in? && (current_user.id == soundwalk.user.id)
+	- title = "<h1 class='editable' data-shows='title' data-edits='title' data-value='#{h soundwalk.title}' data-object='soundwalk', data-url='#{soundwalk}'>#{h soundwalk.title}</h1>"
+	- title_menu = [['Upload sounds', "/soundwalks/#{soundwalk.id}/sounds/uploader"], ['Upload sound', new_soundwalk_sound_path(soundwalk), {}], ['Edit', edit_soundwalk_path(soundwalk), {}], ['Delete', soundwalk, {:method => :delete}]]
+	- title_text = "by #{link_to soundwalk.user.name, soundwalk.user}"
+	= render :partial => 'shared/profile', :locals => {:title => title, :title_text => title_text, :title_menu => title_menu, :user => soundwalk.user, :title_markup => true}
+- else
+	- title = "<h1>#{link_to(h(soundwalk.title), soundwalk)}</h1>"
+	- title_text = "by #{link_to soundwalk.user.name, soundwalk.user}"
+	= render :partial => 'shared/profile', :locals => {:title => title, :title_text => title_text, :user => soundwalk.user, :title_markup => true}
+	
+
+

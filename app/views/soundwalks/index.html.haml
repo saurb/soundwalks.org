@@ -1,0 +1,11 @@
+- content_for :title do
+	Public timeline
+
+- content_for :javascript do
+	= javascript_include_tag 'lib/jquery'
+	
+%h1 Public timeline
+
+= render :partial => 'soundwalks/soundwalks_map', :locals => {:soundwalks => @soundwalks}
+= render :partial => 'soundwalks/soundwalks_index', :locals => {:show_users => :true, :soundwalks => @soundwalks}
+= render :partial => 'shared/pagination', :locals => {:page => @page, :pages => @pages, :options => {:controller => :soundwalks}}

@@ -1,0 +1,10 @@
+- content_for :title do
+	= @user.name
+
+= render :partial => 'user_profile', :locals => {:user => @user}
+
+- if !@soundwalks.empty?
+	= render :partial => 'soundwalks/soundwalks_map', :locals => {:soundwalks => @soundwalks}
+	= render :partial => 'soundwalks/soundwalks_index', :locals => {:soundwalks => @soundwalks}
+- else
+	%p #{@user.name.split(' ').first} hasn't posted any soundwalks for you to view yet.

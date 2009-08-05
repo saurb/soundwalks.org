@@ -1,0 +1,102 @@
+- content_for :title do
+	= @soundwalk.title
+
+- content_for :meta do
+	= render :partial => 'meta/authenticity'
+
+-content_for :javascript do
+	= javascript_include_tag 'lib/jquery', 'lib/jquery-ui', 'editable', 'form-buttons', 'soundwalks'
+	
+-# Query optimization.
+- @sounds = @soundwalk.sounds.find(:all, :order => 'recorded_at ASC')
+- @user = @soundwalk.user
+
+- if @sounds.size > 0
+	- sum_duration = 0
+	- min_duration = 9999999
+	- max_duration = -9999999	
+	
+	- for sound in @sounds
+		- duration = sound.samples / sound.sample_rate.to_f
+		- sum_duration += duration
+		- min_duration = duration if duration < min_duration
+		- max_duration = duration if duration > max_duration
+		- mean_duration = sum_duration / @sounds.size
+
+= render :partial => 'soundwalks/soundwalk_profile', :locals => {:soundwalk => @soundwalk, :edit_title => true}
+= render :partial => 'sounds/sounds_map', :locals => {:sounds => @sounds, :soundwalk => @soundwalk}
+
+%h2 Details
+
+%div
+	- if logged_in? && current_user.id == @user.id
+		%div#description{:class => 'editable', 'data-object' => 'soundwalk', 'data-edits' => 'description', 'data-shows' => 'formatted_description', 'data-url' => @soundwalk, 'data-value' => @soundwalk.description}
+			= textilize(h @soundwalk.description)
+	- else
+		%div#description= textilize(h @soundwalk.description)
+	%p
+		%span.label Posted:
+		%span.detail= post_date @soundwalk
+	%p
+		%span.label Recorded:
+		%span.detail= @soundwalk.times.first.strftime('%I:%M:%S %p %d %b %Y %Z')
+	%p
+		%span.label Duration:
+		%span.detail= duration_partial(@soundwalk.times.last - @soundwalk.times.first)
+	%p
+		%span.label Sounds:
+		%span.detail= @sounds.size
+	%p
+		%span.label Privacy:
+		%span.detail
+			- if @soundwalk.privacy == 'public'
+				Anyone can view this soundwalk.
+			- elsif @soundwalk.privacy == 'friends'
+				Only #{first_name_possessive @user} friends can view this.
+			- else 
+				Only #{first_name @user} can view this.
+				
+	- if @sounds.size > 0
+		%p
+			%span.label Sound lengths:
+			%span.detail #{sprintf('%.2f', min_duration)}s - #{sprintf('%.2f', max_duration)}s (mean: #{sprintf('%.2f', mean_duration)}s)
+
+#div.clear
+
+%h2 Sounds
+- if @sounds.size > 0
+	- form_tag delete_multiple_soundwalk_sounds_path(@soundwalk), :method => :delete, :id => 'sounds-form' do
+		%table#sound-index
+			%tr
+				%th.filename Filename
+				%th.duration Duration
+				%th.lat Latitude
+				%th.lng Longitude
+				%th.recorded_at Time
+	
+				- if logged_in? && @user.id == current_user.id
+					%th.delete Delete
+
+			- for @sound in @sounds
+				- fields_for 'sound[]' do |f|
+					- duration = sprintf('%.2f', @sound.samples.to_f / @sound.sample_rate.to_f)
+					
+					%tr.sound-record{:id => dom_id(@sound), 'data-url' => soundwalk_sound_path(@soundwalk, @sound), 'data-object' => 'sound'}
+						%td{'data-edits' => 'filename', 'data-value' => @sound.filename}= link_to @sound.filename, soundwalk_sound_path(@soundwalk, @sound)
+						%td{'data-edits' => 'duration', 'data-value' => duration} #{duration}s
+						
+						- if logged_in? && current_user.id == @user.id
+							<td class='editable' data-edits='lat' data-shows='formatted_lat' data-value='#{@sound.lat}'>#{coordinates_text :latitude, @sound.lat}</td>
+							<td class='editable' data-edits='lng' data-shows='formatted_lat' data-value='#{@sound.lng}'>#{coordinates_text :longitude, @sound.lng}</td>
+							<td class='editable' data-edits='recorded_at' data-shows='formatted_recorded_at' data-value='#{@sound.recorded_at}'>#{prettier_time @sound.recorded_at}</td>
+							%td.delete= check_box_tag "sound_ids[]", @sound.id
+						- else
+							%td{'data-edits' => 'lat', 'data-value' => @sound.lat}= coordinates_text :latitude, @sound.lat
+							%td{'data-edits' => 'lng', 'data-value' => @sound.lng}= coordinates_text :longitude, @sound.lng
+							%td{'data-edits' => 'recorded_at', 'data-value' => @sound.recorded_at}= prettier_time @sound.recorded_at
+		
+		- if logged_in? && current_user.id == @user.id
+			%p{:style => 'text-align: right'} 
+				%input#delete-multiple-sounds{:class => 'free-button', :type => 'button', :value => 'Delete selected'}
+- else
+	This soundwalk has no sounds.

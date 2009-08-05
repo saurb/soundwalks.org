@@ -1,0 +1,9 @@
+- content_for :javascript do
+	= javascript_include_tag 'lib/jquery', 'soundwalks'
+	
+- if defined? new_soundwalk_option
+	%p= link_to 'Upload soundwalk', new_soundwalk_path
+
+%ol#stream
+	- soundwalks.each_with_index do |soundwalk, index|
+		= render :partial => 'soundwalks/stream_item', :locals => {:soundwalk => soundwalk, :show_users => defined? show_users, :index => index}

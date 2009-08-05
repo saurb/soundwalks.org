@@ -1,0 +1,26 @@
+%div#profile
+	%div.avatar= avatar_tag(user, :size => 92, :alt => user.name)
+	- if defined? title
+		- if defined? title_markup
+			= title
+		- else
+			%h1= title
+	
+	= render :partial => 'users/follow_button', :locals => {:user => user}
+	
+	- if defined? title_text
+		%p= title_text
+	
+	- if defined? title_menu
+		%div.menu
+			- title_menu.each_with_index do |item, index|
+				- text = item[0]
+				- path = item[1]
+				- options = item[2]
+			
+				= link_to text, path, options
+				- if index < title_menu.size - 1
+					|
+	
+	%div.details= details if defined? details
+	%div.clear

@@ -1,0 +1,3 @@
+- if defined? @soundwalk
+	-if @soundwalk && !@soundwalk.new_record?
+		%meta{:name => 'soundwalk_id', :content => @soundwalk.id}

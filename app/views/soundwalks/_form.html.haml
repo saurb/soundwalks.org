@@ -1,0 +1,28 @@
+- content_for :javascript do
+	= javascript_include_tag 'lib/jquery', 'form-buttons', 'stylize-file'
+	
+- form_for(@soundwalk, :html => {:multipart => true}) do |form|
+	%div
+		= form.label :uploaded_data, label_with_errors(@soundwalk, 'uploaded_data', 'GPS file'), :class => 'field'
+		%div.fileinput= form.file_field :uploaded_data, :class => 'file'
+		
+	%div
+		= form.label :title, label_with_errors(@soundwalk, 'title', 'Title'), :class => 'field'
+		= form.text_field :title, :class => 'field'
+		
+	%div
+		= form.label :description, label_with_errors(@soundwalk, 'description', 'Description'), :class => 'field'
+		= form.text_area :description, :class => 'field'
+		
+	%div
+		= form.label :privacy, label_with_errors(@soundwalk, 'privacy', 'Privacy'), :class => 'field-nontext'
+		#{form.radio_button(:privacy, :private)} Private
+		#{form.radio_button(:privacy, :friends)} Friends-only
+		#{form.radio_button(:privacy, :public)} Public
+		
+	- if defined? new_soundwalk
+		%div.submit-options
+			#{form.submit 'Add sounds', :name => 'continue', :class => 'button'} or
+			= form.submit 'Finish', :class => 'button'
+	- else
+		%div.submit= form.submit 'Save', :class => 'button'

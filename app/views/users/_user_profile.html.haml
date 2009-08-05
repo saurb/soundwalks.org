@@ -1,0 +1,4 @@
+- title = user.name
+- title_menu = [[pluralize(user.soundwalks.size, 'Soundwalk'), user_name_path(user), {}], ["#{user.friends.size} Following", user_following_path(user), {}], [pluralize(user.inverse_friends.size, 'Follower'), user_followers_path(user), {}]]
+
+= render :partial => 'shared/profile', :locals => {:title => title, :user => user, :title_menu => title_menu}

@@ -1,0 +1,32 @@
+- content_for :title do
+	Add Sounds to #{@soundwalk.title}
+
+- content_for :meta do
+	= render :partial => 'meta/authenticity'
+	= render :partial => 'meta/session'
+	= render :partial => 'meta/upload'
+
+- content_for :javascript do
+	= javascript_include_tag 'lib/jquery', 'lib/jquery.uploadify', 'form-buttons', 'stylize-file', 'uploader'
+
+%h1 Add Sounds to #{@soundwalk.title}
+
+%div#upload-sounds
+	%div#help{:class => 'help'}
+		%h2 Upload Sounds
+		%p 
+			To upload multiple files, simply click <em>&quot;Find sounds&quot;</em> and select the files you wish to upload. |
+			After each file has uploaded, you can give it a brief description.
+		%p 
+			We will try to automatically find out when and where your sound file was recorded. If either of these is inaccurate, |
+			you can edit them in the <em>"Sounds" table</em> when viewing your Soundwalk after.
+		
+		%h2 Don't have Flash?
+		%p That's OK! You can either download #{link_to 'Adobe Flash Player', 'http://get.adobe.com/flashplayer'} or use our #{link_to 'single file uploader', new_soundwalk_sound_path(@soundwalk)} to upload files one at a time.
+	
+	- form_for [@soundwalk, @sound], :html => {:multipart => true} do |form|
+		%div#uploader
+			%div#file-uploader-container
+				%div#file-uploader= form.file_field :uploaded_data, :class => 'file'
+			%span#upload-status
+

@@ -1,0 +1,11 @@
+%div#friend-list
+	- users.each do |friend|
+		%div.friend-box
+			%p.avatar= avatar_tag(friend, :size => 92, :alt => friend.name)
+			%p.name= link_to friend.name, "/#{friend.login}"
+			%p= render :partial => 'follow_button', :locals => {:user => friend}
+			- if friend.soundwalks.size > 0
+				%p.soundwalks= link_to pluralize(friend.soundwalks.count, "soundwalk"), user_path(friend)
+			%p.following= link_to "#{friend.friends.count} following", "/#{friend.login}/following"
+			%p.followers= link_to pluralize(friend.inverse_friends.count, 'follower'), "/#{friend.login}/followers"
+			

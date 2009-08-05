@@ -1,0 +1,5 @@
+- if defined? @user 
+	- if @user && !@user.new_record?
+		%meta{:name => 'user_id', :content => @user.id}
+		%meta{:name => 'user_login', :content => @user.login}
+		%meta{:name => 'user_name', :content => @user.name}

@@ -17,33 +17,6 @@ module SoundHelper
     return 'http://localhost:3000/data/sounds/' + sound.filename
   end
   
-  def embed_sound_tag(soundwalk, sound, width, height)
-    return "<embed 
-      type='application/x-shockwave-flash' 
-      src='http://www.google.com/reader/ui/3247397568-audio-player.swf?audioUrl=#{soundwalk_sound_url(soundwalk, sound)}.wav' 
-      style='width: #{width}em; height: #{height}em'
-      allowscriptaccess='never' 
-      quality='best' 
-      bgcolor='#ffffff' 
-      wmode='window' 
-      flashvars='playerMode=embedded'/>"
-  end
-  
-  def coordinates_text(type, number)
-    direction = type == :latitude ? (number < 0 ? 'N' : 'S') : (number < 0 ? 'W' : 'E')
-    number = number < 0 ? -number : number
-    
-    degrees = number.to_i
-    remainder = number - degrees;
-    
-    minutes = (remainder * 60).to_i
-    remainder = (remainder * 60) - minutes
-    
-    seconds = (remainder * 60).to_i
-    
-    return degrees.to_s + '&deg;' + minutes.to_s + "'" + seconds.to_s + '&quot; ' + direction 
-  end
-  
   def medium_marker_icon
     return GoogleMapIcon.new(:anchor_x => 16, :anchor_y => 16, :width => 32, :height => 32, :shadow_width => 0, :shadow_height => 0, :image_url => '/images/big_marker_75.png')
   end

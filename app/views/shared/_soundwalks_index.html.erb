@@ -1,9 +1,0 @@
-<% if defined? new_soundwalk_option %>
-<p><%= link_to 'Upload soundwalk', new_soundwalk_path %></p>
-<% end %>
-
-<ol id='stream'>
-<% soundwalks.each do |soundwalk| %>
-	<%= stream_item(soundwalk, defined? show_users, true) %>
-<% end %>
-</ol>

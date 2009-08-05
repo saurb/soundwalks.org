@@ -1,0 +1,29 @@
+!!! XML
+%html{:xmlns => "http://www.w3.org/1999/xhtml", "xml:lang" => "en", :lang => "en"}
+	%head
+		= yield :javascript
+	
+		= stylesheet_link_tag 'main'
+		= yield :css
+	
+		%meta{"http-equiv" => "content-type", :content => "text/html;charset=UTF-8"}
+		%meta{"http-equiv" => "Content-Language", :content => "en-us"}
+		= render :partial => 'meta/user'
+		= render :partial => 'meta/sound'
+		= render :partial => 'meta/soundwalk'
+		= render :partial => 'meta/current_user'
+	
+		= yield :meta
+		
+		%title Soundwalks: #{yield :title}
+		
+	%body
+		%div#strip{:class => 'little'}
+			%img{:src => '/images/soundwalks-big.png', :alt => 'Soundwalks'}
+		
+		%div#body{:class => 'little'}
+			%div#content
+				= yield
+			%div.clear
+			%div#footer
+				Soundwalks is developed with support from the  #{link_to 'Arizona State University Arts, Media, and Engineering', 'http://ame.asu.edu'} program, the #{link_to 'National Science Foundation', 'http://nsf.gov'}, and several #{link_to 'open source software', '/about/oss'} packages.

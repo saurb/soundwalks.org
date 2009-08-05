@@ -1,0 +1,30 @@
+- content_for :title do 
+	Edit #{@soundwalk.title}
+
+%h1 Edit #{@soundwalk.title}
+
+%div#soundwalk-form
+	%div.help
+		%h2 GPS Tracks
+		%p 
+			To replace your soundwalk's path, upload a new GPS trace. Soundwalks currently only supports |
+			the <em>GPX format</em>, which is available from most commercial GPS devices. The |
+			#{link_to 'OpenStreetMap wiki', 'http://wiki.openstreetmap.org/'} is a great source of information on |
+			#{link_to 'how to save GPX files', 'http://wiki.openstreetmap.org/wiki/Beginners_Guide_1.1.1'} and |
+			#{link_to 'what type of hardware', 'http://wiki.openstreetmap.org/wiki/Hardware_Guide'} you can use to |
+			record GPS tracks.
+		
+		%h2 Privacy
+		%p 
+			If you select the <em>private</em> privacy option, only you will be able to view the soundwalk. By |
+			default, any soundwalk that contains no sounds will be private. The <em>friends-only</em> options |
+			allows only people you follow to see your soundwalk, and <em>public</em> allows anyone with or without |
+			an account to see it.
+		
+		%h2 Sounds
+		%p 
+			To edit individual sounds within the soundwalk, either click on the sound on the soundwalk's page |
+			and choose the <em>Edit</em> option or use the interactive editor on the soundwalk's page to delete |
+			and modify sounds more quickly.
+
+= render :partial => 'form'

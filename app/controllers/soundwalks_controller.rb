@@ -1,7 +1,8 @@
 class SoundwalksController < ApplicationController
   layout 'site'
   
-  before_filter :login_required#, :except => ['index', 'show']
+  before_filter :login_required, :except => ['index', 'show']
+  
   append_before_filter :get_soundwalk_from_current_user, 
     :only => ['destroy', 'edit', 'update']
   append_before_filter :get_all_soundwalks,
@@ -9,6 +10,10 @@ class SoundwalksController < ApplicationController
     
   # GET /soundwalks
   def index    
+    if logged_in? && current_user.id
+      puts 'ok!'
+    end
+      
     respond_to do |format|
       format.html
       format.xml {render :xml => @soundwalks}
@@ -19,13 +24,10 @@ class SoundwalksController < ApplicationController
   def show    
     get_soundwalk
     
-    if !logged_in? || current_user.id != @soundwalk.user.id
-      get_public_soundwalk
-    end
-    
     respond_to do |format|
       format.html
       format.xml {render :xml => @soundwalk}
+      format.js {render :json => @soundwalk.to_json(:methods => [:formatted_description, :formatted_lat, :formatted_lng])}
     end
   end
   
@@ -67,7 +69,6 @@ class SoundwalksController < ApplicationController
     respond_to do |format|
       format.html {
         flash[:notice] = "Your &quot;#{@soundwalk.title}&quot; soundwalk was deleted."
-        
         redirect_back_or_default(user_name_path(current_user))
       }
       format.xml {head :ok}
@@ -83,12 +84,16 @@ class SoundwalksController < ApplicationController
   def update    
     respond_to do |format|
       if @soundwalk.update_attributes(params[:soundwalk])
-        flash[:notice] = 'Soundwalk was successfully updated.'
-        format.html {redirect_to @soundwalk}
+        format.html {
+          flash[:notice] = 'Soundwalk was successfully updated.'
+          redirect_to @soundwalk
+        }
         format.xml {head :ok}
+        format.js {render :json => @soundwalk.to_json(:methods => [:formatted_description, :formatted_lat, :formatted_lng]), :status => :ok}
       else
         format.html {render :action => "edit"}
         format.xml {render :xml => @soundwalk.errors, :status => :unprocessable_entity}
+        format.js {render :json => @soundwalk.errors, :status => :unprocessable_entity}
       end
     end
   end
@@ -101,14 +106,24 @@ class SoundwalksController < ApplicationController
   def get_all_soundwalks
     @pages = (Soundwalk.count / 20.0).ceil
     @page = (defined? params[:page]) ? params[:page].to_i : 0
-    @soundwalks = Soundwalk.find(:all, :limit => 20, :offset => @page * 20, :order => "created_at DESC, title", :conditions => {:state => :posted})
+    @soundwalks = Soundwalk.find(:all, :limit => 20, :offset => @page * 20, :order => "created_at DESC, title", :conditions => {:privacy => 'public'})
   end
   
   def get_soundwalk
-    @soundwalk = Soundwalk.find(params[:id])
-  end
-  
-  def get_public_soundwalk
-    @soundwalk = Soundwalk.find(params[:id], :conditions => {:state => :posted})
+    user_id = Soundwalk.find(params[:id], :select => 'user_id').read_attribute(:user_id)
+    
+    if logged_in?
+      if user_id == current_user.id
+        @soundwalk = Soundwalk.find(params[:id])
+      else
+        begin
+          @soundwalk = Soundwalk.find(params[:id], :conditions => {:privacy => 'public'})
+        rescue
+          @soundwalk = current_user.following_soundwalks.find(params[:id])
+        end
+      end
+    else
+      @soundwalk = Soundwalk.find(params[:id], :conditions => {:privacy => 'public'})
+    end
   end
 end

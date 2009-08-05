@@ -1,21 +1,12 @@
 require 'gpx'
 
 class Soundwalk < ActiveRecord::Base
-  include AASM
+  include StringHelper
   
   belongs_to :user
   has_many :sounds
   
   serialize :locations, Array
-  
-  aasm_column :state
-  aasm_initial_state :created
-  aasm_state :created
-  aasm_state :posted
-  
-  aasm_event :post do
-    transitions :from => :created, :to => :posted
-  end
   
   has_attachment :content_type => ['application/gpx+xml', 'text/xml'],
                  :storage => :file_system,
@@ -23,15 +14,25 @@ class Soundwalk < ActiveRecord::Base
                  :path_prefix => 'public/data/gps'
              
   validates_as_attachment
-  validates_presence_of :title, :description
-  
+  validates_presence_of :title, :description, :privacy
+    
   after_attachment_saved do |record|
     record.extract_locations
+    record.save
   end
   
-  named_scope :from_users, lambda { |user_ids, options| 
-    id_string = user_ids.map{|id| "#{id}, "}.to_s.chomp(', ')
-    options[:conditions] = "user_id in (#{id_string})"
+  named_scope :from_friends, lambda { |friend_ids, public_ids, my_id, options| 
+    friend_string = friend_ids.join(', ')
+    public_string = public_ids.join(', ')  
+    
+    puts my_id
+    puts friend_string
+    puts public_string
+    
+    options[:conditions] = "(user_id = #{my_id}) or 
+      (user_id in (#{friend_string}) and not privacy='private') or 
+      (user_id in (#{public_string}) and privacy='public')"
+      
     return options
   }
   
@@ -115,5 +116,17 @@ class Soundwalk < ActiveRecord::Base
       self.lat = self.locations[0][1]
       self.lng = self.locations[0][2]
     end 
+  end
+  
+  def formatted_description
+    return textilize(read_attribute(:description))
+  end
+  
+  def formatted_lat
+    coordinates_text :latitude, self.lat
+  end
+  
+  def formatted_lng
+    coordinates_text :longitude, self.lng
   end
 end
