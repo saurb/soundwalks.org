@@ -1,4 +1,18 @@
 /*
+ *	jquery.uploadify.js
+ *		2009-07-30
+ *		Brandon Mechtley
+ *		soundwalks.org
+ *
+ *	Communicates to a Flash movie to allow multiple file uploads.
+ *	Original code by Ronnie Garcia and Travis Nickels. Small
+ *	modifications made by me to the .js and .fla to allow for
+ *	including the files' creation dates in the post data.
+ *	Other changes include an allCompleteWithErrors event, and
+ *	minor cosmetic adjustments. 
+ */
+
+/*
 Uploadify v1.6.2
 Copyright (C) 2009 by Ronnie Garcia
 Co-developed by Travis Nickels
@@ -66,7 +80,7 @@ if(jQuery)(
 					$(this).each(function(){
 						settings = $.extend({
 						uploader: 'uploader.swf', script: 'uploader.php', folder: '', height: 30, width: 110, cancelImg: 'cancel.png', 
-						wmode: 'opaque', scriptAccess: 'sameDomain', fileDataName: 'Filedata', displayData: 'percentage',
+						wmode: 'transparent', scriptAccess: 'sameDomain', fileDataName: 'Filedata', displayData: 'percentage',
 						onInit: function() {}, onSelect: function() {}, onCheck: function() {}, onCancel: function() {},
 						onError: function() {}, onProgress: function() {}, onComplete: function() {}
 					}, options);
