@@ -22,7 +22,7 @@
 		
 	#profile-details
 	
-#new-soundwalk
+#soundwalk-form
 	.help
 		+float_right
 		text-align: left
@@ -32,16 +32,63 @@
 		margin: 0
 		width: 33em
 
-table
+#description
+	padding: 0.5em
+	width: 34em
+	
+	textarea
+		height: 10em
+		width: 100%
+		
+#sound-index
+	font-size: 0.8em
+	width: 100%
+	padding: 0
+	border-collapse: collapse
+	table-layout: fixed
 	tr
 		margin: 0
+		border: 0
+		padding: 0
+		height: 3em
 		
+		&.sound-record
+		&.sound-record-changed
+			background-color = !tan
+		&.sound-record-error
+			background-color = !very_light_red
 		th
 			color = !dark_blue
 			border-bottom = !dashed_border
-			margin: 0
 			padding: 0.5em
+			
+			&.filename
+			&.duration
+				
+			&.lat
+				width: 10em
+			&.lng
+				width: 10em
+			&.recorded_at
+				width: 15em
+			&.delete
+				width: 3em
+				text-align: right
 		
 		td
-			margin: 0
+			input
+				width: 100%
+			
 			padding: 0.5em
+				
+			&.filename
+			&.duration
+			&.delete
+				text-align: right
+			
+			span.table-field-text
+				color = !dark_blue
+				
+				&:hover
+					cursor: pointer
+					color = !red

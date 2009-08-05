@@ -17,15 +17,8 @@
 		&:hover
 			background-color = !very_light_blue
 
-div
-	&.map_item
-		display: table
-		width: 15em
-		margin: 0
-		padding: 0
-		font-size: 0.8em
-		
-	&.update_avatar
+div		
+	&.stream-item-avatar
 		display: table-cell
 		width: 4em
 		text-align: center
@@ -33,7 +26,7 @@ div
 		border-bottom = !dashed_border
 		padding-bottom: 0.5em
 		
-	&.update_content
+	&.stream-item-content
 		display: table-cell
 		vertical-align: top
 		padding-top: 0.5em
@@ -41,31 +34,31 @@ div
 		z-order: 2
 		border-bottom = !dashed_border
 	
-	&.soundwalk_meta
+	&.stream-item-meta
 		+float_right
-		width: 11em
+		width: 12em
 		margin: 0.5em
 		text-align: left
 		color = !gray
-		font-size: .8em
+		font-size: .7em
 		font-style: italic
 		
-	&.soundwalk_delete
+	&.stream-item-delete
 		+float_right
 		margin: 0.5em
-		font-size: .8em
+		font-size: .7em
 		z-order: 1
 		
-span.delete_button
+span.stream-item-delete-button
 	color = !red
 		
 span
-	&.soundwalk_title
+	&.stream-item-title
 		margin-bottom: 0.5em
 		font-weight: bold
 		text-align: left
 		
-	&.soundwalk_description 
+	&.stream-item-description
 		display: block
 		text-align: left
 		

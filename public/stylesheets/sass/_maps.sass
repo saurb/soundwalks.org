@@ -1,6 +1,6 @@
 @import variables.sass
 
-#soundwalk-index-map
+#soundwalks-map
 	+float_right
 	border = !thick_border
 	width = !square_map_width
@@ -8,10 +8,25 @@
 	margin: 0.5em
 	overflow: hidden
 
-#soundwalk-map
+#sounds-map
 	+float_right
 	border = !thick_border
 	width = !square_map_width
 	height = !square_map_height
 	margin: 0.5em
 	overflow: hidden
+
+.marker-info
+	margin: 0
+	padding: 0
+	padding-top: 0.5em
+	width = 20em
+	
+	h2
+		font-size: 0.9em
+		text-align: left
+		
+		.meta
+			+float_right
+			font-weight: normal
+			
