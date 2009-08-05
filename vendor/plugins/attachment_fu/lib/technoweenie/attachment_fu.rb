@@ -58,7 +58,7 @@ module Technoweenie # :nodoc:
         parent_options = attachment_options || {}
         # doing these shenanigans so that #attachment_options is available to processors and backends
         self.attachment_options = options
-
+        
         attr_accessor :thumbnail_resize_options
 
         attachment_options[:storage]     ||= (attachment_options[:file_system_path] || attachment_options[:path_prefix]) ? :file_system : :db_file
@@ -135,7 +135,7 @@ module Technoweenie # :nodoc:
         base.class_inheritable_accessor :attachment_options
         base.before_destroy :destroy_thumbnails
         base.before_validation :set_size_from_temp_path
-        base.before_create :after_process_attachment
+        base.after_save :after_process_attachment
         base.after_destroy :destroy_file
         base.after_validation :process_attachment
         if defined?(::ActiveSupport::Callbacks)
@@ -299,6 +299,8 @@ module Technoweenie # :nodoc:
         else
           self.temp_path = file_data
         end
+        
+        @new_upload = true;
       end
 
       # Gets the latest temp path from the collection of temp paths.  While working with an attachment,
@@ -312,7 +314,7 @@ module Technoweenie # :nodoc:
 
       # Gets an array of the currently used temp paths.  Defaults to a copy of #full_filename.
       def temp_paths
-        @temp_paths ||= (new_record? || !respond_to?(:full_filename) || !File.exist?(full_filename) ?
+        @temp_paths ||= (new_record? || !(defined? @new_upload) || !respond_to?(:full_filename) || !File.exist?(full_filename) ?
           [] : [copy_to_temp_file(full_filename)])
       end
 
