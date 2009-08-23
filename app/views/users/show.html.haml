@@ -1,6 +1,9 @@
 - content_for :title do
 	= @user.name
 
+- content_for :javascript do
+	= javascript_include_tag 'lib/jquery'
+
 = render :partial => 'user_profile', :locals => {:user => @user}
 
 - if !@soundwalks.empty?

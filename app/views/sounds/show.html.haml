@@ -44,7 +44,7 @@
 		%span.label Community tags:
 		%span.detail{'data-shows' => 'all_tags'} 
 			#{@sound.tags.size > 0 ? @sound.tags.join(', ') : 'This sound has not been tagged yet.'}
-	
+
 	- if logged_in?
 		%p
 			%span.label Your tags:
@@ -84,7 +84,7 @@
 %div.clear
 
 %h2 Features
-%div#sound-features	
+%div#sound-features
 	= feature_chart('loudness', limit_granularity(@sound.trajectory(:loudness)), 0, 'ab4444')
 	= feature_chart('temporal sparsity', limit_granularity(@sound.trajectory(:temporal_sparsity)), 'auto', '44ab44')
 	= feature_chart('spectral sparsity', limit_granularity(@sound.trajectory(:spectral_sparsity)), 'auto', '4444ab')

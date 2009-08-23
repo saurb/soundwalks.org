@@ -14,7 +14,7 @@
 		= form.label :description, label_with_errors(@soundwalk, 'description', 'Description'), :class => 'field'
 		= form.text_area :description, :class => 'field'
 		
-	%div
+	%div.field-nontext
 		= form.label :privacy, label_with_errors(@soundwalk, 'privacy', 'Privacy'), :class => 'field-nontext'
 		#{form.radio_button(:privacy, :private)} Private
 		#{form.radio_button(:privacy, :friends)} Friends-only
