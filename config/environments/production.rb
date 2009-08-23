@@ -27,6 +27,6 @@ config.action_controller.perform_caching             = true
 # Enable threaded mode
 # config.threadsafe!
 
-ENV['GEM_PATH'] = '/Users/brandon/gems:/Library/Ruby/Gems/1.8'
+ENV['GEM_PATH'] = '/Users/brandon/gems:/usr/lib/ruby/1.8/gems'
 
 $HOST_PATH = 'http://soundwalks.org'
