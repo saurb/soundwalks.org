@@ -41,7 +41,7 @@ class Sound < ActiveRecord::Base
   end
   
   def analyze_sound
-    begin
+    #begin
       sound_file = Sirens::Sound.new
       sound_file.frameLength = 0.04
       sound_file.hopLength = 0.02
@@ -62,14 +62,12 @@ class Sound < ActiveRecord::Base
       temporal_sparsity = Sirens::TemporalSparsity.new
       spectral_sparsity = Sirens::SpectralSparsity.new
       spectral_centroid = Sirens::SpectralCentroid.new
-    
       harmonicity = Sirens::Harmonicity.new
       harmonicity.absThreshold = 1
       harmonicity.threshold = 0.1
       harmonicity.searchRegionLength = 5
       harmonicity.maxPeaks = 3
       harmonicity.lpfCoefficient = 0.7
-
       transient_index = Sirens::TransientIndex.new
       transient_index.mels = 15
       transient_index.filters = 30
@@ -82,10 +80,12 @@ class Sound < ActiveRecord::Base
         feature.sampleRate = sound_file.sampleRate
         feature.spectrumSize = sound_file.spectrumSize
       end
-    
-      sound_file.sampleFeatures = Array[loudness, temporal_sparsity]
-      sound_file.spectralFeatures = Array[spectral_sparsity, spectral_centroid, transient_index, harmonicity]
-    
+        
+      features = Sirens::FeatureSet.new
+      features.sampleFeatures = [loudness, temporal_sparsity]
+      features.spectralFeatures = [spectral_sparsity, spectral_centroid, transient_index, harmonicity]
+      sound_file.features = features
+      
       # Extract features.
       sound_file.extractFeatures
       sound_file.close
@@ -120,9 +120,9 @@ class Sound < ActiveRecord::Base
       temporal_sparsity_trajectory.save
       transient_index_trajectory.save
       harmonicity_trajectory.save
-    rescue
-      return false
-    end
+    #rescue
+    #  return false
+    #end
   end
   
   def formatted_lat
