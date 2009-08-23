@@ -19,13 +19,15 @@ function makeMap() {
 		var map = new GMap2(document.getElementById("sounds-map"));
 		map.setUIToDefault();
 		map.setMapType(G_HYBRID_MAP);
-		addSounds(map);
-		addTrace(map);
 		
+		bounds = new GLatLngBounds();
+		
+		addSounds(map, bounds);
+		addTrace(map, bounds);
 	}
 }
 
-function addTrace(map) {
+function addTrace(map, bounds) {
 	soundwalk_id = $("meta[name=soundwalk_id]").attr('content');
 
 	$.getJSON('/soundwalks/' + soundwalk_id, null, function(data, textStatus) {
@@ -34,17 +36,20 @@ function addTrace(map) {
 		points = new Array();
 		
 		for (i = 0; i < trace.length; i++) {
-			points.push(new GLatLng(trace[i][1], trace[i][2]));
+			point = new GLatLng(trace[i][1], trace[i][2]);
+			
+			points.push(point);
+			bounds.extend(point);
 		}
 		
-		map.addOverlay(new GPolyline(points, '#9DBF30', 2, '50'))
+		map.addOverlay(new GPolyline(points, '#9DBF30', 2, '50'));
+		map.setCenter(bounds.getCenter(), map.getBoundsZoomLevel(bounds));
 	});
+	
+	return bounds;
 }
 
-function addSounds(map) {
-	map.checkResize();
-	bounds = new GLatLngBounds();
-	
+function addSounds(map, bounds) {	
 	var soundIcon = new GIcon(G_DEFAULT_ICON);
 	soundIcon.image = "/images/marker.png";
 	soundIcon.iconAnchor = new GPoint(24, 24);
@@ -87,8 +92,6 @@ function addSounds(map) {
 		map.addOverlay(marker);
 		bounds.extend(point);
 	});
-	
-	map.setCenter(bounds.getCenter(), map.getBoundsZoomLevel(bounds));
 }
 
 $(document).ready(function() {
