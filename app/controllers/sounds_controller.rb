@@ -7,7 +7,7 @@ class SoundsController < ApplicationController
   before_filter :login_required, :except => ['index', 'show']
   
   append_before_filter :get_soundwalk, 
-    :only => ['show', 'index', 'edit']
+    :only => ['show', 'index']
   append_before_filter :get_soundwalk_from_current_user,
     :only => ['edit', 'update', 'new', 'create', 'destroy', 'recalculate', 'uploader', 'tag']
   append_before_filter :get_sound_from_soundwalk,
