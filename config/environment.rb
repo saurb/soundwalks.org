@@ -7,12 +7,10 @@ Rails::Initializer.run do |config|
   config.gem "haml"
   config.gem "avatar"
   config.gem "geokit"
-  config.gem "smtp_tls"
   config.gem "rubyist-aasm", :source => "http://gems.github.com", :lib => "aasm"
   config.gem "mattetti-googlecharts", :source => "http://gems.github.com", :lib => "gchart"
   config.gem "RedCloth"
-  config.gem "sirens"
-  
+  config.gem 'plant-sirens'
   config.plugins = [:geokit, :all]
 
   config.time_zone = 'UTC'
