@@ -32,7 +32,7 @@ class User < ActiveRecord::Base
   validates_format_of       :email,    :with => Authentication.email_regex, :message => Authentication.bad_email_message
     
   # anything else you want your user to change should be added here.
-  attr_accessible :login, :email, :name, :password
+  attr_accessible :login, :email, :name, :password, :can_upload, :admin
   
   # Authenticates a user by their login name and unencrypted password.  Returns the user or nil.
   def self.authenticate(login, password)
