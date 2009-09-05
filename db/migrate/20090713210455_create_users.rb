@@ -15,6 +15,10 @@ class CreateUsers < ActiveRecord::Migration
       t.column :state,                     :string, :null => :no, :default => 'passive'
       t.column :deleted_at,                :datetime
       t.column :secret,                    :decimal
+      
+      t.column :admin,                     :boolean
+      t.column :can_upload,                :boolean
+      
     end
     add_index :users, :login, :unique => true
   end
