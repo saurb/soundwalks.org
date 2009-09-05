@@ -17,9 +17,13 @@
 		
 		%title Soundwalks: #{yield :title}
 	%body
-		%div#strip
+		%div#strip		
+			%div#title-picture
+				%a{:title => 'Soundwalks', :href => '/'}
+					%img{:src => '/images/soundwalks.png', :alt => 'Soundwalks'}
 			%div#user-panel
 				- if logged_in?
+					= avatar_tag(current_user, :size => 25, :alt => current_user.name)
 					Hi, #{first_name current_user, :force_third_person => true}! &nbsp;&nbsp;
 					%a{:title => 'Settings', :href => '/settings'} Settings
 					| 
@@ -28,14 +32,13 @@
 					%a{:title => 'Login', :href => '/login'} Login
 					|
 					%a{:title => 'Sign up', :href => '/signup'} Sign up
-					
-			%a{:title => 'Soundwalks', :href => '/'}
-				%img{:src => '/images/soundwalks.png', :alt => 'Soundwalks'}
-		
+			%div.clear		
 		%div#body
 			%div#menu
 				- if logged_in?
-					#{link_to 'New soundwalk', new_soundwalk_path} &#124;
+					- if @current_user.can_upload
+						#{link_to 'New soundwalk', new_soundwalk_path} &#124;
+						
 					#{link_to 'My profile', user_name_path(current_user)} &#124;
 					#{link_to 'Followed timeline', '/'} &#124;
 				

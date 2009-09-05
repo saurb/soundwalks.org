@@ -1,34 +1,39 @@
 - content_for :title do
 	Settings
 
-- form_for @user do |form|
-	%div#settings-profile
+%div#settings-profile
 	%h1 Profile
-	%p.field
-		= form.label :login, label_with_errors(@user, 'login', 'Username')
-		= form.text_field :login
-	%p.field
-		= form.label :name, label_with_errors(@user, 'name', 'Full Name')
-		= form.text_field :name
-	%p.field
-		= form.label :email, label_with_errors(@user, 'email', 'Email')
-		= form.text_field :email
-	%p.field
-		= label_tag :old_password, label_with_errors(@user, 'old_password', 'Old Password')
-		= password_field_tag :old_password
-	%p.field
-		= label_tag :new_password, label_with_errors(@user, 'new_password', 'New Password')
-		= password_field_tag :new_password
-
-	%div#settings-privacy
-		%h1 Privacy
-		%p.field Privacy
-		%p.field Privacy
-		%p.field Privacy
-		%p.field Privacy
-		%p.field Privacy
-		%p.field Privacy
-
-	%div.clear
-
-	%p.submit= form.submit 'Save'
+	%div.help
+		%h2 Getting an avatar
+		%p
+			We use #{link_to 'Gravatar', 'http://gravatar.com'} for all user profile pictures. To get your own avatar, |
+			sign up with Gravatar using the email address associated with your Soundwalks account. It may take several |
+			minutes for your changes to have effect.
+			
+		%h2 Editing your password
+		%p 
+			Use this page to edit your profile information. If you do not wish to change your password, just leave |
+			&quot;New Password&quot; blank. Otherwise, make sure that &quot;Old Password&quot; matches your existing |
+			password.
+			
+	- form_for @user do |form|
+		%div
+			= form.label :name, label_with_errors(@user, 'name', 'Full Name'), :class => 'field'
+			= form.text_field :name, :class => 'field'
+		%div
+			= form.label :email, label_with_errors(@user, 'email', 'Email'), :class => 'field'
+			= form.text_field :email, :class => 'field'
+		%div
+			= label_tag :old_password, label_with_errors(@user, 'old_password', 'Old Password'), :class => 'field'
+			= password_field_tag :old_password, '', :class => 'field'
+		%div
+			= label_tag :new_password, label_with_errors(@user, 'new_password', 'New Password'), :class => 'field'
+			= password_field_tag :new_password, '', :class => 'field'
+			
+		- if @current_user.admin
+			%div.non-text
+				Admin? #{form.check_box :admin}
+				Can upload? #{form.check_box :can_upload}
+				
+		%div.submit= form.submit 'Save', :class => 'button'
+		

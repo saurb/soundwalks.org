@@ -39,18 +39,19 @@
 			= (@sound.description && @sound.description.size > 0) ? textilize(h @sound.description) : '<p>Click here to add a description.</p>'
 	- else
 		%div#description= textilize(h @sound.description)
-		
-	%p
-		%span.label Community tags:
-		%span.detail{'data-shows' => 'all_tags'} 
-			#{@sound.tags.size > 0 ? @sound.tags.join(', ') : 'This sound has not been tagged yet.'}
+	
+	- if logged_in? && (current_user.admin? || current_user.id == @sound.soundwalk.user.id)
+		%p
+			%span.label Community tags:
+			%span.detail{'data-shows' => 'all_tags'} 
+				#{@sound.tags.size > 0 ? @sound.tags.join(', ') : 'This sound has not been tagged yet.'}
 
 	- if logged_in?
 		%p
 			%span.label Your tags:
 			%span.detail
 				- user_tags = current_user.owned_taggings.find(:all, :conditions => {:taggable_id => @sound}).collect {|tagging| tagging.tag}
-			
+				
 				%span.editable{'data-edits' => 'user_tags', 
 					'data-shows' => 'user_tags', 
 					'data-url' => "#{soundwalk_sound_path(@sound.soundwalk, @sound)}/tags",
@@ -60,18 +61,6 @@
 		%span.label Duration:
 		%span.detail #{sprintf('%.2f', @sound.samples.to_f / @sound.sample_rate.to_f)}s (#{@sound.samples} samples, #{@sound.frames} frames)
 	%p
-		%span.label Sample rate:
-		%span.detail #{@sound.sample_rate} Hz
-	%p
-		%span.label Frame length:
-		%span.detail #{@sound.frame_length}s (#{@sound.frame_size} samples)
-	%p
-		%span.label Hop size:
-		%span.detail #{@sound.hop_length}s (#{@sound.hop_size} samples)
-	%p
-		%span.label Spectrum size:
-		%span.detail= @sound.spectrum_size
-	%p
 		%span.label Recorded at:
 		%span.detail= @sound.recorded_at
 	%p
@@ -80,14 +69,29 @@
 	%p
 		%span.label Updated at:
 		%span.detail= @sound.updated_at
+		
+	-if logged_in? && current_user.admin?
+		%p
+			%span.label Sample rate:
+			%span.detail #{@sound.sample_rate} Hz
+		%p
+			%span.label Frame length:
+			%span.detail #{@sound.frame_length}s (#{@sound.frame_size} samples)
+		%p
+			%span.label Hop size:
+			%span.detail #{@sound.hop_length}s (#{@sound.hop_size} samples)
+		%p
+			%span.label Spectrum size:
+			%span.detail= @sound.spectrum_size
 
 %div.clear
 
-%h2 Features
-%div#sound-features
-	= feature_chart('loudness', limit_granularity(@sound.trajectory(:loudness)), 0, 'ab4444')
-	= feature_chart('temporal sparsity', limit_granularity(@sound.trajectory(:temporal_sparsity)), 'auto', '44ab44')
-	= feature_chart('spectral sparsity', limit_granularity(@sound.trajectory(:spectral_sparsity)), 'auto', '4444ab')
-	= feature_chart('spectral centroid', limit_granularity(@sound.trajectory(:spectral_centroid)), 'auto', 'abab44')
-	= feature_chart('transient index', limit_granularity(@sound.trajectory(:transient_index)), 'auto', '44abab')
-	= feature_chart('harmonicity', limit_granularity(@sound.trajectory(:harmonicity)), 'auto', 'ab44ab')
+- if logged_in? && current_user.admin?
+	%h2 Features
+	%div#sound-features
+		= feature_chart('loudness', limit_granularity(@sound.trajectory(:loudness)), 'ab4444')
+		= feature_chart('temporal sparsity', limit_granularity(@sound.trajectory(:temporal_sparsity)), '44ab44')
+		= feature_chart('spectral sparsity', limit_granularity(@sound.trajectory(:spectral_sparsity)), '4444ab')
+		= feature_chart('spectral centroid', limit_granularity(@sound.trajectory(:spectral_centroid)), 'abab44')
+		= feature_chart('transient index', limit_granularity(@sound.trajectory(:transient_index)), '44abab')
+		= feature_chart('harmonicity', limit_granularity(@sound.trajectory(:harmonicity)), 'ab44ab')
