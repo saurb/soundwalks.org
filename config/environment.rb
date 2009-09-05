@@ -3,6 +3,10 @@ require File.join(File.dirname(__FILE__), 'boot')
 RAILS_GEM_VERSION = '2.3.2' unless defined? RAILS_GEM_VERSION
 
 Rails::Initializer.run do |config|  
+  if config.environment == "production"
+    ENV['GEM_PATH'] = '/Users/brandon/gems:/usr/lib/ruby/1.8/gems'
+  end
+  
   # config.load_paths += %W( #{RAILS_ROOT}/extras )
   config.gem "haml"
   config.gem "avatar"
