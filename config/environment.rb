@@ -6,6 +6,7 @@ Rails::Initializer.run do |config|
   # config.load_paths += %W( #{RAILS_ROOT}/extras )
   config.gem "haml"
   config.gem "avatar"
+  config.gem "libxml-ruby", :lib => "libxml"
   config.gem "geokit"
   config.gem "rubyist-aasm", :source => "http://gems.github.com", :lib => "aasm"
   config.gem "mattetti-googlecharts", :source => "http://gems.github.com", :lib => "gchart"
