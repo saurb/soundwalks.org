@@ -1,7 +1,7 @@
 require 'gchart'
 
 module SoundHelper
-  def feature_chart(title, data, max_value, color)
+  def feature_chart(title, data, color)
     image_tag Gchart.line(
   		:size => '400x75',
   		:title => title, 
@@ -10,7 +10,7 @@ module SoundHelper
   		:axis_labels => [("0|" + data.length.to_s), '0|1'],
   		:bg => 'FFFFFF00',
   	  :data => data,
-  		:max_value => max_value)
+  		:max_value => 1.0)
   end
   
   def sound_file_path(sound)
