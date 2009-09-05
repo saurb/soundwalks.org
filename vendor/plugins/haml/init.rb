@@ -1,5 +1,3 @@
-require 'rubygems'
-require 'haml'
 
 #begin
 #  require File.join(File.dirname(__FILE__), 'lib', 'haml') # From here
