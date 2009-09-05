@@ -50,7 +50,7 @@ input
 	&.field
 		+rounded_border
 		width: 20em
-		height: 2.2em
+		height: 2.5em
 		margin: 0.5em
 		padding: 0.5em
 
@@ -63,7 +63,7 @@ input
 		width: 7.5em
 		margin: 0.5em
 		padding: 0.25em
-		height: 2.2em
+		height: 2.5em
 		border = "1px dashed " + !gray
 		
 	&.small-button
@@ -84,7 +84,7 @@ input
 	&.actualfile
 		+rounded_border
 		width: 11.5em
-		height: 2.2em
+		height: 2.5em
 		margin: 0.5em
 		padding: 0.5em
 
@@ -139,18 +139,24 @@ ul.field
 		margin-left: 0
 		padding-left: 0
 
-.editable
-	&:hover
-		background-color = !very_light_blue
-
-.editable
+span.editable
+	form
+		display: inline
+		
+		input
+			display: inline
+			width: 30em
+			
+div.editable,p.editable,td.editable,span.editable
 	color = !dark_blue
 	
 	&:hover
+		background-color = !very_light_blue
 		color = !red
-
+		
 h1.editable
 	color = !red
 	
 	&:hover
+		background-color = !very_light_blue
 		color = !dark_blue

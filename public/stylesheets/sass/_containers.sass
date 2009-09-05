@@ -1,19 +1,28 @@
 @import variables.sass
 
 #strip
+	display: table
 	width = !big_width
 	margin: 2em auto 0 auto
 	padding: 0
 	border-bottom = "0.125em solid " + !dark_blue
-	text-align: center
-
-	#user-panel
-		float: right
-		color = !dark_blue
-		width: 45em
-		margin: 0
-		padding: 1.5em 0 0 1.5em
+	
+	#title-picture
+		display: table-cell
 		text-align: left
+		img
+			margin-bottom: -9px
+		
+	#user-panel
+		display: table-cell
+		color = !dark_blue
+		margin: 0
+		padding: 0
+		text-align: right
+		
+		img
+			vertical-align: middle
+			border = "1px solid " + !light_blue
 
 	a
 		color = !red
@@ -21,7 +30,9 @@
 		font-weight: bold
 
 	&.little
+		text-align: center
 		width = !little_width
+		
 
 #body
 	width = !big_width
