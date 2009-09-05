@@ -10,7 +10,7 @@ Rails::Initializer.run do |config|
   config.gem "rubyist-aasm", :source => "http://gems.github.com", :lib => "aasm"
   config.gem "mattetti-googlecharts", :source => "http://gems.github.com", :lib => "gchart"
   config.gem "RedCloth"
-  config.gem 'plant-sirens', :lib => "sirens"
+  config.gem 'sirens'
   
   config.plugins = [:geokit, :all]
 
