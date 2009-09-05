@@ -2,7 +2,7 @@ require File.join(File.dirname(__FILE__), 'boot')
 
 RAILS_GEM_VERSION = '2.3.2' unless defined? RAILS_GEM_VERSION
 
-ENV['GEM_PATH'] = '/Users/brandon/gems:/usr/lib/ruby/1.8/gems'
+ENV['GEM_PATH'] = '/Users/brandon/gems:/usr/local/lib/ruby/1.8/gems'
   
 Rails::Initializer.run do |config|    
   # config.load_paths += %W( #{RAILS_ROOT}/extras )
@@ -14,8 +14,6 @@ Rails::Initializer.run do |config|
   config.gem "mattetti-googlecharts", :source => "http://gems.github.com", :lib => "gchart"
   config.gem "RedCloth"
   config.gem 'sirens'
-  
-  config.plugins = [:geokit, :all]
 
   config.time_zone = 'UTC'
   
