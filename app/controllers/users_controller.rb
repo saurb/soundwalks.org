@@ -18,6 +18,8 @@ class UsersController < ApplicationController
     else
       logout_keeping_session!
       @user = User.new(params[:user])
+      @user.admin = false
+      @user.can_upload = false
       @user.register! if @user && @user.valid?
       success = @user && @user.valid?
       if success && @user.errors.empty?
@@ -87,7 +89,7 @@ class UsersController < ApplicationController
   
   # GET /users/:id/edit
   def edit
-    if current_user.id != @user.id
+    if current_user.id != @user.id && !@user.admin
       flash[:error] = "You are not authorized to access this account."
       redirect_back_or_default('/')
     else
@@ -97,20 +99,39 @@ class UsersController < ApplicationController
   
   # POST /users/:id/edit
   def update
-    if current_user.id != @user.id
+    if current_user.id != @user.id && !@user.admin
       flash[:error] = "You are not authorized to access this account."
       redirect_back_or_default('/')
     else
-      respond_to do |format|
-        if @user.update_attributes(params[:user])
-          format.html {
-            flash.now[:notice] = "Your profile has been updated."
-            render :layout => 'site', :action => "edit"
-          }
-          format.xml {render :xml => :ok}
+      success = true
+      
+      if params[:new_password] 
+        if User.authenticate(@user.login, params[:old_password])
+          puts 'Success'
+          puts params[:old_password]
+          params[:user][:password] = params[:new_password]
         else
-          format.html {render :layout => 'site', :action => "edit"}
-          format.xml {render :xml => @user.errors, :status => :unprocessable_entity}
+          puts 'No success'
+          success = false
+          flash.now[:error] = "Incorrect old password."
+          render :layout => 'site', :action => 'edit'
+        end
+      else
+        puts 'No password'
+      end
+      
+      if success
+        respond_to do |format|
+          if @user.update_attributes(params[:user])
+            format.html {
+              flash.now[:notice] = "Your profile has been updated."
+              render :layout => 'site', :action => "edit"
+            }
+            format.xml {render :xml => :ok}
+          else
+            format.html {render :layout => 'site', :action => "edit"}
+            format.xml {render :xml => @user.errors, :status => :unprocessable_entity}
+          end
         end
       end
     end

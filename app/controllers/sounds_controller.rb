@@ -63,34 +63,53 @@ class SoundsController < ApplicationController
     
   # GET /soundwalks/:soundwalk_id/sounds/new
   def new
-    @sound = @soundwalk.sounds.build
- 
-    respond_to do |format|
-      format.html
-      format.xml {render :xml => @sound}
+    if @current_user.can_upload
+      @sound = @soundwalk.sounds.build
+      
+      respond_to do |format|
+        format.html
+        format.xml {render :xml => @sound}
+      end
+    else
+      respond_to do |format|
+        format.html {
+          flash[:error] = "You do not have access to upload features. If you believe you should, contact us."
+          redirect_back_or_default '/'
+        }
+        format.xml {render :xml => @sound}
+      end
     end
   end
   
   # POST /soundwalks/:soundwalk_id/sounds
   def create    
-    if params[:recorded_at]
-      params[:sound]['recorded_at'] = Time.parse(params[:recorded_at])
-    end
+    if @current_user.can_upload
+      if params[:recorded_at]
+        params[:sound]['recorded_at'] = Time.parse(params[:recorded_at])
+      end
     
-    params[:sound]['user_id'] = current_user.id
+      params[:sound]['user_id'] = current_user.id
     
-    @sound = @soundwalk.sounds.build(params[:sound])
+      @sound = @soundwalk.sounds.build(params[:sound])
     
-    respond_to do |format|
-      if @sound.save
-        format.html {redirect_to soundwalk_sound_path(@soundwalk, @sound)}
-        format.xml {render :xml => @sound, :status => :ok, :location => soundwalk_sound_path(@soundwalk, @sound)}
-        format.json {
-          render :json => @sound.to_json(:methods => [:formatted_lat, :formatted_lng, :formatted_recorded_at]), :status => :ok, :location => soundwalk_sound_path(@soundwalk, @sound)}
-      else
-        format.html {render :action => 'new'}
-        format.xml {render :xml => @sound.errors, :status => :unprocessable_entity}
-        format.json {render :json => @sound.errors, :status => :unprocessable_entity}
+      respond_to do |format|
+        if @sound.save
+          format.html {redirect_to soundwalk_sound_path(@soundwalk, @sound)}
+          format.xml {render :xml => @sound, :status => :ok, :location => soundwalk_sound_path(@soundwalk, @sound)}
+          format.json {
+            render :json => @sound.to_json(:methods => [:formatted_lat, :formatted_lng, :formatted_recorded_at]), :status => :ok, :location => soundwalk_sound_path(@soundwalk, @sound)}
+        else
+          format.html {render :action => 'new'}
+          format.xml {render :xml => @sound.errors, :status => :unprocessable_entity}
+          format.json {render :json => @sound.errors, :status => :unprocessable_entity}
+        end
+      end
+    else
+      respond_to do |format|
+        format.html {
+          flash[:error] = "You do not have access to upload features. If you believe you should, contact us."
+          redirect_back_or_default '/'
+        }
       end
     end
   end

@@ -33,31 +33,52 @@ class SoundwalksController < ApplicationController
   
   # GET /soundwalks/new
   def new    
-    @soundwalk = current_user.soundwalks.build
+    if @current_user.can_upload
+      @soundwalk = current_user.soundwalks.build
     
-    respond_to do |format|
-      format.html
-      format.xml {render :xml => @soundwalk}
+      respond_to do |format|
+        format.html
+        format.xml {render :xml => @soundwalk}
+      end
+    else
+      respond_to do |format|
+        format.html {
+          flash[:error] = "You do not have access to upload features. If you believe you should, contact us."
+          redirect_back_or_default '/'
+        }
+        format.xml {
+          render :xml => @soundwalk
+        }
+      end
     end
   end
   
   # POST /soundwalks
-  def create    
-    @soundwalk = current_user.soundwalks.build(params[:soundwalk])
+  def create
+    if @current_user.can_upload    
+      @soundwalk = current_user.soundwalks.build(params[:soundwalk])
         
-    respond_to do |format|
-      if @soundwalk.save
+      respond_to do |format|
+        if @soundwalk.save
+          format.html {
+            if params[:continue]
+              redirect_to "/soundwalks/#{@soundwalk.id}/sounds/uploader"
+            else
+              redirect_to @soundwalk
+            end
+          }
+          format.xml {render :xml => @soundwalk, :status => :created, :location => @soundwalk}
+        else
+          format.html {render :action => 'new'}
+          format.xml {render :xml => @soundwalk.errors, :status => :unprocessible_entity}
+        end
+      end
+    else
+      respond_to do |format|
         format.html {
-          if params[:continue]
-            redirect_to "/soundwalks/#{@soundwalk.id}/sounds/uploader"
-          else
-            redirect_to @soundwalk
-          end
+          flash[:error] = "You do not have access to upload features. If you believe you should, contact us."
+          redirect_back_or_default '/'
         }
-        format.xml {render :xml => @soundwalk, :status => :created, :location => @soundwalk}
-      else
-        format.html {render :action => 'new'}
-        format.xml {render :xml => @soundwalk.errors, :status => :unprocessible_entity}
       end
     end
   end
@@ -81,7 +102,7 @@ class SoundwalksController < ApplicationController
   end
   
   # POST /soundwalks/:id
-  def update    
+  def update
     respond_to do |format|
       if @soundwalk.update_attributes(params[:soundwalk])
         format.html {
