@@ -15,7 +15,7 @@ Rails::Initializer.run do |config|
   config.gem "RedCloth"
   config.gem 'sirens'
   
-  config.plugins = [:geokit, :all]
+  config.plugins = [:all]
 
   config.time_zone = 'UTC'
   
