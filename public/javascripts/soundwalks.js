@@ -45,4 +45,10 @@ $(document).ready(function() {
 			edit_callback
 		);
 	});
+	
+	
+	if (document.selection)
+		document.selection.empty();
+	else if (window.getSelection)
+		window.getSelection().removeAllRanges();
 });

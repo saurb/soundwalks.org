@@ -26,11 +26,11 @@ function addSound(map) {
 	
 	var soundIcon = new GIcon(G_DEFAULT_ICON);
 	soundIcon.image = "/images/marker.png";
-	soundIcon.iconAnchor = new GPoint(32, 32);
-	soundIcon.infoWindowAnchor = new GPoint(32, 32);
-	soundIcon.iconSize = new GSize(64, 64);
+	soundIcon.iconAnchor = new GPoint(24, 24);
+	soundIcon.infoWindowAnchor = new GPoint(24, 24);
+	soundIcon.iconSize = new GSize(48, 48);
 	soundIcon.shadow = null;
-	soundIcon.imageMap = [[0, 0], [64, 0], [64, 32], [0, 32]];
+	soundIcon.imageMap = [[0, 0], [24, 0], [24, 12], [0, 24]];
 	
 	markerOptions = {icon: soundIcon};
 
