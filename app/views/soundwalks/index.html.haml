@@ -6,6 +6,8 @@
 	
 %h1 Public timeline
 
+#{Geokit::Geocoders::google}
+
 = render :partial => 'soundwalks/soundwalks_map', :locals => {:soundwalks => @soundwalks}
 = render :partial => 'soundwalks/soundwalks_index', :locals => {:show_users => :true, :soundwalks => @soundwalks}
 = render :partial => 'shared/pagination', :locals => {:page => @page, :pages => @pages, :options => {:controller => :soundwalks}}
