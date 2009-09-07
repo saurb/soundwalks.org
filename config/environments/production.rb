@@ -27,4 +27,5 @@ config.action_controller.perform_caching             = true
 # Enable threaded mode
 # config.threadsafe!
 
-$HOST_PATH = 'http://soundwalks.org'
+#$HOST_PATH = 'http://soundwalks.org'
+$HOST_PATH = 'http://ame7.hc.asu.edu'
