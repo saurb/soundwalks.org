@@ -29,7 +29,8 @@ if defined? Geokit
 	if ENV['RAILS_ENV'] == 'development'
 	  Geokit::Geocoders::google = 'ABQIAAAA3HdfrnxFAPWyY-aiJUxmqRTJQa0g3IQ9GZqIMmInSLzwtGDKaBQ0KYLwBEKSM7F9gCevcsIf6WPuIQ'
   else
-    Geokit::Geocoders::google = 'ABQIAAAA91SusluKAGjWOloL75RU6BSzCNJpVkPUOl0CP8f6M-W5Jpf0CRSJs9zvlMrNEzSuDmfcARrnM4UoZA'
+    #Geokit::Geocoders::google = 'ABQIAAAA91SusluKAGjWOloL75RU6BSzCNJpVkPUOl0CP8f6M-W5Jpf0CRSJs9zvlMrNEzSuDmfcARrnM4UoZA' # soundwalks.org
+    Geokit::Geocoders::google = 'ABQIAAAA91SusluKAGjWOloL75RU6BQZAYFqtbr6XABRor9Rs-FaU_3CpxSdm6Qq5DUpx_w2Minz2asjRWIw3w' # ame7.hc.asu.edu
   end
   
 	# This is your username and password for geocoder.us.

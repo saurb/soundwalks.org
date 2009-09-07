@@ -1,4 +1,3 @@
-
 ENV['GEM_PATH'] = '/Users/brandon/gems:/usr/local/lib/ruby/1.8/gems'
 
 require File.join(File.dirname(__FILE__), 'boot')
