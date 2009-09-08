@@ -2,7 +2,7 @@
 	#{@sound.soundwalk.title}: Sound #{@sound.id}
 
 - content_for :javascript do
-	= javascript_include_tag 'lib/jquery', 'editable', 'sounds', "http://maps.google.com/maps?file=api&amp;v=2&amp;key=#{Geokit::Geocoders::google}", 'sound-map', 'http://mediaplayer.yahoo.com/js'
+	= javascript_include_tag 'lib/jquery', 'editable', 'sounds', "http://maps.google.com/maps?file=api&amp;v=2&amp;key=#{Geokit::Geocoders::google}", 'sound-map'
 
 - content_for :meta do
 	= render :partial => 'meta/authenticity'
@@ -20,6 +20,8 @@
 	#{link_to 'Next', soundwalk_sound_path(@sound.soundwalk, @sound.soundwalk.sounds[next_index])})
 
 %p=render :partial => 'embed_sound', :locals => {:soundwalk => @sound.soundwalk, :sound => @sound}
+
+%script{:type=>"text/javascript", :src=>"http://mediaplayer.yahoo.com/js"}
 
 %div#sound-map
 
