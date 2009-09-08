@@ -23,6 +23,8 @@ class CreateSounds < ActiveRecord::Migration
       t.references :soundwalk
       t.references :user
       
+      t.integer :study_coverage
+      
       # Geokit
       t.decimal :lng, :precision => 15, :scale => 12
       t.decimal :lat, :precision => 15, :scale => 12
