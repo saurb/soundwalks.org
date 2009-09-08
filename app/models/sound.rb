@@ -17,7 +17,6 @@ class Sound < ActiveRecord::Base
               
   before_validation_on_create do |record|
     record.localize
-    record.study_coverage = 0
   end
   
   after_attachment_saved do |record|
@@ -43,6 +42,8 @@ class Sound < ActiveRecord::Base
   
   def analyze_sound
     begin
+      self.study_coverage = 0
+      
       sound_file = Sirens::Sound.new
       sound_file.frameLength = 0.04
       sound_file.hopLength = 0.02

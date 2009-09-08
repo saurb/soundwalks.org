@@ -15,7 +15,7 @@ class Study < ActionMailer::Base
     sent_on Time.now.utc
     
     puts sound_ids
-    puts sound_names
+    puts names
     puts tags
     
     body :names => sound_names, :tags => tags
