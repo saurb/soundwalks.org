@@ -2,6 +2,6 @@
 	- for i in 0..20
 		%p
 			= form.label "tags_#{i}"
-			= form.text_field "tags_#{i}"
+			= form.text_field "tags[#{i}]"
 	%p
 		= form.submit "Send"
