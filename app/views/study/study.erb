@@ -1,3 +1,6 @@
+<% output = "" %>
 <% for i in 0...@names.size %>
-	<%= @names[i] %>,<%= @tags[i] %>
+	<% output += "#{@names[i]},#{@tags[i]}\n"%>
 <% end %>
+
+<%= output %>
