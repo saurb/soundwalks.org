@@ -1,5 +1,6 @@
 class StudyController < ApplicationController
   def index
+    @sounds = Sound.find(:all, :order => 'study_coverage', :limit => 20)
   end
   
   def create
