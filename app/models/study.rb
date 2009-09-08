@@ -3,6 +3,12 @@ class Study < ActionMailer::Base
     sound_ids = email_params[:tags].collect {|key, value| value}
     sound_names = email_params[:names].collect {|key, value| value}
     
+    sounds = Sound.find(:all, :conditions => {:id => sound_ids})
+    sounds.each do |sound|
+      sound.study_coverage += 1
+      sound.save
+    end
+    
     subject "soundwalks.org study results"
     recipients "study@soundwalks.org"
     from "study@soundwalks.org"

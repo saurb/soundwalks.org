@@ -17,6 +17,7 @@ class Sound < ActiveRecord::Base
               
   before_validation_on_create do |record|
     record.localize
+    record.study_coverage = 0
   end
   
   after_attachment_saved do |record|
