@@ -1,8 +1,7 @@
 - form_for(:study, :url => sendstudy_path) do |form|
 	- for i in 0..20
 		%p
-			= form.label 'tags_' + i
-			%br
-			= form.text_field 'tags_' + i
+			= form.label "tags_#{i}"
+			= form.text_field "tags_#{i}"
 	%p
 		= form.submit "Send"
