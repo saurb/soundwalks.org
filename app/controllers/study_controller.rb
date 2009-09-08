@@ -10,4 +10,5 @@ class StudyController < ApplicationController
       flash.now[:error] = "An error occurred while submitting your form. Please try again or conact study@soundwalks.org."
       render :index
     end
+  end
 end
