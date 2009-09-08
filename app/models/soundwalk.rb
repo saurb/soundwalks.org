@@ -22,12 +22,14 @@ class Soundwalk < ActiveRecord::Base
   end
   
   named_scope :from_friends, lambda { |friend_ids, public_ids, my_id, options| 
-    friend_string = friend_ids.join(', ')
     public_string = public_ids.join(', ')
     
-    options[:conditions] = "(user_id = #{my_id}) or 
-      (user_id in (#{friend_string}) and not privacy='private') or 
-      (user_id in (#{public_string}) and privacy='public')"
+    friend_sql = ""
+    friend_sql = " or (user_id in (#{friend_ids.join(', ')}) and not privacy='private')" if friend_ids.size > 0
+    public_sql = ""
+    public_sql = " or (user_id in (#{public_ids.join(', ')}) and privacy='public')" if public_ids.size > 0
+    
+    options[:conditions] = "(user_id = #{my_id})" + friend_sql + public_sql
       
     return options
   }
