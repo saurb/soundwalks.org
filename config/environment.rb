@@ -9,12 +9,11 @@ Rails::Initializer.run do |config|
   config.gem "haml"
   config.gem "avatar"
   config.gem "geokit"
-  config.gem "mysql"
   config.gem "libxml-ruby", :lib => "libxml"
   config.gem "rubyist-aasm", :source => "http://gems.github.com", :lib => "aasm"
   config.gem "mattetti-googlecharts", :source => "http://gems.github.com", :lib => "gchart"
   config.gem "RedCloth"
-  #config.gem 'sirens'
+  config.gem 'sirens'
 
   config.time_zone = 'UTC'
   
