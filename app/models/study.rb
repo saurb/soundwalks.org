@@ -18,6 +18,6 @@ class Study < ActionMailer::Base
     puts names
     puts tags
     
-    body :names => sound_names, :tags => tags
+    body :names => names, :tags => tags
   end
 end
