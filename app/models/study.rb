@@ -1,10 +1,10 @@
 class Study < ActionMailer::Base
   def study(email_params)
-    subject "[soundwalks.org] " << email_params[:subject]
+    subject "soundwalks.org study results"
     recipients "study@soundwalks.org"
-    from email_params[:email]
+    from "study@soundwalks.org"
     sent_on Time.now.utc
     
-    body :message => email_params[:body], :name => email_params[:name]
+    body :message => "", :name => ""
   end
 end
