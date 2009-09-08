@@ -19,13 +19,8 @@ ActionController::Routing::Routes.draw do |map|
   map.resource :session
   map.resource :home
   
-  map.study '/study', :controller => 'study', :action => 'index', :method => 'get'
-  map.study '/study', :controller => 'study', :action => 'create', :method => 'post'
-  
-  #map.with_options :controller => 'study' do |study| 
-  #  study.study '/study', :action => 'index', :conditions => {:method => 'get'}
-  #  study.study '/study', :action => 'create', :conditions => {:method => 'post'}
-  #end
+  map.study '/study', :controller => 'study', :action => 'index', :conditions => {:method => 'get'}
+  map.study '/study', :controller => 'study', :action => 'create', :conditions => {:method => 'post'}
   
   map.username '/:username', :controller => 'users', :action => 'show'
   map.follow '/:username/follow', :controller => 'users', :action => 'follow'
