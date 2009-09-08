@@ -17,12 +17,11 @@
 	- max_duration = -9999999	
 	
 	- for sound in @sounds
-		- if !sound.nil?
-			- duration = sound.samples / sound.sample_rate.to_f
-			- sum_duration += duration
-			- min_duration = duration if duration < min_duration
-			- max_duration = duration if duration > max_duration
-			- mean_duration = sum_duration / @sounds.size
+		- duration = sound.samples / sound.sample_rate.to_f
+		- sum_duration += duration
+		- min_duration = duration if duration < min_duration
+		- max_duration = duration if duration > max_duration
+		- mean_duration = sum_duration / @sounds.size
 
 = render :partial => 'soundwalks/soundwalk_profile', :locals => {:soundwalk => @soundwalk, :edit_title => true}
 = render :partial => 'sounds/sounds_map', :locals => {:sounds => @sounds, :soundwalk => @soundwalk}
