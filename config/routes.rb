@@ -19,14 +19,14 @@ ActionController::Routing::Routes.draw do |map|
   map.resource :session
   map.resource :home
 
+  map.with_options :controller => 'study' do |study|
+    study.study '/study', :action => 'index', :conditions => {:method => 'get'}
+    study.study '/study', :action => 'create', :conditions => {:method => 'post'}
+  end
+  
   map.username '/:username', :controller => 'users', :action => 'show'
   map.follow '/:username/follow', :controller => 'users', :action => 'follow'
   map.followers '/:username/followers', :controller => 'users', :action => 'followers'
   map.following '/:username/following', :controller => 'users', :action => 'following'
   map.root :controller => 'home', :action => 'index'
-  
-  map.with_options :controller => 'study' do |study|
-    study.study '/study', :action => 'index', :conditions => {:method => 'get'}
-    study.study '/study', :action => 'create', :conditions => {:method => 'post'}
-  end
 end
