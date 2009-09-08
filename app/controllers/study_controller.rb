@@ -3,9 +3,9 @@ class StudyController < ApplicationController
   end
   
   def create
-    if Study.deliver_contact(params[:contact])
+    if Study.deliver_study(params[:study])
       flash[:notice] = "Thank you for participating in our study!"
-      redirect_to(contact_path)
+      redirect_to(study_path)
     else
       flash.now[:error] = "An error occurred while submitting your form. Please try again or conact study@soundwalks.org."
       render :index

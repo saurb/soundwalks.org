@@ -1,5 +1,5 @@
 class Study < ActionMailer::Base
-  def contact(email_params)
+  def study(email_params)
     subject "[soundwalks.org] " << email_params[:subject]
     recipients "study@soundwalks.org"
     from email_pararms[:email]
