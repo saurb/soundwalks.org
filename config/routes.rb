@@ -24,4 +24,9 @@ ActionController::Routing::Routes.draw do |map|
   map.followers '/:username/followers', :controller => 'users', :action => 'followers'
   map.following '/:username/following', :controller => 'users', :action => 'following'
   map.root :controller => 'home', :action => 'index'
+  
+  map.with_options :controller => 'study' do |study|
+    study.study '/study', :action => 'index', :conditions => {:method => 'get'}
+    study.study '/study', :action => 'create', :conditions => {:method => 'post'}
+  end
 end
