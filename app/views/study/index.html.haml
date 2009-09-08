@@ -2,7 +2,7 @@
 	- @sounds.each do |sound|
 		%p
 			%object{:type=>"audio/x-wav", :data=>"#{soundwalk_sound_path(sound.soundwalk, sound)}.wav", :width=>"200", :height=>"20"}
-				%param{:name=>"src", :value="#{soundwalk_sound_path(sound.soundwalk, sound)}.wav"}
+				%param{:name=>"src", :value=>"#{soundwalk_sound_path(sound.soundwalk, sound)}.wav"}
 				%param{:name=>"autoplay", :value=>"false"}
 				%param{:name=>"autoStart", :value=>"0"}
 				alt : 
