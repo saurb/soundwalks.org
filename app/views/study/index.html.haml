@@ -2,12 +2,12 @@
 	- @sounds.each do |sound|
 		%p
 			%object{:type=>"audio/x-wav", :data=>"#{soundwalk_sound_path(sound.soundwalk, sound)}.wav", :width=>"200", :height=>"20"}
-		  		%param{:name=>"src", :value="#{soundwalk_sound_path(sound.soundwalk, sound)}.wav"}
-		  		%param{:name=>"autoplay", :value=>"false"}
-		  		%param{:name=>"autoStart", :value=>"0"}
-		  		alt : 
+				%param{:name=>"src", :value="#{soundwalk_sound_path(sound.soundwalk, sound)}.wav"}
+				%param{:name=>"autoplay", :value=>"false"}
+				%param{:name=>"autoStart", :value=>"0"}
+				alt : 
 				%a{:href=>"#{soundwalk_sound_path(sound.soundwalk, sound)}.wav"} "#{soundwalk_sound_path(sound.soundwalk, sound)}.wav"
-			
+				
 			= form.label "tags[#{sound.id}]"
 			= form.text_field "tags[#{sound.id}]"
 			%input{:type => 'hidden', :name => "names[#{sound.id}]", :value => sound.filename}
