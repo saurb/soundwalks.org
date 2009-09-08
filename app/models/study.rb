@@ -1,12 +1,11 @@
 class Study < ActionMailer::Base
-  def study(email_params)
-    sound_ids = email_params[:tags]
-    sound_names = email_params[:names]
-    tags = email_params[:tags]
+  def study(sound_ids, tags)
+    names = []
     
     sounds = Sound.find(:all, :conditions => {:id => sound_ids})
     sounds.each do |sound|
       sound.study_coverage += 1
+      names.push sound.filename
       sound.save
     end
     
@@ -19,6 +18,6 @@ class Study < ActionMailer::Base
     puts sound_names
     puts tags
     
-    body :ids => sound_ids, :names => sound_names, :tags => tags
+    body :names => sound_names, :tags => tags
   end
 end

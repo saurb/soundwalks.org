@@ -4,7 +4,7 @@ class StudyController < ApplicationController
   end
   
   def create
-    if Study.deliver_study(params[:study])
+    if Study.deliver_study(params[:ids], params[:tags])
       flash[:notice] = "Thank you for participating in our study!"
       redirect_to(study_path)
     else
