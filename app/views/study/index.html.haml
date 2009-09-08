@@ -7,8 +7,7 @@
 				%param{:name=>"autoStart", :value=>"0"}
 				alt : 
 				%a{:href=>"#{soundwalk_sound_path(sound.soundwalk, sound)}.wav"} "#{soundwalk_sound_path(sound.soundwalk, sound)}.wav"
-				
-			= form.text_field "tags[]"
+			%input{:type => 'text', :name => "tags[]"}
 			%input{:type => 'hidden', :name => "names[]", :value => sound.filename}
 	%p
 		= form.submit "Send"
