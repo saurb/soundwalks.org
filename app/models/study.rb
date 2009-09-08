@@ -1,8 +1,8 @@
 class Study < ActionMailer::Base
   def study(email_params)
-    sound_ids = email_params[:tags].collect {|key, value| value}
-    sound_names = email_params[:names].collect {|key, value| value}
-    tags = email_params[:tags].collect {|key, value| value.split(",").collect {|tag| tag.chomp}}
+    sound_ids = email_params[:tags];
+    sound_names = email_params[:names];
+    tags = email_params[:tags];
     
     sounds = Sound.find(:all, :conditions => {:id => sound_ids})
     sounds.each do |sound|

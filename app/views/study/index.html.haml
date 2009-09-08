@@ -8,8 +8,7 @@
 				alt : 
 				%a{:href=>"#{soundwalk_sound_path(sound.soundwalk, sound)}.wav"} "#{soundwalk_sound_path(sound.soundwalk, sound)}.wav"
 				
-			= form.label "tags[#{sound.id}]"
-			= form.text_field "tags[#{sound.id}]"
-			%input{:type => 'hidden', :name => "names[#{sound.id}]", :value => sound.filename}
+			= form.text_field "tags[]"
+			%input{:type => 'hidden', :name => "names[]", :value => sound.filename}
 	%p
 		= form.submit "Send"
