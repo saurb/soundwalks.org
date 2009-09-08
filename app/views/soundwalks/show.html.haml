@@ -17,7 +17,7 @@
 	- max_duration = -9999999	
 	
 	- for sound in @sounds
-		- if !sound.isnil?
+		- if !sound.nil?
 			- duration = sound.samples / sound.sample_rate.to_f
 			- sum_duration += duration
 			- min_duration = duration if duration < min_duration
