@@ -18,7 +18,7 @@ class Study < ActionMailer::Base
     for i in 0...tags.size
       tags[i] = tags[i].split(",")
       for j in 0...tags[i].size
-        tags[i][j] = tags[i][j].chomp(' ')
+        tags[i][j] = tags[i][j].strip
       end
       tags[i] = tags[i].join(",")
     end
