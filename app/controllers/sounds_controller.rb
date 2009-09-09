@@ -28,7 +28,7 @@ class SoundsController < ApplicationController
       format.xml {render :xml => @sound}
       format.js {render :json => @sound.to_json(:methods => [:formatted_lat, :formatted_lng, :formatted_recorded_at])}
       format.wav {send_file @sound.full_filename, :type => 'audio/x-wav'}
-      format.mp3 {send_file @sound.full_filename + '.preview.mp3', :type => 'audio/mpeg'}
+      format.mp3 {send_file @sound.full_filename + '.mp3', :type => 'audio/mpeg'}
     end
   end
   
