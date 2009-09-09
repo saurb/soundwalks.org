@@ -13,10 +13,9 @@
 	- form_for(:study, :url => sendstudy_path) do |form|
 		- @sounds.each do |sound|
 			%p{:style=>'text-align:center'}
-				%a{:href=>"#{soundwalk_sound_path(sound.soundwalk, sound)}.wav"} #{sound.filename}
+				%embed{:type => "application/x-shockwave-flash", :src => "http://www.google.com/reader/ui/3247397568-audio-player.swf?audioUrl=#{soundwalk_sound_url(sound.soundwalk, sound)}.mp3", :width => "10em", :height => "27", :allowscriptaccess => "never", :quality => "best", :bgcolor => "#ffffff", :wmode => "window", :flashvars => "playerMode=embedded"}
 				%input{:type => 'text', :name => "tags[]", :style=>'width: 30em'}
 				%input{:type => 'hidden', :name => "ids[]", :value => sound.id}
 		%p{:style=>'text-align:center'}
 			= form.submit "Send"
 
-%script{:type => "text/javascript", :src => "http://mediaplayer.yahoo.com/js"}
