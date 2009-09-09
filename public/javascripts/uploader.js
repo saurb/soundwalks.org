@@ -78,6 +78,7 @@ $(document).ready(function() {
 		},
 		'onAllCompleteWithErrors': function(event, data) {
 			$('#upload-status').text('There were problems uploading some sounds.');
+			$('#submit-new-sounds').removeAttr('disabled');
 		},
 		'onError': function(event, queueID, fileObj, errorObj) {},
 		'onComplete': function(event, queueID, fileObj, response, data) {
