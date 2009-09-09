@@ -8,13 +8,7 @@
 	When you are done, simply click the &quot;Send&quot; button. If you have any problems, please contact 
 	%a{:href=>"mailto:study@soundwalks.org"}study@soundwalks.org
 	and we will get back to you as soon as possible.
-
-- if flash[:notice]
-	%p.notice= flash[:notice]
 	
-- if flash[:error]
-	%p.error= flash[:error]
-
 %div{:style => 'text-align: center'}
 	- form_for(:study, :url => sendstudy_path) do |form|
 		- @sounds.each do |sound|
