@@ -1,4 +1,6 @@
 class StudyController < ApplicationController
+  layout 'site'
+  
   def index
     @sounds = Sound.find(:all, :order => 'study_coverage ASC', :limit => 20)
   end
