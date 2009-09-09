@@ -21,6 +21,7 @@ class Sound < ActiveRecord::Base
   
   after_attachment_saved do |record|
     record.analyze_sound
+    record.create_preview
     record.save
   end
   
@@ -140,6 +141,10 @@ class Sound < ActiveRecord::Base
     rescue
       return false
     end
+  end
+  
+  def create_preview
+    system("lame --quiet -b16 #{self.full_filename} > #{self.full_filename}.preview.mp3")
   end
   
   def formatted_lat
