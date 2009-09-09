@@ -144,7 +144,7 @@ class Sound < ActiveRecord::Base
   end
   
   def create_preview
-    system("lame --quiet -b16 #{self.full_filename}")
+    system("lame --quiet -b16 #{self.full_filename} #{self.full_filename}.mp3")
   end
   
   def formatted_lat
