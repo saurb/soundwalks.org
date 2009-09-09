@@ -13,8 +13,8 @@
 	- form_for(:study, :url => sendstudy_path) do |form|
 		- @sounds.each do |sound|
 			%p{:style=>'text-align:center'}
-				%embed{:type => "application/x-shockwave-flash", :src => "http://www.google.com/reader/ui/3247397568-audio-player.swf?audioUrl=#{soundwalk_sound_url(sound.soundwalk, sound)}.mp3", :width => "25em", :height => "27", :allowscriptaccess => "never", :quality => "best", :bgcolor => "#ffffff", :wmode => "window", :flashvars => "playerMode=embedded"}
-				%input{:type => 'text', :name => "tags[]", :style=>'width: 20em'}
+				%embed{:type => "application/x-shockwave-flash", :src => "http://www.google.com/reader/ui/3247397568-audio-player.swf?audioUrl=#{soundwalk_sound_url(sound.soundwalk, sound)}.mp3", :width => "50%", :height => "27", :allowscriptaccess => "never", :quality => "best", :bgcolor => "#ffffff", :wmode => "window", :flashvars => "playerMode=embedded"}
+				%input{:type => 'text', :name => "tags[]", :style=>'width: 50%'}
 				%input{:type => 'hidden', :name => "ids[]", :value => sound.id}
 		%p{:style=>'text-align:center'}
 			= form.submit "Send"
