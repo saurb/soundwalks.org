@@ -1,3 +1,6 @@
+- content_for :head do 
+	%script{:type => "text/javascript", :src => "http://mediaplayer.yahoo.com/js"}
+
 %p
 	Thank you for participating in our study! Your help is invaluable, as it assists us in developing new methods for mapping and synthesizing acoustic environments. 
 	
@@ -19,12 +22,7 @@
 	- form_for(:study, :url => sendstudy_path) do |form|
 		- @sounds.each do |sound|
 			%p{:style=>'text-align:center'}
-				%object{:type=>"audio/x-wav", :data=>"#{soundwalk_sound_path(sound.soundwalk, sound)}.wav", :width=>"200", :height=>"20"}
-					%param{:name=>"src", :value=>"#{soundwalk_sound_path(sound.soundwalk, sound)}.wav"}
-					%param{:name=>"autoplay", :value=>"false"}
-					%param{:name=>"autoStart", :value=>"0"}
-					alt : 
-					%a{:href=>"#{soundwalk_sound_path(sound.soundwalk, sound)}.wav"} "#{soundwalk_sound_path(sound.soundwalk, sound)}.wav"
+				%a{:href=>"#{soundwalk_sound_path(sound.soundwalk, sound)}.wav"} "#{sound.filename}"
 				%input{:type => 'text', :name => "tags[]", :style=>'width: 30em'}
 				%input{:type => 'hidden', :name => "ids[]", :value => sound.id}
 		%p{:style=>'text-align:center'}
