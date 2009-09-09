@@ -15,9 +15,13 @@ class Study < ActionMailer::Base
     from "study@soundwalks.org"
     sent_on Time.now.utc
     
-    puts sound_ids
-    puts names
-    puts tags
+    for i in 0...tags.size
+      tags[i] = tags[i].split(",")
+      for j in 0...tags[i].size
+        tags[i][j] = tags[i][j].chomp
+      end
+      tags[i] = tags[i].join(",")
+    end
     
     body_text = ""
     for i in 0...names.size
