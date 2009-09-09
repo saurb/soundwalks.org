@@ -36,7 +36,7 @@
 		%div#body
 			%div#menu
 				- if logged_in? && current_user.id && !current_user.nil?
-					- if @current_user.can_upload
+					- if @urrent_user.can_upload
 						#{link_to 'New soundwalk', new_soundwalk_path} &#124;
 						
 					#{link_to 'My profile', user_name_path(current_user)} &#124;
