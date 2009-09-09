@@ -25,7 +25,7 @@
 					%param{:name=>"autoStart", :value=>"0"}
 					alt : 
 					%a{:href=>"#{soundwalk_sound_path(sound.soundwalk, sound)}.wav"} "#{soundwalk_sound_path(sound.soundwalk, sound)}.wav"
-				%input{:type => 'text', :name => "tags[]"}
+				%input{:type => 'text', :name => "tags[]", :style=>'width: 20em'}
 				%input{:type => 'hidden', :name => "ids[]", :value => sound.id}
 		%p{:style=>'text-align:center'}
 			= form.submit "Send"
