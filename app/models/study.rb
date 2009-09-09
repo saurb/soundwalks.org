@@ -1,11 +1,11 @@
 class Study < ActionMailer::Base
   def study(sound_ids, tags)
-    names = []
+    names = Array.new(sound_ids.size, 0)
     
     sounds = Sound.find(:all, :conditions => {:id => sound_ids})
     sounds.each do |sound|
       sound.study_coverage += 1
-      names.push sound.filename
+      names[sound_ids.index(sound.id)] = sound.filename
       sound.save
     end
     
@@ -17,7 +17,6 @@ class Study < ActionMailer::Base
     puts sound_ids
     puts names
     puts tags
-    
     
     body_text = ""
     for i in 0...names.size
