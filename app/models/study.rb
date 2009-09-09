@@ -1,6 +1,7 @@
 class Study < ActionMailer::Base
   def study(sound_ids, tags)
-    names = Array.new(sound_ids.size, 0)
+    names = Array.new(sound_ids.size, "")
+    sound_ids = sound_ids.collect {|id| id.to_i }
     
     sounds = Sound.find(:all, :conditions => {:id => sound_ids})
     sounds.each do |sound|
