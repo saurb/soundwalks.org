@@ -3,9 +3,11 @@
 	
 %p
 	For each of the following sounds, please press the play button next to each sound and then provide some descriptive tags that describe what you hear. Separate multiple tags with commas.
-	%br
+
+%p
 	For example: &quot;frog,ribbit,creature,pond,water&quot;
-	%br
+
+%p
 	When you are done, simply click the &quot;Send&quot; button.
 
 %p
@@ -17,16 +19,17 @@
 - if flash[:error]
 	%p.error= flash[:error]
 
-- form_for(:study, :url => sendstudy_path) do |form|
-	- @sounds.each do |sound|
+%div{:style => 'text-align: center'}
+	- form_for(:study, :url => sendstudy_path) do |form|
+		- @sounds.each do |sound|
+			%p
+				%object{:type=>"audio/x-wav", :data=>"#{soundwalk_sound_path(sound.soundwalk, sound)}.wav", :width=>"200", :height=>"20"}
+					%param{:name=>"src", :value=>"#{soundwalk_sound_path(sound.soundwalk, sound)}.wav"}
+					%param{:name=>"autoplay", :value=>"false"}
+					%param{:name=>"autoStart", :value=>"0"}
+					alt : 
+					%a{:href=>"#{soundwalk_sound_path(sound.soundwalk, sound)}.wav"} "#{soundwalk_sound_path(sound.soundwalk, sound)}.wav"
+				%input{:type => 'text', :name => "tags[]"}
+				%input{:type => 'hidden', :name => "ids[]", :value => sound.id}
 		%p
-			%object{:type=>"audio/x-wav", :data=>"#{soundwalk_sound_path(sound.soundwalk, sound)}.wav", :width=>"200", :height=>"20"}
-				%param{:name=>"src", :value=>"#{soundwalk_sound_path(sound.soundwalk, sound)}.wav"}
-				%param{:name=>"autoplay", :value=>"false"}
-				%param{:name=>"autoStart", :value=>"0"}
-				alt : 
-				%a{:href=>"#{soundwalk_sound_path(sound.soundwalk, sound)}.wav"} "#{soundwalk_sound_path(sound.soundwalk, sound)}.wav"
-			%input{:type => 'text', :name => "tags[]"}
-			%input{:type => 'hidden', :name => "ids[]", :value => sound.id}
-	%p
-		= form.submit "Send"
+			= form.submit "Send"
