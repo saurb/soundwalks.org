@@ -1,24 +1,31 @@
 - content_for :title do
 	Sound Tagging Study
-	
-%p
-	Thank you for participating in our study! Your help is invaluable, as it assists us in developing new methods for mapping and synthesizing acoustic environments. 
-	
-%p
-	This study should take approximately 5 minutes. For each of the following sounds, please press the play button next to each sound and then provide some descriptive tags that describe what you hear. Separate multiple tags with commas. For example: &quot;frog,ribbit,creature,pond,water&quot; might be appropriate tags for a sound of a frog croaking near a lake.
 
-%p
-	When you are done, simply click the &quot;Send&quot; button. If you have any problems, please contact 
-	%a{:href=>"mailto:study@soundwalks.org"}study@soundwalks.org
-	and we will get back to you as soon as possible.
+%div{:style => 'margin: 0 auto 0; width: 60em'}
+	- if flash[:error]
+		%p{:style => 'color:#A00000'}
+			= flash[:error]
+	- if flash[:notice]
+		%p{:style => 'color:#00A000'}
+			= flash[:notice]
+	%p
+		Thank you for participating in our study! Your help is invaluable, as it assists us in developing new methods for mapping and synthesizing acoustic environments. 
 	
-%div{:style => 'text-align: center'}
-	- form_for(:study, :url => sendstudy_path) do |form|
-		- @sounds.each do |sound|
+	%p
+		This study should take approximately 5 minutes. For each of the following sounds, please press the play button next to each sound and then provide some descriptive tags that describe what you hear. Separate multiple tags with commas. For example, &quot;frog, ribbit, creature, pond, water&quot; might be appropriate tags for a sound of a frog croaking near a lake.
+
+	%p
+		When you are done, simply click the &quot;Send&quot; button. If you have any problems, please contact 
+		%a{:href=>"mailto:study@soundwalks.org"}study@soundwalks.org
+		and we will get back to you as soon as possible.
+	
+	%div{:style => 'text-align: center'}
+		- form_for(:study, :url => sendstudy_path) do |form|
+			- @sounds.each do |sound|
+				%p{:style=>'text-align:center'}
+					%embed{:type => "application/x-shockwave-flash", :src => "http://www.google.com/reader/ui/3247397568-audio-player.swf?audioUrl=#{soundwalk_sound_url(sound.soundwalk, sound)}.mp3", :width => "45%", :height => "27", :allowscriptaccess => "never", :quality => "best", :bgcolor => "#ffffff", :wmode => "window", :flashvars => "playerMode=embedded"}
+					%input{:type => 'text', :name => "tags[]", :style=>'width: 45%'}
+					%input{:type => 'hidden', :name => "ids[]", :value => sound.id}
 			%p{:style=>'text-align:center'}
-				%embed{:type => "application/x-shockwave-flash", :src => "http://www.google.com/reader/ui/3247397568-audio-player.swf?audioUrl=#{soundwalk_sound_url(sound.soundwalk, sound)}.mp3", :width => "45%", :height => "27", :allowscriptaccess => "never", :quality => "best", :bgcolor => "#ffffff", :wmode => "window", :flashvars => "playerMode=embedded"}
-				%input{:type => 'text', :name => "tags[]", :style=>'width: 45%'}
-				%input{:type => 'hidden', :name => "ids[]", :value => sound.id}
-		%p{:style=>'text-align:center'}
-			= form.submit "Send"
+				= form.submit "Send"
 
