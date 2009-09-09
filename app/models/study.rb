@@ -9,7 +9,7 @@ class Study < ActionMailer::Base
       sound.save
     end
     
-    subject "soundwalks.org study results"
+    subject "soundwalks.org study results #{Time.now.utc}"
     recipients "study@soundwalks.org"
     from "study@soundwalks.org"
     sent_on Time.now.utc
