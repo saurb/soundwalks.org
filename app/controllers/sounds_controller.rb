@@ -1,5 +1,6 @@
 require 'mime/types'
 Mime::Type.register "audio/x-wav", :wav
+Mime::Type.register "audio/mpeg", :mp3
 
 class SoundsController < ApplicationController
   layout 'site'
