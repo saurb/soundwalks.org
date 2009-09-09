@@ -18,6 +18,12 @@ class Study < ActionMailer::Base
     puts names
     puts tags
     
-    body :names => names, :tags => tags
+    
+    body_text = ""
+    for i in 0...names.size
+      body_text += "#{names[i]},#{tags[i]}\n"
+    end
+    
+    body :body_text => body_text
   end
 end
