@@ -37,8 +37,10 @@ class Sound < ActiveRecord::Base
   def localize
     point = self.soundwalk.interpolate(self.recorded_at)
     
-    self.lat = 0#point.first
-    self.lng = 0#point.second
+    self.lat = point.first
+    self.lng = point.second
+    self.lat = 0 if self.lat.nan?
+    self.lng = 0 if self.lng.nan?
   end
   
   def analyze_sound
