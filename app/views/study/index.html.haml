@@ -36,8 +36,8 @@
 								%param{:name=>"_cx", :value=>"10583"}
 								%param{:name=>"_cy", :value=>"714"}
 								%param{:name=>"FlashVars," :value=""}
-								%param{:name=>"Movie", :value=>"http://www.google.com/reader/ui/3247397568-audio-player.swf?audioUrl=http://www.labnol.org/assets/mp3/unofficial-yahoo-song.mp3"}
-								%param{:name=>"Src", :value=>"http://www.google.com/reader/ui/3247397568-audio-player.swf?audioUrl=http://www.labnol.org/assets/mp3/unofficial-yahoo-song.mp3"}
+								%param{:name=>"Movie", :value=>"http://www.google.com/reader/ui/3247397568-audio-player.swf?audioUrl=#{soundwalk_sound_url(sound.soundwalk, sound)}.mp3"}
+								%param{:name=>"Src", :value=>"http://www.google.com/reader/ui/3247397568-audio-player.swf?audioUrl=#{soundwalk_sound_url(sound.soundwalk, sound)}.mp3"}
 								%param{:name=>"WMode", :value=>"Window"}
 								%param{:name=>"Play", :value=>"0"}
 								%param{:name=>"Loop", :value=>"-1"}
@@ -58,7 +58,7 @@
 								%param{:name=>"ProfilePort", :value=>"0"}
 								%param{:name=>"AllowNetworking", :value=>"all"}
 								%param{:name=>"AllowFullScreen", :value=>"false"}
-								%embed{:type=>"application/x-shockwave-flash", :src=>"http://www.google.com/reader/ui/3247397568-audio-player.swf?audioUrl=http://www.labnol.org/assets/mp3/unofficial-yahoo-song.mp3", :allowscriptaccess=>"never", :quality=>"best", :bgcolor=>"#ffffff", :wmode=>"window", :flashvars=>"playerMode=embedded", :pluginspage=>"http://www.macromedia.com/go/getflashplayer", :height=>"27", :width=>"400"}
+								%embed{:type=>"application/x-shockwave-flash", :src=>"http://www.google.com/reader/ui/3247397568-audio-player.swf?audioUrl=#{soundwalk_sound_url(sound.soundwalk, sound)}.mp3", :allowscriptaccess=>"never", :quality=>"best", :bgcolor=>"#ffffff", :wmode=>"window", :flashvars=>"playerMode=embedded", :pluginspage=>"http://www.macromedia.com/go/getflashplayer", :height=>"27", :width=>"400"}
 							%td
 								%input{:type => 'text', :name => "tags[]", :style=>'width: 100%'}
 								%input{:type => 'hidden', :name => "ids[]", :value => sound.id}
