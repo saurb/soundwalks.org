@@ -1,6 +1,6 @@
 class StudyController < ApplicationController
   def index
-    @sounds = Sound.find(:all, :order => 'study_coverage ASC', :limit => 10)
+    @sounds = Sound.find(:all, :order => 'RAND()', :limit => 10)
   end
   
   def create
