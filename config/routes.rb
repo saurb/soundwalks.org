@@ -26,5 +26,6 @@ ActionController::Routing::Routes.draw do |map|
   map.follow '/:username/follow', :controller => 'users', :action => 'follow'
   map.followers '/:username/followers', :controller => 'users', :action => 'followers'
   map.following '/:username/following', :controller => 'users', :action => 'following'
-  map.root :controller => 'home', :action => 'index'
+  #map.root :controller => 'home', :action => 'index'
+  map.root :controller => 'study', :action => 'index'
 end
