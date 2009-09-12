@@ -61,7 +61,7 @@
 										%param{:name=>"ProfilePort", :value=>"0"}
 										%param{:name=>"AllowNetworking", :value=>"all"}
 										%param{:name=>"AllowFullScreen", :value=>"false"}
-										%embed{:type=>"application/x-shockwave-flash", :src=>"http://www.google.com/reader/ui/3247397568-audio-player.swf?audioUrl=#{soundwalk_sound_url(sound.soundwalk, sound)}.mp3", :allowscriptaccess=>"never", :quality=>"best", :bgcolor=>"#ffffff", :wmode=>"window", :flashvars=>"playerMode=embedded", :pluginspage=>"http://www.macromedia.com/go/getflashplayer", :height=>"27", :width=>"400"}
+										%embed{:type=>"application/x-shockwave-flash", :src=>"http://www.google.com/reader/ui/3247397568-audio-player.swf?audioUrl=#{soundwalk_sound_url(sound.soundwalk, sound)}.mp3", :allowscriptaccess=>"never", :quality=>"best", :bgcolor=>"#ffffff", :wmode=>"window", :flashvars=>"playerMode=embedded", :pluginspage=>"http://www.macromedia.com/go/getflashplayer", :height=>"27", :width=>"100%"}
 								%td{:style=>"width: 60%"}
 									%input{:type => 'text', :name => "tags[]", :style=>'width: 100%'}
 									%input{:type => 'hidden', :name => "ids[]", :value => sound.id}
