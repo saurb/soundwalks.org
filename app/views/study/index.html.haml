@@ -28,7 +28,7 @@
 					and we will get back to you as soon as possible.
 	
 				- form_for(:study, :url => sendstudy_path) do |form|
-					%table{:style => 'width: 100%'}
+					%table{:style => 'width: 100%; table-layout: fixed'}
 						- @sounds.each do |sound|
 							%tr
 								%td{:style=>'width: 10%'}
