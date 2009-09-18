@@ -23,7 +23,7 @@
 					%img{:src => '/images/soundwalks.png', :alt => 'Soundwalks'}
 			%div#user-panel
 				- if logged_in? && current_user.id && !current_user.nil?
-					= avatar_tag(current_user, :size => 25, :alt => current_user.name)
+					%img{:src => avatar_url_for(current_user, :size => 25), :alt => ''}
 					Hi, #{first_name current_user, :force_third_person => true}! &nbsp;&nbsp;
 					%a{:title => 'Settings', :href => '/settings'} Settings
 					| 

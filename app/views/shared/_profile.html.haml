@@ -1,5 +1,6 @@
 %div#profile
-	%div.avatar= link_to avatar_tag(user, :size => 92, :alt => user.name), user
+	%div.avatar
+		= link_to "<img src='#{avatar_url_for(user, :size => 92)}' alt = '#{user.name}' />", user
 	- if defined? title
 		- if defined? title_markup
 			= title

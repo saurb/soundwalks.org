@@ -1,6 +1,6 @@
 %li.stream-item{:id => "soundwalk-#{soundwalk.id}", 'data-lat' => soundwalk.lat, 'data-lng' => soundwalk.lng, 'onclick' => "window.location='#{soundwalk_path(soundwalk)}'"}
 	- if show_users
-		%div.stream-item-avatar=link_to(avatar_tag(soundwalk.user, :size => 50), user_name_path(soundwalk.user))
+		%div.stream-item-avatar=link_to("<img src='#{avatar_url_for(soundwalk.user, :size => 50)}' alt = '#{soundwalk.user.name}' />", user_name_path(soundwalk.user))
 	
 	%div.stream-item-content
 		%div.stream-item-meta

@@ -10,4 +10,4 @@
 	%h2 #{first_name @user, {:capitalize => true}} #{first_name_verb @user} following #{pluralize(@user.friendships.size, 'person')}.
 	= render :partial => 'user_list', :locals => {:user => @user, :users => @user.friends}
 - else
-	%h2 #{first_name @user} #{first_name_verb_negative @user} following anyone.
+	%h2 #{first_name @user, {:capitalize => true}} #{first_name_verb_negative @user} following anyone.

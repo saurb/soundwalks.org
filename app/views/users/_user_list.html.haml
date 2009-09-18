@@ -1,7 +1,7 @@
 %div#friend-list
 	- users.each do |friend|
 		%div.friend-box
-			%p.avatar= avatar_tag(friend, :size => 92, :alt => friend.name)
+			%p.avatar= link_to "<img src='#{avatar_url_for(friend, :size => 92)}' alt = '#{friend.name}' />", "/#{friend.login}"
 			%p.name= link_to friend.name, "/#{friend.login}"
 			%p= render :partial => 'follow_button', :locals => {:user => friend}
 			- if friend.soundwalks.size > 0

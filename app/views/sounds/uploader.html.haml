@@ -7,7 +7,7 @@
 	= render :partial => 'meta/upload'
 
 - content_for :javascript do
-	= javascript_include_tag 'lib/jquery', 'lib/jquery.uploadify', 'form-buttons', 'stylize-file', 'uploader'
+	= javascript_include_tag 'lib/jquery', 'lib/jquery.uploadify', 'form-buttons', 'stylize-file', 'http://bp.yahooapis.com/2.4.17/browserplus-min.js', 'http://bp.yahooapis.com/toolbox/uploader/1.0.6/uploader-min.js', 'uploader'
 
 %h1 Add Sounds to #{@soundwalk.title}
 
