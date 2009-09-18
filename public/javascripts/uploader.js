@@ -39,6 +39,9 @@ $(document).ready(function() {
 		'simUploadLimit':		4, 
 		'wmode': 				'transparent',
 		'displayData': 			'speed',
+		'onSelect' : function(event, data) {
+			disable_button($('#submit-new-sounds'));
+		},
 		'onSelectOnce': function(event, data) {
 			// Move the browse button to the top and shrink it, add upload status.
 			if ($('#submit-new-sounds').length == 0) {
@@ -52,33 +55,41 @@ $(document).ready(function() {
 				$('#upload-status').text('Uploading sounds . . .');
 				
 				// jquery.uploadify.js
-				$('#file-uploader').fileUploadSettings('width', '160px');
-				$('#file-uploader').fileUploadSettings('height', '40px');
+				$('#file-uploader').fileUploadSettings('width', '10em');
+				$('#file-uploader').fileUploadSettings('height', '2.8em');
 				
 				// Flash embed element.
-				$('#file-uploaderUploader').attr('width', '160px');
-				$('#file-uploaderUploader').attr('height', '40px');
+				$('#file-uploaderUploader').attr('width', '10em');
+				//$('#file-uploaderUploader').attr('height', '2.8em');
 				
 				// Container.
-				$('#file-uploader-container').css({'margin': '1em 0 0 0', 'width': '160px', 'height': '40px'});
+				$('#file-uploader-container').css({'margin': '1em 0 0 0', 'width': '10em', 'height': '2.8em'});
 				
 				// Place a "save sounds" continue button at the bottom.
-				$('#new_sound').append("<input type='button' class='button' name='submit' id='submit-new-sounds' value='Save sounds' disabled />");
-				buttonify($('#submit-new-sounds'));
-				$('#submit-new-sounds').click(function() {
-					if (!$(this).attr('disabled')) {
-						window.location = script;
-					}
-				});
+				$('#uploader').append("<input type='button' class='button-disabled' name='submit' id='submit-new-sounds' value='Continue' style='float: right; margin-right: 2em; margin-top: 1em; height: 2.8em' disabled='disabled' />");
 			}
 		},
 		'onAllComplete': function(event, data) {
 			$('#upload-status').text('Upload complete.');
-			$('#submit-new-sounds').removeAttr('disabled');
+			
+			buttonify($('#submit-new-sounds'));
+			
+			$('#submit-new-sounds').click(function() {
+				if (!$(this).attr('disabled')) {
+					window.location = script;
+				}
+			});
 		},
 		'onAllCompleteWithErrors': function(event, data) {
 			$('#upload-status').text('There were problems uploading some sounds.');
-			$('#submit-new-sounds').removeAttr('disabled');
+			
+			buttonify($('#submit-new-sounds'));
+			
+			$('#submit-new-sounds').click(function() {
+				if (!$(this).attr('disabled')) {
+					window.location = script;
+				}
+			});
 		},
 		'onError': function(event, queueID, fileObj, errorObj) {},
 		'onComplete': function(event, queueID, fileObj, response, data) {
@@ -87,16 +98,13 @@ $(document).ready(function() {
 			
 			div = $("#file-uploader" + queueID);
 			div.find('.cancel .delete_button').text('');
-			div.find('.cancel .delete_text').text('');
-			div.find('.percentage').text(' - Completed');
+			div.find('.cancel').text('Completed');
+			div.find('.percentage').text('');
 			
 			div.removeClass('fileUploadQueueItem-Active');
 			div.addClass('fileUploadQueueItem-Complete');
-			
-			div.append("<div class='recorded_at'>Recorded: " + responseData.sound.recorded_at + "</div>");
-			div.append("<div class='location'>Location: " + coordinates_text(responseData.sound.lat, 'lat') + " " + coordinates_text(responseData.sound.lng, 'lng') + "</div>");
-			
-			div.find('.fileUploadProgress').remove();
+						
+			//div.find('.progress').remove();
 		}, 
 		'onProgress': function(event, queueID, fileObj, data) {}
 	});

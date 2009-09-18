@@ -129,8 +129,18 @@ if(jQuery)(
 						<param name="allowScriptAccess" value="' + settings.scriptAccess + '">\
 						<param name="swfversion" value="9.0.0.0" />\
 						</object>';
-					} else
-						flashElement = '<embed src="' + settings.uploader + '?fileUploadID=' + $(this).attr("id") + data + '" quality="high" width="' + settings.width + '" height="' + settings.height + '" id="' + $(this).attr("id") + 'Uploader" class="fileUploaderBtn" name="' + $(this).attr("id") + 'Uploader" allowScriptAccess="' + settings.scriptAccess + '" wmode="' + settings.wmode + '" type="application/x-shockwave-flash" />';
+					} else {
+						flashElement = '<embed src="' + settings.uploader + '?fileUploadID=' + $(this).attr("id") + data + '"\
+							quality="high"\
+							width="' + settings.width + '"\
+							height="' + settings.height + '"\
+							id="' + $(this).attr("id") + 'Uploader"\
+							class="fileUploaderBtn"\
+							name="' + $(this).attr("id") + 'Uploader"\
+							allowScriptAccess="' + settings.scriptAccess + '"\
+							wmode="' + settings.wmode + '"\
+							type="application/x-shockwave-flash" />';
+					}
 					
 					if (settings.onInit() !== false) {
 						$(this).css('display','none');
@@ -140,7 +150,7 @@ if(jQuery)(
 						} else
 							$(this).after(flashElement);
 						
-						$("#" + $(this).attr('id')).parent().parent().parent().append('<div id="' + $(this).attr('id') + 'Queue" class="fileUploadQueue"></div>');
+						$("#" + $(this).attr('id')).parent().parent().parent().append('<div id="' + $(this).attr('id') + 'Queue" class="fileUploadQueue" style="visibility: hidden"></div>');
 					}
 					
 					$(this).bind("rfuSelect", {'action': settings.onSelect}, function(event, queueID, fileObj) {
@@ -165,13 +175,19 @@ if(jQuery)(
 							else
 								fileName = fileObj.name;
 							
+							$('#' + $(this).attr('id') + 'Queue').css({'visibility' : 'visible'});
+							
 							$('#' + $(this).attr('id') + 'Queue').append('<div id="' + $(this).attr('id') + queueID + '" class="fileUploadQueueItem-Active">\
+									<div class="filename">' + fileName + ' (' + byteSize + suffix + ')</div>\
+									<div class="percentage">&nbsp;</div>\
 									<div class="cancel">\
-										<a href="javascript:$(\'#' + $(this).attr('id') + '\').fileUploadCancel(\'' + queueID + '\')"><span class="delete_button">X</span> <span class="delete_text">Cancel</span></a>\
+										<a href="javascript:$(\'#' + $(this).attr('id') + '\').fileUploadCancel(\'' + queueID + '\')">\
+											<span class="delete_button">X</span>\
+											<span class="delete_text">Cancel</span>\
+										</a>\
 									</div>\
-									<span class="fileName">' + fileName + ' (' + byteSize + suffix + ')</span><span class="percentage">&nbsp;</span>\
-									<div class="fileUploadProgress" style="width: 100%;">\
-										<div id="' + $(this).attr('id') + queueID + 'ProgressBar" class="fileUploadProgressBar" style="width: 1px; height: 3px;"></div>\
+									<div class="progress" style="width: 100%;">\
+										<div id="' + $(this).attr('id') + queueID + 'ProgressBar" class="bar" style="width: 1px"></div>\
 									</div>\
 								</div>');
 						}
@@ -241,8 +257,6 @@ if(jQuery)(
 					
 					$(this).bind("rfuComplete", {'action': settings.onComplete}, function(event, queueID, fileObj, response, data) {
 						if (event.data.action(event, queueID, fileObj, unescape(response), data) !== false) {
-							//$("#" + $(this).attr('id') + queueID).fadeOut(250, function() { $("#" + $(this).attr('id') + queueID).remove()});
-							//$("#" + $(this).attr('id') + queueID + " .percentage").text(' - Completed');
 						}
 					});
 					

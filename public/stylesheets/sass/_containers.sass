@@ -43,6 +43,7 @@
 	border = "1px solid " + !light_blue
 	background-color: white
 	text-align: left
+	z-index: 0
 	
 	#menu 
 		text-align: left
@@ -50,9 +51,11 @@
 		padding: 0.5em
 		background-color = !very_light_blue
 		border-bottom = !dashed_border
+		z-index: 1
 
 	#content
 		padding: 1em
+		z-index: 1
 
 	#footer
 		margin-top: 1em
@@ -61,6 +64,7 @@
 		border-top = !dashed_border
 		font-size: 0.7em
 		text-align: right
+		z-index: 1
 		
 	&.little
 		width = !little_width
