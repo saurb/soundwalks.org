@@ -26,7 +26,7 @@ class SoundsController < ApplicationController
     @sounds = Sound.find_within(params[:distance], :origin => [params[:lat], params[:lng]])
     
     respond_to do |format|
-      format.js {render :json => @sounds.collect{|sound| sound.id}, :callback => params[:callback], :status => :ok}
+      format.js {render :json => @sounds, :callback => params[:callback], :status => :ok}
     end
   end
   
