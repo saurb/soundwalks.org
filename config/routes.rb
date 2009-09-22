@@ -19,6 +19,8 @@ ActionController::Routing::Routes.draw do |map|
   map.resource :session
   map.resource :home
   
+  map.sounds '/sounds', :controller => 'sounds', :action => 'allindex', :method => 'get'
+  
   map.study '/study', :controller => 'study', :action => 'index', :method => 'get'
   map.sendstudy '/sendstudy', :controller => 'study', :action => 'create', :method => 'post'
   

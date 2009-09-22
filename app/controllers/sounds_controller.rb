@@ -22,6 +22,14 @@ class SoundsController < ApplicationController
     end
   end
   
+  def allindex
+    @sounds = Sound.find(:all, :origin => [params[:lat], params[:lng]], :within => params[:within])
+    
+    respond_to do |format|
+      format.js {render :json => @sounds.collect{|sound| sound.id}, :callback => params[:callback], :status => :ok}
+    end
+  end
+  
   # GET /soundwalks/:soundwalk_id/sounds/:id
   def show        
     respond_to do |format|
