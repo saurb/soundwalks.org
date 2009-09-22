@@ -17,7 +17,7 @@ class SoundwalksController < ApplicationController
     respond_to do |format|
       format.html
       format.xml {render :xml => @soundwalks}
-      format.js {render :json => @soundwalks, :status => :ok, :callback => params[:callback]}
+      format.js {render :json => @soundwalks.collect {|walk| walk.id}, :status => :ok, :callback => params[:callback]}
     end
   end
   
