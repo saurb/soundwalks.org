@@ -22,8 +22,9 @@ class SoundsController < ApplicationController
     end
   end
   
+  # GET /sounds
   def allindex
-    @sounds = Sound.find_within(params[:distance], :origin => [params[:lat], params[:lng]])
+    @sounds = Sound.find_within(params[:distance], :origin => [params[:lat], params[:lng]], :conditions => {:limit => 500})
     
     respond_to do |format|
       format.js {render :json => @sounds, :callback => params[:callback], :status => :ok}
