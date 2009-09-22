@@ -18,7 +18,7 @@ class SoundsController < ApplicationController
   def index
     respond_to do |format|
       format.html {redirect_to @soundwalk}
-      format.js {render :json => @soundwalk.sounds, :callback => params[:callback], :status => :ok}
+      format.js {render :json => @soundwalk.sounds.collect {|sound| sound.id}, :callback => params[:callback], :status => :ok}
     end
   end
   
