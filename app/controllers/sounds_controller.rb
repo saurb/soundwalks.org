@@ -45,7 +45,7 @@ class SoundsController < ApplicationController
           redirect_to soundwalk_sound_path(@soundwalk, @sound)
         }
         format.xml {render :xml => @sound, :status => :ok}
-        format.js {render :json => @sound.to_json(:methods => [:formatted_lat, :formatted_lng, :formatted_recorded_at, :formatted_description]), :status => :ok}
+        format.js {render :json => @sound.to_json(:methods => [:formatted_lat, :formatted_lng, :formatted_recorded_at, :formatted_description]), :status => :ok, :callback => params[:callback]}
       else
         format.html {render :action => "edit"}
         format.xml {render :xml => @sound.errors, :status => :unprocessable_entity}
