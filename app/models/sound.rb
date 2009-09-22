@@ -9,7 +9,8 @@ class Sound < ActiveRecord::Base
   has_many :features
   
   acts_as_taggable_on :tags
-  acts_as_mappable
+  acts_as_mappable :default_units => :miles, :default_formula => :flat
+  
   has_attachment :content_type => 'audio/x-wav',
                  :storage => :file_system,
                  :max_size => 10.megabytes,
