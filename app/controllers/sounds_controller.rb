@@ -20,10 +20,11 @@ class SoundsController < ApplicationController
       format.html {redirect_to @soundwalk}
       format.js {
         if params[:show] == 'sounds'
-          render :json => @soundwalk.sounds, :callback => params[:callback], :status => :ok}
+          render :json => @soundwalk.sounds, :callback => params[:callback], :status => :ok
         else
-          render :json => @soundwalk.sounds.collect {|sound| sound.id}, :callback => params[:callback], :status => :ok}
+          render :json => @soundwalk.sounds.collect {|sound| sound.id}, :callback => params[:callback], :status => :ok
         end
+      }
     end
   end
   
