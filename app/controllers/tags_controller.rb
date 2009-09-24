@@ -19,7 +19,7 @@ class TagsController < ApplicationController
     current_user.tag(@sound, :with => tags, :on => :tags)
     
     user_tags = current_user.owned_taggings.find(:all, :conditions => {:taggable_id => @sound}).collect {|tagging| tagging.tag}
-		
+    
     respond_to do |format|
       format.xml {render :xml => {:all_tags => @sound.tags.join(', '), :user_tags => user_tags.join(', ')}, :status => :ok}
       format.js {render :json => {:all_tags => @sound.tags.join(', '), :user_tags => user_tags.join(', ')}, :status => :ok}
