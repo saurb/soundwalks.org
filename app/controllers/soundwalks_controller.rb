@@ -1,7 +1,7 @@
 class SoundwalksController < ApplicationController
   layout 'site'
   
-  before_filter :login_required#, :except => ['index', 'show']
+  before_filter :login_required, :except => ['index', 'show']
   
   append_before_filter :get_soundwalk_from_current_user, 
     :only => ['destroy', 'edit', 'update']
