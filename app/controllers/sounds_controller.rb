@@ -18,7 +18,12 @@ class SoundsController < ApplicationController
   def index
     respond_to do |format|
       format.html {redirect_to @soundwalk}
-      format.js {render :json => @soundwalk.sounds.collect {|sound| sound.id}, :callback => params[:callback], :status => :ok}
+      format.js {
+        if params[:show] == 'sounds'
+          render :json => @soundwalk.sounds, :callback => params[:callback], :status => :ok}
+        else
+          render :json => @soundwalk.sounds.collect {|sound| sound.id}, :callback => params[:callback], :status => :ok}
+        end
     end
   end
   
@@ -101,8 +106,8 @@ class SoundsController < ApplicationController
       end
     
       params[:sound]['user_id'] = current_user.id
-    
-      @sound = @soundwalk.sounds.build(params[:sound])
+      
+      @sound = @soundwalk.sounds.build(params[:sound] + 1)
     
       respond_to do |format|
         if @sound.save
