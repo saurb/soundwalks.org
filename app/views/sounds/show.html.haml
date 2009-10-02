@@ -2,7 +2,7 @@
 	#{@sound.soundwalk.title}: Sound #{@sound.id}
 
 - content_for :javascript do
-	= javascript_include_tag 'lib/jquery', 'editable', 'sounds', "http://maps.google.com/maps?file=api&amp;v=2&amp;key=#{Geokit::Geocoders::google}", 'sound-map'
+	= javascript_include_tag 'lib/jquery', 'editable', 'sounds'#, "http://maps.google.com/maps?file=api&amp;v=2&amp;key=#{Geokit::Geocoders::google}", 'sound-map'
 
 - content_for :meta do
 	= render :partial => 'meta/authenticity'

@@ -3,7 +3,7 @@
 	
 - form_for(@soundwalk, :html => {:multipart => true}) do |form|
 	%div
-		= form.label :uploaded_data, label_with_errors(@soundwalk, 'uploaded_data', 'GPS file'), :class => 'field'
+		= form.label :uploaded_data, label_with_errors(@soundwalk, 'uploaded_data', 'GPS file'), :class => 'filefield'
 		%div.fileinput= form.file_field :uploaded_data, :class => 'file'
 		
 	%div
@@ -11,7 +11,7 @@
 		= form.text_field :title, :class => 'field'
 		
 	%div
-		= form.label :description, label_with_errors(@soundwalk, 'description', 'Description'), :class => 'field'
+		= form.label :description, label_with_errors(@soundwalk, 'descriptiaon', 'Description'), :class => 'field'
 		= form.text_area :description, :class => 'field'
 		
 	%div.field-nontext
@@ -20,9 +20,10 @@
 		#{form.radio_button(:privacy, :friends)} Friends-only
 		#{form.radio_button(:privacy, :public)} Public
 		
-	- if defined? new_soundwalk
-		%div.submit-options
-			#{form.submit 'Add sounds', :name => 'continue', :class => 'button'} or
-			= form.submit 'Finish', :class => 'button'
-	- else
-		%div.submit= form.submit 'Save', :class => 'button'
+	%p{:class => 'buttons'}
+		- if defined? new_soundwalk
+			%button{:type => 'submit', :name => 'continue'} Add sounds
+			%button{:type => 'submit', :name => 'submit'} Finish
+		- else
+			%button{:type => 'submit', :name => 'submit'} Save
+			

@@ -32,7 +32,6 @@
 					%a{:title => 'Login', :href => '/login'} Login
 					|
 					%a{:title => 'Sign up', :href => '/signup'} Sign up
-			%div.clear		
 		%div#body
 			%div#menu
 				- if logged_in? && current_user.id && !current_user.nil?

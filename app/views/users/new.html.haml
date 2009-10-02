@@ -7,7 +7,7 @@
 - @user.password = nil
 
 %h1 Sign up to listen in
-%p{:style => 'text-align: center'} Soundwalks is a free social network for sharing and experiencing soundscapes through field recordings. Soundwalks is currently in private beta, so you need a secret phrase to sign up for an account.
+%p Soundwalks is a free social network for sharing and experiencing soundscapes through field recordings. Soundwalks is currently in private beta, so you need a secret phrase to sign up for an account.
 
 - if flash[:notice]
 	%p.notice= flash[:notice]
@@ -35,7 +35,9 @@
 	%div
 		= f.label :secret, label_with_errors(@user, 'secret', 'Secret'), :class => 'field'
 		= f.text_field :secret, :class => 'field'
-	
-	%div.submit
-		= submit_tag 'Sign up', :class => 'button'
+		
+	%p{:class => 'buttons'}
+		%button{:type => "submit"}
+			Sign up
+			%img{:src => "/images/play.png", :alt=>""}
 

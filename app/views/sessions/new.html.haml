@@ -29,9 +29,10 @@
 	%div
 		= check_box_tag 'remember_me', '1', @remember_me, :class => 'field-nofloat'
 		= label_tag 'remember_me', 'Remember me', :class => 'field-nofloat'
-		
-	%div.submit
-		= submit_tag 'Log in', :class => 'button'
 	
-	%div{:style => 'text-align: center'} New to Soundwalks? #{link_to "See what it's all about!", new_user_path}
+	%p{:class => 'buttons'}
+		%button{:type => "submit"}
+			Log in
+			%img{:src => "/images/play.png", :alt=>""}
+	%div{:style => 'text-align: center; clear: left'} New to Soundwalks? #{link_to "See what it's all about!", new_user_path}
 

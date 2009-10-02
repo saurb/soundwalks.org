@@ -1,23 +1,26 @@
 %li.stream-item{:id => "soundwalk-#{soundwalk.id}", 'data-lat' => soundwalk.lat, 'data-lng' => soundwalk.lng, 'onclick' => "window.location='#{soundwalk_path(soundwalk)}'"}
-	- if show_users
-		%div.stream-item-avatar=link_to("<img src='#{avatar_url_for(soundwalk.user, :size => 50)}' alt = '#{soundwalk.user.name}' />", user_name_path(soundwalk.user))
-	
 	%div.stream-item-content
-		%div.stream-item-meta
-			Posted: #{post_date soundwalk}<br />
-			Recorded: #{time_span soundwalk}
-		
-		- if logged_in? && current_user.id == soundwalk.user.id
-			%div.stream-item-delete= link_to_remote '<span class="stream-item-delete-button">X</span> Delete', :method => :delete, :url => soundwalk_url(soundwalk), :before => "cancelProp(event);"
-		
-		%span.stream-item-title
-			%img{:src => "http://www.google.com/mapfiles/marker" + "".concat(65 + index) + ".png", :style => 'float: left; margin-right: 0.5em'}
+		%div.stream-item-avatar
+			- if show_users
+				= link_to("<img src='#{avatar_url_for(soundwalk.user, :size => 50)}' alt = '#{soundwalk.user.name}' />", user_name_path(soundwalk.user))
+			%img{:src => "http://www.google.com/mapfiles/marker" + "".concat(65 + index) + ".png", :style => 'vertical-align: top'}
 			
+		%div.stream-item-meta
+			-#Posted: #{post_date soundwalk}<br />
+			- if logged_in? && current_user.id == soundwalk.user.id
+				= link_to_remote '<span class="stream-item-delete-button">X</span> Delete', :method => :delete, :url => soundwalk_url(soundwalk), :before => "cancelProp(event);"
+				%br
+				
+			#{start_time soundwalk} #{relative_start_date soundwalk}
+			
+		%span.stream-item-title
 			- if show_users
 				#{link_to(soundwalk.user.login, user_name_path(soundwalk.user), :onclick => "cancelProp(event);")} - 
 			
 			= link_to(soundwalk.title, soundwalk, :onclick => "cancelProp(event);")
-		
-		%span.stream-item-description
-			#{truncate_words(strip_html(textilize(soundwalk.description), []), 20, "&hellip;")}
 			
+		%span.stream-item-description
+			#{truncate_characters(strip_html(textilize(soundwalk.description), []), 140, "&hellip;")}
+			
+		%div.clear
+		
