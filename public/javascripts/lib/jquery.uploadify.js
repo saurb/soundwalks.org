@@ -79,10 +79,11 @@ if(jQuery)(
 				if (flashVer >= 9) {
 					$(this).each(function(){
 						settings = $.extend({
-						uploader: 'uploader.swf', script: 'uploader.php', folder: '', height: 30, width: 110, cancelImg: 'cancel.png', 
+						uploader: 'uploader.swf', script: 'uploader.php', folder: '', cancelImg: 'cancel.png', 
 						wmode: 'transparent', scriptAccess: 'sameDomain', fileDataName: 'Filedata', displayData: 'percentage',
 						onInit: function() {}, onSelect: function() {}, onCheck: function() {}, onCancel: function() {},
-						onError: function() {}, onProgress: function() {}, onComplete: function() {}
+						onError: function() {}, onProgress: function() {}, onComplete: function() {}, onMouseOver: function() {},
+						onMouseOut: function() {}, onMouseDown: function() {}
 					}, options);
 					
 					var pagePath = location.pathname;
@@ -91,8 +92,6 @@ if(jQuery)(
 					pagePath = pagePath.join('/') + '/';
 					
 					var data = '&pagepath=' + pagePath;
-					if (settings.buttonImg) data += '&buttonImg=' + escape(settings.buttonImg);
-					if (settings.buttonText) data += '&buttonText=' + escape(settings.buttonText);
 					if (settings.rollover) data += '&rollover=true';
 					
 					data += '&script=' + settings.script;
@@ -107,11 +106,8 @@ if(jQuery)(
 						data += '&scriptData=' + escape(scriptDataString); 
 					}
 					
-					data += '&btnWidth=' + settings.width;
-					data += '&btnHeight=' + settings.height;
 					data += '&wmode=' + settings.wmode;
 					
-					if (settings.hideButton) data += '&hideButton=true';
 					if (settings.fileDesc) data += '&fileDesc=' + settings.fileDesc + '&fileExt=' + settings.fileExt;
 					if (settings.multi) data += '&multi=true';
 					if (settings.auto) data += '&auto=true';
@@ -122,7 +118,7 @@ if(jQuery)(
 					if (settings.creationTimeString) data += '&creationTimeString=' + settings.creationTimeString;
 					
 					if ($.browser.msie) {
-						flashElement = '<object classid="clsid:D27CDB6E-AE6D-11cf-96B8-444553540000" width="' + settings.width + '" height="' + settings.height + '" id="' + $(this).attr("id")  + 'Uploader" class="fileUploaderBtn">\
+						flashElement = '<object classid="clsid:D27CDB6E-AE6D-11cf-96B8-444553540000" id="' + $(this).attr("id")  + 'Uploader" class="fileUploaderBtn">\
 						<param name="movie" value="' + settings.uploader + '?fileUploadID=' + $(this).attr("id") + data + '" />\
 						<param name="quality" value="high" />\
 						<param name="wmode" value="' + settings.wmode + '" />\
@@ -132,8 +128,6 @@ if(jQuery)(
 					} else {
 						flashElement = '<embed src="' + settings.uploader + '?fileUploadID=' + $(this).attr("id") + data + '"\
 							quality="high"\
-							width="' + settings.width + '"\
-							height="' + settings.height + '"\
 							id="' + $(this).attr("id") + 'Uploader"\
 							class="fileUploaderBtn"\
 							name="' + $(this).attr("id") + 'Uploader"\
@@ -152,6 +146,10 @@ if(jQuery)(
 						
 						$("#" + $(this).attr('id')).parent().parent().parent().append('<div id="' + $(this).attr('id') + 'Queue" class="fileUploadQueue" style="visibility: hidden"></div>');
 					}
+					
+					$(this).bind("rfuMouseOver", settings.onMouseOver);
+					$(this).bind("rfuMouseDown", settings.onMouseDown);
+					$(this).bind("rfuMouseOut", settings.onMouseOut);
 					
 					$(this).bind("rfuSelect", {'action': settings.onSelect}, function(event, queueID, fileObj) {
 						if (event.data.action(event, queueID, fileObj) !== false) {
@@ -236,7 +234,7 @@ if(jQuery)(
 					
 					$(this).bind("rfuError", {'action': settings.onError}, function(event, queueID, fileObj, errorObj) {
 						if (event.data.action(event, queueID, fileObj, errorObj) !== false) {
-							$("#" + $(this).attr('id') + queueID + " .fileName").text(errorObj.type + " Error - " + fileObj.name);
+							$("#" + $(this).attr('id') + queueID + " .filename").text(errorObj.type + " Error - " + fileObj.name);
 							$("#" + $(this).attr('id') + queueID).removeClass('fileUploadQueueItem-Active');
 							$("#" + $(this).attr('id') + queueID).addClass('fileUploadQueueItem-Canceled');
 							$("#" + $(this).attr('id') + queueID + ' .cancel .delete_text').text('Dismiss');
@@ -285,6 +283,8 @@ if(jQuery)(
 				else
 					$("#" + $(this).attr('id') + queueID).fadeOut(250, function() { $("#" + $(this).attr('id') + queueID).remove()});
 			});
+			
+			settings.cancel()
 		},
 		fileUploadClearQueue:function() {
 			$(this).each(function() {

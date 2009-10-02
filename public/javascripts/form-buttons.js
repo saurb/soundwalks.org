@@ -11,26 +11,6 @@
  *		lib/jquery.js
  */
 
-function buttonify(button, target) {
-	target = target || button;
-	
-	if (target.hasClass('button-disabled')) {
-		target.removeClass('button-disabled');
-		target.removeAttr('disabled');
-		target.addClass('button');
-	}
-	
-	//target.css({'background-color' : '#efefef', 'color' : 'black', 'border' : '1px dashed #888888'});
-	
-	button.hover(
-		function() {target.css({'background-color' : '#efefef', 'color' : '#bf3030', 'border' : '1px dashed #888888'});},
-		function() {target.css({'background-color' : '#efefef', 'color' : 'black', 'border' : '1px dashed #888888'});}
-	);
-	
-	button.mousedown(function() {target.css({'background-color' : '#eaf8f8', 'color' : '#bf3030', 'border' : '1px solid #223241'});});
-	button.mouseup(function() {target.css({'background-color' : '#efefef', 'color' : 'black', 'border' : '1px dashed #888888'});});
-}
-
 function disable_button(button, target) {
 	target = target || button;
 	
@@ -43,7 +23,6 @@ function disable_button(button, target) {
 }
 
 $(document).ready(function() {
-	$(".button").each(function() {buttonify($(this))});
-	$(".free-button").each(function() {buttonify($(this))});
-	$(".small-button").each(function() {buttonify($(this))});
+	$('button').mouseover(function(){$(this).addClass('button-hover')});
+	$('button').mouseout(function(){$(this).removeClass('button-hover')});
 });

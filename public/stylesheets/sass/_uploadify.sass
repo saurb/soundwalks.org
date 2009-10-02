@@ -10,9 +10,21 @@ form
 			vertical-align: middle
 			display: inline-block
 			position: relative
-			width: 200px
-			height: 80px
+			overflow: hidden
+			width: 8em
+			height: 2.25em
 			
+			embed
+				width: 10em
+				height: 2.25em
+			
+			p
+				margin: 0
+				padding: 0
+				
+				#file-upload-button
+					display: block
+				
 			#file-uploaderUploader
 				background: transparent
 				position: absolute
@@ -20,23 +32,13 @@ form
 				left: 0
 				top: 0
 				
-			#browse-button
-				position: absolute
-				font-size: 1.5em
-				height: 100%
-				width: 100%
-				z-index: 1
-				margin: 0
-				left: 0
-				top: 0 
-				
-		#upload-status
-			vertical-align: middle
-			text-align: right
-			padding-left: 1em
-			padding-top: 1em
-			font-size: 0.8em
-			
+#upload-status
+	vertical-align: middle
+	text-align: right
+	width: 30em
+	margin: 0
+	padding: 1em
+	
 .fileUploadQueue
 	border = !dashed_border
 	font-size: 0.8em
@@ -59,25 +61,27 @@ form
 		line-height: 100%
 		position: absolute
 		top: 0
-		left: 19em
-		width: 18em
-		height: 1.25em
+		left: 28em
+		width: 9em
+		height: 1.75em
 		padding: 0.5em
 		vertical-align: middle
 		text-align: right
 		z-index: 5
+		overflow: hidden
 	
 	.filename
 		line-height: 100%
 		position: absolute
 		top: 0
 		left: 0
-		width: 18em
-		height: 1.25em
+		width: 27em
+		height: 1.75em
 		padding: 0.5em
 		vertical-align: middle
 		display: inline
 		z-index: 5
+		overflow: hidden
 		
 	.progress
 		position: absolute
@@ -101,6 +105,7 @@ form
 	+queue_item
 	
 .fileUploadQueueItem-Canceled
+	background-color = !light_red
 	+queue_item
 	
 	.progress

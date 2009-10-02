@@ -36,7 +36,7 @@ $(document).ready(function() {
 	// Edit-in-place behavior.
 	edit_callback = function() {}
 	
-	$(".editable,.editable-link").each(function() {
+	$(".editable,.editable-link").click(function() {
 		$(this).editField(
 			GetParameter($(this), 'data-url'),
 			GetParameter($(this), 'data-object'),
@@ -45,7 +45,6 @@ $(document).ready(function() {
 			edit_callback
 		);
 	});
-	
 	
 	if (document.selection)
 		document.selection.empty();

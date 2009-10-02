@@ -1,27 +1,21 @@
 @import variables.sass
 
 #strip
-	display: table
 	width = !big_width
 	margin: 2em auto 0 auto
-	padding: 0
 	border-bottom = "0.125em solid " + !dark_blue
+	height: 48px
 	
 	#title-picture
-		display: table-cell
+		float: left
 		text-align: left
-		vertical-align: bottom
-		img
-			vertical-align: bottom
 		
 	#user-panel
-		display: table-cell
+		float: right
 		color = !dark_blue
-		margin: 0
-		padding: 0
 		text-align: right
-		vertical-align: bottom
-		
+		margin-top: 1.3em
+			
 		img
 			vertical-align: middle
 			border = "1px solid " + !light_blue
@@ -34,7 +28,7 @@
 	&.little
 		text-align: center
 		width = !little_width
-		
+		height: 96px
 
 #body
 	width = !big_width

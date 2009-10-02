@@ -23,6 +23,14 @@ module StringHelper
     end
   end
   
+  def truncate_characters(input, characters, symbol)
+    if input.size <= characters
+      return input
+    else
+      return input[0...140] + " #{symbol}"
+    end
+  end
+  
   def strip_html(str, preserve_tags = ['a', 'img', 'p', 'br', 'i', 'b', 'u', 'ul', 'li'])
     str = str.strip || ''
     preserve_array = preserve_tags.join('|') << '|\/'

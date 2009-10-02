@@ -22,12 +22,13 @@ $(document).ready(function() {
 	input.className = 'actualfile';
 	fakeFileUpload.appendChild(input);
 	
-	var button = document.createElement('input');
-	button.type = 'submit';
-	button.className = 'button';
-	button.value = "Browse";
+	var button = document.createElement('button');
+	button.setAttribute('type', 'submit');
 	button.setAttribute('onclick', 'return false;');
-
+	$(button).text('Browse');
+	$(button).css({'vertical-align': 'middle'});
+	$(button).mouseover(function() {$(this).addClass('button-hover')});
+	$(button).mouseout(function() {$(this).removeClass('button-hover')});
 	fakeFileUpload.appendChild(button);
 	
 	var x = document.getElementsByTagName('input');
@@ -35,20 +36,17 @@ $(document).ready(function() {
 	$('.fileinput input[type=file]').each(function() {
 		$(this).addClass('file');
 		
-		var clone = $(fakeFileUpload).clone();
-		$(this).parent().append(clone);
+		//var clone = $(fakeFileUpload).clone();
+		$(this).parent().append(fakeFileUpload);
 		
-		$(clone).find('input:first').val($(this).val());
+		$(fakeFileUpload).find('input:first').val($(this).val());
 		
-		buttonify($(clone).find('.button'));
+		$(this).mouseover(function() {$(fakeFileUpload).find('button').trigger('mouseover')});
+		$(this).mouseout(function() {$(fakeFileUpload).find('button').trigger('mouseout')});
+		$(this).mousedown(function() {$(fakeFileUpload).find('button').trigger('mousedown')});
 		
-		$(this).mouseover(function() {$(clone).find('.button').trigger('mouseover');});
-		$(this).mouseout(function() {$(clone).find('.button').trigger('mouseout');});
-		$(this).mousedown(function() {$(clone).find('.button').trigger('mousedown');});
-		$(this).mouseup(function() {$(clone).find('.button').trigger('mouseup');});
-		
-		$(this).change(function() {$(clone).find('input:first').val($(this).val())});
-		$(this).mouseout(function() {$(clone).find('input:first').val($(this).val())});
-		$(this).select(function() {$(clone).find('input:first').select()});
+		$(this).change(function() {$(fakeFileUpload).find('input:first').val($(this).val())});
+		$(this).mouseout(function() {$(fakeFileUpload).find('input:first').val($(this).val())});
+		$(this).select(function() {$(fakeFileUpload).find('input:first').select()});
 	});
 });

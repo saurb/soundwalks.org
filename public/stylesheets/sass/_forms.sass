@@ -9,15 +9,27 @@ span.error
 	color = !red
 
 label
+	font-size: 1em
 	&.field
 		+float_left
 		height: 1.2em
 		width: 8em
-		margin: 0.5em
+		margin: 0em
+		margin-top: 0.25em
 		padding: 0.5em
 		text-align: right
 		color = !gray
 
+	&.filefield
+		+float_left
+		height: 1.2em
+		width: 7.5em
+		margin: 0.5em
+		margin-right: 0
+		padding: 0.5em
+		text-align: right
+		color = !gray
+		
 	&.field-nofloat
 		color = !gray
 		
@@ -29,7 +41,7 @@ label
 		padding: 0.5em
 		text-align: right
 		color = !gray
-		margin-top: 0.25em
+		margin-top: 0em
 		padding-top: 0
 
 div.submit
@@ -42,38 +54,44 @@ div.submit-options
 
 div.field-nontext
 	text-align: center
-	width: 31em
+	width: 28.5em
+	_width: 27.5em
 	
 input
 	font-size: 1em
 	
+	&.text
+		border: 0
+		margin: 0
+		padding: 0
+		width: 0
+		overflow: visible
+		background: transparent
+		border-bottom = "3px solid " + !green
+		
+		&:hover
+			cursor: pointer
+			color = !red
+			
+	&.text[class]
+		width: auto
+		
+	&.text-hover
+		color = !red
+		
+		&:hover
+			cursor: pointer
+			
 	&.field
 		+rounded_border
-		width: 20em
+		width: 19.5em
 		height: 2.5em
 		margin: 0.5em
 		padding: 0.5em
 
 	&.field-nofloat
-		margin: 0.5em
 		margin-left: 10.5em
-		
-	&.button
-		+rounded_border
-		width: 7.5em
-		margin: 0.5em
-		padding: 0.25em
-		height: 2.5em
-		border = "1px dashed " + !gray
-			
-	&.button-disabled
-		+rounded_border
-		width: 7.5em
-		margin: 0.5em
-		padding: 0.25em
-		height: 2.5em
-		border = "1px dashed " + !gray
-		color = !gray
+		padding: 0
 		
 	&.small-button
 		font-size: 0.8em
@@ -91,20 +109,26 @@ input
 		border = "1px dashed " + !gray
 			
 	&.actualfile
+		font-size: 1em
 		+rounded_border
-		width: 11.5em
+		width: 14em
 		height: 2.5em
 		margin: 0.5em
+		vertical-align: middle
 		padding: 0.5em
 
 	&.file
-		position: relative
+		position: absolute
+		top: 0
+		left: 0
+		padding: 0
+		margin: 0
 		text-align: right
 		-moz-opacity: 0
 		filter: alpha(opacity: 0)
 		opacity: 0
 		z-index: 2
-		width: 22em
+		width: 100%
 		font-size: 1em
 		height: 3.5em
 
@@ -116,7 +140,7 @@ div.select
 textarea.field
 	+rounded_border
 	font-family = !fonts_normal
-	width: 20em
+	width: 19.5em
 	height: 10em
 	margin: 0.5em
 	padding: 0.5em
@@ -124,20 +148,27 @@ textarea.field
 
 div
 	&.fileinput
+		font-size: 1em
 		position: relative
-		margin-left: 10em
+		margin: 0
+		margin-left: 9em
+		_margin-left: 8em
 		height: 3.5em
-
+		text-align: left
+		
 	&.fakefile
+		font-size: 1em
 		position: absolute
+		text-align: left
 		top: 0px
 		left: 0px
 		z-index: 1
 		margin: 0
 		padding: 0
-		width: 25em
+		width: 100%
 		height: 100%
-
+		
+		
 ul.field
 	width: 20em
 	margin-left: 10.5em
@@ -156,7 +187,7 @@ span.editable
 			display: inline
 			width: 30em
 			
-div.editable,p.editable,td.editable,span.editable
+div.editable,p.editable,td.editable,span.editable,div.editable p,p.editable p,td.editable p,span.editable p
 	color = !dark_blue
 	
 	&:hover

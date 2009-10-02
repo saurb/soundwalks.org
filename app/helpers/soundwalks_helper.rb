@@ -3,6 +3,10 @@ module SoundwalksHelper
     return relative_time_span(soundwalk.times.collect {|time| time})
   end
   
+  def relative_start_date soundwalk
+    return relative_date_in_past(soundwalk.locations.first.first)
+  end
+  
   def start_date soundwalk
     return soundwalk.locations.first.first.strftime("%Y %b %d")
   end

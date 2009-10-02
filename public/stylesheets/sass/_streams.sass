@@ -5,42 +5,46 @@
 	margin: none
 	padding: none
 	padding-left: 0
-	width: 34em
+	width: 32em
 	border-spacing: 0
 	
 	li
 		display: table-row
 		list-style: none
-		margin: none
-		padding: none
+		margin: 0
+		padding: 0
+		cursor: pointer
 		
 		&:hover
 			background-color = !very_light_blue
-
-div		
+			
+div
 	&.stream-item-avatar
-		display: table-cell
-		width: 4em
+		display: block
+		float: left
+		margin: 0
+		margin-right: 0.5em
+		height: 100%
+		padding: 0
 		text-align: center
-		padding-top: 0.5em
-		border-bottom = !dashed_border
-		padding-bottom: 0.5em
+		vertical-align: top
 		
 	&.stream-item-content
-		display: table-cell
 		vertical-align: top
 		padding-top: 0.5em
 		padding-bottom: 0.5em
+		overflow: hidden
 		z-order: 2
 		border-bottom = !dashed_border
 	
 	&.stream-item-meta
 		+float_right
-		width: 12em
-		margin: 0.5em
-		text-align: left
-		color = !gray
 		font-size: .7em
+		width: 12em
+		margin: 0.25em
+		padding: 0
+		text-align: right
+		color = !gray
 		font-style: italic
 		
 	&.stream-item-delete
@@ -54,7 +58,6 @@ span.stream-item-delete-button
 		
 span
 	&.stream-item-title
-		margin-bottom: 0.5em
 		font-weight: bold
 		text-align: left
 		
