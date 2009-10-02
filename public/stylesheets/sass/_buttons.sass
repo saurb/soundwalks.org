@@ -1,0 +1,39 @@
+.buttons
+	text-align: center
+	clear: left
+	
+.buttons a, button
+	display: inline
+	margin: 0 7px 0 0
+	background-color: #f5f5f5
+	border: 1px solid #dedede
+	border-top: 1px solid #eee
+	border-left: 1px solid #eee
+	font-size: 100%
+	line-height: 130%
+	text-decoration: none
+	cursor: pointer
+	padding: 5px 10px 6px 7px
+
+button
+	width: auto
+	overflow: visible
+	padding: 4px 10px 3px 7px
+	
+button[type]
+	padding: 5px 10px 5px 7px
+	line-height: 17px
+	
+*:first-child+html button[type]
+	padding: 4px 10px 3px 7px
+	
+button img, .buttons a img
+	margin: 0 3px -3px 0 !important
+	padding: 0
+	border: none
+
+button:hover, .buttons a:hover, .button-hover, .buttons a.button-hover
+	background-color: #dff4ff
+	background-color = !very_light_green
+	border = "1px solid " + !light_green
+	color = !red
