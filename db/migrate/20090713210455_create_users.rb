@@ -16,8 +16,8 @@ class CreateUsers < ActiveRecord::Migration
       t.column :deleted_at,                :datetime
       t.column :secret,                    :decimal
       
-      t.column :admin,                     :boolean
-      t.column :can_upload,                :boolean
+      t.column :admin,                     :boolean, :default => 0
+      t.column :can_upload,                :boolean, :default => 1
       
     end
     add_index :users, :login, :unique => true
