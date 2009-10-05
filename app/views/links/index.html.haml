@@ -1,0 +1,34 @@
+%h1 Network Administration
+
+%h2 Tasks
+
+%p.buttons
+	%a{:href => '/links/recalculate_sounds?scope=all'} Compare sounds/sounds
+	%a{:href => '/links/recalculate_tags?scope=all'} Compare tags/tags
+	%a{:href => '/links/recalculate_votes?scope=all'} Compare sounds/tags
+
+%p.buttons
+	%a{:href => '/links/recalculate_distances?scope=all'} Calculate distances
+	%a{:href => '/links/delete_all'} Delete all links
+
+%h2 Links
+	
+- if @links != nil && @links.size > 0
+	%table{:style => 'width: 100%; text-align: left'}
+		%tr
+			%th ID
+			%th From
+			%th To
+			%th Cost
+			%th Distance
+			
+			- @links.each do |link|
+				%tr
+					%td #{link.id}
+					%td #{link.first_type}.#{link.first_id}
+					%td #{link.second_type}.#{link.second_id}
+					%td #{link.cost}
+					%td #{link.distance}
+- else
+	No links currently exist in the database.
+	
