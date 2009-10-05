@@ -109,28 +109,22 @@ class Sound < ActiveRecord::Base
       
       self.save
       
-      loudness_trajectory = self.features.build
-      loudness_trajectory.feature_type = :loudness
+      loudness_trajectory = get_or_create_feature(:loudness)
       loudness_trajectory.trajectory = loudness.history
       
-      temporal_sparsity_trajectory = self.features.build
-      temporal_sparsity_trajectory.feature_type = :temporal_sparsity
+      temporal_sparsity_trajectory = get_or_create_feature(:temporal_sparsity)
       temporal_sparsity_trajectory.trajectory = temporal_sparsity.history
       
-      spectral_sparsity_trajectory = self.features.build
-      spectral_sparsity_trajectory.feature_type = :spectral_sparsity
+      spectral_sparsity_trajectory = get_or_create_feature(:spectral_sparsity)
       spectral_sparsity_trajectory.trajectory = spectral_sparsity.history
       
-      spectral_centroid_trajectory = self.features.build    
-      spectral_centroid_trajectory.feature_type = :spectral_centroid
+      spectral_centroid_trajectory = get_or_create_feature(:spectral_centroid)
       spectral_centroid_trajectory.trajectory = spectral_centroid.history
       
-      transient_index_trajectory = self.features.build
-      transient_index_trajectory.feature_type = :transient_index
+      transient_index_trajectory = get_or_create_feature(:transient_index)
       transient_index_trajectory.trajectory = transient_index.history
       
-      harmonicity_trajectory = self.features.build
-      harmonicity_trajectory.feature_type = :harmonicity
+      harmonicity_trajectory = get_or_create_feature(:harmonicity)
       harmonicity_trajectory.trajectory = harmonicity.history
       
       loudness_trajectory.save
@@ -141,6 +135,19 @@ class Sound < ActiveRecord::Base
       harmonicity_trajectory.save
     rescue
       return false
+    end
+  end
+  
+  def get_or_create_feature(type)
+    results = self.features.find(:all, :conditions => {:feature_type => type})
+    
+    if results != nil && results.size > 0
+      return results.first
+    else
+      feature = self.features.build
+      feature.feature_type = type
+      
+      return feature
     end
   end
   

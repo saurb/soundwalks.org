@@ -179,6 +179,17 @@ class SoundsController < ApplicationController
     end
   end
   
+  def analyze
+    @sound.analyze
+    
+    respond_to do |format|
+      format.html {
+        flash[:notice] = "Sound #{@sound.id} (#{@sound.filename}) successfully analyzed."
+        redirect_to(soundwalk_sound_path(@soundwalk, @sound))
+      }
+    end
+  end
+  
   def query_set
     sound = @soundwalk.sounds.find(params[:sound_id])
     response = []
