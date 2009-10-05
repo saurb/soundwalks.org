@@ -1,0 +1,44 @@
+- content_for :javascript do
+	= javascript_include_tag 'lib/jquery', 'lib/jquery-ui', 'editable', 'form-buttons', 'soundwalks'
+	
+%h1 Sound Administration
+
+%h2 Tasks
+
+%p.buttons
+
+- if @soundwalks != nil && @soundwalks.size > 0
+	- for @soundwalk in @soundwalks
+		%h2 #{@soundwalk.user.login} - #{@soundwalk.title}
+		
+		- if @soundwalk.sounds != nil && @soundwalk.sounds.size > 0
+			- form_tag delete_multiple_soundwalk_sounds_path(@soundwalk), :method => :delete, :id => "#{@soundwalk.id}-sounds-form" do
+				%table#sound-index
+					%tr
+						%th.id ID
+						%th.filename Filename
+						%th.duration Duration
+						%th.lat Latitude
+						%th.lng Longitude
+						%th.recorded_at Time
+						%th.delete Delete
+						
+					- for @sound in @soundwalk.sounds
+						- fields_for 'sound[]' do |f|
+							- duration = sprintf('%.2f', @sound.samples.to_f / @sound.sample_rate.to_f)
+							
+							%tr.sound-record{:id => dom_id(@sound), 'data-url' => soundwalk_sound_path(@soundwalk, @sound), 'data-object' => 'sound'}
+								%td= @sound.id
+								%td{'data-edits' => 'filename', 'data-value' => @sound.filename}= link_to @sound.filename, soundwalk_sound_path(@soundwalk, @sound)
+								%td{'data-edits' => 'duration', 'data-value' => duration} #{duration}s
+						
+								<td class='editable' data-edits='lat' data-shows='formatted_lat' data-value='#{@sound.lat}'>#{coordinates_text :latitude, @sound.lat}</td>
+								<td class='editable' data-edits='lng' data-shows='formatted_lat' data-value='#{@sound.lng}'>#{coordinates_text :longitude, @sound.lng}</td>
+								<td class='editable' data-edits='recorded_at' data-shows='formatted_recorded_at' data-value='#{@sound.recorded_at}'>#{prettier_time @sound.recorded_at}</td>
+								%td.delete= check_box_tag "sound_ids[]", @sound.id
+								
+				%p.buttons{:style => 'text-align: right'}
+					%a.delete-multiple-sounds Delete selected
+- else
+	There are no soundwalks in the database.
+	
