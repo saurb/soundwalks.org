@@ -180,7 +180,7 @@ class SoundsController < ApplicationController
   end
   
   def analyze
-    @sound.analyze
+    @sound.analyze_sound
     
     respond_to do |format|
       format.html {
