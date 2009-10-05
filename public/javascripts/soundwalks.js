@@ -19,10 +19,12 @@ function cancelProp(e) {
 
 $(document).ready(function() {
 	// Allow users to check multiple sounds and delete them all at once.
-	$('#delete-multiple-sounds').click(function() {
+	$('.delete-multiple-sounds').click(function() {
+		form = $(this).parent().parent();
+		
 		$.post(
-			$('#sounds-form').attr('action'),
-			$('#sounds-form').serialize(),
+			form.attr('action'),
+			form.serialize(),
 			function(data, textStatus) {
 				for (i = 0; i < data.sound_ids.length; i++) {
 					$('#sound_' + data.sound_ids[i]).fadeOut('slow', function() {$(this).remove()});

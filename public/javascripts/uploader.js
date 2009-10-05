@@ -54,10 +54,11 @@ $(document).ready(function() {
 			$('#file-uploader-container').css({'width': '11em'});
 		},
 		'onAllComplete': function(event, data) {
-			$('#upload-status').html("Sounds added successfully.\
-				<div class='buttons' style='display: inline'>\
-					<button type='submit' name='submit'>Continue</button>\
-				</div>");
+			$('#upload-status').html("\
+				<p>Sounds added successfully.</p>\
+				<p class='buttons' style='text-align: right'>\
+					<a href='/soundwalks/" + $('meta[name=soundwalk_id]').attr('content') + "'>Continue</a>\
+				</p>");
 		},
 		'onAllCompleteWithErrors': function(event, data) {
 			$('#upload-status').html("\
