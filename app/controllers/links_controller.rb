@@ -76,6 +76,8 @@ class LinksController < ApplicationController
     # Compute log-probabilities for link costs.
     for i in 0...sounds.size
       for j in i...sounds.size
+        puts "(#{i}, #{j})"
+        
         value = sounds[i].compare(sounds[j])
         
         log_probability[i, j] = value
