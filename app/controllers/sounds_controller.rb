@@ -10,9 +10,9 @@ class SoundsController < ApplicationController
   append_before_filter :get_soundwalk, 
     :only => ['show', 'index', 'query_set']
   append_before_filter :get_soundwalk_from_current_user,
-    :only => ['edit', 'update', 'new', 'create', 'destroy', 'recalculate', 'uploader', 'tag']
+    :only => ['edit', 'update', 'new', 'create', 'destroy', 'recalculate', 'uploader', 'tag', 'analyze']
   append_before_filter :get_sound_from_soundwalk,
-    :only => ['show', 'edit', 'update', 'destroy', 'recalculate', 'tag']
+    :only => ['show', 'edit', 'update', 'destroy', 'recalculate', 'tag', 'analyze']
   
   # GET /soundwalks/:soundwalk_id/sounds
   def index
