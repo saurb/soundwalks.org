@@ -78,6 +78,10 @@ class LinksController < ApplicationController
       for j in i...sounds.size        
         value = sounds[i].compare(sounds[j])
         
+        if value.nan?
+          value = Math.log(0)
+        end
+        
         log_probability[i, j] = value
         log_probability[j, i] = value
         update_or_create_link(sounds[i], sounds[j], value, nil)
