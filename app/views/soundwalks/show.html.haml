@@ -83,7 +83,7 @@
 					
 					%tr.sound-record{:id => dom_id(@sound), 'data-url' => soundwalk_sound_path(@soundwalk, @sound), 'data-object' => 'sound'}
 						%td{'data-edits' => 'filename', 'data-value' => @sound.filename}= link_to @sound.filename, soundwalk_sound_path(@soundwalk, @sound)
-						%td{'data-edits' => 'duration', 'data-value' => duration} #{duration}s
+						%td{'data-edits' => 'duration', 'data-value' => duration} #{@sound.features.size}s
 						
 						- if logged_in? && current_user.id == @user.id
 							<td class='editable' data-edits='lat' data-shows='formatted_lat' data-value='#{@sound.lat}'>#{coordinates_text :latitude, @sound.lat}</td>
