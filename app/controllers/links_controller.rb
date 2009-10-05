@@ -78,13 +78,15 @@ class LinksController < ApplicationController
       for j in i...sounds.size        
         value = sounds[i].compare(sounds[j])
         
-        if value.nan?
+        if !value.nan?
+          log_probability[i, j] = value
+          log_probability[j, i] = value
+          update_or_create_link(sounds[i], sounds[j], value, nil)
+        else
           value = Math.log(0)
+          log_probability[i, j] = value
+          log_probability[j, i] = value
         end
-        
-        log_probability[i, j] = value
-        log_probability[j, i] = value
-        update_or_create_link(sounds[i], sounds[j], value, nil)
       end
     end
     
@@ -93,8 +95,11 @@ class LinksController < ApplicationController
     
     # Update link costs.
     for i in 0...affinity.row_size
-      for j in 0...affinity.column_size
-        update_or_create_link(sounds[i], sounds[j], affinity[i, j], nil)
+      for j in i...affinity.column_size
+        if !affinity[i, j].nan? && (affinity[i, j] != Infinity) && (affinity[i, j] != -Infinity)
+          update_or_create_link(sounds[i], sounds[j], affinity[i, j], nil)
+          update_or_create_link(sounds[j], sounds[i], affinity[i, j], nil)
+        end
       end
     end
     
