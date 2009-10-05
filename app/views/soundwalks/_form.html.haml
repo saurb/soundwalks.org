@@ -20,7 +20,7 @@
 		#{form.radio_button(:privacy, :friends)} Friends-only
 		#{form.radio_button(:privacy, :public)} Public
 		
-	%p{:class => 'buttons'}
+	%p.submit
 		- if defined? new_soundwalk
 			%button{:type => 'submit', :name => 'continue'} Add sounds
 			%button{:type => 'submit', :name => 'submit'} Finish

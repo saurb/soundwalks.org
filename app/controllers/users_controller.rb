@@ -19,7 +19,7 @@ class UsersController < ApplicationController
       logout_keeping_session!
       @user = User.new(params[:user])
       @user.admin = false
-      @user.can_upload = false
+      @user.can_upload = true
       @user.register! if @user && @user.valid?
       success = @user && @user.valid?
       if success && @user.errors.empty?

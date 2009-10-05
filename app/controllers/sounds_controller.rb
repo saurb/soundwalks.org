@@ -8,7 +8,7 @@ class SoundsController < ApplicationController
   before_filter :login_required, :except => ['index', 'show']
   
   append_before_filter :get_soundwalk, 
-    :only => ['show', 'index']
+    :only => ['show', 'index', 'query_set']
   append_before_filter :get_soundwalk_from_current_user,
     :only => ['edit', 'update', 'new', 'create', 'destroy', 'recalculate', 'uploader', 'tag']
   append_before_filter :get_sound_from_soundwalk,
@@ -30,10 +30,19 @@ class SoundsController < ApplicationController
   
   # GET /sounds
   def allindex
-    @sounds = Sound.find_within(params[:distance], :origin => [params[:lat], params[:lng]], :limit => 500)
+    if params[:distance]
+      @sounds = Sound.find_within(params[:distance], :origin => [params[:lat], params[:lng]], :limit => 500)
+    elsif current_user.admin?
+      @soundwalks = Soundwalk.find(:all)
+      @sounds = Sound.find(:all)
+    end
     
     respond_to do |format|
       format.js {render :json => @sounds, :callback => params[:callback], :status => :ok}
+      
+      if current_user.admin?
+        format.html
+      end
     end
   end
   
@@ -108,7 +117,7 @@ class SoundsController < ApplicationController
     
       params[:sound]['user_id'] = current_user.id
       
-      @sound = @soundwalk.sounds.build(params[:sound] + 1)
+      @sound = @soundwalk.sounds.build(params[:sound])
     
       respond_to do |format|
         if @sound.save
@@ -170,6 +179,51 @@ class SoundsController < ApplicationController
     end
   end
   
+  def query_set
+    sound = @soundwalk.sounds.find(params[:sound_id])
+    response = []
+    
+    verified_tag_ids = []
+    verified_tag_names = []
+    verified_sound_ids = []
+    
+    request_tag_ids = []
+    request_tag_names = []
+    request_sound_ids = []
+    
+    request_tag_ids = split_param(params[:tag_ids]) if params[:tag_ids]
+    request_tag_names = split_param(params[:tags]) if params[:tags]
+    request_sound_ids = split_param(params[:sound_ids]) if params[:sound_ids]
+    
+    tag_results = Tag.find(:all, :conditions => ["name in (:names) or id in (:ids)", {:names => request_tag_names, :ids => request_tag_ids}])
+      
+    if tag_results != nil
+      tag_results.each do |result|
+        verified_tag_ids.push result.id
+        verified_tag_names.push result.name
+      end
+    end
+    
+    sound_results = Sound.find(:all, :conditions => {:id => request_sound_ids})
+    
+    if sound_results != nil
+      sound_results.each do |result|
+        verified_sound_ids.push result.id
+      end
+    end
+    
+    distribution = Link.query_distribution(sound, {'Tag' => verified_tag_ids, 'Sound' => verified_sound_ids})
+    
+    for i in 0...distribution.size
+      distribution[i][:name] = verified_tag_names[verified_tag_ids.index(distribution[i][:id])] if distribution[i][:type] == 'Tag'
+    end
+    
+    respond_to do |format|
+      format.js {render :json => distribution}
+      format.xml {render :xml => distribution}
+    end
+  end
+  
   protected
   def get_soundwalk
     user_id = Soundwalk.find(params[:soundwalk_id], :select => 'user_id').read_attribute(:user_id)
@@ -195,5 +249,9 @@ class SoundsController < ApplicationController
   
   def get_sound_from_soundwalk
     @sound = @soundwalk.sounds.find(params[:id])
+  end
+  
+  def split_param(param)
+    param.split(',').collect{|value| value.chomp}
   end
 end

@@ -96,7 +96,7 @@
 							%td{'data-edits' => 'recorded_at', 'data-value' => @sound.recorded_at}= prettier_time @sound.recorded_at
 		
 		- if logged_in? && current_user.id == @user.id
-			%p{:style => 'text-align: right'} 
-				%input#delete-multiple-sounds{:class => 'free-button', :type => 'button', :value => 'Delete selected'}
+			%p.buttons{:style => 'text-align: right'} 
+				%a#delete-multiple-sounds Delete selected
 - else
 	This soundwalk has no sounds.

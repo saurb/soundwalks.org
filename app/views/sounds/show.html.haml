@@ -40,12 +40,11 @@
 	- else
 		%div#description= textilize(h @sound.description)
 	
-	- if logged_in? && (current_user.admin? || current_user.id == @sound.soundwalk.user.id)
-		%p
-			%span.label Community tags:
-			%span.detail{'data-shows' => 'all_tags'} 
-				#{@sound.tags.size > 0 ? @sound.tags.join(', ') : 'This sound has not been tagged yet.'}
-
+	%p
+		%span.label Community tags:
+		%span.detail{'data-shows' => 'all_tags'} 
+			#{@sound.tags.size > 0 ? @sound.tags.join(', ') : 'This sound has not been tagged yet.'}
+			
 	- if logged_in?
 		%p
 			%span.label Your tags:

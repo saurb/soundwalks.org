@@ -4,7 +4,7 @@ class Soundwalk < ActiveRecord::Base
   include StringHelper
   
   belongs_to :user
-  has_many :sounds
+  has_many :sounds, :dependent => :destroy
   
   serialize :locations, Array
   
