@@ -9,7 +9,7 @@ ActionController::Routing::Routes.draw do |map|
   map.resources :links, :collection => {:recalculate_sounds => :get, :recalculate_votes => :get, :recalculate_tags => :get, :recalculate_distances => :get, :delete_all => :get}
   
   map.resources :soundwalks do |soundwalks|
-    soundwalks.resources :sounds, :collection => {:delete_multiple => :delete, :uploader => :get} do |sounds|
+    soundwalks.resources :sounds, :collection => {:delete_multiple => :delete, :uploader => :get}, :member => {:analyze => :get} do |sounds|
       sounds.set_tags         'tags',           :controller => 'tags', :action => 'update', :method => 'post'
       sounds.tags             'tags',           :controller => 'tags', :action => 'index',  :method => 'get'
       sounds.formatted_tags   'tags.:format',   :controller => 'tags', :action => 'index',  :method => 'get'
