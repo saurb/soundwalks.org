@@ -5,13 +5,21 @@ ActionController::Routing::Routes.draw do |map|
   map.signup '/signup', :controller => 'users', :action => 'new'
   map.activate '/activate/:activation_code', :controller => 'users', :action => 'activate', :activation_code => nil
   map.settings '/settings', :controller => 'users', :action => 'settings'
-    
+  
+  map.resources :links, :collection => {:recalculate_sounds => :get, :recalculate_votes => :get, :recalculate_tags => :get, :recalculate_distances => :get, :delete_all => :get}
+  
   map.resources :soundwalks do |soundwalks|
     soundwalks.resources :sounds, :collection => {:delete_multiple => :delete, :uploader => :get} do |sounds|
-      sounds.set_tags 'tags', :controller => 'tags', :action => 'update', :method => 'put'
-      sounds.tags 'tags', :controller => 'tags', :action => 'show', :method => 'get'
+      sounds.set_tags         'tags',           :controller => 'tags', :action => 'update', :method => 'post'
+      sounds.tags             'tags',           :controller => 'tags', :action => 'index',  :method => 'get'
+      sounds.formatted_tags   'tags.:format',   :controller => 'tags', :action => 'index',  :method => 'get'
+      
+      sounds.query_set            'query_set',          :controller => 'sounds', :action => 'query_set', :method => 'get'
+      sounds.formatted_query_set  'query_set.:format',  :controller => 'sounds', :action => 'query_set', :method => 'get'
     end
   end
+  
+  map.resources :tags, :collection => {:query_set => :get}
   
   map.resources :friendships
   map.resources :users, :member => {:suspend => :put, :unsuspend => :put, :purge => :delete}
