@@ -17,3 +17,4 @@ config.action_controller.perform_caching             = false
 config.action_mailer.raise_delivery_errors = false
 
 $HOST_PATH = 'http://localhost:3000'
+$RAKE_PATH = '/usr/bin/rake'

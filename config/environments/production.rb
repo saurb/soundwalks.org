@@ -29,3 +29,4 @@ config.action_controller.perform_caching             = true
 
 #$HOST_PATH = 'http://soundwalks.org'
 $HOST_PATH = 'http://ame7.hc.asu.edu'
+$RAKE_PATH = '/usr/local/bin/rake'
