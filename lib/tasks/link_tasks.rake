@@ -18,10 +18,29 @@ def normalize_affinity(matrix)
   (diag * ones) + (ones.transpose * diag.transpose) - matrix - matrix.transpose
 end
 
+def update_or_create_link(first, second, cost, distance)
+  link = nil
+  
+  links = Link.find_with_nodes(first, second)
+  
+  if links != nil && links.size > 0
+    link = links.first
+  else
+    link = Link.new
+    link.first = first
+    link.second = second
+  end
+  
+  link.cost = cost if cost != nil
+  link.distance = distance if distance != nil
+  
+  link.save
+end
+
 namespace :links do
   desc "Calculates link costs between sounds in the network."
   task :sound_to_sound => :environment do
-    sounds = Sound.find(:all)
+    sounds = Sound.find(:all, :limit => 5)
     sound_ids = sounds.collect{|sound| sound.id}
     log_probability = Matrix.rows(Array.new(sounds.size) {Array.new(sounds.size) {Infinity}})
     comparators = Array.new(sounds.size, nil)

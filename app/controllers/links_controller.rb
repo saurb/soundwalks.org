@@ -61,24 +61,4 @@ class LinksController < ApplicationController
       }
     end
   end
-  
-  protected
-    def update_or_create_link(first, second, cost, distance)
-      link = nil
-      
-      links = Link.find_with_nodes(first, second)
-      
-      if links != nil && links.size > 0
-        link = links.first
-      else
-        link = Link.new
-        link.first = first
-        link.second = second
-      end
-      
-      link.cost = cost if cost != nil
-      link.distance = distance if distance != nil
-      
-      link.save
-    end
 end
