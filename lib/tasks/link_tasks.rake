@@ -136,8 +136,9 @@ namespace :links do
       
       for j in i...sounds.size
         index = -1
+        
         links.each_with_index do |link, a|
-          if link.second_id = sounds[j].id
+          if link.second_id == sounds[j].id
             index = a
             break
           end
