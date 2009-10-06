@@ -1,5 +1,5 @@
 function update_value(url, span, text) {
-	$.getJSON(url, function(data) {if (data.settings.value) {$(span).html(text)}});
+	$.getJSON(url, function(data) {alert(data); if (data.settings.value) {$(span).html(text)}});
 }
 
 function update_status() {
@@ -9,4 +9,4 @@ function update_status() {
 	update_value("/admin/poll.js?setting=links_distances", "#distances", "Shortest-path distances are being computed.<br />");
 }
 
-$(document).ready(function() {setInterval('update_status()', 5000)});
+$(document).ready(function() {setInterval('update_status()', 10000)});
