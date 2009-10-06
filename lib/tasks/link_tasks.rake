@@ -28,8 +28,10 @@ namespace :links do
     puts "Computing similarities."
     # Compute log-probabilities for link costs.
     for i in 0...sounds.size
+      comparator = sounds[i].get_comparator
+      
       for j in i...sounds.size        
-        value = sounds[i].compare(sounds[j])
+        value = sounds[i].compare(sounds[j], comparator)
         
         if !value.nan?
           log_probability[i, j] = value

@@ -254,48 +254,33 @@ class Sound < ActiveRecord::Base
     #end
   end
   
-  def compare(other)
-    # Retrieval model for the first sound.
-    first_l = unpack_feature(:loudness)
-    first_ts = unpack_feature(:temporal_sparsity)
-    first_ss = unpack_feature(:spectral_sparsity)
-    first_sc = unpack_feature(:spectral_centroid)
-    first_ti = unpack_feature(:transient_index)
-    first_h = unpack_feature(:harmonicity)
+  def get_comparator
+    l = unpack_feature(:loudness)
+    ts = unpack_feature(:temporal_sparsity)
+    ss = unpack_feature(:spectral_sparsity)
+    sc = unpack_feature(:spectral_centroid)
+    ti = unpack_feature(:transient_index)
+    h = unpack_feature(:harmonicity)
     
-    first_set = Sirens::FeatureSet.new
+    set = Sirens::FeatureSet.new
     
-    [first_l, first_ts].each do |f|
-      first_set.addSampleFeature f
+    [l, ts].each do |f|
+      set.addSampleFeature f
     end
     
-    [first_ss, first_sc, first_ti, first_h].each do |f|
-      first_set.addSpectralFeature f
+    [ss, sc, ti, h].each do |f|
+      set.addSpectralFeature f
     end
     
-    first_comparator = Sirens::SoundComparator.new
-    first_comparator.featureSet = first_set
+    comparator = Sirens::SoundComparator.new
+    comparator.featureSet = first_set
     
-    # Retrieval model for the second sound.
-    second_l = other.unpack_feature(:loudness)
-    second_ts = other.unpack_feature(:temporal_sparsity)
-    second_ss = other.unpack_feature(:spectral_sparsity)
-    second_sc = other.unpack_feature(:spectral_centroid)
-    second_ti = other.unpack_feature(:transient_index)
-    second_h = other.unpack_feature(:harmonicity)
-    
-    second_set = Sirens::FeatureSet.new
-    
-    [second_l, second_ts].each do |f|
-      second_set.addSampleFeature f
-    end
-    
-    [second_ss, second_sc, second_ti, second_h].each do |f|
-      second_set.addSpectralFeature f
-    end
-    
-    second_comparator = Sirens::SoundComparator.new
-    second_comparator.featureSet = second_set
+    return comparator
+  end
+  
+  def compare(other, first_comparator = nil)
+    first_comparator = get_comparator if (first_comparator == nil)
+    second_comparator = other.get_comparator
     
     return first_comparator.compare(second_comparator)
   end
