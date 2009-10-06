@@ -6,8 +6,8 @@ class NetworkMigration < ActiveRecord::Migration
       t.string :first_type
       t.string :second_type
       
-      t.column :cost, :float, :default => 0
-      t.column :distance, :float, :default => 0
+      t.column :cost, :float, :default => 'Infinity'
+      t.column :distance, :float, :default => 'Infinity'
       
       t.column :context, :string
       
