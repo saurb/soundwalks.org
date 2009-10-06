@@ -85,7 +85,7 @@ namespace :links do
         total = sound.taggings.collect{|tagging| tagging.tagger}.uniq.size
         
         tags.each_with_index do |tag, j|
-          Settings.links_weights_social = (i * sounds.size + j).to_f / (sounds.size * tags.size).to_f
+          Settings.links_weights_social = (i * tags.size + j).to_f / (sounds.size * tags.size).to_f
           
           value = -Math.log(tag.count.to_f / total.to_f)
           
