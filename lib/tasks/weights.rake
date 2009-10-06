@@ -77,10 +77,10 @@ namespace :links do
     task :social => :environment do
       Settings.links_weights_social = 0
       
-      @sounds = Sound.find(:all)
+      sounds = Sound.find(:all)
       
       # Compute log-probability for each link.
-      @sounds.each_with_index do |sound, i|
+      sounds.each_with_index do |sound, i|
         tags = sound.tag_counts_on(:tags)
         total = sound.taggings.collect{|tagging| tagging.tagger}.uniq.size
         
