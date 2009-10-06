@@ -133,7 +133,7 @@ namespace :links do
       print "#{i} "
       
       links = Link.find(:all, :conditions => {:first_id => sounds[i].id, :first_type => 'Sound', :second_type => 'Sound'}, :order => "second_id ASC")
-      puts "Size: #{links.size}"
+      
       for j in i...sounds.size
         index = -1
         
@@ -145,7 +145,6 @@ namespace :links do
         end
         
         if index > -1
-          puts "HI! #{index}"
           edges[i].push j
           weights[i, j] = links[index].cost
           weights[j, i] = links[index].cost
