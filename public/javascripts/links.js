@@ -3,10 +3,10 @@ function update_value(url, span, text) {
 }
 
 function update_status() {
-	update_value("/admin/poll.js?setting=links_weights_acoustic", "#acoustic", text);
-	update_value("/admin/poll.js?setting=links_weights_semantic", "#semantic", text);
-	update_value("/admin/poll.js?setting=links_weights_social", "#social", text);
-	update_value("/admin/poll.js?setting=links_distances", "#distances", text);
+	update_value("/admin/poll.js?setting=links_weights_acoustic", "#acoustic", "Acoustic weights are being computed.");
+	update_value("/admin/poll.js?setting=links_weights_semantic", "#semantic", "Semantic weights are being computed.");
+	update_value("/admin/poll.js?setting=links_weights_social", "#social", "Social weights are being computed.");
+	update_value("/admin/poll.js?setting=links_distances", "#distances", "Shortest-path distances are being computed.");
 }
 
 $(document).ready(function() {setInterval('update_status()', 5000)});
