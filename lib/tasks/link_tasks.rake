@@ -24,14 +24,17 @@ namespace :links do
     sounds = Sound.find(:all)
     sound_ids = sounds.collect{|sound| sound.id}
     log_probability = Matrix.rows(Array.new(sounds.size) {Array.new(sounds.size) {Infinity}})
+    comparators = Array.new(sounds.size, nil)
     
     puts "Computing similarities."
     # Compute log-probabilities for link costs.
     for i in 0...sounds.size
-      comparator = sounds[i].get_comparator
-      
-      for j in i...sounds.size        
-        value = sounds[i].compare(sounds[j], comparator)
+      comparators[i] = sounds[i].get_comparator if (comparators[i] == nil)
+        
+      for j in i...sounds.size
+        comparators[j] = sounds[j].get_comparator if (comparators[j] == nil)
+        
+        value = comparators[i].compare(comparators[j])
         
         if !value.nan?
           log_probability[i, j] = value
