@@ -9,4 +9,4 @@ function update_status() {
 	update_value("/admin/poll.js?setting=links_distances", "#distances", text);
 }
 
-$(document).ready(function{setInterval('update_status()', 5000)});
+$(document).ready(function() {setInterval('update_status()', 5000)});
