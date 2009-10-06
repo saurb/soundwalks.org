@@ -273,7 +273,7 @@ class Sound < ActiveRecord::Base
     end
     
     comparator = Sirens::SoundComparator.new
-    comparator.featureSet = first_set
+    comparator.featureSet = set
     
     return comparator
   end
