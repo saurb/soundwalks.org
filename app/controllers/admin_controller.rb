@@ -7,7 +7,7 @@ class AdminController < ApplicationController
       
       respond_to do |format|
         format.xml {render :xml => value}
-        format.js {render :js => value}
+        format.js {render :json => value}
       end
     end
   end
