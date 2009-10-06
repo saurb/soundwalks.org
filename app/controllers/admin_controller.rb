@@ -1,5 +1,5 @@
 class AdminController < ApplicationController
-  before_filter :require_login
+  before_filter :login_required
   
   def poll
     if current_user.admin?
