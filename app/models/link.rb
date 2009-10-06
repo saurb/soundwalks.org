@@ -6,6 +6,25 @@ class Link < ActiveRecord::Base
     {:conditions => {:first_id => first.id, :second_id => second.id, :first_type => first.class.to_s, :second_type => second.class.to_s}}
   }
   
+  def self.update_or_create(first, second, cost, distance)
+    link = nil
+
+    links = Link.find_with_nodes(first, second)
+
+    if links != nil && links.size > 0
+      link = links.first
+    else
+      link = Link.new
+      link.first = first
+      link.second = second
+    end
+
+    link.cost = cost if cost != nil
+    link.distance = distance if distance != nil
+
+    link.save
+  end
+  
   def self.query_distribution(query, ids)
     response = []
     id_strings = []
