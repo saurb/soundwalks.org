@@ -9,6 +9,8 @@ class AdminController < ApplicationController
         format.xml {render :xml => value}
         format.js {render :json => value}
       end
+    else
+      render :status => :forbidden
     end
   end
 end
