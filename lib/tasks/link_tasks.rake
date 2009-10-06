@@ -48,6 +48,8 @@ namespace :links do
     puts "Computing similarities."
     # Compute log-probabilities for link costs.
     for i in 0...sounds.size
+      puts "\t#{i}"
+      
       comparators[i] = sounds[i].get_comparator if (comparators[i] == nil)
         
       for j in i...sounds.size
@@ -63,8 +65,6 @@ namespace :links do
           log_probability[i, j] = value
           log_probability[j, i] = value
         end
-        
-        puts "\t(#{i}, #{j}) = #{value}"
       end
     end
     
