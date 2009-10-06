@@ -6,7 +6,7 @@ ActionController::Routing::Routes.draw do |map|
   map.activate '/activate/:activation_code', :controller => 'users', :action => 'activate', :activation_code => nil
   map.settings '/settings', :controller => 'users', :action => 'settings'
   
-  map.resource :admin, :collection => {:poll => :get}
+  map.resource :admin, :member => {:poll => :get}
   
   map.resources :links, :collection => {
     :delete_all => :get,
