@@ -11,8 +11,13 @@ class Link < ActiveRecord::Base
     id_strings = []
     
     ids.each do |id_type, id_list|
+      clause = ""
       id_list_string = id_list.join(",")
-      id_strings.push "(second_id in (#{id_list_string}) and second_type = '#{id_type}')"
+      
+      clause = ""
+      clause = "second_id in (#{id_list_string}) and " if id_list_string.size > 0
+      
+      id_strings.push "(#{clause} second_type = '#{id_type})"
     end
     
     full_id_string = id_strings.join(" or ")
