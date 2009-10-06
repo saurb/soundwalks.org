@@ -118,15 +118,13 @@ namespace :links do
   
   desc "Computes shortest path distances between nodes in the network."
   task :distances => :environment do
-    sounds = Sound.find(:all, :order => "id ASC")
-    tags = Tag.find(:all, :order => :id)
+    sounds = Sound.find(:all)
+    tags = Tag.find(:all)
     nodes = sounds + tags
     
     # Compute edge and weight matrices.
     edges = Array.new(nodes.size) {[]}
     weights = Matrix.rows(Array.new(nodes.size){Array.new(nodes.size, Infinity)})
-    
-    links = Link.find(:all, :conditions => {:first_type => 'Sound', :second_type => 'Sound'}, :order => "second_id ASC, first_id ASC")
     
     puts "Fetching sound-to-sound weights."
     # Fill sound-sound weights.
@@ -134,20 +132,12 @@ namespace :links do
       puts "\t#{i}"
       
       for j in i...sounds.size
-        index = -1
+        links = Link.find_with_nodes(sounds[i], sounds[j])
         
-        links.each_with_index do |link, a|
-          if link.first_id == sounds[i].id && link.second_id == sounds[j].id
-            index = a
-            break
-          end
-        end
-        
-        if index > -1
+        if links != nil && links.size > 0
           edges[i].push j
-          weights[i, j] = links[index].cost
-          weights[j, i] = links[index].cost
-          links.delete_at(index)
+          weights[i, j] = links.first.cost
+          weights[j, i] = links.first.cost
         end
       end
     end
@@ -168,7 +158,7 @@ namespace :links do
       end
     end
     
-    puts "\Finding shortest paths."
+    puts "Finding shortest paths."
     # Dijkstra.
     nodes.each_with_index do |source_node, source_index|
       puts "\t#{source_index}"
