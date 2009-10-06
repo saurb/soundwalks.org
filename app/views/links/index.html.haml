@@ -5,7 +5,22 @@
 
 %h2 Tasks
 
+- tasks = []
+- tasks.push 'Acoustic weights are being computed.' if Settings.links_weights_acoustic
+- tasks.push 'Semantic weights are being computed.' if Settings.links_weights_semantic
+- tasks.push 'Social weights are being computed.' if Settings.links_weights_social
+- tasks.push 'Shortest-path distances are being computed.' if Settings.links_distances
+
+- if tasks.size > 0
+	%p= tasks.join('<br />\n')
+		
 %p.buttons
+	%a{:href => '/links/update_acoustic'} Update acoustic weights
+	%a{:href => '/links/update_semantic'} Update semantic weights
+	%a{:href => '/links/update_social'} Update social weights
+	
+%p.buttons
+	%a{:href => '/links/update_distances'} Update shortest-path distances
 	%a{:href => '/links/delete_all'} Delete all links
 
 %h2 Links
