@@ -6,7 +6,7 @@ ActionController::Routing::Routes.draw do |map|
   map.activate '/activate/:activation_code', :controller => 'users', :action => 'activate', :activation_code => nil
   map.settings '/settings', :controller => 'users', :action => 'settings'
   
-  map.resources :links, :collection => {:recalculate_sounds => :get, :recalculate_votes => :get, :recalculate_tags => :get, :recalculate_distances => :get, :delete_all => :get}
+  map.resources :links, :collection => {:delete_all => :get}
   
   map.resources :soundwalks do |soundwalks|
     soundwalks.resources :sounds, :collection => {:delete_multiple => :delete, :uploader => :get}, :member => {:analyze => :get} do |sounds|
