@@ -8,6 +8,7 @@ ActionController::Routing::Routes.draw do |map|
   
   map.resource :admin do |admin|
     admin.poll 'poll', :controller => 'admin', :action => 'poll', :method => 'get'
+    admin.formatted_poll 'poll.:format', :controller => 'admin', :action => 'poll', :method => 'get'
   end
   
   map.resources :links, :collection => {
