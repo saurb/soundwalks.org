@@ -122,6 +122,8 @@ namespace :links do
     tags = Tag.find(:all)
     nodes = sounds + tags
     
+    puts nodes.size
+    
     # Compute edge and weight matrices.
     edges = Array.new(nodes.size) {[]}
     weights = Matrix.rows(Array.new(nodes.size){Array.new(nodes.size, Infinity)})
