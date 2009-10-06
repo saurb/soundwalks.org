@@ -40,7 +40,7 @@ end
 namespace :links do
   desc "Calculates link costs between sounds in the network."
   task :sound_to_sound => :environment do
-    sounds = Sound.find(:all, :limit => 5)
+    sounds = Sound.find(:all)
     sound_ids = sounds.collect{|sound| sound.id}
     log_probability = Matrix.rows(Array.new(sounds.size) {Array.new(sounds.size) {Infinity}})
     comparators = Array.new(sounds.size, nil)
