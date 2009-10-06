@@ -127,9 +127,10 @@ namespace :links do
     weights = Matrix.rows(Array.new(nodes.size){Array.new(nodes.size, Infinity)})
     
     puts "Fetching sound-to-sound weights."
+    print "\t"
     # Fill sound-sound weights.
     for i in 0...sounds.size
-      puts "\t#{i}"
+      print "#{i} "
       
       for j in i...sounds.size
         links = Link.find_with_nodes(sounds[i], sounds[j])
@@ -142,9 +143,10 @@ namespace :links do
     end
     
     puts "Fetching sound-to-tag weights."
+    print "\t"
     # Fill sound-tag weights.
     for i in 0...sounds.size
-      puts "\t#{i}"
+      print "#{i} "
       
       for j in 0...tags.size
         links = Link.find_with_nodes(sounds[i], tags[j])
