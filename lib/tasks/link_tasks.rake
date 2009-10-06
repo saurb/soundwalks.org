@@ -1,4 +1,5 @@
 namespace :links do
+  desc "Calculates link costs between sounds in the network."
   task :sound_to_sound do
     sounds = Sound.find(:all)
     sound_ids = sounds.collect{|sound| sound.id}
