@@ -118,8 +118,8 @@ namespace :links do
   
   desc "Computes shortest path distances between nodes in the network."
   task :distances => :environment do
-    sounds = Sound.find(:all)
-    tags = Tag.find(:all)
+    sounds = Sound.find(:all, :order => "id ASC")
+    tags = Tag.find(:all, :order => :id)
     nodes = sounds + tags
     
     # Compute edge and weight matrices.
@@ -132,17 +132,27 @@ namespace :links do
     for i in 0...sounds.size
       print "#{i} "
       
+      links = Link.find(:all, :conditions => {:first_id => sounds[i].id, :first_type => 'Sound', :second_type => 'Sound'}, :order => "second_id ASC")
+      
       for j in i...sounds.size
-        links = Link.find_with_nodes(sounds[i], sounds[j])
-        if links != nil && links.size > 0
-          edges[i].push j
-          weights[i, j] = links.first.cost
-          weights[j, i] = links.first.cost
+          index = -1
+          links.each_with_index do |link, a|
+            if link.second_id = sounds[a].id
+              index = a
+              break
+            end
+          end
+          
+          if index > -1
+            edges[i].push j
+            weights[i, j] = links[index].cost
+            weights[j, i] = links[index].cost
+          end
         end
       end
     end
     
-    puts "Fetching sound-to-tag weights."
+    puts "\nFetching sound-to-tag weights."
     print "\t"
     # Fill sound-tag weights.
     for i in 0...sounds.size
@@ -159,10 +169,11 @@ namespace :links do
       end
     end
     
-    puts "Finding shortest paths."
+    puts "\nFinding shortest paths."
+    print "\t"
     # Dijkstra.
     nodes.each_with_index do |source_node, source_index|
-      puts "\t#{source_index}"
+      print "#{source_index} "
       
       # Create all the necessary arrays.
       visited = Array.new(nodes.size, false)
