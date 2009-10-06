@@ -30,7 +30,7 @@ namespace :links do
   desc "Computes shortest path distances between nodes in the network."
   
   task :distances => :environment do
-    Settings.links_distances = true
+    Settings.links_distances = 0
     
     # 1. Initialize matrices and lists.
     sounds = Sound.find(:all)
@@ -87,6 +87,6 @@ namespace :links do
       end
     end
     
-    Settings.links_distances = false
+    Settings.links_distances = 1
   end
 end
