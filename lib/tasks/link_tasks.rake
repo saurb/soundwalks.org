@@ -75,9 +75,9 @@ namespace :links do
     puts "Updating links."
     # Update link costs.
     for i in 0...affinity.row_size
+      puts "\t#{i}"
+      
       for j in i...affinity.column_size
-        puts "\t(#{i}, #{j})"
-        
         if !affinity[i, j].nan? && (affinity[i, j] != Infinity) && (affinity[i, j] != -Infinity)
           update_or_create_link(sounds[i], sounds[j], affinity[i, j], nil)
           update_or_create_link(sounds[j], sounds[i], affinity[i, j], nil)
