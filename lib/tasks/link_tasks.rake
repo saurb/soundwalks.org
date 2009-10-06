@@ -144,6 +144,7 @@ namespace :links do
         end
         
         if index > -1
+          puts "HI! #{index}"
           edges[i].push j
           weights[i, j] = links[index].cost
           weights[j, i] = links[index].cost
