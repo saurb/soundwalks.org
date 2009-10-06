@@ -1,3 +1,5 @@
+Infinity = 1.0 / 0.0
+
 class NetworkMigration < ActiveRecord::Migration
   def self.up
     create_table :links do |t|
@@ -6,8 +8,8 @@ class NetworkMigration < ActiveRecord::Migration
       t.string :first_type
       t.string :second_type
       
-      t.column :cost, :float, :default => 'Infinity'
-      t.column :distance, :float, :default => 'Infinity'
+      t.column :cost, :float, :default => Infinity
+      t.column :distance, :float, :default => Infinity
       
       t.column :context, :string
       
