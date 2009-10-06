@@ -126,18 +126,18 @@ namespace :links do
     edges = Array.new(nodes.size) {[]}
     weights = Matrix.rows(Array.new(nodes.size){Array.new(nodes.size, Infinity)})
     
+    links = Link.find(:all, :conditions => {:first_type => 'Sound', :second_type => 'Sound'}, :order => "first_id ASC, second_id ASC")
+    
     puts "Fetching sound-to-sound weights."
     # Fill sound-sound weights.
     for i in 0...sounds.size
       puts "\t#{i}"
       
-      links = Link.find(:all, :conditions => {:first_id => sounds[i].id, :first_type => 'Sound', :second_type => 'Sound'}, :order => "second_id ASC")
-      
       for j in i...sounds.size
         index = -1
         
         links.each_with_index do |link, a|
-          if link.second_id == sounds[j].id
+          if link.first_id == sounds[i].id && link.second_id == sounds[j].id
             index = a
             break
           end
@@ -147,6 +147,7 @@ namespace :links do
           edges[i].push j
           weights[i, j] = links[index].cost
           weights[j, i] = links[index].cost
+          links.delete_at(index)
         end
       end
     end
