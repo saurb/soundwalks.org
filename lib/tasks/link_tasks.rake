@@ -133,7 +133,7 @@ namespace :links do
       print "#{i} "
       
       links = Link.find(:all, :conditions => {:first_id => sounds[i].id, :first_type => 'Sound', :second_type => 'Sound'}, :order => "second_id ASC")
-      
+      puts "Size: #{links.size}"
       for j in i...sounds.size
         index = -1
         
