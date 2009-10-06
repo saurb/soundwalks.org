@@ -9,4 +9,4 @@ function update_status() {
 	update_value("/admin/poll.js?setting=links_distances", "#distances", "Shortest-path distances are being computed.<br />");
 }
 
-$(document).ready(function() {setInterval('update_status()', 10000)});
+$(document).ready(function() {setInterval('update_status()', 5000)});
