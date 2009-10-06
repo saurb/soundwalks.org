@@ -123,6 +123,8 @@ namespace :links do
     nodes = sounds + tags
     
     puts nodes.size
+    puts tags.size
+    puts sounds.size
     
     # Compute edge and weight matrices.
     edges = Array.new(nodes.size) {[]}
