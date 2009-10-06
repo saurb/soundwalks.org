@@ -12,8 +12,8 @@ class AdminController < ApplicationController
         end
       else
         respond_to do |format|
-          format.xml {render :xml => {:value => false}}
-          format.js {render :json => {:value => false}}
+          format.xml {render :xml => {:settings => {:value => false}}}
+          format.js {render :json => {:settings => {:value => false}}}
         end
       end
     else
