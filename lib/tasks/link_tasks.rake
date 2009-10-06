@@ -147,7 +147,7 @@ namespace :links do
           edges[i].push j
           weights[i, j] = links[index].cost
           weights[j, i] = links[index].cost
-          links.delete_at(index)
+          #links.delete_at(index)
         end
       end
     end
