@@ -47,8 +47,8 @@ namespace :links do
       
         for j in i...affinity.column_size
           if !affinity[i, j].nan? && (affinity[i, j] != Infinity) && (affinity[i, j] != -Infinity)
-            update_or_create_link(sounds[i], sounds[j], affinity[i, j], nil)
-            update_or_create_link(sounds[j], sounds[i], affinity[i, j], nil)
+            Link.update_or_create(sounds[i], sounds[j], affinity[i, j], nil)
+            Link.update_or_create(sounds[j], sounds[i], affinity[i, j], nil)
           end
         end
       end
@@ -87,8 +87,8 @@ namespace :links do
         tags.each do |tag|
           value = -Math.log(tag.count.to_f / total.to_f)
           
-          update_or_create_link(sound, tag, value, nil)
-          update_or_create_link(tag, sound, value, nil)
+          Link.update_or_create(sound, tag, value, nil)
+          Link.update_or_create(tag, sound, value, nil)
         end
       end
       

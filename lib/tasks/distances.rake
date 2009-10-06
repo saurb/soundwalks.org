@@ -83,7 +83,7 @@ namespace :links do
       
       # 3.4. Update link distances in database.
       shortest_distances.each_with_index do |distance, i|
-        update_or_create_link(nodes[source_index], nodes[i], nil, distance) if distance < Infinity
+        Link.update_or_create(nodes[source_index], nodes[i], nil, distance) if distance < Infinity
       end
     end
     
