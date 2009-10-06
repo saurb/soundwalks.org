@@ -17,7 +17,7 @@ class Link < ActiveRecord::Base
       clause = ""
       clause = "second_id in (#{id_list_string}) and " if id_list_string.size > 0
       
-      id_strings.push "(#{clause} second_type = '#{id_type})"
+      id_strings.push "(#{clause} second_type = '#{id_type}')"
     end
     
     full_id_string = id_strings.join(" or ")
