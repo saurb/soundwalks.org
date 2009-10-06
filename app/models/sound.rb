@@ -255,6 +255,10 @@ class Sound < ActiveRecord::Base
   end
   
   def get_comparator
+    if self.features.count < 6
+      analyze_sound
+    end
+    
     l = unpack_feature(:loudness)
     ts = unpack_feature(:temporal_sparsity)
     ss = unpack_feature(:spectral_sparsity)
