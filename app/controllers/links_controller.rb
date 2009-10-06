@@ -56,7 +56,7 @@ class LinksController < ApplicationController
     
     respond_to do |format|
       format.html {
-        flash.now[:notice] = "All links successfully destroyed."
+        flash.now[:notice] = 'All links successfully destroyed.'
         render :action => 'index'
       }
     end
@@ -64,25 +64,25 @@ class LinksController < ApplicationController
   
   def update_acoustic
     call_rake 'links:weights:acoustic'
-    flash[:notice] = "Computing acoustic links."
+    flash[:notice] = 'Computing acoustic links.'
     redirect_to links_path
   end
   
   def update_social
     call_rake 'links:weights:social'
-    flash[:notice] = "Computing social links."
+    flash[:notice] = 'Computing social links.'
     redirect_to links_path
   end
   
   def update_semantic
     call_rake 'links:weights:semantic'
-    flash[:notice] = "Computing semantic links."
+    flash[:notice] = 'Computing semantic links.'
     redirect_to links_path
   end
   
   def update_distances
     call_rake 'links:distances'
-    flash[:notice] = "Computing shortest paths."
+    flash[:notice] = 'Computing shortest paths.'
     redirect_to links_path
   end
 end
