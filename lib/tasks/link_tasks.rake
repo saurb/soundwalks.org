@@ -126,8 +126,11 @@ namespace :links do
     edges = Array.new(nodes.size) {[]}
     weights = Matrix.rows(Array.new(nodes.size){Array.new(nodes.size, Infinity)})
     
+    puts "Fetching sound-to-sound weights."
     # Fill sound-sound weights.
     for i in 0...sounds.size
+      puts "\t#{i}"
+      
       for j in i...sounds.size
         links = Link.find_with_nodes(sounds[i], sounds[j])
         if links != nil && links.size > 0
@@ -138,8 +141,11 @@ namespace :links do
       end
     end
     
+    puts "Fetching sound-to-tag weights."
     # Fill sound-tag weights.
     for i in 0...sounds.size
+      puts "\t#{i}"
+      
       for j in 0...tags.size
         links = Link.find_with_nodes(sounds[i], tags[j])
         
@@ -151,10 +157,11 @@ namespace :links do
       end
     end
     
-    puts weights
-        
+    puts "Finding shortest paths."
     # Dijkstra.
     nodes.each_with_index do |source_node, source_index|
+      puts "\t#{source_index}"
+      
       # Create all the necessary arrays.
       visited = Array.new(nodes.size, false)
       shortest_distances = Array.new(nodes.size, Infinity)
