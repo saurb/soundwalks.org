@@ -135,19 +135,18 @@ namespace :links do
       links = Link.find(:all, :conditions => {:first_id => sounds[i].id, :first_type => 'Sound', :second_type => 'Sound'}, :order => "second_id ASC")
       
       for j in i...sounds.size
-          index = -1
-          links.each_with_index do |link, a|
-            if link.second_id = sounds[a].id
-              index = a
-              break
-            end
+        index = -1
+        links.each_with_index do |link, a|
+          if link.second_id = sounds[a].id
+            index = a
+            break
           end
-          
-          if index > -1
-            edges[i].push j
-            weights[i, j] = links[index].cost
-            weights[j, i] = links[index].cost
-          end
+        end
+        
+        if index > -1
+          edges[i].push j
+          weights[i, j] = links[index].cost
+          weights[j, i] = links[index].cost
         end
       end
     end
