@@ -5,9 +5,16 @@ class AdminController < ApplicationController
     if current_user.admin?
       value = Settings.find_by_var(params[:setting])
       
-      respond_to do |format|
-        format.xml {render :xml => value}
-        format.js {render :json => value}
+      if !value.nil?
+        respond_to do |format|
+          format.xml {render :xml => value}
+          format.js {render :json => value}
+        end
+      else
+        respond_to do |format|
+          format.xml {render :xml => {:value => false}}
+          format.js {render :json => {:value => false}}
+        end
       end
     else
       render :status => :forbidden
