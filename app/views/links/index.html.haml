@@ -1,18 +1,18 @@
 - content_for :title do
 	Network Administration
+
+- content_for :javascript do
+	= javascript_include_tag 'lib/jquery.js', 'links.js'
 	
 %h1 Network Administration
 
 %h2 Tasks
 
-- tasks = []
-- tasks.push 'Acoustic weights are being computed.' if Settings.links_weights_acoustic
-- tasks.push 'Semantic weights are being computed.' if Settings.links_weights_semantic
-- tasks.push 'Social weights are being computed.' if Settings.links_weights_social
-- tasks.push 'Shortest-path distances are being computed.' if Settings.links_distances
-
-- if tasks.size > 0
-	%p= tasks.join('<br />\n')
+%p
+	%span#acoustic= 'Acoustic weights are being computed.<br />' if Settings.links_weights_acoustic
+	%span#semantic= 'Semantic weights are being computed.<br />' if Settings.links_weights_semantic
+	%span#social= 'Social weights are being computed.<br />' if Settings.links_weights_social
+	%span#distances= 'Shortest-path distances are being computed.<br />' if Settings.links_distances
 		
 %p.buttons
 	%a{:href => '/links/update_acoustic'} Update acoustic weights
