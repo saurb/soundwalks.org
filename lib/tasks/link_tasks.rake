@@ -117,7 +117,7 @@ namespace :links do
   end
   
   desc "Computes shortest path distances between nodes in the network."
-  task :recalculate_distances => :environment do
+  task :distances => :environment do
     sounds = Sound.find(:all)
     tags = Tag.find(:all)
     nodes = sounds + tags
