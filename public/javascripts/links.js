@@ -1,5 +1,5 @@
 function update_value(url, span, text) {
-	$.getJSON(url, function(data) {alert(data); if (data.setting.value) {$(span).html(text)}});
+	$.getJSON(url, function(data) {if (data.value) {$(span).html(text)}});
 }
 
 function update_status() {
