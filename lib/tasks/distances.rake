@@ -30,8 +30,6 @@ namespace :links do
   desc "Computes shortest path distances between nodes in the network."
   
   task :distances => :environment do
-    Settings.links_distances = 0
-    
     # 1. Initialize matrices and lists.
     sounds = Sound.find(:all)
     tags = Tag.find(:all)
@@ -83,6 +81,8 @@ namespace :links do
       
       # 3.4. Update link distances in database.
       shortest_distances.each_with_index do |distance, i|
+        Settings.links_distances = (nodes.size * source_index + i).to_f / (nodes.size * nodes.size).to_f
+        
         Link.update_or_create(nodes[source_index], nodes[i], nil, distance) if distance < Infinity
       end
     end
