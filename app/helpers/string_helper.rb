@@ -42,7 +42,7 @@ module StringHelper
     results = Link.query_distribution(@sound, {'Tag' => unique_tag_ids})
     
     for i in 0...results.size
-      results[i][:deviation] = (results[i][:value] / results.size.to_f - 1.0)
+      results[i][:deviation] = (results[i][:value] * results.size.to_f - 1.0)
     end
     
     return results.collect{|result| "<span style='font-size: #{(1 + result[:deviation]) * 2}em'>#{result[:name]}</span>"}.join(', ')
