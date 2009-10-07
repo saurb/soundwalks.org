@@ -22,7 +22,7 @@
 - acoustic = check_nil(Settings.links_weights_acoustic)
 - semantic = check_nil(Settings.links_weights_semantic)
 - social = check_nil(Settings.links_weights_social)
-- distances = check_nil(Settings.links_weights_distances)
+- distances = check_nil(Settings.links_distances)
 
 %div
 	%div#acoustic{:class => 'admin_progress'}
@@ -42,8 +42,15 @@
 		= "<span class='text'>Distances (<span class='progress_text'>#{percentage_text(distances)}</span>)</span>"
 		
 %h2 Links
-	
+
 - if @links != nil && @links.size > 0
+	%p.buttons	
+		- if @total_links > @links.size
+			- if @offset > 0
+				%a{:href => "/links/?offset=#{@offset - 20}"} &lt; Previous
+			- if @offset + @links.size < @total_links
+				%a{:href => "/links/?offset=#{@offset + 20}"} Next &gt;
+				
 	%table{:style => 'width: 100%; text-align: left'}
 		%tr
 			%th ID
@@ -59,7 +66,7 @@
 					%td #{link.second_type}.#{link.second_id}
 					%td #{link.cost}
 					%td #{link.distance}
-	
+					
 	%p.buttons	
 		- if @total_links > @links.size
 			- if @offset > 0
