@@ -15,7 +15,8 @@ ActionController::Routing::Routes.draw do |map|
     :delete_all => :get,
     :update_acoustic => :get,
     :update_semantic => :get,
-    :update_social => :get
+    :update_social => :get,
+    :update_distances => :get
   }
   
   map.resources :soundwalks do |soundwalks|
