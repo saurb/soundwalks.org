@@ -8,23 +8,24 @@
 
 %h2 Tasks
 
-%p.buttons
-	%a{:href => '/links/update_acoustic'} Update acoustic weights
-	%a{:href => '/links/update_semantic'} Update semantic weights
-	%a{:href => '/links/update_social'} Update social weights
-	%a{:href => '/links/update_distances'} Update distances
-
-%p.buttons
-	%a{:href => '/links/delete_all'} Delete all links
-
-%h2 Completion
-
 - acoustic = check_nil(Settings.links_weights_acoustic)
 - semantic = check_nil(Settings.links_weights_semantic)
 - social = check_nil(Settings.links_weights_social)
 - distances = check_nil(Settings.links_distances)
 
 %div
+	%div{:style => 'float: right'}
+		%p.buttons
+			%a{:href => '/links/update_acoustic'} Update acoustic weights
+			%br
+			%a{:href => '/links/update_semantic'} Update semantic weights
+			%br
+			%a{:href => '/links/update_social'} Update social weights
+			%br
+			%a{:href => '/links/update_distances'} Update distances
+			%br
+			%a{:href => '/links/delete_all'} Delete all links
+
 	%div#acoustic{:class => 'admin_progress'}
 		%div.progress{:style => "width: #{percentage_width(acoustic)}"}
 		= "<span class='text'>Acoustic (<span class='progress_text'>#{percentage_text(acoustic)}</span>)</span>"
