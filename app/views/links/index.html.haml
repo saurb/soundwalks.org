@@ -17,15 +17,15 @@
 	%div{:style => 'float: right'}
 		%p.buttons
 			%a{:href => '/links/update_acoustic'} Update acoustic weights
-			%br
+		%p.buttons
 			%a{:href => '/links/update_semantic'} Update semantic weights
-			%br
+		%p.buttons
 			%a{:href => '/links/update_social'} Update social weights
-			%br
+		%p.buttons
 			%a{:href => '/links/update_distances'} Update distances
-			%br
+		%p.buttons
 			%a{:href => '/links/delete_all'} Delete all links
-	%div{:style => 'width: 80%'}
+	%div{:style => 'width: 40em'}
 		%div#acoustic{:class => 'admin_progress'}
 			%div.progress{:style => "width: #{percentage_width(acoustic)}"}
 			= "<span class='text'>Acoustic (<span class='progress_text'>#{percentage_text(acoustic)}</span>)</span>"
