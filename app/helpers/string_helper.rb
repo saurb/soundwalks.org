@@ -45,6 +45,6 @@ module StringHelper
       results[i][:deviation] = (results[i][:value] - (1.0 / results.size.to_f)) / (1.0 / results.size.to_f)
     end
     
-    return results.collect{|result| "<span style='font-size: #{(1.0 + result[:deviation] * 0.5)}em'>#{result[:name]}</span>"}.join(', ')
+    return results.collect{|result| "<span style='font-size: #{(1.0 + result[:deviation] * 0.25)}em'>#{result[:name]}</span>"}.join(', ')
   end
 end
