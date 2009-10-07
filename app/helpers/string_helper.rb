@@ -40,6 +40,11 @@ module StringHelper
   def formatted_sound_tags(sound)
     unique_tag_ids = @sound.tags.collect{|tag| tag.id}.uniq
     results = Link.query_distribution(@sound, {'Tag' => unique_tag_ids})
-    return results.collect{|result| "<span style='font-size: #{result[:value] * results.size.to_f}em'>#{result[:name]}</span>"}.join(', ')
+    
+    for i in 0...results.size
+      results[i][:deviation] = (result[:value] / results.size.to_f - 1)
+    end
+    
+    return results.collect{|result| "<span style='font-size: #{(1 + result[:deviation]) * 2}em'>#{result[:name]}</span>"}.join(', ')
   end
 end
