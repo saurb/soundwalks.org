@@ -84,8 +84,8 @@ namespace :links do
       shortest_distances.each_with_index do |distance, i|
         Settings.links_distances = (nodes.size * source_index + i).to_f / (nodes.size * nodes.size).to_f
         
-        Link.only_update(nodes[source_index], nodes[i], nil, distance) if distance < Infinity
-        #Link.update_or_create(nodes[source_index], nodes[i], nil, distance) if distance < Infinity
+        #Link.only_update(nodes[source_index], nodes[i], nil, distance) if distance < Infinity
+        Link.update_or_create(nodes[source_index], nodes[i], nil, distance) if distance < Infinity
       end
     end
     
