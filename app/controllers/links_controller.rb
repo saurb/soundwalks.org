@@ -6,7 +6,7 @@ class LinksController < ApplicationController
   def index
     if current_user.admin?
       if params[:offset]
-        @offset = params[:offset]
+        @offset = params[:offset].to_i
       else
         @offset = 0
       end
