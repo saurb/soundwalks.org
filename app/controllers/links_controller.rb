@@ -63,24 +63,32 @@ class LinksController < ApplicationController
   end
   
   def update_acoustic
+    Settings.links_weights_acoustic = 0
+    
     call_rake 'links:weights:acoustic'
     flash[:notice] = 'Computing acoustic links.'
     redirect_to links_path
   end
   
   def update_social
+    Settings.links_weights_social = 0
+    
     call_rake 'links:weights:social'
     flash[:notice] = 'Computing social links.'
     redirect_to links_path
   end
   
   def update_semantic
+    Settings.links_weights_semantic = 0
+    
     call_rake 'links:weights:semantic'
     flash[:notice] = 'Computing semantic links.'
     redirect_to links_path
   end
   
   def update_distances
+    Settings.links_distances = 0
+    
     call_rake 'links:distances'
     flash[:notice] = 'Computing shortest paths.'
     redirect_to links_path

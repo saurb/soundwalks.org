@@ -5,9 +5,7 @@ namespace :links do
     #---------------------------------------------------------#
     desc "Calculates link costs between sounds in the network."
     
-    task :acoustic => :environment do
-      Settings.links_weights_acoustic = 0
-      
+    task :acoustic => :environment do      
       sounds = Sound.find(:all)
       sound_ids = sounds.collect{|sound| sound.id}
       log_probability = Matrix.rows(Array.new(sounds.size) {Array.new(sounds.size) {Infinity}})
@@ -54,6 +52,8 @@ namespace :links do
           end
         end
       end
+      
+      Settings.links_weights_acoustic = 1
     end
   
     #-----------------------------------------------------#
@@ -61,9 +61,7 @@ namespace :links do
     #-----------------------------------------------------#
     desc "Calculates link costs between tags in the network."
     
-    task :semantic => :environment do
-      Settings.links_weights_semantic = 0
-      
+    task :semantic => :environment do      
       # TODO: Use WordNet.
       
       Settings.links_weights_semantic = 1
@@ -74,9 +72,7 @@ namespace :links do
     #-----------------------------------------------------#
     desc "Calculates link costs between sounds and tags in the network."
     
-    task :social => :environment do
-      Settings.links_weights_social = 0
-      
+    task :social => :environment do      
       sounds = Sound.find(:all)
       
       # Compute log-probability for each link.
@@ -93,6 +89,8 @@ namespace :links do
           Link.update_or_create(tag, sound, value, nil)
         end
       end
+      
+      Settings.links_weights_social = 1
     end
   end
 end

@@ -1,12 +1,20 @@
 function update_value(url, span, text) {
-	$.getJSON(url, function(data) {if (data['settings']['value'] != undefined) {$(span).html(text + data['settings']['value'].toString() + '<br />')} else {$(span).html('')}});
+	$.getJSON(url, function(data) {
+		if (data['settings']['value'] != undefined) {
+			$(span + ' .progress').css({'width' : (data['settings']['value'] * 100).toFixed(2).toString() + '%'})
+			$(span + ' .progress_text').html((data['settings']['value'] * 100).toFixed(2).toString() + '%')
+		} else {
+			$(span + ' .progress').css({'width' : '0'});
+			$(span + ' .progress_text').html("0%")
+		}
+	});
 }
 
 function update_status() {
-	update_value("/admin/poll.js?setting=links_weights_acoustic", "#acoustic", "Acoustic weights: ");
-	update_value("/admin/poll.js?setting=links_weights_semantic", "#semantic", "Semantic weights: ");
-	update_value("/admin/poll.js?setting=links_weights_social", "#social", "Social weights: ");
-	update_value("/admin/poll.js?setting=links_distances", "#distances", "Shortest-path distances: ");
+	update_value("/admin/poll.js?setting=links_weights_acoustic", "#acoustic");
+	update_value("/admin/poll.js?setting=links_weights_semantic", "#semantic");
+	update_value("/admin/poll.js?setting=links_weights_social", "#social");
+	update_value("/admin/poll.js?setting=links_distances", "#distances");
 }
 
-$(document).ready(function() {setInterval('update_status()', 5000)});
+$(document).ready(function() {setInterval('update_status()', 10000)});

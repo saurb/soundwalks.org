@@ -8,21 +8,39 @@
 
 %h2 Tasks
 
-%p
-	%span#acoustic= "Acoustic weights: #{Settings.links_weights_acoustic}<br />" if Settings.links_weights_acoustic
-	%span#semantic= "Semantic weights: #{Settings.links_weights_semantic}<br />" if Settings.links_weights_semantic
-	%span#social= "Social weights: #{Settings.links_weights_social}<br />" if Settings.links_weights_social
-	%span#distances= "Shortest-path distances: #{Settings.links_distances}<br />" if Settings.links_distances
-		
 %p.buttons
 	%a{:href => '/links/update_acoustic'} Update acoustic weights
 	%a{:href => '/links/update_semantic'} Update semantic weights
 	%a{:href => '/links/update_social'} Update social weights
-	
+	%a{:href => '/links/update_distances'} Update distances
+
 %p.buttons
-	%a{:href => '/links/update_distances'} Update shortest-path distances
 	%a{:href => '/links/delete_all'} Delete all links
 
+%h2 Completion
+
+- acoustic = check_nil(Settings.links_weights_acoustic)
+- semantic = check_nil(Settings.links_weights_semantic)
+- social = check_nil(Settings.links_weights_social)
+- distances = check_nil(Settings.links_weights_distances)
+
+%div
+	%div#acoustic{:class => 'admin_progress'}
+		%div.progress{:style => "width: #{percentage_width(acoustic)}"}
+		= "<span class='text'>Acoustic (<span class='progress_text'>#{percentage_text(acoustic)}</span>)</span>"
+		
+	%div#semantic{:class => 'admin_progress'}
+		%div.progress{:style => "width: #{percentage_width(semantic)}"}
+		= "<span class='text'>Semantic (<span class='progress_text'>#{percentage_text(semantic)}</span>)</span>"
+		
+	%div#social{:class => 'admin_progress'}
+		%div.progress{:style => "width: #{percentage_width(social)}"}
+		= "<span class='text'>Social (<span class='progress_text'>#{percentage_text(social)}</span>)</span>"
+		
+	%div#distances{:class => 'admin_progress'}
+		%div.progress{:style => "width: #{percentage_width(distances)}"}
+		= "<span class='text'>Distances (<span class='progress_text'>#{percentage_text(distances)}<span>)</span>"
+		
 %h2 Links
 	
 - if @links != nil && @links.size > 0
