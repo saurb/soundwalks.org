@@ -59,6 +59,13 @@
 					%td #{link.second_type}.#{link.second_id}
 					%td #{link.cost}
 					%td #{link.distance}
+	
+	%p.buttons	
+		- if @total_links > @links.size
+			- if @offset > 0
+				%a{:href => "/links/?offset=#{offset - 20}"} Previous
+			- if @offset + @links.size < @total_links
+				%a{:href => "/links/?offset=#{offset + 20}"} Next
 - else
 	No links currently exist in the database.
 	
