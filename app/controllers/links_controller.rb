@@ -6,10 +6,12 @@ class LinksController < ApplicationController
   def index
     if current_user.admin?
       if params[:offset]
-        @links = Link.find(:all, :limit => 20, :offset => params[:offset])
+        @offset = params[:offset]
       else
-        @links = Link.find(:all, :limit => 20, :offset => 0)
+        @offset = 0
       end
+      
+      @links = Link.find(:all, :limit => 20, :offset => params[:offset])
       
       @total_links = Link.count
       
