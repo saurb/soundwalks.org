@@ -16,7 +16,7 @@ function update_value(url, span, interval) {
 				$(span + ' .progress_text').html("0%")
 			}
 			
-			eval("interval_" + interval + " = setInterval('update_value(url, span, interval));");
+			eval("interval_" + interval + " = setInterval('update_value(url, span, interval)', 5000)");
 		});
 	}
 }
