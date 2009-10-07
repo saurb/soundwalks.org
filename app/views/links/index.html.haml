@@ -25,7 +25,7 @@
 			%a{:href => '/links/update_distances'} Update distances
 			%br
 			%a{:href => '/links/delete_all'} Delete all links
-	%div
+	%div{:style => 'width: 80%'}
 		%div#acoustic{:class => 'admin_progress'}
 			%div.progress{:style => "width: #{percentage_width(acoustic)}"}
 			= "<span class='text'>Acoustic (<span class='progress_text'>#{percentage_text(acoustic)}</span>)</span>"
