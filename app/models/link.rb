@@ -61,7 +61,13 @@ class Link < ActiveRecord::Base
       end
       
       links.each do |link|
-        response.push({:type => link.second_type, :id => link.second_id, :value => link.distance / sum})
+        if link.second_type == 'Tag'
+          tag = Tag.find(link.second_id)
+          
+          response.push({:type => link.second_type, :id => link.second_id, :value => link.distance / sum, :name => tag.name})
+        else
+          response.push({:type => link.second_type, :id => link.second_id, :value => link.distance / sum})
+        end
       end
     end
     

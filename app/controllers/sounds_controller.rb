@@ -225,10 +225,6 @@ class SoundsController < ApplicationController
     
     distribution = Link.query_distribution(sound, {'Tag' => verified_tag_ids, 'Sound' => verified_sound_ids})
     
-    for i in 0...distribution.size
-      distribution[i][:name] = verified_tag_names[verified_tag_ids.index(distribution[i][:id])] if distribution[i][:type] == 'Tag'
-    end
-    
     respond_to do |format|
       format.js {render :json => distribution}
       format.xml {render :xml => distribution}

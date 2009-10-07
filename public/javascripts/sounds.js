@@ -27,10 +27,10 @@ $(document).ready(function() {
 				if (!data.user_tags)
 					$('[data-shows=user_tags]').html('Click here to add tags.')
 				
-				if (!data.all_tags)
-					$('[data-shows=all_tags]').html('This sound has not been tagged yet.')
+				if (!data.all_tags_formatted)
+					$('[data-shows=all_tags_formatted]').html('This sound has not been tagged yet.')
 				else
-					$('[data-shows=all_tags]').html(data.all_tags)
+					$('[data-shows=all_tags_formatted]').html(data.all_tags_formatted)
 			}
 		
 		$(this).click(function() {

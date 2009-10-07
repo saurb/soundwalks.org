@@ -42,15 +42,9 @@
 	
 	%p
 		%span.label Community tags:
-		%p
-			- results = Link.query_distribution(@sound, [{'Tag' => @sound.tags.collect{|tag| tag.id}}])
-			- results.each_with_index do |result, index|
-				%span{:style => "font-size: #{result.value * 4.0}em"}= @sound.tags[index]
-		
-		def self.query_distribution(query, ids)
-	  
-		%span.detail{'data-shows' => 'all_tags'} 
-			#{@sound.tags.size > 0 ? @sound.tags.join(', ') : 'This sound has not been tagged yet.'}
+		%span.detail{'data-shows' => 'all_tags_formatted'} 
+			#{@sound.tags.size > 0 ? formatted_sound_tags(@sound) : 'This sound has not been tagged yet.'}
+			-#{@sound.tags.size > 0 ? @sound.tags.join(', ') : 'This sound has not been tagged yet.'}
 			
 	- if logged_in?
 		%p

@@ -36,4 +36,10 @@ module StringHelper
     preserve_array = preserve_tags.join('|') << '|\/'
     str.gsub(/<(\/|\s)*[^(#{preserve_array})][^>]*>/,'')
   end
+  
+  def formatted_sound_tags(sound)
+    unique_tag_ids = @sound.tags.collect{|tag| tag.id}.uniq
+    results = Link.query_distribution(@sound, {'Tag' => unique_tag_ids})
+    return results.collect{|result| "<span style='font-size: #{result[:value] * results.size.to_f}em'>#{result[:name]}</span>"}.join(', ')
+  end
 end
