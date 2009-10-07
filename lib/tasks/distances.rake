@@ -12,6 +12,7 @@ def fetch_weights(set1, set2, weights, edges, offset1, offset2)
       
       if links != nil && links.size > 0
         edges[offset1 + i].push offset2 + j
+        edges[offset2 + j].push offset1 + i
         
         value = links.first.cost
         value = Infinity if value < 0
@@ -83,7 +84,8 @@ namespace :links do
       shortest_distances.each_with_index do |distance, i|
         Settings.links_distances = (nodes.size * source_index + i).to_f / (nodes.size * nodes.size).to_f
         
-        Link.update_or_create(nodes[source_index], nodes[i], nil, distance) if distance < Infinity
+        Link.only_update(nodes[source_index], nodes[i], nil, distance) if distance < Infinity
+        #Link.update_or_create(nodes[source_index], nodes[i], nil, distance) if distance < Infinity
       end
     end
     

@@ -6,6 +6,16 @@ class Link < ActiveRecord::Base
     {:conditions => {:first_id => first.id, :second_id => second.id, :first_type => first.class.to_s, :second_type => second.class.to_s}}
   }
   
+  def self.only_update(first, second, cost, distance)
+    update_strings = []
+    update_strings.push("cost = #{cost}") if cost != nil
+    update_strings.push("distance = #{distance}") if distance != nil
+    
+    if update_strings.size > 0
+      Link.update_all update_strings.join(","), "first_id=#{first.id} AND second_id = #{second.id} AND first_type='#{first.class.to_s}' AND second_type = '#{second.class.to_s}'"
+    end
+  end
+   
   def self.update_or_create(first, second, cost, distance)
     link = nil
 
