@@ -1,13 +1,15 @@
 function update_value(url, span, text) {
-	$.getJSON(url, function(data) {
-		if (data['settings']['value'] != undefined) {
-			$(span + ' .progress').css({'width' : (data['settings']['value'] * 100).toFixed(2).toString() + '%'})
-			$(span + ' .progress_text').html((data['settings']['value'] * 100).toFixed(2).toString() + '%')
-		} else {
-			$(span + ' .progress').css({'width' : '0'});
-			$(span + ' .progress_text').html("0%")
-		}
-	});
+	if ($(span + '.progress_text').html() != "100%") {
+		$.getJSON(url, function(data) {
+			if (data['settings']['value'] != undefined) {
+				$(span + ' .progress').css({'width' : (data['settings']['value'] * 100).toFixed(2).toString() + '%'})
+				$(span + ' .progress_text').html((data['settings']['value'] * 100).toFixed(2).toString() + '%')
+			} else {
+				$(span + ' .progress').css({'width' : '0'});
+				$(span + ' .progress_text').html("0%")
+			}
+		});
+	}
 }
 
 function update_status() {
@@ -17,4 +19,4 @@ function update_status() {
 	update_value("/admin/poll.js?setting=links_distances", "#distances");
 }
 
-$(document).ready(function() {setInterval('update_status()', 10000)});
+$(document).ready(function() {setInterval('update_status()', 5000)});
