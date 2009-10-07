@@ -25,22 +25,22 @@
 			%a{:href => '/links/update_distances'} Update distances
 			%br
 			%a{:href => '/links/delete_all'} Delete all links
-
-	%div#acoustic{:class => 'admin_progress'}
-		%div.progress{:style => "width: #{percentage_width(acoustic)}"}
-		= "<span class='text'>Acoustic (<span class='progress_text'>#{percentage_text(acoustic)}</span>)</span>"
+	%div
+		%div#acoustic{:class => 'admin_progress'}
+			%div.progress{:style => "width: #{percentage_width(acoustic)}"}
+			= "<span class='text'>Acoustic (<span class='progress_text'>#{percentage_text(acoustic)}</span>)</span>"
 		
-	%div#semantic{:class => 'admin_progress'}
-		%div.progress{:style => "width: #{percentage_width(semantic)}"}
-		= "<span class='text'>Semantic (<span class='progress_text'>#{percentage_text(semantic)}</span>)</span>"
+		%div#semantic{:class => 'admin_progress'}
+			%div.progress{:style => "width: #{percentage_width(semantic)}"}
+			= "<span class='text'>Semantic (<span class='progress_text'>#{percentage_text(semantic)}</span>)</span>"
 		
-	%div#social{:class => 'admin_progress'}
-		%div.progress{:style => "width: #{percentage_width(social)}"}
-		= "<span class='text'>Social (<span class='progress_text'>#{percentage_text(social)}</span>)</span>"
+		%div#social{:class => 'admin_progress'}
+			%div.progress{:style => "width: #{percentage_width(social)}"}
+			= "<span class='text'>Social (<span class='progress_text'>#{percentage_text(social)}</span>)</span>"
 		
-	%div#distances{:class => 'admin_progress'}
-		%div.progress{:style => "width: #{percentage_width(distances)}"}
-		= "<span class='text'>Distances (<span class='progress_text'>#{percentage_text(distances)}</span>)</span>"
+		%div#distances{:class => 'admin_progress'}
+			%div.progress{:style => "width: #{percentage_width(distances)}"}
+			= "<span class='text'>Distances (<span class='progress_text'>#{percentage_text(distances)}</span>)</span>"
 		
 %h2 Links
 
