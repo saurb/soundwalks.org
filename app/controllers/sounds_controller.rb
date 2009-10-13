@@ -39,7 +39,7 @@ class SoundsController < ApplicationController
     
     respond_to do |format|
       format.xml {render :xml => @sounds}
-      format.js {render :json => @sounds, :callback => params[:callback]}
+      format.js {render :json => @sounds, :methods => [:formatted_lat, :formatted_lng, :formatted_recorded_at, :soundwalk_title, :user_id, :user_name, :user_login], :callback => params[:callback]}
       
       if current_user.admin?
         format.html
