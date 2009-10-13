@@ -40,7 +40,7 @@ class SoundsController < ApplicationController
     respond_to do |format|
       format.xml {render :xml => @sounds}
       format.js {render :json => @sounds.collect{|sound| ActiveSupport::JSON.decode(sound.to_json :methods => [:formatted_lat, :formatted_lng, :formatted_recorded_at, :soundwalk_title, :user_id, :user_name, :user_login])}, :callback => params[:callback]}
-      format.xml {:xml => @sounds.collect{|sound| ActiveSupport::XML.decode(sound.to_json :methods => [:formatted_lat, :formatted_lng, :formatted_recorded_at, :soundwalk_title, :user_id, :user_name, :user_login])}, :callback => params[:callback]}
+      format.xml {render :xml => @sounds.collect{|sound| ActiveSupport::XML.decode(sound.to_json :methods => [:formatted_lat, :formatted_lng, :formatted_recorded_at, :soundwalk_title, :user_id, :user_name, :user_login])}, :callback => params[:callback]}
       if current_user.admin?
         format.html
       end
