@@ -38,7 +38,7 @@ class SoundsController < ApplicationController
     end
     
     respond_to do |format|
-      format.js {render :json => @sounds.collect{|sound|@sound.to_json(:methods => [:formatted_lat, :formatted_lng, :formatted_recorded_at, :user_login, :user_id, :soundwalk_title])}, :callback => params[:callback], :status => :ok}
+      format.js {render :json => @sounds.collect{|sound| sound.to_json(:methods => [:formatted_lat, :formatted_lng, :formatted_recorded_at, :user_login, :user_id, :soundwalk_title])}, :callback => params[:callback], :status => :ok}
       
       if current_user.admin?
         format.html
