@@ -171,6 +171,18 @@ class Sound < ActiveRecord::Base
     prettier_time self.recorded_at
   end
   
+  def soundwalk_title
+    return self.soundwalk.title
+  end
+  
+  def user_login
+    return self.soundwalk.user_login
+  end
+  
+  def user_id
+    return self.soundwalk.user.id
+  end
+  
   def unpack_feature feature_name
     if (feature_name == :loudness)
       feature = Sirens::Loudness.new

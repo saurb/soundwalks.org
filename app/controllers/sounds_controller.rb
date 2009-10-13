@@ -38,7 +38,7 @@ class SoundsController < ApplicationController
     end
     
     respond_to do |format|
-      format.js {render :json => @sounds, :callback => params[:callback], :status => :ok}
+      format.js {render :json => @sounds.collect{@sound.to_json(:methods => [:formatted_lat, :formatted_lng, :formatted_recorded_at, :user_login, :user_id, :soundwalk_title])}, :callback => params[:callback], :status => :ok}
       
       if current_user.admin?
         format.html
@@ -51,7 +51,7 @@ class SoundsController < ApplicationController
     respond_to do |format|
       format.html
       format.xml {render :xml => @sound}
-      format.js {render :json => @sound.to_json(:methods => [:formatted_lat, :formatted_lng, :formatted_recorded_at])}
+      format.js {render :json => @sound.to_json(:methods => [:formatted_lat, :formatted_lng, :formatted_recorded_at, :user_login, :user_id, :soundwalk_title])}
       format.wav {send_file @sound.full_filename, :type => 'audio/x-wav'}
       format.mp3 {send_file @sound.full_filename + '.mp3', :type => 'audio/mpeg'}
     end
@@ -70,7 +70,7 @@ class SoundsController < ApplicationController
           redirect_to soundwalk_sound_path(@soundwalk, @sound)
         }
         format.xml {render :xml => @sound, :status => :ok}
-        format.js {render :json => @sound.to_json(:methods => [:formatted_lat, :formatted_lng, :formatted_recorded_at, :formatted_description]), :status => :ok, :callback => params[:callback]}
+        format.js {render :json => @sound.to_json(:methods => [:formatted_lat, :formatted_lng, :formatted_recorded_at, :formatted_description, :user_login, :user_id, :soundwalk_title]), :status => :ok, :callback => params[:callback]}
       else
         format.html {render :action => "edit"}
         format.xml {render :xml => @sound.errors, :status => :unprocessable_entity}
