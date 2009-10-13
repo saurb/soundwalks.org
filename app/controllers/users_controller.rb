@@ -80,6 +80,7 @@ class UsersController < ApplicationController
     respond_to do |format|
       format.html {render :layout => 'site'}
       format.xml {render :xml => @user}
+      format.js {render :json => @user}
     end
   end
   
@@ -127,10 +128,12 @@ class UsersController < ApplicationController
               flash.now[:notice] = "Your profile has been updated."
               render :layout => 'site', :action => "edit"
             }
-            format.xml {render :xml => :ok}
+            format.xml {render :xml => @user, :status => :ok}
+            format.js {render :json => @user, :status => :ok}
           else
             format.html {render :layout => 'site', :action => "edit"}
             format.xml {render :xml => @user.errors, :status => :unprocessable_entity}
+            format.js {render :json => @user.errors, :status => :unprocessable_entity}
           end
         end
       end

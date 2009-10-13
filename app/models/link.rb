@@ -35,7 +35,7 @@ class Link < ActiveRecord::Base
     link.save
   end
   
-  def self.query_distribution(query, ids)
+  def self.query_distribution(query, ids, conditional = false)
     response = []
     id_strings = []
     
@@ -56,7 +56,7 @@ class Link < ActiveRecord::Base
       sum = 0
       
       links.each do |link| 
-        link.distance = exp(-link.distance) 
+        link.distance = conditional ? exp(-link.distance) : (link.weight > -1 exp(-link.weight))
         sum += link.distance
       end
       

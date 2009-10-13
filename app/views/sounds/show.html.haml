@@ -21,6 +21,11 @@
 
 %p=render :partial => 'embed_sound', :locals => {:soundwalk => @sound.soundwalk, :sound => @sound}
 
+%div
+	= wordnet_similarity('dog', 'cat')
+	%br
+	= wordnet_similarity('baseball', 'basketball')
+	
 %div#sound-map
 
 %div#sound-details

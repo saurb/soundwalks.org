@@ -8,6 +8,7 @@ class ApplicationController < ActionController::Base
   include ListHelper
   include StringHelper
   include TimeHelper
+  include WordnetHelper
   
   helper :all
   protect_from_forgery

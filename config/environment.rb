@@ -14,7 +14,7 @@ Rails::Initializer.run do |config|
   config.gem "mattetti-googlecharts", :source => "http://gems.github.com", :lib => "gchart"
   config.gem "RedCloth"
   config.gem 'sirens'
-
+  config.gem 'wordnet'
   config.time_zone = 'UTC'
   
   config.active_record.observers = :user_observer

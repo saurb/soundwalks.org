@@ -50,6 +50,10 @@ class Soundwalk < ActiveRecord::Base
     return self.locations.collect {|point| point.third}
   end
   
+  def user_login
+    return self.user.login
+  end
+  
   def interpolate time
     # Uses linear interpolation to find the approximate location of a point in time. 
     # Extrapolates if beyond bounds.
