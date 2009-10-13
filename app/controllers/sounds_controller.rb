@@ -38,7 +38,7 @@ class SoundsController < ApplicationController
     end
     
     respond_to do |format|
-      format.xml {render :xml => @sounds, :callback => params[:callback]}
+      format.xml {render :xml => @sounds}
       format.js {render :json => @sounds, :callback => params[:callback]}
       
       if current_user.admin?
