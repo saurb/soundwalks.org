@@ -41,8 +41,8 @@ class SoundsController < ApplicationController
       format.xml {render :xml => @sounds}
       format.js {
         render 
-          :xml => @sounds.collect{|sound| ActiveSupport::XML.decode(sound.to_json :methods => [:formatted_lat, :formatted_lng, :formatted_recorded_at, :soundwalk_title, :user_id, :user_name, :user_login]), :callback => params[:callback]}
-          :json => @sounds.collect{|sound| ActiveSupport::JSON.decode(sound.to_json :methods => [:formatted_lat, :formatted_lng, :formatted_recorded_at, :soundwalk_title, :user_id, :user_name, :user_login]), :callback => params[:callback]}
+          :xml => @sounds.collect{|sound| ActiveSupport::XML.decode(sound.to_json :methods => [:formatted_lat, :formatted_lng, :formatted_recorded_at, :soundwalk_title, :user_id, :user_name, :user_login])}, :callback => params[:callback]}
+          :json => @sounds.collect{|sound| ActiveSupport::JSON.decode(sound.to_json :methods => [:formatted_lat, :formatted_lng, :formatted_recorded_at, :soundwalk_title, :user_id, :user_name, :user_login])}, :callback => params[:callback]}
         }
       
       if current_user.admin?
