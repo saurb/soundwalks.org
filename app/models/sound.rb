@@ -179,6 +179,10 @@ class Sound < ActiveRecord::Base
     return self.soundwalk.user_login
   end
   
+  def user_name
+    return self.soundwalk.user_name
+  end
+  
   def user_id
     return self.soundwalk.user.id
   end
