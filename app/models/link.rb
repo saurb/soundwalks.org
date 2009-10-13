@@ -56,7 +56,7 @@ class Link < ActiveRecord::Base
       sum = 0
       
       links.each do |link| 
-        link.distance = conditional ? exp(-link.distance) : (link.weight > -1 exp(-link.weight))
+        link.distance = conditional ? exp(-link.distance) : (link.weight > -1 ? exp(-link.weight) : 100000000)
         sum += link.distance
       end
       
