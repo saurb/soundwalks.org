@@ -4,7 +4,7 @@ require File.join(File.dirname(__FILE__), 'boot')
 
 RAILS_GEM_VERSION = '2.3.2' unless defined? RAILS_GEM_VERSION
   
-Rails::Initializer.run do |config|    
+Rails::Initializer.run do |config|
   # config.load_paths += %W( #{RAILS_ROOT}/extras )
   config.gem "haml"
   config.gem "avatar"
@@ -14,7 +14,7 @@ Rails::Initializer.run do |config|
   config.gem "mattetti-googlecharts", :source => "http://gems.github.com", :lib => "gchart"
   config.gem "RedCloth"
   config.gem 'sirens'
-  config.gem 'wordnet'
+  #config.gem 'wordnet'
   config.time_zone = 'UTC'
   
   config.active_record.observers = :user_observer
