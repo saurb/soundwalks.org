@@ -38,7 +38,8 @@ class SoundsController < ApplicationController
     end
     
     respond_to do |format|
-      format.js {render :json => @sounds.collect{|sound| sound.to_json(:methods => [:formatted_lat, :formatted_lng, :formatted_recorded_at, :user_login, :user_id, :soundwalk_title])}, :callback => params[:callback], :status => :ok}
+      format.xml {render :xml => @sounds, :callback => params[:callback]}
+      format.js {render :json => @sounds, :callback => params[:callback]}
       
       if current_user.admin?
         format.html
@@ -50,8 +51,8 @@ class SoundsController < ApplicationController
   def show        
     respond_to do |format|
       format.html
-      format.xml {render :xml => @sound}
-      format.js {render :json => @sound.to_json(:methods => [:formatted_lat, :formatted_lng, :formatted_recorded_at, :user_login, :user_id, :soundwalk_title])}
+      format.xml {render :xml => @sound, :callback => params[:callback]}
+      format.js {render :json => @sound, :callback => params[:callback]}
       format.wav {send_file @sound.full_filename, :type => 'audio/x-wav'}
       format.mp3 {send_file @sound.full_filename + '.mp3', :type => 'audio/mpeg'}
     end
@@ -69,8 +70,8 @@ class SoundsController < ApplicationController
           flash[:notice] = 'Sound was successfully updated.'
           redirect_to soundwalk_sound_path(@soundwalk, @sound)
         }
-        format.xml {render :xml => @sound, :status => :ok}
-        format.js {render :json => @sound.to_json(:methods => [:formatted_lat, :formatted_lng, :formatted_recorded_at, :formatted_description, :user_login, :user_id, :soundwalk_title]), :status => :ok, :callback => params[:callback]}
+        format.xml {render :xml => @sound, :status => :ok, :callback => params[:callback]}
+        format.js {render :json => @sound, :status => :ok, :callback => params[:callback]}
       else
         format.html {render :action => "edit"}
         format.xml {render :xml => @sound.errors, :status => :unprocessable_entity}
@@ -85,6 +86,7 @@ class SoundsController < ApplicationController
     respond_to do |format|
       format.html
       format.xml {render :xml => @sound}
+      format.js {render :json => @sound}
     end
   end
     
@@ -96,6 +98,7 @@ class SoundsController < ApplicationController
       respond_to do |format|
         format.html
         format.xml {render :xml => @sound}
+        format.js {render :json => @sound}
       end
     else
       respond_to do |format|
@@ -104,6 +107,7 @@ class SoundsController < ApplicationController
           redirect_back_or_default '/'
         }
         format.xml {render :xml => @sound}
+        format.js {render :json => @sound}
       end
     end
   end
@@ -123,8 +127,7 @@ class SoundsController < ApplicationController
         if @sound.save
           format.html {redirect_to soundwalk_sound_path(@soundwalk, @sound)}
           format.xml {render :xml => @sound, :status => :ok, :location => soundwalk_sound_path(@soundwalk, @sound)}
-          format.json {
-            render :json => @sound.to_json(:methods => [:formatted_lat, :formatted_lng, :formatted_recorded_at]), :status => :ok, :location => soundwalk_sound_path(@soundwalk, @sound)}
+          format.json {render :json => @sound, :status => :ok, :location => soundwalk_sound_path(@soundwalk, @sound)}
         else
           format.html {render :action => 'new'}
           format.xml {render :xml => @sound.errors, :status => :unprocessable_entity}
@@ -148,7 +151,7 @@ class SoundsController < ApplicationController
     respond_to do |format|
       format.html {redirect_to soundwalk_url(@soundwalk)}
       format.xml {head :ok}
-      format.js
+      format.js {head :ok}
     end
   end
   
@@ -162,7 +165,7 @@ class SoundsController < ApplicationController
     end
 
     respond_to do |format|
-      format.xml {head :ok}
+      format.xml {render :xml => {:sound_ids => params[:sound_ids]}, :status => :ok}
       format.js {render :json => {:sound_ids => params[:sound_ids]}, :status => :ok}
     end
   end

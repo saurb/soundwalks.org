@@ -300,4 +300,26 @@ class Sound < ActiveRecord::Base
     
     return first_comparator.compare(second_comparator)
   end
+  
+  def to_json
+    result = Hash.new
+
+    self.class.content_columns.each do |column|
+      if self.attributes.include?(column.name)
+        result[column.name.to_sym] = self.send(column.name)
+      end
+    end
+
+    #if self.attributes.include?(column.name)
+    result[:user_login] = soundwalk.user.login
+    result[:user_name] = soundwalk.user.name
+    result[:user_id] = soundwalk.user.id
+    result[:soundwalk_title] = soundwalk.title
+    result[:formatted_lat] = formatted_lat
+    result[:formatted_lng] = formatted_lng
+    result[:formatted_recorded_at] = formatted_recorded_at
+    #end
+
+    result.to_json
+  end
 end
