@@ -79,8 +79,8 @@ class UsersController < ApplicationController
     
     respond_to do |format|
       format.html {render :layout => 'site'}
-      format.xml {render :xml => @user}
-      format.js {render :json => @user}
+      format.xml {render :xml => @user.to_xml(:except => [:salt, :remember_token_expires_at, :crypted_password, :admin, :activation_code, :remember_token, :secret, :can_upload, :email])}
+      format.js {render :json => @user.to_json(:except => [:salt, :remember_token_expires_at, :crypted_password, :admin, :activation_code, :remember_token, :secret, :can_upload, :email])}
     end
   end
   
@@ -128,8 +128,8 @@ class UsersController < ApplicationController
               flash.now[:notice] = "Your profile has been updated."
               render :layout => 'site', :action => "edit"
             }
-            format.xml {render :xml => @user, :status => :ok}
-            format.js {render :json => @user, :status => :ok}
+            format.xml {render :xml => @user.to_xml(:except => [:salt, :remember_token_expires_at, :crypted_password, :admin, :activation_code, :remember_token, :secret, :can_upload, :email]), :status => :ok}
+            format.js {render :json => @user.to_json(:except => [:salt, :remember_token_expires_at, :crypted_password, :admin, :activation_code, :remember_token, :secret, :can_upload, :email]), :status => :ok}
           else
             format.html {render :layout => 'site', :action => "edit"}
             format.xml {render :xml => @user.errors, :status => :unprocessable_entity}
