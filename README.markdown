@@ -1,5 +1,5 @@
 # soundwalks.org
-Soundwalks is a site that allows people to share environmental sound recordings with each other. These recorded experiences are known as "[soundwalks](http://www.acousticecology.org/)." Besides uploading sounds, users participate in social meaning construction through tagging, annotation, and discussion of environments. The core of the site centers around an interactive map application whereby people can experience virtual soundscapes--similar to Google Street View, but for sounds. 
+Soundwalks.org is a site that allows people to share environmental sound recordings with each other. These recorded experiences are known as "[soundwalks](http://www.acousticecology.org/)." Besides uploading sounds, users participate in social meaning construction through tagging, annotation, and discussion of environments. The core of the site centers around an interactive map application whereby people can experience virtual soundscapes--similar to Google Street View, but for sounds. 
 
 In addition to exploration and discussion, soundwalks.org aims to focus on composition of both real and virtual soundwalks as a means of understanding one's environment and artistic expression.
 
