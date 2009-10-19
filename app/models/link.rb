@@ -50,7 +50,7 @@ class Link < ActiveRecord::Base
     
     full_id_string = id_strings.join(" or ")
     
-    links = Link.find(:all, :conditions => "first_id = #{query.id} and first_type = '#{query.class.to_s}' and (#{full_id_string})")
+    links = full_id_string.length > 0 ? Link.find(:all, :conditions => "first_id = #{query.id} and first_type = '#{query.class.to_s}' and (#{full_id_string})") : nil
     
     if links != nil
       sum = 0
