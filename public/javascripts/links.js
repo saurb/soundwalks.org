@@ -6,7 +6,7 @@ function update_value(url, span, text) {
 				$(span + ' .progress_text').html((data['value'] * 100).toFixed(2).toString() + '%')
 			} else {
 				$(span + ' .progress').css({'width' : '0'});
-				$(span + ' .progress_text').html("0%")
+				$(span + ' .progress_text').html("0.00%")
 			}
 		});
 	}
