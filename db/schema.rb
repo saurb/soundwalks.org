@@ -31,8 +31,8 @@ ActiveRecord::Schema.define(:version => 20091006183434) do
     t.integer  "second_id"
     t.string   "first_type"
     t.string   "second_type"
-    t.float    "cost",        :default => 0.0
-    t.float    "distance",    :default => 0.0
+    t.float    "cost"
+    t.float    "distance"
     t.string   "context"
     t.datetime "created_at"
     t.datetime "updated_at"
@@ -65,14 +65,13 @@ ActiveRecord::Schema.define(:version => 20091006183434) do
     t.integer  "hop_size"
     t.integer  "spectrum_size"
     t.integer  "frames"
-    t.decimal  "frame_length",    :precision => 65, :scale => 10
-    t.decimal  "hop_length",      :precision => 65, :scale => 10
+    t.decimal  "frame_length",   :precision => 65, :scale => 10
+    t.decimal  "hop_length",     :precision => 65, :scale => 10
     t.integer  "soundwalk_id"
     t.integer  "user_id"
     t.integer  "study_coverage"
-    t.decimal  "lng",             :precision => 15, :scale => 12
-    t.decimal  "lat",             :precision => 15, :scale => 12
-    t.float    "self_similarity",                                 :default => 0.0
+    t.decimal  "lng",            :precision => 15, :scale => 12
+    t.decimal  "lat",            :precision => 15, :scale => 12
   end
 
   create_table "soundwalks", :force => true do |t|
