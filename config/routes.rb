@@ -9,6 +9,12 @@ ActionController::Routing::Routes.draw do |map|
   map.resource :admin do |admin|
     admin.poll 'poll', :controller => 'admin', :action => 'poll', :method => 'get'
     admin.formatted_poll 'poll.:format', :controller => 'admin', :action => 'poll', :method => 'get'
+    admin.sandbox 'sandbox', :controller => 'admin', :action => 'sandbox', :method => 'get'
+    admin.tags 'tags', :controller => 'admin', :action => 'tags', :method => 'get'
+    admin.tag_frequencies 'tags_frequencies', :controller => 'admin', :action => 'tags_frequencies', :method => 'get'
+    admin.tags_wordnet 'tags_wordnet', :controller => 'admin', :action => 'tags_wordnet', :method => 'get'
+    admin.tags_populate 'tags_populate', :controller => 'admin', :action => 'tags_populate', :method => 'get'
+    admin.tags_hypernyms 'tags_hypernyms', :controller => 'admin', :action => 'tags_hypernyms', :method => 'get'
   end
   
   map.resources :links, :collection => {
