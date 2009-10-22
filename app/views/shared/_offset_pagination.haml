@@ -1,0 +1,5 @@
+- if total_items > items.size
+	- if offset > 0
+		%a{:href => "#{page_offset}#{offset - 20}"} &lt; Previous
+	- if offset + items.size < total_items
+		%a{:href => "#{page_offset}#{offset + 20}"} Next &gt;
