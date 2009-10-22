@@ -21,7 +21,7 @@ class LinksController < ApplicationController
         format.js {render :json => @links}
       end
     else
-      redirect_back_or_default '/'
+      render :status => :forbidden
     end
   end
   
@@ -71,34 +71,50 @@ class LinksController < ApplicationController
   end
   
   def update_acoustic
-    Settings.links_weights_acoustic = 0
+    if current_user.admin?
+      Settings.links_weights_acoustic = 0
     
-    call_rake 'links:weights:acoustic'
-    flash[:notice] = 'Computing acoustic links.'
-    redirect_back_or_default links_path
+      call_rake 'links:weights:acoustic'
+      flash[:notice] = 'Computing acoustic links.'
+      redirect_back_or_default links_path
+    else
+      render :status => :forbidden
+    end
   end
   
   def update_social
-    Settings.links_weights_social = 0
+    if current_user.admin?
+      Settings.links_weights_social = 0
     
-    call_rake 'links:weights:social'
-    flash[:notice] = 'Computing social links.'
-    redirect_back_or_default links_path
+      call_rake 'links:weights:social'
+      flash[:notice] = 'Computing social links.'
+      redirect_back_or_default links_path
+    else
+      render :status => :forbidden
+    end
   end
   
   def update_semantic
-    Settings.links_weights_semantic = 0
+    if current_user.admin?
+      Settings.links_weights_semantic = 0
     
-    call_rake 'links:weights:semantic'
-    flash[:notice] = 'Computing semantic links.'
-    redirect_back_or_default links_path
+      call_rake 'links:weights:semantic'
+      flash[:notice] = 'Computing semantic links.'
+      redirect_back_or_default links_path
+    else
+      render :status => :forbidden
+    end
   end
   
   def update_distances
-    Settings.links_distances = 0
+    if current_user.admin?
+      Settings.links_distances = 0
     
-    call_rake 'links:distances'
-    flash[:notice] = 'Computing shortest paths.'
-    redirect_back_or_default links_path
+      call_rake 'links:distances'
+      flash[:notice] = 'Computing shortest paths.'
+      redirect_back_or_default links_path
+    else
+      render :status => :forbidden
+    end
   end
 end
