@@ -1,0 +1,7 @@
+- frog = WordnetRDF::Synset.new("frog", "noun", 1)
+- cat = WordnetRDF::Synset.new("cat", "noun", 1)
+- lcs = WordnetRDF::Synset.getLCS(frog, cat)
+
+%p= frog.label
+%p= cat.label
+%p= lcs.label
