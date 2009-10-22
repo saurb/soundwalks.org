@@ -9,7 +9,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20091006183434) do
+ActiveRecord::Schema.define(:version => 20091022081438) do
 
   create_table "features", :force => true do |t|
     t.integer  "sound_id"
@@ -103,7 +103,14 @@ ActiveRecord::Schema.define(:version => 20091006183434) do
   add_index "taggings", ["taggable_id", "taggable_type", "context"], :name => "index_taggings_on_taggable_id_and_taggable_type_and_context"
 
   create_table "tags", :force => true do |t|
-    t.string "name"
+    t.string  "name"
+    t.integer "frquency"
+    t.integer "frequency"
+    t.string  "part_of_speech"
+    t.integer "synset_id"
+    t.integer "word_sense"
+    t.string  "synset_label"
+    t.integer "hypernym"
   end
 
   create_table "users", :force => true do |t|
