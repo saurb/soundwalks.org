@@ -1,0 +1,75 @@
+- content_for :title do
+	Tag Administration
+
+- content_for :javascript do
+	= javascript_include_tag 'lib/jquery.js', 'progress.js', 'tags.js'
+	
+%h1 Tag Administration
+
+%h2 Tasks
+
+- frequencies = check_nil(Settings.tags_frequencies)
+- wordnet = check_nil(Settings.tags_wordnet)
+- populate = check_nil(Settings.tags_populate)
+- hypernyms = check_nil(Settings.tags_hypernyms)
+
+%div
+	%div{:style => 'float: right'}
+		%p.buttons
+			%a{:href => '/admin/tags_wordnet'} Update WordNet properties
+		%p.buttons
+			%a{:href => '/admin/tags_frequencies'} Update frequencies
+		%p.buttons
+			%a{:href => '/admin/tags_populate'} Add tags from WordNet
+		%p.buttons
+			%a{:href => '/admin/tags_hypernyms'} Add hypernyms of all tags
+			
+	%div{:style => 'width: 40em'}
+		%div#wordnet{:class => 'admin_progress'}
+			%div.progress{:style => "width: #{percentage_width(wordnet)}"}
+			= "<span class='text'>WordNet (<span class='progress_text'>#{percentage_text(wordnet)}</span>)</span>"
+		%div#frequencies{:class => 'admin_progress'}
+			%div.progress{:style => "width: #{percentage_width(frequencies)}"}
+			= "<span class='text'>Frequencies (<span class='progress_text'>#{percentage_text(frequencies)}</span>)</span>"	
+		%div#populate{:class => 'admin_progress'}
+			%div.progress{:style => "width: #{percentage_width(populate)}"}
+			= "<span class='text'>Populate (<span class='progress_text'>#{percentage_text(populate)}</span>)</span>"
+		%div#hypernyms{:class => 'admin_progress'}
+			%div.progress{:style => "width: #{percentage_width(hypernyms)}"}
+			= "<span class='text'>Hypernyms (<span class='progress_text'>#{percentage_text(hypernyms)}</span>)</span>"
+
+%div.clear
+		
+%h2 Tags
+
+- if @tags != nil && @tags.size > 0
+	%p.buttons
+		= render :partial => 'shared/offset_pagination', :locals => {:total_items => @total_tags, :items => @tags, :offset => @offset, :page_offset => '/admin/tags?offset='}
+		
+	%table{:style => 'width: 100%; text-align: left'}
+		%tr
+			%th ID
+			%th Name
+			%th Synset ID
+			%th Synset label
+			%th Part of speech
+			%th Word sense
+			%th Hypernym
+			%th Frequency
+			
+			- @tags.each do |tag|
+				%tr
+					%td #{tag.id}
+					%td #{tag.name}
+					%td #{tag.synset_id}
+					%td #{tag.synset_label}
+					%td #{tag.part_of_speech}
+					%td #{tag.word_sense}
+					%td #{tag.hypernym}
+					%td #{tag.frequency}
+					
+	%p.buttons	
+		= render :partial => 'shared/offset_pagination', :locals => {:total_items => @total_tags, :items => @tags, :offset => @offset, :page_offset => '/admin/tags?offset='}
+		
+- else
+	No links currently exist in the database.
