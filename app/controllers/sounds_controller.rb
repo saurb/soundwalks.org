@@ -210,14 +210,6 @@ class SoundsController < ApplicationController
     request_sound_ids = split_param(params[:sound_ids]) if params[:sound_ids]
     
     tag_results = Tag.find(:all, :conditions => ["name in (:names) or id in (:ids)", {:names => request_tag_names, :ids => request_tag_ids}])
-    
-    if tag_results != nil
-      tag_results.each do |result|
-        verified_tag_ids.push result.id
-        verified_tag_names.push result.name
-      end
-    end
-    
     sound_results = Sound.find(:all, :conditions => {:id => request_sound_ids})
     
     if sound_results != nil
@@ -234,7 +226,7 @@ class SoundsController < ApplicationController
     end
   end
   
-  protected
+  protected 
   def get_soundwalk
     user_id = Soundwalk.find(params[:soundwalk_id], :select => 'user_id').read_attribute(:user_id)
     
