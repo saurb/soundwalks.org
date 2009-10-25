@@ -18,7 +18,7 @@ class AdminController < ApplicationController
         end
       end
     else
-      render :status => :forbidden
+      redirect_back_or_default '/'
     end
   end
   
@@ -42,7 +42,7 @@ class AdminController < ApplicationController
         format.html
       end
     else
-      render :status => :forbidden
+      redirect_back_or_default '/'
     end
   end
   
@@ -54,7 +54,7 @@ class AdminController < ApplicationController
       flash[:notice] = 'Adding tag frequencies.'
       redirect_back_or_default '/admin/tags'
     else
-      render :status => :forbidden
+      redirect_back_or_default '/'
     end
   end
   
@@ -66,7 +66,7 @@ class AdminController < ApplicationController
       flash[:notice] = 'Adding properties from WordNet.'
       redirect_back_or_default '/admin/tags'
     else
-      render :status => :forbidden
+      redirect_back_or_default '/'
     end
   end
   
@@ -78,7 +78,7 @@ class AdminController < ApplicationController
       flash[:notice] = 'Populating tags from WordNet.'
       redirect_back_or_default '/admin/tags'
     else
-      render :status => :forbidden
+      redirect_back_or_default '/'
     end
   end
   
@@ -90,7 +90,7 @@ class AdminController < ApplicationController
       flash[:notice] = 'Adding all hypenryms from WordNet.'
       redirect_back_or_default '/admin/tags'
     else
-      render :status => :forbidden
+      redirect_back_or_default '/'
     end
   end
   
@@ -102,7 +102,7 @@ class AdminController < ApplicationController
         format.html
       end
     else
-      render :status => :forbidden
+      redirect_back_or_default '/'
     end
   end
 end
