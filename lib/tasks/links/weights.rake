@@ -61,8 +61,25 @@ namespace :links do
     #-----------------------------------------------------#
     desc "Calculates link costs between tags in the network."
     
-    task :semantic => :environment do      
+    task :semantic => :environment do     
+      include WordnetHelper
+       
       # TODO: Use WordNet.
+      tags = Tag.find(:all)
+      
+      total_computations = (tags.size * tags.size) / 2
+      
+      for i in 0...tags.size
+        for j in i...tags.size
+          distance = jcn_distance tags[i].name, tags[j].name
+          
+          Link.update_or_create(tags[i], tags[j], distance, nil)
+          Link.update_or_create(tags[j], tags[i], distance, nil)
+          
+          Settings.links_weights_semantic = (i * tags.size).to_f / total_computations.to_f
+        end
+      end
+      
       Settings.links_weights_semantic = 1
     end
   
