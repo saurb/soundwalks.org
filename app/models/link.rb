@@ -33,6 +33,8 @@ class Link < ActiveRecord::Base
     link.distance = distance if distance != nil
 
     link.save
+    
+    return link
   end
   
   def self.query_distribution(query, ids, conditional = false)
