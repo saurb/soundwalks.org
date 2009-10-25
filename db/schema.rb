@@ -9,7 +9,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20091022081438) do
+ActiveRecord::Schema.define(:version => 20091024010241) do
 
   create_table "features", :force => true do |t|
     t.integer  "sound_id"
@@ -103,14 +103,7 @@ ActiveRecord::Schema.define(:version => 20091022081438) do
   add_index "taggings", ["taggable_id", "taggable_type", "context"], :name => "index_taggings_on_taggable_id_and_taggable_type_and_context"
 
   create_table "tags", :force => true do |t|
-    t.string  "name"
-    t.integer "frquency"
-    t.integer "frequency"
-    t.string  "part_of_speech"
-    t.integer "synset_id"
-    t.integer "word_sense"
-    t.string  "synset_label"
-    t.integer "hypernym"
+    t.string "name"
   end
 
   create_table "users", :force => true do |t|
@@ -133,5 +126,19 @@ ActiveRecord::Schema.define(:version => 20091022081438) do
   end
 
   add_index "users", ["login"], :name => "index_users_on_login", :unique => true
+
+  create_table "wordnet_nodes", :force => true do |t|
+    t.integer "synset_key"
+    t.integer "frequency"
+    t.float   "information"
+    t.boolean "root"
+    t.string  "pos"
+  end
+
+  add_index "wordnet_nodes", ["frequency"], :name => "index_wordnet_nodes_on_frequency"
+  add_index "wordnet_nodes", ["information"], :name => "index_wordnet_nodes_on_information"
+  add_index "wordnet_nodes", ["pos"], :name => "index_wordnet_nodes_on_pos"
+  add_index "wordnet_nodes", ["root"], :name => "index_wordnet_nodes_on_root"
+  add_index "wordnet_nodes", ["synset_key"], :name => "index_wordnet_nodes_on_synset_key"
 
 end
