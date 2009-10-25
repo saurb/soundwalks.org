@@ -63,7 +63,6 @@ namespace :links do
     
     task :semantic => :environment do      
       # TODO: Use WordNet.
-      
       Settings.links_weights_semantic = 1
     end
   
