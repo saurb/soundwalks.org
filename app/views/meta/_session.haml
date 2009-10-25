@@ -1,0 +1,2 @@
+%meta{:name => 'session_key', :content => ActionController::Base.session_options[:key]}
+%meta{:name => 'session', :content => (u request.cookies[ActionController::Base.session_options[:key]])}
