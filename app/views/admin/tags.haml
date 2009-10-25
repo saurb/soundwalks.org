@@ -50,23 +50,11 @@
 		%tr
 			%th ID
 			%th Name
-			%th Synset ID
-			%th Synset label
-			%th Part of speech
-			%th Word sense
-			%th Hypernym
-			%th Frequency
 			
 			- @tags.each do |tag|
 				%tr
 					%td #{tag.id}
 					%td #{tag.name}
-					%td #{tag.synset_id}
-					%td #{tag.synset_label}
-					%td #{tag.part_of_speech}
-					%td #{tag.word_sense}
-					%td #{tag.hypernym}
-					%td #{tag.frequency}
 					
 	%p.buttons	
 		= render :partial => 'shared/offset_pagination', :locals => {:total_items => @total_tags, :items => @tags, :offset => @offset, :page_offset => '/admin/tags?offset='}
