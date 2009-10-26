@@ -9,7 +9,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20091024010241) do
+ActiveRecord::Schema.define(:version => 20091026001954) do
 
   create_table "features", :force => true do |t|
     t.integer  "sound_id"
@@ -43,6 +43,20 @@ ActiveRecord::Schema.define(:version => 20091024010241) do
   add_index "links", ["first_id", "second_id"], :name => "index_links_on_first_id_and_second_id"
   add_index "links", ["first_id"], :name => "index_links_on_first_id"
   add_index "links", ["second_id"], :name => "index_links_on_second_id"
+
+  create_table "mds_nodes", :force => true do |t|
+    t.float   "x"
+    t.float   "y"
+    t.float   "z"
+    t.float   "w"
+    t.integer "owner_id"
+    t.string  "owner_type"
+  end
+
+  add_index "mds_nodes", ["w"], :name => "index_mds_nodes_on_w"
+  add_index "mds_nodes", ["x"], :name => "index_mds_nodes_on_x"
+  add_index "mds_nodes", ["y"], :name => "index_mds_nodes_on_y"
+  add_index "mds_nodes", ["z"], :name => "index_mds_nodes_on_z"
 
   create_table "settings", :force => true do |t|
     t.string   "var",        :null => false
