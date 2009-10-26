@@ -1,5 +1,5 @@
-ENV['GEM_PATH'] = '/Users/brandon/gems:/usr/local/lib/ruby/1.8/gems' if RAILS_ENV=='production'
-ENV['GEM_PATH'] = '/Users/brandon/.gem/ruby/1.8' if RAILS_ENV=='development'
+ENV['GEM_PATH'] = '/Users/brandon/gems:/usr/local/lib/ruby/1.8/gems' if ENV['RAILS_ENV']=='production'
+ENV['GEM_PATH'] = '/Users/brandon/.gem/ruby/1.8' if ENV['RAILS_ENV']=='development'
 
 require File.join(File.dirname(__FILE__), 'boot')
 
