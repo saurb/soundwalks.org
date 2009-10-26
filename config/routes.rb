@@ -10,20 +10,21 @@ ActionController::Routing::Routes.draw do |map|
     admin.poll 'poll', :controller => 'admin', :action => 'poll', :method => 'get'
     admin.formatted_poll 'poll.:format', :controller => 'admin', :action => 'poll', :method => 'get'
     admin.sandbox 'sandbox', :controller => 'admin', :action => 'sandbox', :method => 'get'
+    
+    admin.mds 'mds', :controller => 'admin', :action => 'mds', :method => 'get'
+    admin.mds_load 'mds_load', :controller => 'admin', :action => 'mds_load', :method => 'get'
+    admin.mds_delete_all 'mds_delete_all', :controller => 'admin', :action => 'mds_delete_all', :method => 'get'
+    
+    admin.links 'links', :controller => 'admin', :action => 'links', :method => 'get'
+    admin.links_delete_all 'links_delete_all', :controller => 'admin', :action => 'links_delete_all', :methed => 'get'
+    admin.links_update_acoustic 'links_update_acoustic', :controller => 'admin', :action => 'links_update_acoustic', :method => 'get'
+    admin.links_update_semantic 'links_update_semantic', :controller => 'admin', :action => 'links_update_semantic', :method => 'get'
+    admin.links_update_social 'links_update_social', :controller => 'admin', :action => 'links_update_social', :method => 'get'
+    admin.links_update_distances 'links_update_distances', :controller => 'admin', :action => 'links_update_distances', :method => 'get'
+    
     admin.tags 'tags', :controller => 'admin', :action => 'tags', :method => 'get'
-    admin.tag_frequencies 'tags_frequencies', :controller => 'admin', :action => 'tags_frequencies', :method => 'get'
-    admin.tags_wordnet 'tags_wordnet', :controller => 'admin', :action => 'tags_wordnet', :method => 'get'
-    admin.tags_populate 'tags_populate', :controller => 'admin', :action => 'tags_populate', :method => 'get'
-    admin.tags_hypernyms 'tags_hypernyms', :controller => 'admin', :action => 'tags_hypernyms', :method => 'get'
+    admin.tags_frequency 'tags_frequency', :controller => 'admin', :action => 'tags_frequency', :method => 'get'
   end
-  
-  map.resources :links, :collection => {
-    :delete_all => :get,
-    :update_acoustic => :get,
-    :update_semantic => :get,
-    :update_social => :get,
-    :update_distances => :get
-  }
   
   map.resources :soundwalks do |soundwalks|
     soundwalks.resources :sounds, :collection => {:delete_multiple => :delete, :uploader => :get}, :member => {:analyze => :get} do |sounds|
