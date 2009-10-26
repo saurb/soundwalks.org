@@ -25,6 +25,52 @@ class AdminController < ApplicationController
   def sandbox
     html_page_for_admins
   end
+
+  def mds
+    if current_user.admin?
+      if params[:offset]
+        @offset = params[:offset].to_i
+      else
+        @offset = 0
+      end
+      
+      @nodes = MdsNode.find(:all, :limit => 20, :offset => params[:offset])
+      
+      @total_nodes = MdsNode.count
+      
+      respond_to do |format|
+        format.html
+      end
+    else
+      redirect_back_or_default '/'
+    end
+  end
+  
+  def mds_delete_all
+    MdsNode.destroy_all
+    @nodes = MdsNode.find(:all)
+    
+    respond_to do |format|
+      format.html {
+        flash.now[:notice] = 'All MDS nodes successfully destroyed.'
+        render :action => 'mds'
+      }
+    end
+  end
+  
+  def mds_load
+    if current_user.admin?
+      Settings.mds_load = 0
+    
+      call_rake 'mds:load'
+      flash[:notice] = 'Loading MDS positions.'
+      redirect_back_or_default '/admin/mds'
+    else
+      redirect_back_or_default '/'
+    end
+  end
+  
+  # Tags
   
   def tags
     if current_user.admin?
@@ -46,11 +92,11 @@ class AdminController < ApplicationController
     end
   end
   
-  def tags_frequencies
+  def tags_frequency
     if current_user.admin?
       Settings.tags_frequencies = 0
     
-      call_rake 'tags:frequencies'
+      call_rake 'wordnet:frequency'
       flash[:notice] = 'Adding tag frequencies.'
       redirect_back_or_default '/admin/tags'
     else
@@ -58,37 +104,85 @@ class AdminController < ApplicationController
     end
   end
   
-  def tags_wordnet
+  # Links
+  
+  def links
     if current_user.admin?
-      Settings.tags_wordnet = 0
-    
-      call_rake 'tags:wordnet'
-      flash[:notice] = 'Adding properties from WordNet.'
-      redirect_back_or_default '/admin/tags'
+      if params[:offset]
+        @offset = params[:offset].to_i
+      else
+        @offset = 0
+      end
+      
+      @links = Link.find(:all, :limit => 20, :offset => params[:offset])
+      
+      @total_links = Link.count
+      
+      respond_to do |format|
+        format.html
+        format.xml {render :xml => @links}
+        format.js {render :json => @links}
+      end
     else
       redirect_back_or_default '/'
     end
   end
   
-  def tags_populate
-    if current_user.admin?
-      Settings.tags_populate = 0
+  def links_delete_all
+    Link.destroy_all
+    @links = Link.find(:all)
     
-      call_rake 'tags:populate'
-      flash[:notice] = 'Populating tags from WordNet.'
-      redirect_back_or_default '/admin/tags'
+    respond_to do |format|
+      format.html {
+        flash.now[:notice] = 'All links successfully destroyed.'
+        render :action => 'links'
+      }
+    end
+  end
+  
+  def links_update_acoustic
+    if current_user.admin?
+      Settings.links_weights_acoustic = 0
+    
+      call_rake 'links:weights:acoustic'
+      flash[:notice] = 'Computing acoustic links.'
+      redirect_back_or_default '/admin/links'
     else
       redirect_back_or_default '/'
     end
   end
   
-  def tags_hypernyms
+  def links_update_social
     if current_user.admin?
-      Settings.tags_hypernyms = 0
+      Settings.links_weights_social = 0
     
-      call_rake 'tags:hypernyms'
-      flash[:notice] = 'Adding all hypenryms from WordNet.'
-      redirect_back_or_default '/admin/tags'
+      call_rake 'links:weights:social'
+      flash[:notice] = 'Computing social links.'
+      redirect_back_or_default '/admin/links'
+    else
+      redirect_back_or_default '/'
+    end
+  end
+  
+  def links_update_semantic
+    if current_user.admin?
+      Settings.links_weights_semantic = 0
+    
+      call_rake 'links:weights:semantic'
+      flash[:notice] = 'Computing semantic links.'
+      redirect_back_or_default '/admin/links'
+    else
+      redirect_back_or_default '/'
+    end
+  end
+  
+  def links_update_distances
+    if current_user.admin?
+      Settings.links_distances = 0
+    
+      call_rake 'links:distances'
+      flash[:notice] = 'Computing shortest paths.'
+      redirect_back_or_default '/admin/links'
     else
       redirect_back_or_default '/'
     end
