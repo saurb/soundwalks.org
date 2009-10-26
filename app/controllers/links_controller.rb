@@ -3,28 +3,6 @@ class LinksController < ApplicationController
   
   before_filter :login_required
   
-  def index
-    if current_user.admin?
-      if params[:offset]
-        @offset = params[:offset].to_i
-      else
-        @offset = 0
-      end
-      
-      @links = Link.find(:all, :limit => 20, :offset => params[:offset])
-      
-      @total_links = Link.count
-      
-      respond_to do |format|
-        format.html
-        format.xml {render :xml => @links}
-        format.js {render :json => @links}
-      end
-    else
-      render :status => :forbidden
-    end
-  end
-  
   def set
     if current_user.admin?
       # Find the link, if it exists.
@@ -51,70 +29,6 @@ class LinksController < ApplicationController
       end
     else
       redirect_back_or_default '/'
-    end
-  end
-  
-  def delete_all
-    @links = Link.find(:all)
-    @links.each do |link|
-      link.destroy
-    end
-    
-    @links = Link.find(:all)
-    
-    respond_to do |format|
-      format.html {
-        flash.now[:notice] = 'All links successfully destroyed.'
-        render :action => 'index'
-      }
-    end
-  end
-  
-  def update_acoustic
-    if current_user.admin?
-      Settings.links_weights_acoustic = 0
-    
-      call_rake 'links:weights:acoustic'
-      flash[:notice] = 'Computing acoustic links.'
-      redirect_back_or_default links_path
-    else
-      render :status => :forbidden
-    end
-  end
-  
-  def update_social
-    if current_user.admin?
-      Settings.links_weights_social = 0
-    
-      call_rake 'links:weights:social'
-      flash[:notice] = 'Computing social links.'
-      redirect_back_or_default links_path
-    else
-      render :status => :forbidden
-    end
-  end
-  
-  def update_semantic
-    if current_user.admin?
-      Settings.links_weights_semantic = 0
-    
-      call_rake 'links:weights:semantic'
-      flash[:notice] = 'Computing semantic links.'
-      redirect_back_or_default links_path
-    else
-      render :status => :forbidden
-    end
-  end
-  
-  def update_distances
-    if current_user.admin?
-      Settings.links_distances = 0
-    
-      call_rake 'links:distances'
-      flash[:notice] = 'Computing shortest paths.'
-      redirect_back_or_default links_path
-    else
-      render :status => :forbidden
     end
   end
 end
