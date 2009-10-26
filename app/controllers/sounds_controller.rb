@@ -218,6 +218,12 @@ class SoundsController < ApplicationController
       end
     end
     
+    if tag_results != nil
+      tag_results.each do |result|
+        verified_tag_ids.push result.id
+      end
+    end
+    
     distribution = Link.query_distribution(sound, {'Tag' => verified_tag_ids, 'Sound' => verified_sound_ids})
     
     respond_to do |format|
