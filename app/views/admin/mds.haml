@@ -1,0 +1,52 @@
+- content_for :title do
+	Tag Administration
+
+- content_for :javascript do
+	= javascript_include_tag 'lib/jquery.js', 'progress.js', 'mds.js'
+	
+%h1 MDS Administration
+
+%h2 Tasks
+
+- mds_load = check_nil(Settings.mds_load)
+
+%div
+	%div{:style => 'float: right'}
+		%p.buttons
+			%a{:href => '/admin/mds_load'} Load positions
+		%p.buttons
+			%a{:href => '/admin/mds_delete_all'} Delete all
+	%div{:style => 'width: 40em'}
+		%div#mds_load{:class => 'admin_progress'}
+			%div.progress{:style => "width: #{percentage_width(mds_load)}"}
+			= "<span class='text'>MDS Loading (<span class='progress_text'>#{percentage_text(mds_load)}</span>)</span>"
+			
+%div.clear
+
+%h2 MDS Nodes (#{@total_nodes})
+
+- if @nodes != nil && @nodes.size > 0
+	%p.buttons
+		= render :partial => 'shared/offset_pagination', :locals => {:total_items => @total_nodes, :items => @nodes, :offset => @offset, :page_offset => '/admin/mds?offset='}
+		
+	%table{:style => 'width: 100%; text-align: left'}
+		%tr
+			%th ID
+			%th X
+			%th Y
+			%th Z
+			%th W
+			
+			- @nodes.each do |node|
+				%tr
+					%td #{node.id}
+					%td #{node.x}
+					%td #{node.y}
+					%td #{node.z}
+					%td #{node.w}
+					
+	%p.buttons	
+		= render :partial => 'shared/offset_pagination', :locals => {:total_items => @total_nodes, :items => @nodes, :offset => @offset, :page_offset => '/admin/mds?offset='}
+		
+- else
+	No MDS nodes currently exist in the database.
