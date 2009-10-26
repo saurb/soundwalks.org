@@ -1,3 +1,5 @@
+Infinity = 1.0 / 0.0
+
 namespace :links do
   namespace :weights do
     #---------------------------------------------------------#
@@ -67,16 +69,31 @@ namespace :links do
       # TODO: Use WordNet.
       tags = Tag.find(:all)
       
+      distances = Matrix.rows(Array.new(tags.size){Array.new(tags.size, Infinity)})
+      
       total_computations = (tags.size * tags.size) / 2
+      
+      max_distance = 0
       
       for i in 0...tags.size
         for j in i...tags.size
-          distance = jcn_distance tags[i].name, tags[j].name
+          distances[i, j] = jcn_distance(tags[i].name, tags[j].name)
+          max_distance = distances[i, j] if distances[i, j] > max_distance and distances[i, j] < Infinity
           
-          Link.update_or_create(tags[i], tags[j], distance, nil)
-          Link.update_or_create(tags[j], tags[i], distance, nil)
+          puts "#{i}, #{j}, #{tags[i].name}, #{tags[j].name}: #{distances[i, j]}"
+          Settings.links_weights_semantic = 0.5 * ((i * tags.size).to_f / total_computations.to_f)
+        end
+      end
+      
+      for i in 0...tags.size
+        for j in i...tags.size
+          if distances[i, j] < Infinity
+            cost = -Math.log(1 - (distances[i, j] / max_distance))
+            Link.update_or_create(tags[i], tags[j], cost, nil)
+            Link.update_or_create(tags[j], tags[i], cost, nil)
+          end
           
-          Settings.links_weights_semantic = (i * tags.size).to_f / total_computations.to_f
+          Settings.links_weights_semantic = 0.5 + 0.5 * ((i * tags.size).to_f / total_computations.to_f)
         end
       end
       
@@ -90,19 +107,36 @@ namespace :links do
     
     task :social => :environment do      
       sounds = Sound.find(:all)
+      tags = Tag.find(:all)
+      
+      votes = Matrix.rows(Array.new(sounds.size) {Array.new(tags.size, Infinity)})
       
       # Compute log-probability for each link.
+      sum_votes = 0
+      
       sounds.each_with_index do |sound, i|
-        tags = sound.tag_counts_on(:tags)
+        sound_tags = sound.tag_counts_on(:tags)
         total = sound.taggings.collect{|tagging| tagging.tagger}.uniq.size
         
-        tags.each_with_index do |tag, j|
-          Settings.links_weights_social = (i * tags.size + j).to_f / (sounds.size * tags.size).to_f
+        sound_tags.each_with_index do |tag, j|
+          vote = tag.count.to_f / total.to_f
+          votes[i, tags.index(sound_tags[j])] = vote
+          sum_votes += vote
+        end
+        
+        Settings.link_weights_social = 0.5 * (i.to_f / sounds.size.to_f) 
+      end
+      
+      for i in 0...sounds.size
+        for j in 0...tags.size
+          if votes[i, j] < Infinity
+            value = -Math.log(votes[i, j] / sum_votes)
           
-          value = -Math.log(tag.count.to_f / total.to_f)
+            Link.update_or_create(sounds[i], tags[j], value, nil)
+            Link.update_or_create(tags[j], sounds[i], value, nil)
+          end
           
-          Link.update_or_create(sound, tag, value, nil)
-          Link.update_or_create(tag, sound, value, nil)
+          Settings.link_weights_social = 0.5 + 0.5 * (i * tags.size + j).to_f / (sounds.size * tags.size).to_f
         end
       end
       
