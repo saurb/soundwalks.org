@@ -5,6 +5,7 @@ class Sound < ActiveRecord::Base
   belongs_to :soundwalk
   belongs_to :user
   has_many :features
+  has_one :mds_node, :as => :owner
   
   acts_as_taggable_on :tags
   acts_as_mappable :default_units => :miles, :default_formula => :flat

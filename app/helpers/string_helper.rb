@@ -45,6 +45,36 @@ module StringHelper
       results[i][:deviation] = (results[i][:value] - (1.0 / results.size.to_f)) / (1.0 / results.size.to_f)
     end
     
-    return results.collect{|result| "<span style='font-size: #{(1.0 + result[:deviation] * 0.25)}em'>#{result[:name]}</span>"}.join(', ')
+    html = ''
+    
+    results.each_with_index do |result, i|
+      n = MdsNode.find(:first, :conditions => {:owner_id => result[:id]})
+      #html += "#{tag.mds_node}"
+      x = n.x - 0.5
+      y = n.y - 0.5
+      c = yuv_to_rgb(0.5, x, y)
+      
+      r = (c[0] * 255).to_i
+      g = (c[1] * 255).to_i
+      b = (c[2] * 255).to_i
+      
+      html += "<span style='color: rgb(#{r}, #{g}, #{b}); font-size: #{(1.0 + result[:deviation] * 0.25)}em'>#{result[:name]}</span>, "
+    end
+    
+    html[0...(html.size - 2)]
+  end
+  
+  def yuv_to_rgb y, u, v
+    wr = 0.299
+    wb = 0.114
+    wg = 1 - wr - wb
+    umax = 0.436
+    vmax = 0.615
+    
+    r = y + v * ((1 - wr) / vmax)
+    g = y - u * ((wb * (1 - wb)) / (umax * wg)) - v * ((wr * (1 - wr)) / (vmax * wg))
+    b = y + u * ((1 - wb) / umax)
+    
+    [r, g, b]
   end
 end

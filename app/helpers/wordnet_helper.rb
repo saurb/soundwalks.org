@@ -20,18 +20,19 @@ module WordnetHelper
     ancestors1.reject{|synset| !ancestors2.index(synset)}
   end
   
-  def frequency synset
+  def synset_frequency synset
     synset_node = WordnetNode.find(:first, :conditions => {:synset_key => synset.key.to_i})
     return synset_node ? synset_node.frequency : 0
   end
   
   # Computes the probability of encountering the given synset from the frequency table (i.e. p(word | pos(word)).
-  def probability synset
-    frequency(synset) / WordnetNode.sum(:frequency, :conditions => {:pos => synset.pos, :root => true}).to_f
+  def synset_probability synset
+    sum = WordnetNode.sum(:frequency, :conditions => {:pos => synset.pos, :root => true})
+    return sum > 0 ? synset_frequency(synset) / sum.to_f : 0
   end
   
   # Gives the wordsense index of a given synset for its first word.
-  def sense synset
+  def synset_sense synset
     word = synset.words.first
     synsets = word.en.synsets
     
@@ -49,31 +50,42 @@ module WordnetHelper
   
   # Computes the Jiang and Conrath distance between two words.
   def jcn_distance word1, word2
+    return 0 if word1 == word2
+    
     synsets1 = word1.en.synsets
     synsets2 = word2.en.synsets
     
     min_score = Infinity
     
-    synsets1.each_with_index do |synset1, i|
-      synsets2.each_with_index do |synset2, j|
-        score = Infinity
-        
-        ancestors = common_ancestors(synset1, synset2)
-        
-        if ancestors.size > 0
-          lso = ancestors.first
+    for i in 0...synsets1.size
+      ic1 = -Math.log(synset_probability(synsets1[i]))
+      
+      if ic1 < Infinity
+        for j in 0...synsets2.size
+          ic2 = -Math.log(synset_probability(synsets2[j]))
           
-          ic1 = -Math.log(probability(synset1))
-          ic2 = -Math.log(probability(synset2))
-          iclso = -Math.log(probability(lso))
-          
-          score = (ic1 + ic2) - (2 * iclso)
+          if ic2 < Infinity
+            ancestors = common_ancestors(synsets1[i], synsets2[j])
+            
+            if ancestors.size > 0
+              iclso = -Math.log(synset_probability(ancestors.first))
+              score = (ic1 + ic2) - (2 * iclso)
+              min_score = score if min_score > score
+            end
+          end
         end
-        
-        min_score = score if min_score > score
       end
     end
     
     min_score
+  end
+  
+  def jcn_similarity word1, word2
+    if word1 == word2
+      return Infinity
+    else
+      distance = jcn_distance word1, word2
+      return (distance > 0) ? (1 / distance) : Infinity
+    end
   end
 end
