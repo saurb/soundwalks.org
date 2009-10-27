@@ -27,6 +27,11 @@
 
 %h2 MDS Nodes (#{@total_nodes})
 
+- x = MdsNode.find(:all).collect{|node| node.x}
+- y = MdsNode.find(:all).collect{|node| node.y}
+- z = MdsNode.find(:all).collect{|node| node.z}
+%p{:style => 'text-align: center'}= image_tag Gchart.scatter(:data => [x, y, z])
+
 - if @nodes != nil && @nodes.size > 0
 	%p.buttons
 		= render :partial => 'shared/offset_pagination', :locals => {:total_items => @total_nodes, :items => @nodes, :offset => @offset, :page_offset => '/admin/mds?offset='}
