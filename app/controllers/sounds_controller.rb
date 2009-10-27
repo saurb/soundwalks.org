@@ -126,6 +126,10 @@ class SoundsController < ApplicationController
       respond_to do |format|
         if @sound.save
           node = @sound.build_mds_node
+          node.x = 0
+          node.y = 0
+          node.z = 0
+          node.w = 0
           node.save
           
           format.html {redirect_to soundwalk_sound_path(@soundwalk, @sound)}
