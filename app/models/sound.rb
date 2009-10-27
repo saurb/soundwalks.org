@@ -176,8 +176,8 @@ class Sound < ActiveRecord::Base
     v = 0
     
     if mds_node
-      u = (mds_node.x) * (umax)
-      v = (mds_node.y) * (vmax)
+      u = (mds_node.x) * (umax * 2)
+      v = (mds_node.y) * (vmax * 2)
     end
     
     r = y + v * ((1 - wr) / vmax)

@@ -37,7 +37,7 @@ module StringHelper
     str.gsub(/<(\/|\s)*[^(#{preserve_array})][^>]*>/,'')
   end
   
-  def formatted_sound_tags(sound)
+  def formatted_sound_tags(sound, style)
     all_tags = Tag.find(:all)
     unique_tag_ids = all_tags.collect{|tag| tag.id}.uniq
     
@@ -69,11 +69,19 @@ module StringHelper
     
     html = ''
     
-    results.each_with_index do |result, i|
-      html += "<span style='color: rgb(#{result[:r]}, #{result[:g]}, #{result[:b]}); font-size: #{(1.5 + result[:deviation] * 0.25)}em'>#{result[:name]}</span>, "
+    if style == :normal || style == nil
+      html += results.collect{|result| "<span style='color: rgb(#{result[:r]}, #{result[:g]}, #{result[:b]}); font-size: #{(1.5 + result[:deviation] * 0.25)}em'>#{result[:name]}</span>"}.join(',')
+    elsif style == :old
+      html_results = []
+      results.each do |result|
+        color = "#%02x%02x%02x" % [result[:r], result[:g], result[:b]].map {|i| i}
+        html_results.push "<font color='#{color}' size='#{(1.5 + result[:deviation] * 0.25)}em'>#{result[:name]}</font>"
+      end
+      
+      html = html_results.join(',')
     end
     
-    html[0...(html.size - 2)]
+    html
   end
   
   def yuv_to_rgb y, u, v
