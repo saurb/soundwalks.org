@@ -165,38 +165,27 @@ class Sound < ActiveRecord::Base
   end
   
   def color
-    wr = 0.299
-    wb = 0.114
-    wg = 1 - wr - wb
-    umax = 0.436
-    vmax = 0.615
-    
+    u = mds_node.x * 0.436
+    v = mds_node.y * 0.615
     y = 0.5
-    u = 0
-    v = 0
     
-    if mds_node
-      u = (mds_node.x) * (umax * 2)
-      v = (mds_node.y) * (vmax * 2)
-    end
+    r = y + 1.13983 * v
+    g = y - 0.39465 * u - 0.58060 * v
+    b = y + 2.03211 * u
     
-    r = y + v * ((1 - wr) / vmax)
-    g = y - u * ((wb * (1 - wb)) / (umax * wg)) - v * ((wr * (1 - wr)) / (vmax * wg))
-    b = y + u * ((1 - wb) / umax)
-    
-    return [r,g,b]
+    return {:r => r, :g => g, :b => b}
   end
   
   def color_red
-    color[0]
+    color[:r]
   end
   
   def color_green
-    color[1]
+    color[:g]
   end
   
   def color_blue
-    color[2]
+    color[:b]
   end
   
   def formatted_description

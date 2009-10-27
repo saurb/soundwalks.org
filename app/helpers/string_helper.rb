@@ -57,14 +57,16 @@ module StringHelper
       results[i][:deviation] = (results[i][:value] - (1.0 / results.size.to_f)) / (1.0 / results.size.to_f)
       
       n = MdsNode.find(:first, :conditions => {:owner_id => results[i][:id], :owner_type => 'Tag'})
+            
+      u = n.x * 0.436
+      v = n.y * 0.615
+      c = yuv_to_rgb(0.5, u, v)
       
-      x = (n.x) * (0.436 * 2)
-      y = (n.y) * (0.615 * 2)
-      c = yuv_to_rgb(0.5, x, y)
-      
-      results[i][:r] = (c[0] * 255).to_i
-      results[i][:g] = (c[1] * 255).to_i
-      results[i][:b] = (c[2] * 255).to_i
+      puts u
+      puts v
+      results[i][:r] = (c[:r] * 255).to_i
+      results[i][:g] = (c[:g] * 255).to_i
+      results[i][:b] = (c[:b] * 255).to_i
     end
     
     html = ''
@@ -85,16 +87,10 @@ module StringHelper
   end
   
   def yuv_to_rgb y, u, v
-    wr = 0.299
-    wb = 0.114
-    wg = 1 - wr - wb
-    umax = 0.436
-    vmax = 0.615
+    r = y + 1.13983 * v
+    g = y - 0.39465 * u - 0.58060 * v
+    b = y + 2.03211 * u
     
-    r = y + v * ((1 - wr) / vmax)
-    g = y - u * ((wb * (1 - wb)) / (umax * wg)) - v * ((wr * (1 - wr)) / (vmax * wg))
-    b = y + u * ((1 - wb) / umax)
-    
-    [r, g, b]
+    {:r => r, :g => g, :b => b}
   end
 end
