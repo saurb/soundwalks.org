@@ -35,6 +35,7 @@ namespace :mds do
       file = File.open(File.join(RAILS_ROOT, '/data/mds.csv'))
       
       file.each_line do |line|
+        puts line
         components = line.split(',')
         
         if components.size == 4
@@ -48,7 +49,7 @@ namespace :mds do
               node.w = 0
               node.z = 0
               
-              puts "Sound #{sound.id}: (#{node.x}, #{node.y})"
+              puts "\tSound #{sound.id}: (#{node.x}, #{node.y})"
               
               node.save
             end
@@ -62,7 +63,7 @@ namespace :mds do
               node.w = 0
               node.z = 0
               
-              puts "Tag #{tag.id}: (#{node.x}, #{node.y})"
+              puts "\tTag #{tag.id}: (#{node.x}, #{node.y})"
               
               node.save
             end
