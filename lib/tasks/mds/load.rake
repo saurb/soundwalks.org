@@ -1,6 +1,6 @@
 namespace :mds do
   namespace :load do
-    task :load => :environment do
+    task :random => :environment do
       sounds = Sound.find(:all)
       tags = Tag.find(:all)
     
@@ -31,7 +31,7 @@ namespace :mds do
       Settings.mds_load = 1
     end
     
-    task :random => :environment do
+    task :file => :environment do
       file = File.open(File.join(RAILS_ROOT, '/data/mds.csv'))
       
       index = 0
