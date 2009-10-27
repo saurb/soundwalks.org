@@ -38,27 +38,39 @@ module StringHelper
   end
   
   def formatted_sound_tags(sound)
-    unique_tag_ids = @sound.tags.collect{|tag| tag.id}.uniq
-    results = Link.query_distribution(@sound, {'Tag' => unique_tag_ids})
+    all_tags = Tag.find(:all)
+    unique_tag_ids = all_tags.collect{|tag| tag.id}.uniq
+    
+    #unique_tag_ids = @sound.tags.collect{|tag| tag.id}.uniq
+    temp_results = Link.query_distribution(@sound, {'Tag' => unique_tag_ids})
+    
+    results = []
+    temp_results = temp_results.sort {|x, y| x[:value] <=> y[:value]}.reverse
+    total = 0
+    
+    temp_results.each do |result|
+      total += result[:value]
+      results.push result if total < 0.99
+    end
     
     for i in 0...results.size
       results[i][:deviation] = (results[i][:value] - (1.0 / results.size.to_f)) / (1.0 / results.size.to_f)
+      
+      n = MdsNode.find(:first, :conditions => {:owner_id => results[i][:id], :owner_type => 'Tag'})
+      
+      x = (n.x - 0.5) * 0.615
+      y = (n.y - 0.5) * 0.436
+      c = yuv_to_rgb(0.5, x, y)
+      
+      results[i][:r] = (c[0] * 255).to_i
+      results[i][:g] = (c[1] * 255).to_i
+      results[i][:b] = (c[2] * 255).to_i
     end
     
     html = ''
     
     results.each_with_index do |result, i|
-      n = MdsNode.find(:first, :conditions => {:owner_id => result[:id]})
-      #html += "#{tag.mds_node}"
-      x = n.x - 0.5
-      y = n.y - 0.5
-      c = yuv_to_rgb(0.5, x, y)
-      
-      r = (c[0] * 255).to_i
-      g = (c[1] * 255).to_i
-      b = (c[2] * 255).to_i
-      
-      html += "<span style='color: rgb(#{r}, #{g}, #{b}); font-size: #{(1.0 + result[:deviation] * 0.25)}em'>#{result[:name]}</span>, "
+      html += "<span style='color: rgb(#{result[:r]}, #{result[:g]}, #{result[:b]}); font-size: #{(1.5 + result[:deviation] * 0.25)}em'>#{result[:name]}</span>, "
     end
     
     html[0...(html.size - 2)]

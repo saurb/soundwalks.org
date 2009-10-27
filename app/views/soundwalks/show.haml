@@ -82,7 +82,8 @@
 					- duration = sprintf('%.2f', @sound.samples.to_f / @sound.sample_rate.to_f)
 					
 					%tr.sound-record{:id => dom_id(@sound), 'data-url' => soundwalk_sound_path(@soundwalk, @sound), 'data-object' => 'sound'}
-						%td{'data-edits' => 'filename', 'data-value' => @sound.filename}= link_to @sound.filename, soundwalk_sound_path(@soundwalk, @sound)
+						%td{'data-edits' => 'filename', 'data-value' => @sound.filename}
+							%a{:href => soundwalk_sound_path(@soundwalk, @sound),:style => "border-left: 1.3em solid rgb(#{(@sound.color_red * 255).to_i}, #{(@sound.color_green * 255).to_i}, #{(@sound.color_blue * 255).to_i}); padding-left: 0.5em"}= @sound.filename
 						%td{'data-edits' => 'duration', 'data-value' => duration} #{duration}s
 						
 						- if logged_in? && current_user.id == @user.id
