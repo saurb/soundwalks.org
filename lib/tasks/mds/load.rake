@@ -52,7 +52,7 @@ namespace :mds do
               
               node.save
             end
-          elsif components[1] == 'tag'
+          elsif components[0] == 'tag'
             tag = Tag.find(:first, :conditions => {:name => components[1]})
             
             if tag
