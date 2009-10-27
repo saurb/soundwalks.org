@@ -37,7 +37,7 @@ module StringHelper
     str.gsub(/<(\/|\s)*[^(#{preserve_array})][^>]*>/,'')
   end
   
-  def formatted_sound_tags(sound, style)
+  def formatted_sound_tags(sound, style = nil)
     all_tags = Tag.find(:all)
     unique_tag_ids = all_tags.collect{|tag| tag.id}.uniq
     
