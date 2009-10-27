@@ -1,4 +1,3 @@
-ENV['GEM_PATH'] = '/Users/brandon/gems:/usr/local/lib/ruby/1.8/gems'
 
 # Settings specified here will take precedence over those in config/environment.rb
 
