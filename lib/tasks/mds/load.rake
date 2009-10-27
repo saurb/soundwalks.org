@@ -53,6 +53,8 @@ namespace :mds do
               node.w = 0
               node.z = 0
               
+              puts "Sound #{sound.id}: (#{node.x}, #{node.y})"
+              
               node.save
             end
           elsif components[1] == 'tag'
@@ -64,6 +66,8 @@ namespace :mds do
               node.y = components[3]
               node.w = 0
               node.z = 0
+              
+              puts "Tag #{tag.id}: (#{node.x}, #{node.y})"
               
               node.save
             end
