@@ -75,7 +75,7 @@ module StringHelper
       html_results = []
       results.each do |result|
         color = "#%02x%02x%02x" % [result[:r], result[:g], result[:b]].map {|i| i}
-        html_results.push "<font color='#{color}' size='#{((1.5 + result[:deviation] * 0.25) * 16).to_i}'>#{result[:name]}</font>"
+        html_results.push "<font color='#{color}' size='#{((1.5 + result[:deviation] * 0.25) * 8).to_i}'>#{result[:name]}</font>"
       end
       
       html = html_results.join(', ')
