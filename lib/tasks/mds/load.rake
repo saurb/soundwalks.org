@@ -34,13 +34,7 @@ namespace :mds do
     task :file => :environment do
       file = File.open(File.join(RAILS_ROOT, '/data/mds.csv'))
       
-      index = 0
-      count = 0
-      
-      file.each_line {|line| count += 1}
-      
       file.each_line do |line|
-        puts line
         components = line.split(',')
         
         if components.size == 4
@@ -74,10 +68,6 @@ namespace :mds do
             end
           end
         end
-        
-        index += 1
-      
-        Settings.mds_load = index.to_f / count.to_f
       end
       
       Settings.mds_load = 1
