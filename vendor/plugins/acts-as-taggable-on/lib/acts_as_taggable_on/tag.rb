@@ -2,7 +2,7 @@ class Tag < ActiveRecord::Base
   has_many :taggings
   validates_presence_of :name
   validates_uniqueness_of :name
-  has_one :mds_node, :as => :owner
+  has_one :mds_node, :as => :owner, :dependent => :destroy
   
   # LIKE is used for cross-database case-insensitivity
   def self.find_or_create_with_like_by_name(name)
