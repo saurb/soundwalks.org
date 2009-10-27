@@ -8,10 +8,10 @@ namespace :mds do
     end
     
     sounds.each do |sound|
-      tag_count = Tagging.count(:id, :conditions => {:taggable => sound})
+      tag_count = Tagging.count(:id, :conditions => {:taggable_id => sound.id})
       
       tags.each_with_index do |tag, i|
-        value = Tagging.count(:id, :conditions => {:taggable => sound, :tag => tag})
+        value = Tagging.count(:id, :conditions => {:taggable_id => sound.id, :tag_id => tag.id})
         
         print "#{value / tag_count.to_f}"
         print "\n" if i < tags.size - 1
