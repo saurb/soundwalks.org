@@ -62,8 +62,6 @@ module StringHelper
       v = n.y * 0.615
       c = yuv_to_rgb(0.5, u, v)
       
-      puts u
-      puts v
       results[i][:r] = (c[:r] * 255).to_i
       results[i][:g] = (c[:g] * 255).to_i
       results[i][:b] = (c[:b] * 255).to_i
