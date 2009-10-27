@@ -122,9 +122,12 @@ class SoundsController < ApplicationController
       params[:sound]['user_id'] = current_user.id
       
       @sound = @soundwalk.sounds.build(params[:sound])
-    
+      
       respond_to do |format|
         if @sound.save
+          node = @sound.build_mds_node
+          node.save
+          
           format.html {redirect_to soundwalk_sound_path(@soundwalk, @sound)}
           format.xml {render :xml => @sound.to_xml(:methods => all_sound_methods), :status => :ok, :location => soundwalk_sound_path(@soundwalk, @sound)}
           format.json {render :json => @sound.to_json(:methods => all_sound_methods), :status => :ok, :location => soundwalk_sound_path(@soundwalk, @sound)}
