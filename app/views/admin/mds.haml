@@ -27,10 +27,17 @@
 
 %h2 MDS Nodes (#{@total_nodes})
 
-- x = MdsNode.find(:all).collect{|node| node.x}
-- y = MdsNode.find(:all).collect{|node| node.y}
+- x = []
+- y = []
+- counts = [0, 0]
 
-%p{:style => 'text-align: center'}= image_tag Gchart.scatter(:data => [x, y], :axis_with_labels => 'x,y',:axis_labels => ['-0.5|0.5', '-0.5|0.5'])
+- ['Sound', 'Tag'].each_with_index do |node_type, i|
+	- MdsNode.find(:all, :conditions => {:owner_type => node_type}).each do |node|
+		- x.push node.x
+		- y.push node.y
+		- counts[i] += 1
+
+%p{:style => 'text-align: center'}= image_tag Gchart.scatter(:data => [x, y], :axis_with_labels => 'x,y',:axis_labels => ['-0.5|0.5', '-0.5|0.5'], :custom => "chm=o,8888FF,0,0:#{counts[0] - 1}:1,5|o,FF8888,0,#{counts[0]}:#{counts[0] + counts[1] - 1}:1,5")
 
 - if @nodes != nil && @nodes.size > 0
 	%p.buttons
