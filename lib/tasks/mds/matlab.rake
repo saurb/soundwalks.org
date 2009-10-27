@@ -14,7 +14,11 @@ namespace :mds do
         value = Tagging.count(:id, :conditions => {:taggable_id => sound.id, :tag_id => tag.id})
         
         print "#{value / tag_count.to_f}"
-        print "\n" if i == tags.size - 1
+        if i < tags.size - 1
+          print ","
+        else
+          print "\n"
+        end
       end
     end
   end
