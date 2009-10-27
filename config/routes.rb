@@ -12,7 +12,8 @@ ActionController::Routing::Routes.draw do |map|
     admin.sandbox 'sandbox', :controller => 'admin', :action => 'sandbox', :method => 'get'
     
     admin.mds 'mds', :controller => 'admin', :action => 'mds', :method => 'get'
-    admin.mds_load 'mds_load', :controller => 'admin', :action => 'mds_load', :method => 'get'
+    admin.mds_load_random 'mds_load_random', :controller => 'admin', :action => 'mds_load_random', :method => 'get'
+    admin.mds_load_file 'mds_load_file', :controller => 'admin', :action => 'mds_load_file', :method => 'get'
     admin.mds_delete_all 'mds_delete_all', :controller => 'admin', :action => 'mds_delete_all', :method => 'get'
     
     admin.links 'links', :controller => 'admin', :action => 'links', :method => 'get'
