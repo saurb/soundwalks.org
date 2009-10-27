@@ -30,7 +30,7 @@
 - x = MdsNode.find(:all).collect{|node| node.x}
 - y = MdsNode.find(:all).collect{|node| node.y}
 - z = MdsNode.find(:all).collect{|node| node.z}
-%p{:style => 'text-align: center'}= image_tag Gchart.scatter(:data => [x, y, z])
+%p{:style => 'text-align: center'}= image_tag Gchart.scatter(:data => [x, y])
 
 - if @nodes != nil && @nodes.size > 0
 	%p.buttons
