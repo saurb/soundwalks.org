@@ -62,7 +62,7 @@ class AdminController < ApplicationController
     if current_user.admin?
       Settings.mds_load = 0
     
-      call_rake 'mds:load'
+      call_rake 'mds:load:random'
       flash[:notice] = 'Filling MDS positions with random values.'
       redirect_back_or_default '/admin/mds'
     else
@@ -74,7 +74,7 @@ class AdminController < ApplicationController
     if current_user.admin?
       Settings.mds_load = 0
     
-      call_rake 'mds:load'
+      call_rake 'mds:load:file'
       flash[:notice] = 'Loading MDS positions from file.'
       redirect_back_or_default '/admin/mds'
     else
