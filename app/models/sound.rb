@@ -164,6 +164,41 @@ class Sound < ActiveRecord::Base
     coordinates_text :longitude, self.lng
   end
   
+  def color
+    wr = 0.299
+    wb = 0.114
+    wg = 1 - wr - wb
+    umax = 0.436
+    vmax = 0.615
+    
+    y = 0.5
+    u = 0
+    v = 0
+    
+    if mds_node
+      u = mds_node.x
+      v = mds_node.y
+    end
+    
+    r = y + v * ((1 - wr) / vmax)
+    g = y - u * ((wb * (1 - wb)) / (umax * wg)) - v * ((wr * (1 - wr)) / (vmax * wg))
+    b = y + u * ((1 - wb) / umax)
+    
+    return [r,g,b]
+  end
+  
+  def color_red
+    color[0]
+  end
+  
+  def color_green
+    color[1]
+  end
+  
+  def color_blue
+    color[2]
+  end
+  
   def formatted_description
     return textilize(read_attribute(:description))
   end
