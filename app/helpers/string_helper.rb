@@ -58,8 +58,8 @@ module StringHelper
       
       n = MdsNode.find(:first, :conditions => {:owner_id => results[i][:id], :owner_type => 'Tag'})
       
-      x = (n.x - 0.5) * 0.615
-      y = (n.y - 0.5) * 0.436
+      x = (n.x) * 0.615
+      y = (n.y) * 0.436
       c = yuv_to_rgb(0.5, x, y)
       
       results[i][:r] = (c[0] * 255).to_i
