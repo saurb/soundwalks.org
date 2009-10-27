@@ -52,6 +52,8 @@ namespace :mds do
               node.y = components[3]
               node.w = 0
               node.z = 0
+              
+              node.save
             end
           elsif components[1] == 'tag'
             tag = Tag.find(:first, :conditions => {:name => components[1]})
@@ -62,6 +64,8 @@ namespace :mds do
               node.y = components[3]
               node.w = 0
               node.z = 0
+              
+              node.save
             end
           end
         end
@@ -70,6 +74,8 @@ namespace :mds do
       
         Settings.mds_load = index.to_f / count.to_f
       end
+      
+      Settings.mds_load = 1
     end
   end
 end
