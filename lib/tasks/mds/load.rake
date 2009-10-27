@@ -40,6 +40,7 @@ namespace :mds do
       file.each_line {|line| count += 1}
       
       file.each_line do |line|
+        puts line
         components = line.split(',')
         
         if components.size == 4
