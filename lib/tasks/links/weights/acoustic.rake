@@ -31,7 +31,7 @@ namespace :links do
           end
           
           comparison_index += 1
-          Setting.links_weights_acoustic = comparison_index.to_f / total_comparisons.to_f
+          Settings.links_weights_acoustic = comparison_index.to_f / total_comparisons.to_f
         end
       end
     
