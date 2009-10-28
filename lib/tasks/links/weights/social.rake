@@ -37,6 +37,7 @@ namespace :links do
         puts "\tSound #{i} / #{sounds.size}"
         
         vote.each_with_index do |cell, j|
+          puts "\t\tTag #{cell[:tag_id]}"
           value = -Math.log(cell[:value] / sum_votes)
           
           Link.update_or_create(sounds[i], tags[cell[:tag_id]], value, nil)
