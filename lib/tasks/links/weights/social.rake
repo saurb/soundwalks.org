@@ -7,7 +7,7 @@ namespace :links do
       puts "Loading tags."
       tags = Tag.find(:all)
       
-      votes = Array.new(sounds.size, [])
+      votes = Array.new(sounds.size)
       
       # Compute log-probability for each link.
       sum_votes = 0
@@ -19,6 +19,8 @@ namespace :links do
         total = Tagging.count(:conditions => {:taggable_id => sound.id, :taggable_type => 'Sound'})
 
         puts "\tSound #{i} / #{sounds.size}: #{total} tags."
+        
+        votes[i] = []
         
         sound_tags.each_with_index do |tag, j|
           vote = tag.count.to_f / total.to_f
@@ -34,11 +36,10 @@ namespace :links do
       index = 0
       
       puts "Updating links."
-      votes.each_with_index do |vote, i|
-        puts "\tSound #{i} / #{sounds.size}"
+      votes.each_with_index do |row, i|
+        puts "\tSound #{i} / #{sounds.size}: #{row.size} tags."
         
-        vote.each_with_index do |cell, j|
-          puts "\t\tTag #{cell[:tag_id]}"
+        row.each_with_index do |cell, j|
           value = -Math.log(cell[:value] / sum_votes)
           
           Link.update_or_create(sounds[i], tags[cell[:tag_id]], value, nil)
