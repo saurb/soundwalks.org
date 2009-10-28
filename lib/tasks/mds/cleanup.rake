@@ -1,4 +1,5 @@
 namespace :mds do
+  desc "Cleans up MDS nodes for sounds and tags that no longer exist."
   task :cleanup => :environment do
     nodes = MdsNode.find(:all)
     

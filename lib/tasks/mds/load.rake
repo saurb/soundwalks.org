@@ -1,5 +1,6 @@
 namespace :mds do
   namespace :load do
+    desc "Loads random MDS positions for all sounds and tags."
     task :random => :environment do
       sounds = Sound.find(:all)
       tags = Tag.find(:all)
@@ -31,8 +32,9 @@ namespace :mds do
       Settings.mds_load = 1
     end
     
+    desc "Loads MDS positions from a specially-formatted CSV file."
     task :file => :environment do
-      file = File.open(File.join(RAILS_ROOT, '/data/mds.csv'))
+      file = File.open(File.join(RAILS_ROOT, ENV['MDS_FILE']))
       
       file.each_line do |line|
         puts line

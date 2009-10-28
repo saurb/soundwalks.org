@@ -2,7 +2,7 @@ namespace :wordnet do
   task :frequency => :environment do
     WordnetNode.destroy_all
     
-    file = File.open(File.join(RAILS_ROOT, '/data/ic-semcor.dat'))
+    file = File.open(File.join(RAILS_ROOT, ENV['IC_FILE']))
     
     file.each_line do |line|
       values = line.split(' ')
