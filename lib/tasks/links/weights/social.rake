@@ -15,9 +15,10 @@ namespace :links do
       
       puts "Loading votes."
       sounds.each_with_index do |sound, i|
-        puts "\tSound #{i} / #{sounds.size}"
         sound_tags = sound.tag_counts_on(:tags)
         total = Tagging.count(:conditions => {:taggable_id => sound.id, :taggable_type => 'Sound'})
+
+        puts "\tSound #{i} / #{sounds.size}: #{total} tags."
         
         sound_tags.each_with_index do |tag, j|
           vote = tag.count.to_f / total.to_f
