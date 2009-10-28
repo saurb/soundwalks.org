@@ -18,7 +18,7 @@ class Link < ActiveRecord::Base
    
   def self.update_or_create(first, second, cost, distance)
     link = nil
-
+    
     links = Link.find_with_nodes(first, second)
 
     if links != nil && links.size > 0
