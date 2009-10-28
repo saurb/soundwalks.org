@@ -6,17 +6,17 @@ namespace :links do
       sound_ids = sounds.collect{|sound| sound.id}
       log_probability = Matrix.rows(Array.new(sounds.size) {Array.new(sounds.size) {Infinity}})
       comparators = Array.new(sounds.size, nil)
-    
+      
+      total_comparisons = (sounds.size * sounds.size) / 2
+      comparison_index = 0
+      
       puts "Computing similarities."
       # Compute log-probabilities for link costs.
       for i in 0...sounds.size
         puts "\tSound #{i} / #{sounds.size - 1}"
-      
         comparators[i] = sounds[i].get_comparator if (comparators[i] == nil)
         
-        for j in i...sounds.size
-          Settings.links_weights_acoustic = (i * sounds.size + j).to_f / (sounds.size * sounds.size).to_f
-          
+        for j in i...sounds.size          
           comparators[j] = sounds[j].get_comparator if (comparators[j] == nil)
         
           value = comparators[i].compare(comparators[j])
@@ -29,10 +29,13 @@ namespace :links do
             log_probability[i, j] = value
             log_probability[j, i] = value
           end
+          
+          comparison_index += 1
+          Setting.links_weights_acoustic = comparison_index.to_f / total_comparisons.to_f
         end
       end
     
-      puts "Creating normalizd affinity matrix."
+      puts "Creating normalized affinity matrix."
       # Compute log-scale normalized distance matrix.
       affinity = normalize_affinity(log_probability)
     
