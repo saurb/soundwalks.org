@@ -18,7 +18,7 @@ namespace :links do
         sound_tags = sound.tag_counts_on(:tags)
         total = Tagging.count(:conditions => {:taggable_id => sound.id, :taggable_type => 'Sound'})
 
-        puts "\tSound #{i} / #{sounds.size}: #{total} tags."
+        puts "\tSound #{i} / #{sounds.size - 1}: #{total} tags."
         
         votes[i] = []
         
@@ -37,7 +37,7 @@ namespace :links do
       
       puts "Updating links."
       votes.each_with_index do |row, i|
-        puts "\tSound #{i} / #{sounds.size}: #{row.size} tags."
+        puts "\tSound #{i} / #{sounds.size - 1}: #{row.size} tags."
         
         row.each_with_index do |cell, j|
           value = -Math.log(cell[:value] / sum_votes)
