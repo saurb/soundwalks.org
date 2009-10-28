@@ -14,7 +14,7 @@ namespace :tags do
           sound = Sound.find(:first, :conditions => {:filename => components[1]})
           
           if sound
-            user.tag(sound, :with => components[2...components.size], :on => :tags)
+            user.tag(sound, :with => components[2...components.size].join(','), :on => :tags)
             
             puts "\t[Success] User #{user.id} tagged sound #{sound.id} with #{components[2...components.size].join(',')}"
           else
