@@ -10,7 +10,7 @@ namespace :links do
       puts "Computing similarities."
       # Compute log-probabilities for link costs.
       for i in 0...sounds.size
-        puts "\t#{i}"
+        puts "\tSound #{i} / #{sounds.size - 1}"
       
         comparators[i] = sounds[i].get_comparator if (comparators[i] == nil)
         
@@ -39,7 +39,7 @@ namespace :links do
       puts "Updating links."
       # Update link costs.
       for i in 0...affinity.row_size
-        puts "\t#{i}"
+        puts "\tSound #{i} / #{affinity.row_size - 1}"
         
         for j in i...affinity.column_size
           if !affinity[i, j].nan? && (affinity[i, j] != Infinity) && (affinity[i, j] != -Infinity)
