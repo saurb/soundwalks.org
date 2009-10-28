@@ -1,5 +1,7 @@
 require 'matrix'
 
+Infinity = 1.0 / 0.0
+
 # Why Matrix isn't built with this is beyond me.
 class Matrix
   def []=(i,j,x)
