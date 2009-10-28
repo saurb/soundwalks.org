@@ -1,4 +1,4 @@
-namespace :tags
+namespace :tags do
   desc "Has several dummy users tag sounds according to user study results."
   task :load => :environment do
     file = File.open(File.join(RAILS_ROOT, ENV['TAGGING_FILE']))
