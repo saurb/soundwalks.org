@@ -74,7 +74,7 @@ class AdminController < ApplicationController
     if current_user.admin?
       Settings.mds_load = 0
     
-      call_rake 'mds:load:file'
+      call_rake 'mds:load:file', :mds_file => '/data/studies/20090913-mds.csv'
       flash[:notice] = 'Loading MDS positions from file.'
       redirect_back_or_default '/admin/mds'
     else
@@ -108,7 +108,7 @@ class AdminController < ApplicationController
     if current_user.admin?
       Settings.tags_frequencies = 0
     
-      call_rake 'wordnet:frequency'
+      call_rake 'wordnet:frequency', :ic_file => '/data/ic/ic-semcor.txt'
       flash[:notice] = 'Adding tag frequencies.'
       redirect_back_or_default '/admin/tags'
     else

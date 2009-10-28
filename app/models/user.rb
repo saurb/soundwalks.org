@@ -1,6 +1,8 @@
 require 'digest/sha1'
+require 'avatar'
 
 class User < ActiveRecord::Base
+  include Avatar
   include Authentication
   include Authentication::ByPassword
   include Authentication::ByCookieToken
@@ -8,12 +10,12 @@ class User < ActiveRecord::Base
   
   acts_as_tagger
   
-  has_many :friendships
+  has_many :friendships, :dependent => :destroy
   has_many :friends, :through => :friendships
-  has_many :inverse_friendships, :class_name => "Friendship", :foreign_key => "friend_id"
+  has_many :inverse_friendships, :class_name => "Friendship", :foreign_key => "friend_id", :dependent => :destroy
   has_many :inverse_friends, :through => :inverse_friendships, :source => :user
   
-  has_many :soundwalks
+  has_many :soundwalks, :dependent => :destroy
   has_many :sounds, :through => :soundwalks
   
   validates_presence_of     :name
@@ -65,6 +67,22 @@ class User < ActiveRecord::Base
     excess_ids = following_ids - double_friendship_ids
     
     Soundwalk.from_friends(double_friendship_ids, excess_ids, self.id, :order => 'created_at DESC, title')
+  end
+  
+  def avatar_tiny
+    avatar_url_for(self, :size => 16)
+  end
+  
+  def avatar_small
+    avatar_url_for(self, :size => 32)
+  end
+  
+  def avatar_medium
+    avatar_url_for(self, :size => 64)
+  end
+  
+  def avatar_large
+    avatar_url_for(self, :size => 92)
   end
   
   protected
