@@ -17,7 +17,7 @@ namespace :links do
       sounds.each_with_index do |sound, i|
         puts "\tSound #{i} / #{sounds.size}"
         sound_tags = sound.tag_counts_on(:tags)
-        total = sound.taggings.collect{|tagging| tagging.tagger}.uniq.size
+        total = Tagging.count(:conditions => {:taggable_id => sound.id, :taggable_type => 'Sound'})
         
         sound_tags.each_with_index do |tag, j|
           vote = tag.count.to_f / total.to_f
