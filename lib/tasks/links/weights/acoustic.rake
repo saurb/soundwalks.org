@@ -32,14 +32,16 @@ namespace :links do
           end
           
           comparison_index += 1
-          Settings.links_weights_acoustic = comparison_index.to_f / total_comparisons.to_f
+          Settings.links_weights_acoustic = 0.5 * (comparison_index.to_f / total_comparisons.to_f)
         end
       end
     
       puts "Creating normalized affinity matrix."
       # Compute log-scale normalized distance matrix.
       affinity = normalize_affinity(log_probability)
-    
+      
+      link_index = 0
+      
       puts "Updating links."
       # Update link costs.
       for i in 0...affinity.row_size
@@ -50,6 +52,10 @@ namespace :links do
             Link.update_or_create(sounds[i], sounds[j], affinity[i, j], nil)
             Link.update_or_create(sounds[j], sounds[i], affinity[i, j], nil)
           end
+          
+          link_index += 1
+          
+          Settings.links_weights_acoustic = 0.5 + 0.5 * (link_index.to_f / total_comparisons.to_f)
         end
       end
       
