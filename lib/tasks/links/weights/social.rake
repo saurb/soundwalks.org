@@ -21,7 +21,7 @@ namespace :links do
         
         sound_tags.each_with_index do |tag, j|
           vote = tag.count.to_f / total.to_f
-          votes[i].push {:tag_id => tags.index(sound_tags[j]), :value => vote}
+          votes[i].push({:tag_id => tags.index(sound_tags[j]), :value => vote})
           sum_votes += vote
           total_items += 1
         end
