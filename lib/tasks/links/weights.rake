@@ -105,8 +105,10 @@ namespace :links do
     #-----------------------------------------------------#
     desc "Calculates link costs between sounds and tags in the network."
     
-    task :social => :environment do      
+    task :social => :environment do
+      puts "Loading sounds."
       sounds = Sound.find(:all)
+      puts "Loading tags."
       tags = Tag.find(:all)
       
       votes = Matrix.rows(Array.new(sounds.size) {Array.new(tags.size, Infinity)})
@@ -114,7 +116,9 @@ namespace :links do
       # Compute log-probability for each link.
       sum_votes = 0
       
+      puts "Loading votes."
       sounds.each_with_index do |sound, i|
+        puts "\tSound #{i} / #{sounds.size}"
         sound_tags = sound.tag_counts_on(:tags)
         total = sound.taggings.collect{|tagging| tagging.tagger}.uniq.size
         
@@ -124,10 +128,12 @@ namespace :links do
           sum_votes += vote
         end
         
-        Settings.link_weights_social = 0.5 * (i.to_f / sounds.size.to_f) 
+        Settings.links_weights_social = 0.5 * (i.to_f / sounds.size.to_f) 
       end
       
+      puts "Updating links."
       for i in 0...sounds.size
+        puts "\tSound #{i} / #{sounds.size}"
         for j in 0...tags.size
           if votes[i, j] < Infinity
             value = -Math.log(votes[i, j] / sum_votes)
@@ -136,7 +142,7 @@ namespace :links do
             Link.update_or_create(tags[j], sounds[i], value, nil)
           end
           
-          Settings.link_weights_social = 0.5 + 0.5 * (i * tags.size + j).to_f / (sounds.size * tags.size).to_f
+          Settings.links_weights_social = 0.5 + 0.5 * (i * tags.size + j).to_f / (sounds.size * tags.size).to_f
         end
       end
       
