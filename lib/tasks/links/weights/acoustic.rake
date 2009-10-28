@@ -16,7 +16,8 @@ namespace :links do
         puts "\tSound #{i} / #{sounds.size - 1}"
         comparators[i] = sounds[i].get_comparator if (comparators[i] == nil)
         
-        for j in i...sounds.size          
+        for j in i...sounds.size
+          puts "\t\tSound #{j} / #{sounds.size - 1}"
           comparators[j] = sounds[j].get_comparator if (comparators[j] == nil)
         
           value = comparators[i].compare(comparators[j])
