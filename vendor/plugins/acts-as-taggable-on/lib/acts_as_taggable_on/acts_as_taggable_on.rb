@@ -300,9 +300,6 @@ module ActiveRecord
             new_tag_names = instance_variable_get("@#{tag_type.singularize}_list") - tags_on(tag_type, owner).map(&:name)
             old_tags = tags_on(tag_type, owner).reject {|tag| instance_variable_get("@#{tag_type.singularize}_list").include?(tag.name)}
             
-            puts 'New: ' + new_tag_names.to_s
-            puts 'Old: ' + old_tags.to_s
-          
             self.class.transaction do
               base_tags.delete(*old_tags) if old_tags.any?
               new_tag_names.each do |new_tag_name|
