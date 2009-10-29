@@ -9,13 +9,14 @@ namespace :links do
       [[:first_id, :first_type], [:second_id, :second_type]].each do |pair|
         if !destroyed
           node = nil
-          if links[pair[1]] == 'Sound'
+          if link[pair[1]] == 'Sound'
             node = Sound.find(pair[0])
           else
             node = Tag.find(pair[0])
           end
         
           if node == nil
+            puts "Deleting link #{link.id}: #{link.first_type}.#{link.first_id} - #{link.second_type}-#{link.second_id}"
             link.destroy
             destroyed = true
           end
