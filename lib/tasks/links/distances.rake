@@ -5,20 +5,29 @@ Infinity = 1.0 / 0.0
 
 # Find weights in from links in database and fill weights/edges matrices.
 # offset1/offset2 are where each set begins in the list of all nodes.
-def fetch_weights(set1, set2, weights, edges, offset1, offset2)
+def fetch_weights(set1, set2, weights, distances, edges, offset1, offset2)
   for i in 0...set1.size
     for j in i...set2.size
       links = Link.find_with_nodes(set1[i], set2[j])
       
       if links != nil && links.size > 0
+        # Update the edges list.
         edges[offset1 + i].push offset2 + j
         edges[offset2 + j].push offset1 + i
         
+        # Update the weights matrix.
         value = links.first.cost
-        value = Infinity if value < 0
+        value = Infinity if value < 0 || value == nil
         
-        weights[offset1 + i, offset2 + j] = value;
-        weights[offset2 + j, offset1 + i] = value;
+        weights[offset1 + i, offset2 + j] = value
+        weights[offset2 + j, offset1 + i] = value
+        
+        # Update the distance matrix.
+        distance = links.first.distance
+        distance = nil if distance < 0
+        
+        distances[offset1 + i, offset2 + j] = distance
+        distances[offset2 + j, offset1 + i] = distance
       end
     end
   end
@@ -38,16 +47,17 @@ namespace :links do
     
     edges = Array.new(nodes.size) {[]}
     weights = Matrix.rows(Array.new(nodes.size){Array.new(nodes.size, Infinity)})
+    distances = Matrix.rows(Array.new(nodes.size){Array.new(nodes.size, Infinity)})
     
     # 2. Fetch links from database and fill weights/edges matrices.
     puts "Fetching acoustic weights."
-    fetch_weights(sounds, sounds, weights, edges, 0, 0)
+    fetch_weights(sounds, sounds, weights, distances, edges, 0, 0)
     
     #puts "Fetching semantic weights."
     #fetch_weights(tags, tags, weights, edges, sounds.size, sounds.size)
     
     puts "Fetching social weights."
-    fetch_weights(sounds, tags, weights, edges, 0, sounds.size)
+    fetch_weights(sounds, tags, weights, distances, edges, 0, sounds.size)
     
     # 3. Use Dijkstra's algorithm to compute shortest-path distances between nodes.
     puts "Finding shortest paths."
@@ -56,7 +66,8 @@ namespace :links do
       
       # 3.1. Create all the necessary arrays.
       visited = Array.new(nodes.size, false)
-      shortest_distances = Array.new(nodes.size, Infinity)
+      shortest_distances = distances.row(i).to_a
+      #shortest_distances = Array.new(nodes.size, Infinity)
       previous = Array.new(nodes.size, nil)
       queue = PQueue.new(proc {|x,y| shortest_distances[x] < shortest_distances[y]})
       
@@ -82,10 +93,12 @@ namespace :links do
       
       # 3.4. Update link distances in database.
       shortest_distances.each_with_index do |distance, i|
-        Settings.links_distances = (nodes.size * source_index + i).to_f / (nodes.size * nodes.size).to_f
+        distances[source_index, i] = distance
+        distances[i, source_index] = distance
         
-        #Link.only_update(nodes[source_index], nodes[i], nil, distance) if distance < Infinity
         Link.update_or_create(nodes[source_index], nodes[i], nil, distance) if distance < Infinity
+        
+        Settings.links_distances = (nodes.size * source_index + i).to_f / (nodes.size * nodes.size).to_f
       end
     end
     
