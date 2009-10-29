@@ -10,9 +10,9 @@ namespace :links do
         if !destroyed
           node = nil
           if link[pair[1]] == 'Sound'
-            node = Sound.find(node[pair[0]])
+            node = Sound.find(link[pair[0]])
           else
-            node = Tag.find(node[pair[0]])
+            node = Tag.find(link[pair[0]])
           end
         
           if node == nil
