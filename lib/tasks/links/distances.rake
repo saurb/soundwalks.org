@@ -17,7 +17,7 @@ def fetch_weights(set1, set2, weights, distances, edges, offset1, offset2)
         
         # Update the weights matrix.
         value = links.first.cost
-        value = Infinity if value < 0 || value == nil
+        value = Infinity if value == nil || value < 0
         
         weights[offset1 + i, offset2 + j] = value
         weights[offset2 + j, offset1 + i] = value
