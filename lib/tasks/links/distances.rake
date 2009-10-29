@@ -7,7 +7,6 @@ Infinity = 1.0 / 0.0
 # offset1/offset2 are where each set begins in the list of all nodes.
 def fetch_weights(set1, set2, weights, edges, offset1, offset2)
   for i in 0...set1.size
-    puts "\t#{i}"
     for j in i...set2.size
       links = Link.find_with_nodes(set1[i], set2[j])
       
@@ -44,8 +43,8 @@ namespace :links do
     puts "Fetching acoustic weights."
     fetch_weights(sounds, sounds, weights, edges, 0, 0)
     
-    puts "Fetching semantic weights."
-    fetch_weights(tags, tags, weights, edges, sounds.size, sounds.size)
+    #puts "Fetching semantic weights."
+    #fetch_weights(tags, tags, weights, edges, sounds.size, sounds.size)
     
     puts "Fetching social weights."
     fetch_weights(sounds, tags, weights, edges, 0, sounds.size)
