@@ -7,7 +7,9 @@ Infinity = 1.0 / 0.0
 # offset1/offset2 are where each set begins in the list of all nodes.
 def fetch_weights(set1, set2, weights, edges, offset1, offset2)
   for i in 0...set1.size
+    puts "\t#{i}"
     for j in i...set2.size
+      puts "\t\t#{j}"
       links = Link.find_with_nodes(set1[i], set2[j])
       
       if links != nil && links.size > 0
