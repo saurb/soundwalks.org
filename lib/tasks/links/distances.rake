@@ -24,7 +24,7 @@ def fetch_weights(set1, set2, weights, distances, edges, offset1, offset2)
         
         # Update the distance matrix.
         distance = links.first.distance
-        distance = nil if distance < 0
+        distance = nil if distance != nil and distance < 0
         
         distances[offset1 + i, offset2 + j] = distance
         distances[offset2 + j, offset1 + i] = distance
