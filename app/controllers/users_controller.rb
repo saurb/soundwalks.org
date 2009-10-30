@@ -156,6 +156,11 @@ protected
       @user = User.find(params[:id])
     elsif params[:username]
       @user = User.find(:first, :conditions => {:login => params[:username]})
+      
+      if !@user
+        flash[:error] = "User &quot;#{params[:username]}&quot; could not be found."
+        redirect_back_or_default '/'
+      end
     end
   end
   

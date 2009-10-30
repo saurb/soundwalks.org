@@ -141,14 +141,13 @@ class AdminController < ApplicationController
   end
   
   def links_delete_all
-    Link.destroy_all
-    @links = Link.find(:all)
-    
-    respond_to do |format|
-      format.html {
-        flash.now[:notice] = 'All links successfully destroyed.'
-        render :action => 'links'
-      }
+    if current_user.admin?
+      Link.destroy_all
+      @links = Link.find(:all)
+      
+      redirect_back_or_default '/admin/links'
+    else
+      redirect_back_or_default '/'
     end
   end
   

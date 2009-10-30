@@ -11,8 +11,6 @@ namespace :mds do
         node.destroy
         
         puts "Destroying node #{node.id}."
-      else
-        puts "Keeping node #{node.id}."
       end
     end
   end

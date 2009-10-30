@@ -1,7 +1,11 @@
 namespace :links do
   namespace :weights do
-    desc "Calculates link costs between sounds and tags in the network."    
+    desc "Calculates link costs between sounds and tags in the network."
     task :social => :environment do
+      #-------------------------#
+      # 1. Initialize matrices. #
+      #-------------------------#
+      
       puts "Loading sounds."
       sounds = Sound.find(:all)
       puts "Loading tags."
@@ -9,22 +13,26 @@ namespace :links do
       
       votes = Array.new(sounds.size)
       
-      # Compute log-probability for each link.
+      #--------------------------------#
+      # 2. Construct the votes matrix. #
+      #--------------------------------#
+      puts "Constructing votes matrix."
+      
       sum_votes = 0
       total_items = 0
       
-      puts "Loading votes."
       sounds.each_with_index do |sound, i|
         sound_tags = sound.tag_counts_on(:tags)
         total = Tagging.count(:conditions => {:taggable_id => sound.id, :taggable_type => 'Sound'})
-
-        puts "\tSound #{i} / #{sounds.size - 1}: #{total} tags."
+        
+        puts "\tSound #{i + 1} / #{sounds.size}: #{total} tags."
         
         votes[i] = []
         
         sound_tags.each_with_index do |tag, j|
           vote = tag.count.to_f / total.to_f
           votes[i].push({:tag_id => tags.index(sound_tags[j]), :value => vote})
+          
           sum_votes += vote
           total_items += 1
         end
@@ -32,18 +40,21 @@ namespace :links do
         Settings.links_weights_social = 0.5 * (i.to_f / sounds.size.to_f)
       end
       
-      # Update links in database.
+      #------------------------------#
+      # 3. Update links in database. #
+      #------------------------------#
+      puts "Updating links in the database."
+      
       index = 0
       
-      puts "Updating links."
       votes.each_with_index do |row, i|
-        puts "\tSound #{i} / #{sounds.size - 1}: #{row.size} tags."
+        puts "\tSound #{i + 1} / #{sounds.size}: #{row.size} tags."
         
         row.each_with_index do |cell, j|
           value = -Math.log(cell[:value] / sum_votes)
           
-          Link.update_or_create(sounds[i], tags[cell[:tag_id]], value, nil)
-          Link.update_or_create(tags[cell[:tag_id]], sounds[i], value, nil)
+          Link.update_or_create(sounds[i].mds_node, tags[cell[:tag_id]].mds_node, value, nil)
+          Link.update_or_create(tags[cell[:tag_id]].mds_node, sounds[i].mds_node, value, nil)
           
           index += 1
           

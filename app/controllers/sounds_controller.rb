@@ -204,34 +204,28 @@ class SoundsController < ApplicationController
     sound = @soundwalk.sounds.find(params[:sound_id])
     response = []
     
-    verified_tag_ids = []
-    verified_tag_names = []
-    verified_sound_ids = []
+    verified_ids = []
     
-    request_tag_ids = []
-    request_tag_names = []
-    request_sound_ids = []
-    
-    request_tag_ids = split_param(params[:tag_ids]) if params[:tag_ids]
-    request_tag_names = split_param(params[:tags]) if params[:tags]
-    request_sound_ids = split_param(params[:sound_ids]) if params[:sound_ids]
+    request_tag_ids = params[:tag_ids] ? split_param(params[:tag_ids]) : []
+    request_tag_names = params[:tags] ? split_param(params[:tags]) : []
+    request_sound_ids = params[:sound_ids] ? split_param(params[:sound_ids]) : []
     
     tag_results = Tag.find(:all, :conditions => ["name in (:names) or id in (:ids)", {:names => request_tag_names, :ids => request_tag_ids}])
     sound_results = Sound.find(:all, :conditions => {:id => request_sound_ids})
     
     if sound_results != nil
       sound_results.each do |result|
-        verified_sound_ids.push result.id
+        verified_ids.push result.mds_node.id
       end
     end
     
     if tag_results != nil
       tag_results.each do |result|
-        verified_tag_ids.push result.id
+        verified_ids.push result.mds_node.id
       end
     end
     
-    distribution = Link.query_distribution(sound, {'Tag' => verified_tag_ids, 'Sound' => verified_sound_ids})
+    distribution = Link.query_distribution(sound, verified_ids)
     
     respond_to do |format|
       format.js {render :json => distribution}

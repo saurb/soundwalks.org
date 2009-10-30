@@ -46,18 +46,24 @@
 	%table{:style => 'width: 100%; text-align: left'}
 		%tr
 			%th ID
+			%th Parent
 			%th X
 			%th Y
 			%th Z
 			%th W
+			%th Links out
+			%th Links in
 			
 			- @nodes.each do |node|
 				%tr
 					%td #{node.id}
+					%td #{node.owner_type}.#{node.owner_id}
 					%td #{node.x}
 					%td #{node.y}
 					%td #{node.z}
 					%td #{node.w}
+					%td #{node.outbound_links.size}
+					%td #{node.inbound_links.size}
 					
 	%p.buttons	
 		= render :partial => 'shared/offset_pagination', :locals => {:total_items => @total_nodes, :items => @nodes, :offset => @offset, :page_offset => '/admin/mds?offset='}

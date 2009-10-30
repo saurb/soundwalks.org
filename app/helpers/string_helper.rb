@@ -38,13 +38,15 @@ module StringHelper
   end
   
   def formatted_sound_tags(sound, style = nil)
-    all_tags = Tag.find(:all)
-    unique_tag_ids = all_tags.collect{|tag| tag.id}.uniq
+    tags = Tag.find(:all)
+    tag_ids = tags.collect{|tag| tag.id}
+    tag_names = tags.collect{|tag| tag.name}
     
-    #unique_tag_ids = @sound.tags.collect{|tag| tag.id}.uniq
-    temp_results = Link.query_distribution(@sound, {'Tag' => unique_tag_ids})
+    nodes = MdsNode.find(:all, :conditions => {:owner_id => tag_ids, :owner_type => 'Tag'})
+    node_ids = nodes.collect{|node| node.id}
     
     results = []
+    temp_results = Link.query_distribution(@sound.mds_node, nodes.collect {|node| node.id})
     temp_results = temp_results.sort {|x, y| x[:value] <=> y[:value]}.reverse
     total = 0
     
@@ -54,12 +56,14 @@ module StringHelper
     end
     
     for i in 0...results.size
-      results[i][:deviation] = (results[i][:value] - (1.0 / results.size.to_f)) / (1.0 / results.size.to_f)
+      node_index = node_ids.index(results[i][:id])
+      tag_index = tag_ids.index(nodes[node_index].owner_id)
       
-      n = MdsNode.find(:first, :conditions => {:owner_id => results[i][:id], :owner_type => 'Tag'})
+      results[i][:deviation] = (results[i][:value] - (1.0 / results.size.to_f)) / (1.0 / results.size.to_f)
+      results[i][:name] = tag_names[tag_index]
             
-      u = n.x * 0.436
-      v = n.y * 0.615
+      u = nodes[node_index].x * 0.436
+      v = nodes[node_index].y * 0.615
       c = yuv_to_rgb(0.5, u, v)
       
       results[i][:r] = (c[:r] * 255).to_i

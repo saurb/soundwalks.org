@@ -1,89 +1,49 @@
 require 'pqueue'
 require 'matrix_extension'
 
-Infinity = 1.0 / 0.0
-
-# Find weights in from links in database and fill weights/edges matrices.
-# offset1/offset2 are where each set begins in the list of all nodes.
-def fetch_weights(set1, set2, weights, distances, edges, offset1, offset2)
-  for i in 0...set1.size
-    for j in i...set2.size
-      links = Link.find_with_nodes(set1[i], set2[j])
-      
-      if links != nil && links.size > 0
-        # Update the edges list.
-        edges[offset1 + i].push offset2 + j
-        edges[offset2 + j].push offset1 + i
-        
-        # Update the weights matrix.
-        value = links.first.cost
-        value = Infinity if value == nil || value < 0
-        
-        weights[offset1 + i, offset2 + j] = value
-        weights[offset2 + j, offset1 + i] = value
-        
-        # Update the distance matrix.
-        distance = links.first.distance
-        distance = nil if distance != nil and distance < 0
-        
-        distances[offset1 + i, offset2 + j] = distance
-        distances[offset2 + j, offset1 + i] = distance
-      end
-    end
-  end
-end
-
 namespace :links do
-  #---------------------------------------------------------------------#
-  # links:distances: Compute shortest path distances between all nodes. #
-  #---------------------------------------------------------------------#  
   desc "Computes shortest path distances between nodes in the network."
-  
   task :distances => :environment do
-    # 1. Initialize matrices and lists.
-    sounds = Sound.find(:all)
-    tags = Tag.find(:all)
-    nodes = sounds + tags
+    #-------------------------#
+    # 1. Initialize matrices. #
+    #-------------------------#
+    puts "Fetching weights."
     
+    nodes = MdsNode.find(:all)
+    node_ids = nodes.collect {|node| node.id}
+    
+    distances = Matrix.infinity(nodes.size, nodes.size)
+    weights = Matrix.infinity(nodes.size, nodes.size)
     edges = Array.new(nodes.size) {[]}
-    weights = Matrix.rows(Array.new(nodes.size){Array.new(nodes.size, Infinity)})
-    distances = Matrix.rows(Array.new(nodes.size){Array.new(nodes.size, Infinity)})
     
-    # 2. Fetch links from database and fill weights/edges matrices.
-    puts "Fetching acoustic weights."
-    fetch_weights(sounds, sounds, weights, distances, edges, 0, 0)
+    #---------------------------------------------------------#
+    # 2. Compute Dijkstra's algorithm between all node pairs. #
+    #---------------------------------------------------------#
+    puts "Computing shortest-path distances."
     
-    #puts "Fetching semantic weights."
-    #fetch_weights(tags, tags, weights, edges, sounds.size, sounds.size)
-    
-    puts "Fetching social weights."
-    fetch_weights(sounds, tags, weights, distances, edges, 0, sounds.size)
-    
-    # 3. Use Dijkstra's algorithm to compute shortest-path distances between nodes.
-    puts "Finding shortest paths."
-    nodes.each_with_index do |source_node, source_index|
-      puts "\t#{source_index}"
-      
-      # 3.1. Create all the necessary arrays.
+    for i in 0...nodes.size      
       visited = Array.new(nodes.size, false)
-      shortest_distances = distances.row(source_index).to_a
-      #shortest_distances = Array.new(nodes.size, Infinity)
       previous = Array.new(nodes.size, nil)
-      queue = PQueue.new(proc {|x,y| shortest_distances[x] < shortest_distances[y]})
+      shortest = distances.row(i).to_a
+      queue = PQueue.new(proc {|x, y| shortest[x] < shortest[y]})
       
-      # 3.2. Initialize.
-      queue.push(source_index)
-      visited[source_index] = true
-      shortest_distances[source_index] = 0
+      queue.push(i)
+      visited[i] = true
+      shortest[i] = 0
       
-      # 3.3. Compute shortest path between source node and all other reachable nodes.
+      pops = 0
+      
       while queue.size != 0
         v = queue.pop
+        pops += 1
         visited[v] = true
-        if edges[v]
-          edges[v].each do |w|
-            if !visited[w] and shortest_distances[w] > shortest_distances[v] + weights[v, w] and weights[v, w]
-              shortest_distances[w] = shortest_distances[v] + weights[v, w]
+        
+        if nodes[i].outbound_links.size > 0
+          nodes[i].outbound_links.each do |link|
+            w = node_ids.index(link.second_id)
+            
+            if !visited[w] and shortest[w] > shortest[v] + link.cost
+              shortest[w] = shortest[v] + link.cost
               previous[w] = v
               queue.push w
             end
@@ -91,15 +51,15 @@ namespace :links do
         end
       end
       
-      # 3.4. Update link distances in database.
-      shortest_distances.each_with_index do |distance, i|
-        distances[source_index, i] = distance
-        distances[i, source_index] = distance
+      shortest.each_with_index do |distance, j|
+        distances[i, j] = distance
+        distances[j, i] = distance
         
-        Link.update_or_create(nodes[source_index], nodes[i], nil, distance) if distance < Infinity
-        
-        Settings.links_distances = (nodes.size * source_index + i).to_f / (nodes.size * nodes.size).to_f
+        Link.update_or_create(nodes[i], nodes[j], nil, distance) if distance < Infinity
+        Settings.links_distances = (nodes.size * i + j).to_f / (nodes.size * nodes.size).to_f
       end
+      
+      puts "\t#{i}: #{pops}"
     end
     
     Settings.links_distances = 1
