@@ -11,25 +11,15 @@
 - previous_index = sound_index > 0 ? sound_index - 1 : @sound.soundwalk.sounds.size - 1;
 - next_index = sound_index < @sound.soundwalk.sounds.size - 1 ? sound_index + 1 : 0;
 
-= render :partial => 'soundwalks/soundwalk_profile', :locals => {:soundwalk => @sound.soundwalk}
-
-%h2 
-	#{link_to @sound.soundwalk.title, soundwalk_path(@sound.soundwalk)} - 
-	#{link_to @sound.filename, soundwalk_sound_path(@sound.soundwalk, @sound)} 
-	(#{link_to 'Previous', soundwalk_sound_path(@sound.soundwalk, @sound.soundwalk.sounds[previous_index])}, 
-	#{link_to 'Next', soundwalk_sound_path(@sound.soundwalk, @sound.soundwalk.sounds[next_index])})
-
+= render :partial => 'sound_profile', :locals => {:soundwalk => @sound.soundwalk, :sound => @sound, :edit_title => true, :previous_index => previous_index, :next_index => next_index}
+	
 %p=render :partial => 'embed_sound', :locals => {:soundwalk => @sound.soundwalk, :sound => @sound}
 
 %div#sound-map
 
 %div#sound-details
 	- if logged_in? && current_user.id == @sound.soundwalk.user.id
-		%p{:style => 'text-align: center'}
-			#{link_to 'Edit', edit_soundwalk_sound_path(@sound.soundwalk, @sound)} &#124;
-			#{link_to 'Delete', soundwalk_sound_path(@sound.soundwalk, @sound), :confirm => 'Are you sure?', :method => :delete}
-
-	- if logged_in? && current_user.id == @sound.soundwalk.user.id
+		%h2 Description
 		%div#description{:class => 'editable', 
 			'data-object' => 'sound', 
 			'data-edits' => 'description', 
@@ -37,11 +27,12 @@
 			'data-url' => soundwalk_sound_path(@sound.soundwalk, @sound), 
 			'data-value' => @sound.description}
 			= (@sound.description && @sound.description.size > 0) ? textilize(h @sound.description) : '<p>Click here to add a description.</p>'
-	- else
+	- elsif @sound.description
+		%h2 Description
 		%div#description= textilize(h @sound.description)
 	
-	%p
-		%span.label Community tags:
+	%h2 Tags
+	%p{:style => 'text-align: center'}
 		%span.detail{'data-shows' => 'all_tags_formatted'} 
 			#{@sound.tags.size > 0 ? formatted_sound_tags(@sound) : 'This sound has not been tagged yet.'}
 			-#{@sound.tags.size > 0 ? @sound.tags.join(', ') : 'This sound has not been tagged yet.'}
@@ -57,6 +48,7 @@
 					'data-url' => "#{soundwalk_sound_path(@sound.soundwalk, @sound)}/tags",
 					'data-value' => (user_tags.size > 0) ? user_tags.join(', ') : 'Separate multiple tags with commas.'}
 					#{(user_tags.size > 0) ? user_tags.join(', ') : 'Click here to add tags.'}
+	%h2 Details
 	%p		
 		%span.label Duration:
 		%span.detail #{sprintf('%.2f', @sound.samples.to_f / @sound.sample_rate.to_f)}s (#{@sound.samples} samples, #{@sound.frames} frames)
