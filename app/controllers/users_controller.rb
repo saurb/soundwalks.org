@@ -165,9 +165,11 @@ protected
   end
   
   def get_soundwalks_from_user
+    friendships = @user.friendships.find(:all, :conditions => "friend_id=#{current_user.id}")
+    
     if logged_in? && @user.id == current_user.id
       @soundwalks = @user.soundwalks.find(:all)
-    elsif logged_in? && @user.friendships.find(:all, :conditions => "friend_id=#{current_user.id}")
+    elsif logged_in? && friendships != nil && friendships.size > 0
       @soundwalks = @user.soundwalks.find(:all, :conditions => {:privacy => ['friends', 'public']})
     else
       @soundwalks = @user.soundwalks.find(:all, :conditions => {:privacy => 'public'})
