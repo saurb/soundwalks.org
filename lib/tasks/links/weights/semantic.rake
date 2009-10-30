@@ -43,8 +43,8 @@ namespace :links do
         for j in i...tags.size
           if distances[i, j] < Infinity
             cost = -Math.log(1 - (distances[i, j] / max_distance))
-            Link.update_or_create(tags[i].mds_node, tags[j].mds_node, cost, nil)
-            Link.update_or_create(tags[j].mds_node, tags[i].mds_node, cost, nil)
+            Link.only_update(tags[i].mds_node, tags[j].mds_node, cost, nil)
+            Link.only_update(tags[j].mds_node, tags[i].mds_node, cost, nil)
           end
       
           Settings.links_weights_semantic = 0.5 + 0.5 * ((i * tags.size).to_f / total_computations.to_f)

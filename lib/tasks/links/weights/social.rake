@@ -53,8 +53,8 @@ namespace :links do
         row.each_with_index do |cell, j|
           value = -Math.log(cell[:value] / sum_votes)
           
-          Link.update_or_create(sounds[i].mds_node, tags[cell[:tag_id]].mds_node, value, nil)
-          Link.update_or_create(tags[cell[:tag_id]].mds_node, sounds[i].mds_node, value, nil)
+          Link.only_update(sounds[i].mds_node, tags[cell[:tag_id]].mds_node, value, nil)
+          Link.only_update(tags[cell[:tag_id]].mds_node, sounds[i].mds_node, value, nil)
           
           index += 1
           

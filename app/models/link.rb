@@ -23,6 +23,14 @@ class Link < ActiveRecord::Base
     return link
   end
   
+  def self.only_update(first, second, cost = nil, distance = nil)
+    params = {}
+    params[:cost] = cost if cost != nil
+    params[:distance] = distance if distance != nil
+    
+    Link.update_all(params.collect{|param, value| "#{param} = #{value}"}.join(','), "first_id = #{first.id} and second_id = #{second.id}") if params.size
+  end
+  
   def self.query_distribution(query, ids = [], conditional = false)
     response = []
     
