@@ -15,7 +15,6 @@ namespace :links do
     node_ids = nodes.collect {|node| node.id}
     
     distances = Matrix.infinity(nodes.size, nodes.size)
-    edges = Array.new(nodes.size) {[]}
     
     #---------------------------------------------------------#
     # 2. Compute Dijkstra's algorithm between all node pairs. #
@@ -58,11 +57,10 @@ namespace :links do
       
       shortest.each_with_index do |distance, j|
         distances[i, j] = distance
-        distances[j, i] = distance
-        
-        Settings.links_distances = 0.5 * ((nodes.size * i + j).to_f / (nodes.size * nodes.size).to_f) if progress
+        distances[j, i] = distance        
       end
       
+      Settings.links_distances = 0.5 * (i + 1) / nodes.size.to_f if progress
       puts "\t#{i}: #{pops}"
     end
     
@@ -82,8 +80,9 @@ namespace :links do
         Link.update_or_create(nodes[j], nodes[i], nil, distances[j, i]) if distances[j, i] < Infinity
         
         update_index += 1
-        Settings.links_distance = 0.5 + 0.5 * (update_index / total_updates.to_f) if progress
       end
+      
+      Settings.links_distance = 0.5 + 0.5 * (update_index / total_updates.to_f) if progress
     end
     
     Settings.links_distances = 1 if progress
