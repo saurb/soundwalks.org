@@ -4,10 +4,7 @@ namespace :links do
     links = Link.find(:all)
     
     links.each do |link|
-      node1 = MdsNode.find(:first, :conditions => {:id => link.first_id})
-      node2 = MdsNode.find(:first, :conditions => {:id => link.second_id})
-      
-      if node1 == nil or node2 == nil
+      if links.first == nil or links.second == nil
         puts "Deleting link #{link.id}: (#{link.first_id}, #{link.second_id})"
         link.destroy
       end
