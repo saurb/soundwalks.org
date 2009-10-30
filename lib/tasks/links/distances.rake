@@ -66,7 +66,7 @@ namespace :links do
       
       # 3.1. Create all the necessary arrays.
       visited = Array.new(nodes.size, false)
-      shortest_distances = distances.row(i).to_a
+      shortest_distances = distances.row(source_index).to_a
       #shortest_distances = Array.new(nodes.size, Infinity)
       previous = Array.new(nodes.size, nil)
       queue = PQueue.new(proc {|x,y| shortest_distances[x] < shortest_distances[y]})
