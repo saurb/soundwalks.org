@@ -10,4 +10,8 @@ class Matrix
   def Matrix.infinity m, n
     Matrix.rows(Array.new(m){Array.new(n, Infinity)})
   end
+  
+  def csv
+    self.row_vectors.collect{|vector| vector.to_a.collect{|value| value == Infinity ? 'Inf' : "#{value}"}.join(',')}.join("\n")
+  end
 end
