@@ -7,13 +7,9 @@ class Link < ActiveRecord::Base
   }
    
   def self.update_or_create(first, second, cost, distance)
-    link = nil
-    
-    links = Link.find_with_nodes(first, second)
-    
-    if links != nil && links.size > 0
-      link = links.first
-    else
+    link = Link.find(:first, :conditions => {:first_id => first.id, :second_id => second.id})
+
+    if link == nil
       link = Link.new
       link.first = first
       link.second = second
