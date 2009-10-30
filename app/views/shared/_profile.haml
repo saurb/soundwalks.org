@@ -7,11 +7,16 @@
 		- else
 			%h1= title
 	
-	= render :partial => 'users/follow_button', :locals => {:user => user}
+	- if defined? follow_by_title
+		= render :partial => 'users/follow_button', :locals => {:user => user}
 	
 	- if defined? title_text
-		%p= title_text
-	
+		%p
+			= title_text
+		
+			-if !defined? follow_by_title
+				= render :partial => 'users/follow_button', :locals => {:user => user}
+				
 	- if defined? title_menu
 		%div.menu
 			- title_menu.each_with_index do |item, index|
