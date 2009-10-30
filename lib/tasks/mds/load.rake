@@ -41,7 +41,7 @@ namespace :mds do
         components = line.split(',')
         
         if components.size == 4
-          if components[0] == 'sound'
+          if components[0] == 'Sound'
             sound = Sound.find(:first, :conditions => {:filename => components[1]})
             
             if sound
@@ -55,7 +55,7 @@ namespace :mds do
               
               node.save
             end
-          elsif components[0] == 'tag'
+          elsif components[0] == 'Tag'
             tag = Tag.find(:first, :conditions => {:name => components[1]})
             
             if tag
