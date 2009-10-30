@@ -1,3 +1,6 @@
+require 'pqueue'
+require 'matrix_extension'
+
 namespace :links do
   desc "Computes shortest path distances between nodes in the network."
   task :distances => :environment do
