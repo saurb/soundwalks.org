@@ -22,6 +22,7 @@ class Sound < ActiveRecord::Base
   after_attachment_saved do |record|
     record.analyze_sound
     record.create_preview
+    record.title = record.filename
     record.save
   end
   
