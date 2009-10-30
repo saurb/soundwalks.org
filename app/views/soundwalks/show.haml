@@ -26,14 +26,16 @@
 = render :partial => 'soundwalks/soundwalk_profile', :locals => {:soundwalk => @soundwalk, :edit_title => true}
 = render :partial => 'sounds/sounds_map', :locals => {:sounds => @sounds, :soundwalk => @soundwalk}
 
-%h2 Details
-
 %div
 	- if logged_in? && current_user.id == @user.id
+		%h2 Description
 		%div#description{:class => 'editable', 'data-object' => 'soundwalk', 'data-edits' => 'description', 'data-shows' => 'formatted_description', 'data-url' => @soundwalk, 'data-value' => @soundwalk.description}
 			= textilize(h @soundwalk.description)
-	- else
+	- elsif @soundwalk.description
+		%h2 Description
 		%div#description= textilize(h @soundwalk.description)
+
+	%h2 Details
 	%p
 		%span.label Posted:
 		%span.detail= post_date @soundwalk
@@ -46,15 +48,17 @@
 	%p
 		%span.label Sounds:
 		%span.detail= @sounds.size
-	%p
-		%span.label Privacy:
-		%span.detail
-			- if @soundwalk.privacy == 'public'
-				Anyone can view this soundwalk.
-			- elsif @soundwalk.privacy == 'friends'
-				Only #{first_name_possessive @user} friends can view this.
-			- else 
-				Only #{first_name @user} can view this.
+		
+	- if logged_in? && @soundwalk.privacy != 'public'
+		%p
+			%span.label Privacy:
+			%span.detail
+				- if @soundwalk.privacy == 'public'
+					Anyone can view this soundwalk.
+				- elsif @soundwalk.privacy == 'friends'
+					Only #{first_name_possessive @user} friends can view this.
+				- else 
+					Only #{first_name @user} can view this.
 				
 	- if @sounds.size > 0
 		%p
