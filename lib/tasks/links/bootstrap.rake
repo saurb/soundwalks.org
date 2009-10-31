@@ -5,16 +5,18 @@ namespace :links do
     
     puts "Creating empty nodes."
     nodes.each_with_index do |node1, i|
-      puts "#{i + 1} / #{nodes.size}"
-      
       connections = node1.outbound_links.collect{|link| link.second_id}
+      
+      creations = 0
       
       nodes.each_with_index do |node2, j|
         if !connections.index(node2.id)
-          puts "\t#{j}"
-          Link.update_or_create(node1, node2, nil, nil) 
+          creations += 1
+          Link.create(:first_id => node1.id, :second_id => node2.id, :cost => nil, :distance => nil)
         end
       end
+      
+      puts "#{i + 1} / #{nodes.size}: #{creations}"
     end
   end
 end
