@@ -182,6 +182,6 @@ protected
   end
   
   def user_methods
-    [:avatar_large, :avatar_medium, :avatar_small, :avatar_tiny, :soundwalk_ids, :friend_ids, :inverse_friend_ids]
+    [:avatar_large, :avatar_medium, :avatar_small, :avatar_tiny]
   end
 end
