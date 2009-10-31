@@ -39,13 +39,16 @@ class TagsController < ApplicationController
   
   protected
   def tag_response sound
-    user_tags = current_user.owned_taggings.find(:all, :conditions => {:taggable_id => sound}).collect {|tagging| tagging.tag}
+    user_tags = current_user.owned_taggings.find(:all, :conditions => {:taggable_id => sound}).collect {|tagging| tagging.tag} if logged_in?
      
-    {
+    response = {
       :all_tags => sound.tags.join(', '),
-      :user_tags => user_tags.join(', '),
       :all_tags_formatted => formatted_sound_tags(sound, :normal),
       :all_tags_formatted_old => formatted_sound_tags(sound, :old)
     }
+    
+    response[:user_tags] => user_tags.join(', ') if logged_in?
+    
+    response
   end
 end
