@@ -79,7 +79,7 @@ class UsersController < ApplicationController
     
     respond_to do |format|
       format.html {render :layout => 'site'}
-      format.xml {render :xml => @user.to_xml(:except => user_exceptions, :methods => user_methods, :include => :soundwalks_sigular_ids)}
+      format.xml {render :xml => @user.to_xml(:except => user_exceptions, :methods => user_methods, :include => [:soundwalks_sigular_ids, :friends_singular_ids, :inverse_friends_singular_ids])}
       format.js {render :json => @user.to_json(:except => user_exceptions, :methods => user_methods)}
     end
   end
