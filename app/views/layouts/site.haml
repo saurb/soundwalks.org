@@ -41,14 +41,17 @@
 					#{link_to 'My profile', user_name_path(current_user)} &#124;
 					#{link_to 'Followed timeline', '/'} &#124;
 				
-				= link_to 'Public timeline', soundwalks_path
-			
+				#{link_to 'Public timeline', soundwalks_path} &#124;
+				= link_to 'About Soundwalks', about_path
 			%div#content
 				- if flash[:notice]
 					%p.notice= flash[:notice]
 					
 				- if flash[:error]
 					%p.error= flash[:error]
+				
+				- if !logged_in?
+					%p{:class => 'invitation'} Hey there! Are you new to Soundwalks? We're a unique community dedicated to exploring the world's rich sonic landscape. With Soundwalks, you can share your acoustic experiences and explore new soundscapes with our interactive sound map. <a href="/about">Read more about us</a> and <a href="/signup">join today!</a>
 					
 				= yield
 			

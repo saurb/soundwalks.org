@@ -1,5 +1,5 @@
--# content_for :javascript do
-	=# javascript_include_tag "http://maps.google.com/maps?file=api&amp;v=2&amp;key=#{Geokit::Geocoders::google}", 'soundwalks-map'
+- content_for :javascript do
+	= javascript_include_tag "http://maps.google.com/maps?file=api&amp;v=2&amp;key=#{Geokit::Geocoders::google}", 'soundwalks-map'
 	
 %div#soundwalks-map
 
