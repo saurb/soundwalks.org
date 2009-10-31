@@ -48,11 +48,7 @@ module StringHelper
     results = []
     temp_results = Link.query_distribution(@sound.mds_node, nodes.collect {|node| node.id})
     
-    if temp_results
-      file = File.open(File.join(RAILS_ROOT, '/log/temp.log'), 'w')
-      file << temp_results
-      file.close
-      
+    if temp_results.size > 0
       temp_results = temp_results.sort {|x, y| x[:value] <=> y[:value]}.reverse
       
       total = 0
