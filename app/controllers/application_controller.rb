@@ -26,5 +26,10 @@ class ApplicationController < ActionController::Base
     system "#{$RAKE_PATH} #{task} #{args.join(' ')} --trace 2>&1 >> #{Rails.root}/log/rake.log &"
   end
   
+  def switch_js_format
+    params[:format] = 'json' if params[:format] and params[:format] == 'js'
+  end
+  
+  before_filter :switch_js_format
   before_filter :create_meta
 end

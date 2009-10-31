@@ -18,13 +18,13 @@ class SoundsController < ApplicationController
   def index
     respond_to do |format|
       format.html {redirect_to @soundwalk}
-      format.js {
-        if params[:show] == 'sounds'
-          render :json => @soundwalk.sounds, :callback => params[:callback], :status => :ok
-        else
-          render :json => @soundwalk.sounds.collect {|sound| sound.id}, :callback => params[:callback], :status => :ok
-        end
-      }
+      if params[:show] == 'sounds'
+        format.json {render :json => @soundwalk.sounds, :callback => params[:callback], :status => :ok}
+        format.xml {render :xml => @soundwalk.sounds, :status => :ok}
+      else
+        format.json {render :json => @soundwalk.sounds.collect {|sound| sound.id}, :callback => params[:callback], :status => :ok}
+        format.xml {render :xml => @soundwalk.sounds.collect {|sound| sound.id}, :status => :ok}
+      end
     end
   end
   
@@ -38,9 +38,8 @@ class SoundsController < ApplicationController
     end
     
     respond_to do |format|
-      format.xml {render :xml => @sounds}
-      format.js {render :json => @sounds.collect{|sound| ActiveSupport::JSON.decode(sound.to_json :methods => all_sound_methods)}, :callback => params[:callback]}
-      format.xml {render :xml => @sounds.collect{|sound| ActiveSupport::XML.decode(sound.to_json :methods => all_sound_methods)}, :callback => params[:callback]}
+      format.json {render :json => @sounds.collect{|sound| ActiveSupport::JSON.decode(sound.to_json :methods => all_sound_methods)}, :callback => params[:callback]}
+      format.xml {render :xml => @sounds.collect{|sound| ActiveSupport::XML.decode(sound.to_xml :methods => all_sound_methods)}}
       if current_user.admin?
         format.html
       end
@@ -51,8 +50,8 @@ class SoundsController < ApplicationController
   def show        
     respond_to do |format|
       format.html
-      format.xml {render :xml => @sound.to_xml(:methods => all_sound_methods), :callback => params[:callback]}
-      format.js {render :json => @sound.to_json(:methods => all_sound_methods), :callback => params[:callback]}
+      format.xml {render :xml => @sound.to_xml(:methods => all_sound_methods)}
+      format.json {render :json => @sound.to_json(:methods => all_sound_methods), :callback => params[:callback]}
       format.wav {send_file @sound.full_filename, :type => 'audio/x-wav'}
       format.mp3 {send_file @sound.full_filename + '.mp3', :type => 'audio/mpeg'}
     end
@@ -70,12 +69,12 @@ class SoundsController < ApplicationController
           flash[:notice] = 'Sound was successfully updated.'
           redirect_to soundwalk_sound_path(@soundwalk, @sound)
         }
-        format.xml {render :xml => @sound.to_xml(:methods => all_sound_methods), :status => :ok, :callback => params[:callback]}
-        format.js {render :json => @sound.to_json(:methods => all_sound_methods), :status => :ok, :callback => params[:callback]}
+        format.xml {render :xml => @sound.to_xml(:methods => all_sound_methods), :status => :ok}
+        format.json {render :json => @sound.to_json(:methods => all_sound_methods), :status => :ok, :callback => params[:callback]}
       else
         format.html {render :action => "edit"}
         format.xml {render :xml => @sound.errors, :status => :unprocessable_entity}
-        format.js {render :json => @sound.errors, :status => :unprocessable_entity}
+        format.json {render :json => @sound.errors, :status => :unprocessable_entity, :callback => params[:callback]}
       end
     end
   end
@@ -86,7 +85,7 @@ class SoundsController < ApplicationController
     respond_to do |format|
       format.html
       format.xml {render :xml => @sound.to_xml(:methods => all_sound_methods)}
-      format.js {render :json => @sound.to_json(:methods => all_sound_methods)}
+      format.json {render :json => @sound.to_json(:methods => all_sound_methods), :callback => params[:callback]}
     end
   end
     
@@ -98,7 +97,7 @@ class SoundsController < ApplicationController
       respond_to do |format|
         format.html
         format.xml {render :xml => @sound.to_xml(:methods => all_sound_methods)}
-        format.js {render :json => @sound.to_json(:methods => all_sound_methods)}
+        format.json {render :json => @sound.to_json(:methods => all_sound_methods), :callback => params[:callback]}
       end
     else
       respond_to do |format|
@@ -107,7 +106,7 @@ class SoundsController < ApplicationController
           redirect_back_or_default '/'
         }
         format.xml {render :xml => @sound.to_xml(:methods => all_sound_methods)}
-        format.js {render :json => @sound.to_json(:methods => all_sound_methods)}
+        format.json {render :json => @sound.to_json(:methods => all_sound_methods), :callback => params[:callback]}
       end
     end
   end
@@ -134,11 +133,11 @@ class SoundsController < ApplicationController
           
           format.html {redirect_to soundwalk_sound_path(@soundwalk, @sound)}
           format.xml {render :xml => @sound.to_xml(:methods => all_sound_methods), :status => :ok, :location => soundwalk_sound_path(@soundwalk, @sound)}
-          format.json {render :json => @sound.to_json(:methods => all_sound_methods), :status => :ok, :location => soundwalk_sound_path(@soundwalk, @sound)}
+          format.json {render :json => @sound.to_json(:methods => all_sound_methods), :status => :ok, :location => soundwalk_sound_path(@soundwalk, @sound), :callbock => params[:callback]}
         else
           format.html {render :action => 'new'}
           format.xml {render :xml => @sound.errors, :status => :unprocessable_entity}
-          format.json {render :json => @sound.errors, :status => :unprocessable_entity}
+          format.json {render :json => @sound.errors, :status => :unprocessable_entity, :callback => params[:callback]}
         end
       end
     else
@@ -158,7 +157,7 @@ class SoundsController < ApplicationController
     respond_to do |format|
       format.html {redirect_to soundwalk_url(@soundwalk)}
       format.xml {head :ok}
-      format.js {head :ok}
+      format.json {head :ok, :callback => params[:callback]}
     end
   end
   
@@ -173,7 +172,7 @@ class SoundsController < ApplicationController
 
     respond_to do |format|
       format.xml {render :xml => {:sound_ids => params[:sound_ids]}, :status => :ok}
-      format.js {render :json => {:sound_ids => params[:sound_ids]}, :status => :ok}
+      format.json {render :json => {:sound_ids => params[:sound_ids]}, :status => :ok, :callback => params[:callback]}
     end
   end
   
@@ -184,7 +183,7 @@ class SoundsController < ApplicationController
       
       respond_to do |format|
         format.xml {render :xml => {:tags => tags}, :status => :ok}
-        format.js {render :json => {:tags => tags}, :status => :ok}
+        format.json {render :json => {:tags => tags}, :status => :ok, :callback => params[:callback]}
       end
     end
   end
@@ -202,9 +201,6 @@ class SoundsController < ApplicationController
   
   def query_set
     sound = @soundwalk.sounds.find(params[:sound_id])
-    response = []
-    
-    verified_ids = []
     
     request_tag_ids = params[:tag_ids] ? split_param(params[:tag_ids]) : []
     request_tag_names = params[:tags] ? split_param(params[:tags]) : []
@@ -213,38 +209,29 @@ class SoundsController < ApplicationController
     tag_results = Tag.find(:all, :conditions => ["name in (:names) or id in (:ids)", {:names => request_tag_names, :ids => request_tag_ids}])
     sound_results = Sound.find(:all, :conditions => {:id => request_sound_ids})
     
-    if sound_results != nil
-      sound_results.each do |result|
-        verified_ids.push result.mds_node.id
-      end
-    end
+    verified_ids = []
+    verified_ids.concat sound_results.collect{|result| result.mds_node.id} if sound_results != nil
+    verified_ids.concat tag_results.collect{|result| result.mds_node.id} if tag_results != nil
     
-    if tag_results != nil
-      tag_results.each do |result|
-        verified_ids.push result.mds_node.id if result && result.mds_node
-      end
-    end
-    
-    logger.info("Sound: #{sound.id}, #{sound.mds_node.id}")
     distribution = Link.query_distribution(sound.mds_node, verified_ids)
     
-    distribution.each do |result|
-      sound_ids = sound_results.reject{|sound_result| sound_result.mds_node.id != result[:id]}.collect{|sound_result| sound_result.id}
-      tag_ids = sound_results.reject{|sound_result| sound_result.mds_node.id != result[:id]}.collect{|sound_result| sound_result.id}
+    distribution.each do |bin|
+      sound_ids = sound_results.reject{|result| result.mds_node.id != bin[:id]}.collect{|result| result.id}
+      tag_ids = tag_results.reject{|result| result.mds_node.id != bin[:id]}.collect{|result| result.id}
       
       if sound_ids.size > 0
-        result[:type] = 'Sound'
-        result[:id] = sound_ids.first
+        bin[:type] = 'Sound'
+        bin[:id] = sound_ids.first
       elsif tag_ids.size > 0
-        result[:type] = 'Tag'
-        result[:id] = tag_ids.first
+        bin[:type] = 'Tag'
+        bin[:id] = tag_ids.first
       else
-        result[:type] = "Unknown"
+        bin[:type] = "Unknown"
       end
     end
     
     respond_to do |format|
-      format.js {render :json => distribution}
+      format.json {render :json => distribution, :callback => params[:callback]}
       format.xml {render :xml => distribution}
     end
   end

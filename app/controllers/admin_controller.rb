@@ -9,12 +9,12 @@ class AdminController < ApplicationController
       if !value.nil?
         respond_to do |format|
           format.xml {render :xml => value}
-          format.js {render :json => value}
+          format.json {render :json => value}
         end
       else
         respond_to do |format|
           format.xml {render :xml => {:settings => {:value => false}}}
-          format.js {render :json => {:settings => {:value => false}}}
+          format.json {render :json => {:settings => {:value => false}}, :callback => params[:callback]}
         end
       end
     else
@@ -81,7 +81,7 @@ class AdminController < ApplicationController
       respond_to do |format|
         format.html
         format.xml {render :xml => @links}
-        format.js {render :json => @links}
+        format.json {render :json => @links, :callback => params[:callback]}
       end
     else
       redirect_back_or_default '/'

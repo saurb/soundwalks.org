@@ -23,8 +23,8 @@ module ActiveRecord
             # tag references from same model without getting an ambiguous column error
             self.class_eval do
               has_many "#{tag_type.singularize}_taggings".to_sym, :as => :taggable, :dependent => :destroy, 
-                :include => {:tag => {:include => :mds_node}}, :conditions => ['#{aliased_join_table_name rescue "taggings"}.context = ?',tag_type], :class_name => "Tagging"
-              has_many "#{tag_type}".to_sym, :through => "#{tag_type.singularize}_taggings".to_sym, :source => :tag, :include => :mds_node
+                :include => :tag, :conditions => ['#{aliased_join_table_name rescue "taggings"}.context = ?',tag_type], :class_name => "Tagging"
+              has_many "#{tag_type}".to_sym, :through => "#{tag_type.singularize}_taggings".to_sym, :source => :tag
             end
             
             self.class_eval <<-RUBY

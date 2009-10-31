@@ -12,6 +12,7 @@ class HomeController < ApplicationController
       respond_to do |format|
         format.html
         format.xml {render :xml => @soundwalks}
+        format.json {render :json => @soundwalks, :callback => params[:callback]}
       end
     else
       @meta[:title] = 'Public Timeline'
@@ -23,6 +24,7 @@ class HomeController < ApplicationController
       respond_to do |format|
         format.html {render :template => 'soundwalks/index'}
         format.xml {render :xml => @soundwalks}
+        format.json {render :json => @soundwalks, :callback => params[:callback]}
       end
     end
   end

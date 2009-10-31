@@ -37,7 +37,7 @@ class Link < ActiveRecord::Base
     response = []
     
     links = ids.size > 0 ? Link.find(:all, :conditions => {:first_id => query.id, :second_id => ids}) : nil
-        logger.info("Links: #{links}")
+    
     if links != nil
       sum = 0
       

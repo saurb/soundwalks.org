@@ -7,7 +7,7 @@ class TagsController < ApplicationController
     
     respond_to do |format|
       format.xml {render :xml => tag_response(@sound), :status => :ok}
-      format.js {render :json => tag_response(@sound), :status => :ok}
+      format.json {render :json => tag_response(@sound), :status => :ok, :callback => params[:callback]}
     end
   end
   
@@ -20,7 +20,7 @@ class TagsController < ApplicationController
     
     respond_to do |format|
       format.xml {render :xml => tag_response(@sound), :status => :ok}
-      format.js {render :json => tag_response(@sound), :status => :ok}
+      format.json {render :json => tag_response(@sound), :status => :ok, :callback => params[:callback]}
     end
   end
   
@@ -33,7 +33,7 @@ class TagsController < ApplicationController
     
     respond_to do |format|
       format.xml {render :xml => @query, :status => :ok}
-      format.js {render :json => @query, :status => :ok}
+      format.json {render :json => @query, :status => :ok, :callback => params[:callback]}
     end
   end
   
@@ -42,12 +42,14 @@ class TagsController < ApplicationController
     response = {
       :all_tags => sound.tags.join(', '),
       :all_tags_formatted => formatted_sound_tags(sound, :normal),
-      :all_tags_formatted_old => formatted_sound_tags(sound, :old)
+      :all_tags_formatted_old => formatted_sound_tags(sound, :old),
+      'list_all_tags' => sound.tags
     }
     
     if logged_in?
       user_tags = current_user.owned_taggings.find(:all, :conditions => {:taggable_id => sound}).collect{|tagging| tagging.tag}
       response[:user_tags] = user_tags.join(', ')
+      response[:list_user_tags] = user_tags
     end
     
     response

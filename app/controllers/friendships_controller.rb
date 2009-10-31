@@ -12,7 +12,7 @@ class FriendshipsController < ApplicationController
           redirect_back_or_default @friendship.friend
         }
         format.xml {render :xml => @friendship}
-        format.js
+        format.json {render :json => @friendship, :callback => params[:callback]}
       end
     else
       respond_to do |format|
@@ -21,7 +21,7 @@ class FriendshipsController < ApplicationController
           redirect_back_or_default @friendship.friend
         }
         format.xml {render :xml => @friendship.errors, :status => :unprocessible_entity}
-        format.js
+        format.json {render :json => @friendship.errors, :status => :unprocessible_entity, :callback => params[:callback]}
       end
     end
   end
@@ -37,7 +37,7 @@ class FriendshipsController < ApplicationController
         redirect_back_or_default @friendship.friend
       }
       format.xml {head :ok}
-      format.js
+      format.json {head :ok, :callback => params[:callback]}
     end
   end
 end
