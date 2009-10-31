@@ -49,7 +49,7 @@ module StringHelper
     temp_results = Link.query_distribution(@sound.mds_node, nodes.collect {|node| node.id})
     
     if temp_results
-      file = File.open(File.join(RAILS_ROOT, '/log/temp.log'))
+      file = File.open(File.join(RAILS_ROOT, '/log/temp.log'), 'w')
       file << temp_results
       file.close
       
