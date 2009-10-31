@@ -76,8 +76,8 @@ namespace :links do
       puts "#{i + 1} / #{nodes.size}"
       
       for j in i...nodes.size
-        Link.only_update(nodes[i], nodes[j], nil, distances[i, j]) if distances[i, j] < Infinity
-        Link.only_update(nodes[j], nodes[i], nil, distances[j, i]) if distances[j, i] < Infinity
+        Link.update_or_create(nodes[i], nodes[j], nil, distances[i, j]) if distances[i, j] < Infinity
+        Link.update_or_create(nodes[j], nodes[i], nil, distances[j, i]) if distances[j, i] < Infinity
         
         update_index += 1
       end

@@ -54,8 +54,8 @@ namespace :links do
             value = self_comparison[i] + self_comparison[j] - i_to_j - j_to_i
             
             if !value.nan? && value != Infinity && value != -Infinity
-              Link.only_update(sounds[i].mds_node, sounds[j].mds_node, value, nil)
-              Link.only_update(sounds[j].mds_node, sounds[i].mds_node, value, nil)
+              Link.update_or_create(sounds[i].mds_node, sounds[j].mds_node, value, nil)
+              Link.update_or_create(sounds[j].mds_node, sounds[i].mds_node, value, nil)
             end
             
             comparison_index += 1
