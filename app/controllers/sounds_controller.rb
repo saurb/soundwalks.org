@@ -221,11 +221,27 @@ class SoundsController < ApplicationController
     
     if tag_results != nil
       tag_results.each do |result|
-        verified_ids.push result.mds_node.id
+        verified_ids.push result.mds_node.id if result && result.mds_node
       end
     end
     
-    distribution = Link.query_distribution(sound, verified_ids)
+    logger.info("Sound: #{sound.id}, #{sound.mds_node.id}")
+    distribution = Link.query_distribution(sound.mds_node, verified_ids)
+    
+    distribution.each do |result|
+      sound_ids = sound_results.reject{|sound_result| sound_result.mds_node.id != result[:id]}.collect{|sound_result| sound_result.id}
+      tag_ids = sound_results.reject{|sound_result| sound_result.mds_node.id != result[:id]}.collect{|sound_result| sound_result.id}
+      
+      if sound_ids.size > 0
+        result[:type] = 'Sound'
+        result[:id] = sound_ids.first
+      elsif tag_ids.size > 0
+        result[:type] = 'Tag'
+        result[:id] = tag_ids.first
+      else
+        result[:type] = "Unknown"
+      end
+    end
     
     respond_to do |format|
       format.js {render :json => distribution}
