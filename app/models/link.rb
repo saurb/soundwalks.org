@@ -43,12 +43,12 @@ class Link < ActiveRecord::Base
       
       links.each do |link| 
         link.distance = conditional ? exp(-link.distance) : (link.cost ? ((link.cost > -1 ? exp(-link.cost) : 0)) : 0)
-        sum += link.distance if link.distance < Infinity
+        sum += link.distance if link.distance < Infinity and link.distance != nil
       end
       
       if sum < Infinity
         links.each do |link|
-          response.push({:id => link.second_id, :value => link.distance / sum}) if (link.distance / sum) < Infinity
+          response.push({:id => link.second_id, :value => link.distance / sum}) if link.distance != nil and (link.distance / sum) < Infinity
         end
       end
     end
