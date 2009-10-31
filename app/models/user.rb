@@ -69,6 +69,18 @@ class User < ActiveRecord::Base
     Soundwalk.from_friends(double_friendship_ids, excess_ids, self.id, :order => 'created_at DESC, title')
   end
   
+  def soundwalk_ids
+    self.soundwalks.collect{|soundwalk| soundwalk.id}
+  end
+  
+  def following_ids
+    self.friends.collect{|user| user.id}
+  end
+  
+  def follower_ids
+    self.inverse_friends.collect{|user| user.id}
+  end
+  
   def avatar_tiny
     avatar_url_for(self, :size => 16)
   end
