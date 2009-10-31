@@ -63,7 +63,7 @@ namespace :links do
       end
       
       Settings.links_distances = 0.5 * (i + 1) / nodes.size.to_f if progress
-      puts "\t#{i}: #{pops}"
+      puts "\t#{i + 1} / #{source_node_ids.size}: #{pops}"
     end
     
     #--------------------------------------#
