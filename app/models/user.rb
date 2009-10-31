@@ -2,7 +2,7 @@ require 'digest/sha1'
 require 'avatar'
 
 class User < ActiveRecord::Base
-  include Avatar
+  include Avatar::View::ActionViewSupport
   include Authentication
   include Authentication::ByPassword
   include Authentication::ByCookieToken
