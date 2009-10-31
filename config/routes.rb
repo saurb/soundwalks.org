@@ -53,6 +53,8 @@ ActionController::Routing::Routes.draw do |map|
   map.sendstudy '/sendstudy', :controller => 'study', :action => 'create', :method => 'post'
   
   map.username '/:username', :controller => 'users', :action => 'show'
+  map.username_with_format '/:username.:format', :controller => 'users', :action => 'show'
+  
   map.follow '/:username/follow', :controller => 'users', :action => 'follow'
   map.followers '/:username/followers', :controller => 'users', :action => 'followers'
   map.following '/:username/following', :controller => 'users', :action => 'following'
