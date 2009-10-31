@@ -48,44 +48,49 @@ module StringHelper
     results = []
     temp_results = Link.query_distribution(@sound.mds_node, nodes.collect {|node| node.id})
     temp_results = temp_results.sort {|x, y| x[:value] <=> y[:value]}.reverse
-    total = 0
+  
+    if temp_results
+      total = 0
     
-    temp_results.each do |result|
-      total += result[:value]
-      results.push result if total < 0.99
-    end
-    
-    for i in 0...results.size
-      node_index = node_ids.index(results[i][:id])
-      tag_index = tag_ids.index(nodes[node_index].owner_id)
-      
-      results[i][:deviation] = (results[i][:value] - (1.0 / results.size.to_f)) / (1.0 / results.size.to_f)
-      results[i][:name] = tag_names[tag_index]
-            
-      u = nodes[node_index].x * 0.436
-      v = nodes[node_index].y * 0.615
-      c = yuv_to_rgb(0.5, u, v)
-      
-      results[i][:r] = (c[:r] * 255).to_i
-      results[i][:g] = (c[:g] * 255).to_i
-      results[i][:b] = (c[:b] * 255).to_i
-    end
-    
-    html = ''
-    
-    if style == :normal || style == nil
-      html += results.collect{|result| "<span style='color: rgb(#{result[:r]}, #{result[:g]}, #{result[:b]}); font-size: #{(1.5 + result[:deviation] * 0.25)}em'>#{result[:name]}</span>"}.join(' ')
-    elsif style == :old
-      html_results = []
-      results.each do |result|
-        color = "#%02x%02x%02x" % [result[:r], result[:g], result[:b]].map {|i| i}
-        html_results.push "<font color='#{color}' size='#{((1.5 + result[:deviation] * 0.25) * 12).to_i}'>#{result[:name]}</font>"
+      temp_results.each do |result|
+        total += result[:value]
+        results.push result if total < 0.99
       end
-      
-      html = html_results.join(' ')
-    end
     
-    html
+      for i in 0...results.size
+        node_index = node_ids.index(results[i][:id])
+        tag_index = tag_ids.index(nodes[node_index].owner_id)
+      
+        results[i][:deviation] = (results[i][:value] - (1.0 / results.size.to_f)) / (1.0 / results.size.to_f)
+        results[i][:name] = tag_names[tag_index]
+            
+        u = nodes[node_index].x * 0.436
+        v = nodes[node_index].y * 0.615
+        c = yuv_to_rgb(0.5, u, v)
+      
+        results[i][:r] = (c[:r] * 255).to_i
+        results[i][:g] = (c[:g] * 255).to_i
+        results[i][:b] = (c[:b] * 255).to_i
+      end
+    
+      html = ''
+    
+      if style == :normal || style == nil
+        html += results.collect{|result| "<span style='color: rgb(#{result[:r]}, #{result[:g]}, #{result[:b]}); font-size: #{(1.5 + result[:deviation] * 0.25)}em'>#{result[:name]}</span>"}.join(' ')
+      elsif style == :old
+        html_results = []
+        results.each do |result|
+          color = "#%02x%02x%02x" % [result[:r], result[:g], result[:b]].map {|i| i}
+          html_results.push "<font color='#{color}' size='#{((1.5 + result[:deviation] * 0.25) * 12).to_i}'>#{result[:name]}</font>"
+        end
+      
+        html = html_results.join(' ')
+      end
+    
+      html
+    else
+      "This sound does not yet have any tags."
+    end
   end
   
   def yuv_to_rgb y, u, v
