@@ -42,8 +42,10 @@ class Link < ActiveRecord::Base
       sum = 0
       
       links.each do |link| 
-        link.distance = conditional ? exp(-link.distance) : (link.cost ? ((link.cost > -1 ? exp(-link.cost) : 0)) : 0)
-        sum += link.distance if link.distance < Infinity and link.distance != nil
+        if link.distance != nil
+          link.distance = conditional ? exp(-link.distance) : (link.cost ? ((link.cost > -1 ? exp(-link.cost) : 0)) : 0)
+          sum += link.distance if link.distance < Infinity
+        end
       end
       
       if sum < Infinity
