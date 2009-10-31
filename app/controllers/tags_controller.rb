@@ -1,5 +1,5 @@
 class TagsController < ApplicationController
-  before_filter :login_required
+  before_filter :login_required, :only => :update
   
   def index
     @soundwalk = Soundwalk.find(params[:soundwalk_id])
