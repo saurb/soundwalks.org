@@ -1,51 +1,7 @@
 - content_for :title do
-	Network Administration
-
-- content_for :javascript do
-	= javascript_include_tag 'lib/jquery.js', 'progress.js', 'links.js'
+	Link Administration
 	
-%h1 Network Administration
-
-%h2 Tasks
-
-- acoustic = check_nil(Settings.links_weights_acoustic)
-- semantic = check_nil(Settings.links_weights_semantic)
-- social = check_nil(Settings.links_weights_social)
-- distances = check_nil(Settings.links_distances)
-
-%div
-	%div{:style => 'float: right'}
-		%p.buttons
-			%a{:href => '/admin/links_update_acoustic'} Update acoustic weights
-		%p.buttons
-			%a{:href => '/admin/links_update_semantic'} Update semantic weights
-		%p.buttons
-			%a{:href => '/admin/links_update_social'} Update social weights
-		%p.buttons
-			%a{:href => '/admin/links_update_distances'} Update distances
-		%p.buttons
-			%a{:href => '/admin/links_delete_all'} Delete all links
-			
-	%div{:style => 'width: 40em'}
-		%div#acoustic{:class => 'admin_progress'}
-			%div.progress{:style => "width: #{percentage_width(acoustic)}"}
-			= "<span class='text'>Acoustic (<span class='progress_text'>#{percentage_text(acoustic)}</span>)</span>"
-		
-		%div#semantic{:class => 'admin_progress'}
-			%div.progress{:style => "width: #{percentage_width(semantic)}"}
-			= "<span class='text'>Semantic (<span class='progress_text'>#{percentage_text(semantic)}</span>)</span>"
-		
-		%div#social{:class => 'admin_progress'}
-			%div.progress{:style => "width: #{percentage_width(social)}"}
-			= "<span class='text'>Social (<span class='progress_text'>#{percentage_text(social)}</span>)</span>"
-		
-		%div#distances{:class => 'admin_progress'}
-			%div.progress{:style => "width: #{percentage_width(distances)}"}
-			= "<span class='text'>Distances (<span class='progress_text'>#{percentage_text(distances)}</span>)</span>"
-
-%div.clear
-		
-%h2 Links (#{@total_links})
+%h1 Link Administration (#{@total_links})
 
 - if @links != nil && @links.size > 0
 	%p.buttons	

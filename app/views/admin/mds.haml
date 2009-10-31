@@ -1,31 +1,7 @@
 - content_for :title do
-	Tag Administration
+	MDS Administration
 
-- content_for :javascript do
-	= javascript_include_tag 'lib/jquery.js', 'progress.js', 'mds.js'
-	
-%h1 MDS Administration
-
-%h2 Tasks
-
-- mds_load = check_nil(Settings.mds_load)
-
-%div
-	%div{:style => 'float: right'}
-		%p.buttons
-			%a{:href => '/admin/mds_load_random'} Load random positions
-		%p.buttons
-			%a{:href => '/admin/mds_load_file'} Load positions from file
-		%p.buttons
-			%a{:href => '/admin/mds_delete_all'} Delete all
-	%div{:style => 'width: 40em'}
-		%div#mds_load{:class => 'admin_progress'}
-			%div.progress{:style => "width: #{percentage_width(mds_load)}"}
-			= "<span class='text'>MDS Loading (<span class='progress_text'>#{percentage_text(mds_load)}</span>)</span>"
-			
-%div.clear
-
-%h2 MDS Nodes (#{@total_nodes})
+%h1 MDS Administration (#{@total_nodes})
 
 - x = []
 - y = []
