@@ -58,8 +58,10 @@ namespace :links do
       end
       
       shortest.each_with_index do |distance, j|
-        distances[nodes.index(source_node_ids[i]), j] = distance
-        distances[j, nodes.index(source_node_ids[i])] = distance
+        node_index = node_ids.index(source_node_ids[i])
+        
+        distances[node_index, j] = distance
+        distances[j, node_index] = distance
       end
       
       Settings.links_distances = 0.5 * (i + 1) / nodes.size.to_f if progress
@@ -78,7 +80,7 @@ namespace :links do
       puts "#{i + 1} / #{nodes.size}"
       
       for j in i...nodes.size
-        node_index = nodes.index(source_node_ids[i])
+        node_index = node_ids.index(source_node_ids[i])
         
         Link.update_or_create(nodes[node_index], nodes[j], nil, distances[node_index, j]) if distances[node_index, j] < Infinity
         Link.update_or_create(nodes[j], nodes[node_index], nil, distances[j, node_index]) if distances[j, node_index] < Infinity
