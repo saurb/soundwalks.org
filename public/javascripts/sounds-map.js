@@ -76,7 +76,7 @@ function addSounds(map, bounds) {
 		
 		GEvent.addListener(marker, "click", function() {
 			marker.openInfoWindowHtml("<div class='marker-info'>\
-				<h2><span class='meta'>" + sound.recorded_at + "(" + sound.duration + ")</span>" + sound.filename + "</h2>\
+				<h2><span class='meta'>" + sound.recorded_at + " (" + sound.duration + "s)</span>" + sound.filename + "</h2>\
 				<embed\
 		      		type='application/x-shockwave-flash'\
 		      		src='http://www.google.com/reader/ui/3247397568-audio-player.swf?audioUrl=/soundwalks/" + soundwalk_id + "/sounds/" + sound.id + ".mp3'\
