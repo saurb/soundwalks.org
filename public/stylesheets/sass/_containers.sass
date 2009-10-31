@@ -50,7 +50,19 @@
 	#content
 		padding: 1em
 		z-index: 1
-
+		
+		p.invitation
+			+rounded_border
+			padding: 0.5em
+			font-size: 1.2em
+			background-color = !very_light_green
+			color = !dark_green
+			
+			a
+				color = !red
+				&:hover
+					color = !dark_blue
+			
 	#footer
 		margin-top: 1em
 		padding: 1em

@@ -22,8 +22,10 @@ function makeMap() {
 		
 		bounds = new GLatLngBounds();
 		
-		addSounds(map, bounds);
 		addTrace(map, bounds);
+		addSounds(map, bounds);
+		
+		map.setCenter(bounds.getCenter(), map.getBoundsZoomLevel(bounds));
 	}
 }
 
@@ -31,7 +33,7 @@ function addTrace(map, bounds) {
 	soundwalk_id = $("meta[name=soundwalk_id]").attr('content');
 
 	$.getJSON('/soundwalks/' + soundwalk_id, null, function(data, textStatus) {
-		trace = data.soundwalk.locations;
+		trace = data.locations;
 		
 		points = new Array();
 		
@@ -43,23 +45,9 @@ function addTrace(map, bounds) {
 		}
 		
 		map.addOverlay(new GPolyline(points, '#9DBF30', 4, '50'));
-		map.setCenter(bounds.getCenter(), map.getBoundsZoomLevel(bounds));
 	});
 	
 	return bounds;
-}
-
-function circlePolygon(lat, lng, resolution, radius) {
-	points = new Array();
-	
-	for (i = 0; i < resolution; i++) {
-		x = (Math.cos((i / resolution) * 2 * Math.PI) * radius) + lng;
-		y = (Math.sin((i / resolution) * 2 * Math.PI) * radius) + lat;
-		point = new GLatLng(y, x);
-		points.push(point);
-	}
-	
-	return new GPolygon(points, '#9DBF30', 20, 1, '#9DBF30', 0.5);
 }
 
 function addSounds(map, bounds) {
@@ -80,7 +68,7 @@ function addSounds(map, bounds) {
 		sound.duration = $(this).find('[data-edits=duration]').attr('data-value');
 		sound.lat = parseFloat($(this).find('[data-edits=lat]').attr('data-value'));
 		sound.lng = parseFloat($(this).find('[data-edits=lng]').attr('data-value'));
-		
+				
 		sound.recorded_at = $(this).find('[data-edits=recorded_at]').text();
 		
 		var point = new GLatLng(sound.lat, sound.lng);
@@ -100,6 +88,7 @@ function addSounds(map, bounds) {
 		      		flashvars='playerMode=embedded'/>\
 			</div>");
 		});
+		
 		
 		map.addOverlay(marker);
 		bounds.extend(point);
