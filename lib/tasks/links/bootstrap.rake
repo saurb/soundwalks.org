@@ -7,7 +7,7 @@ namespace :links do
     nodes.each_with_index do |node1, i|
       puts "#{i + 1} / #{nodes.size}"
       
-      connections = node.outbound_links.collect{|link| link.second_id}
+      connections = node1.outbound_links.collect{|link| link.second_id}
       
       nodes.each do |node2|
         Link.update_or_create(node1, node2, nil, nil) if !connections.index(node2.id)
