@@ -82,7 +82,7 @@ module StringHelper
         html_results.push "<font color='#{color}' size='#{((1.5 + result[:deviation] * 0.25) * 12).to_i}'>#{result[:name]}</font>"
       end
       
-      html = html_results.join(', ')
+      html = html_results.join(' ')
     end
     
     html
