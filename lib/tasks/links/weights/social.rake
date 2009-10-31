@@ -5,19 +5,17 @@ namespace :links do
       #-------------------------#
       # 1. Initialize matrices. #
       #-------------------------#
+      puts "Loading sounds and tags."
       
-      puts "Loading sounds."
       sounds = Sound.find(:all)
-      puts "Loading tags."
       tags = Tag.find(:all)
-      
-      votes = Array.new(sounds.size)
       
       #--------------------------------#
       # 2. Construct the votes matrix. #
       #--------------------------------#
       puts "Constructing votes matrix."
       
+      votes = Array.new(sounds.size)
       sum_votes = 0
       total_items = 0
       
