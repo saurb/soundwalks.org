@@ -24,6 +24,8 @@ class Sound < ActiveRecord::Base
     record.create_preview
     record.title = record.filename
     record.save
+    
+    record.create_mds_node
   end
   
   validates_as_attachment
