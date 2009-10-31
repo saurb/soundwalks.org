@@ -5,7 +5,7 @@ Mime::Type.register "audio/mpeg", :mp3
 class SoundsController < ApplicationController
   layout 'site'
   
-  before_filter :login_required, :except => ['index', 'show']
+  before_filter :login_required, :except => ['index', 'show', 'allindex']
   
   append_before_filter :get_soundwalk, 
     :only => ['show', 'index', 'query_set']
