@@ -15,10 +15,10 @@ namespace :links do
     
     node_ids = nodes.collect {|node| node.id}
     distances = Matrix.infinity(nodes.size, nodes.size)
-    counts = node_ids.collect{|id| Link.count(:conditions => "first_id =#{id} and ISNULL(distance)")}
-    puts counts
-    source_node_ids = ENV['ONLYNEW'] ? node_ids.reject{|id| Link.count("first_id = #{id} and not ISNULL(distance)") < 369} : node_ids
+    
+    source_node_ids = ENV['ONLYNEW'] ? node_ids.reject{|id| Link.count(:conditions => "first_id = #{id} and ISNULL(distance)") > 0} : node_ids
     puts "Only updating new nodes." if ENV['ONLYNEW']
+    
     #---------------------------------------------------------#
     # 2. Compute Dijkstra's algorithm between all node pairs. #
     #---------------------------------------------------------#
