@@ -182,6 +182,6 @@ protected
   end
   
   def user_methods
-    [:avatar_large, :avatar_medim, :avatar_small, :avatar_tiny]
+    [:avatar_large, :avatar_medium, :avatar_small, :avatar_tiny]
   end
 end
