@@ -44,8 +44,10 @@ class Link < ActiveRecord::Base
         sum += link.distance
       end
       
-      links.each do |link|
-        response.push({:id => link.second_id, :value => link.distance / sum})
+      if sum < Infinity
+        links.each do |link|
+          response.push({:id => link.second_id, :value => link.distance / sum}) if link.distance < Infinity
+        end
       end
     end
     
