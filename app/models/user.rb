@@ -70,15 +70,15 @@ class User < ActiveRecord::Base
   end
   
   def soundwalk_ids
-    self.soundwalks.collect{|soundwalk| soundwalk.id}
+    self.soundwalks.collect{|soundwalk| {:id => soundwalk.id}}
   end
   
   def following_ids
-    self.friends.collect{|user| user.id}
+    self.friends.collect{|user| {:id => user.id}}
   end
   
   def follower_ids
-    self.inverse_friends.collect{|user| user.id}
+    self.inverse_friends.collect{|user| {:id => user.id}}
   end
   
   def avatar_tiny
