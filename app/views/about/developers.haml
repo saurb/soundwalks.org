@@ -1,0 +1,35 @@
+%h1 Developer Information
+%h2 API
+%p You can get information from Soundwalks in one of two ways: 1) through <em>XML</em> or 2) through <em>JSON</em>. Both formats offer the same information.
+%p We are currently working on pulling together detailed documentation for Soundwalk's API, but the best way to learn about it now is to simply append ".xml" or ".js" to any URL for users, soundwalks, and sounds. 
+
+%h2 Basic objects
+%p The following URL templates may be of interest to you:
+%p.code
+	http://soundwalks.org/users/[user_id] <br/>
+	http://soundwalks.org/[user_login] <br/>
+	http://soundwalks.org/soundwalks/[soundwalk_id] <br/>
+	http://soundwalks.org/soundwalks/[soundwalk_id]/locations <br/>
+	http://soundwalks.org/soundwalks/[soundwalk_id]/sounds/[sound_id] <br/>
+	http://soundwalks.org/soundwalks/[soundwalk_id]/sounds/[sound_id]/tags <br/>
+
+%h2 Queries
+%p Soundwalks works by performing probabilistic queries over sounds, locations, and tags. For example, given a query sound, you can obtain a distribution over a set of other sounds, tags, or locations in the network to see which are most similar. Currently, this interface is only available for sound queries on sounds and tags. The format is as follows:
+%p.code http://soundwalks.org/soundwalks/[soundwalk_id]/sounds/[sound_id]/query_set.{xml,js}?tag_ids=[tag_ids]&tag_names[tag_names]&sound_ids[sound_ids]
+%p The parameters <em>tag_ids</em>, <em>tag_names</em>, and <em>sound_ids</em> can appear in any combination in your query. For example,
+%p.code http://soundwalks.org/soundwalks/1/sounds/1/query_set.js?sound_ids=3,4,5
+%p might produce the results
+%p.code 
+	[ <br />
+	&nbsp;&nbsp;&nbsp;&nbsp;{"type": "Sound", "value": 7.82128139477473e-09, "id": 2}, <br />
+	&nbsp;&nbsp;&nbsp;&nbsp;{"type": "Sound", "value": 0.999999802999673, &nbsp;&nbsp;&nbsp;"id": 3}, <br />
+	&nbsp;&nbsp;&nbsp;&nbsp;{"type": "Sound", "value": 1.89179045366814e-07, "id": 4}<br />
+	]
+%p showing that Sound #3 is much more similar to Sound #1 than the other sounds provided in the set.
+
+%h2 Location queries
+%p You can also search for sounds based on location rather than having to know to which soundwalk they belong. In this case, you simply need to specify the latitude and longitude coordinates and a radius (in miles) within which you wish to return results. The format is as follows:
+%p.code http://soundwalks.org/sounds.{xml,js}?lat=[latitude]&lng=[longitude]&distance=[miles]
+
+%h2 Coming soon
+In addition to better documentation, several features are on their way, including ranked retrieval lists without needing to specify target sets (as in query_set) and text-based search for users, sounds, and tags. 
