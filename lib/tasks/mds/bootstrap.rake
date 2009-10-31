@@ -8,6 +8,7 @@ namespace :mds do
       collection.each do |source|
         if source.mds_node == nil
           source.create_mds_node
+          puts "Creating node for #{source}"
         end
       end
     end
