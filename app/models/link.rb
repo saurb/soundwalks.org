@@ -1,3 +1,5 @@
+Infinity = 1.0 / 0.0
+
 class Link < ActiveRecord::Base
   belongs_to :first, :class_name => 'MdsNode'
   belongs_to :second, :class_name => 'MdsNode'
