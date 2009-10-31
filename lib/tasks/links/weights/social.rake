@@ -23,7 +23,7 @@ namespace :links do
         sound_tags = sound.tag_counts_on(:tags)
         total = Tagging.count(:conditions => {:taggable_id => sound.id, :taggable_type => 'Sound'})
         
-        puts "\tSound #{i + 1} / #{sounds.size}: #{total} tags."
+        puts "\tSound #{i + 1} / #{sounds.size}: #{sound_tags} tags, #{total} taggings."
         
         votes[i] = []
         

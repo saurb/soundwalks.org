@@ -13,7 +13,6 @@ namespace :links do
     
     nodes = MdsNode.find(:all)
     node_ids = nodes.collect {|node| node.id}
-    
     distances = Matrix.infinity(nodes.size, nodes.size)
     
     #---------------------------------------------------------#
@@ -21,7 +20,7 @@ namespace :links do
     #---------------------------------------------------------#
     puts "Computing shortest-path distances."
         
-    for i in 0...nodes.size      
+    for i in 0...nodes.size
       visited = Array.new(nodes.size, false)
       previous = Array.new(nodes.size, nil)
       shortest = Array.new(nodes.size, Infinity) #distances.row(i).to_a
