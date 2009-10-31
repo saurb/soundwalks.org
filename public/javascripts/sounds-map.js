@@ -79,7 +79,7 @@ function addSounds(map, bounds) {
 				<h2><span class='meta'>" + sound.recorded_at + "(" + sound.duration + ")</span>" + sound.filename + "</h2>\
 				<embed\
 		      		type='application/x-shockwave-flash'\
-		      		src='http://www.google.com/reader/ui/3247397568-audio-player.swf?audioUrl=/soundwalks/" + soundwalk_id + "/sounds/" + sound.id + ".wav'\
+		      		src='http://www.google.com/reader/ui/3247397568-audio-player.swf?audioUrl=/soundwalks/" + soundwalk_id + "/sounds/" + sound.id + ".mp3'\
 		      		style='width: 100%; height: 27px'\
 		      		allowscriptaccess='never'\
 		      		quality='best' \
