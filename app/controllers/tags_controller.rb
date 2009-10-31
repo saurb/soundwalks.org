@@ -47,7 +47,7 @@ class TagsController < ApplicationController
     
     if logged_in?
       user_tags = current_user.owned_taggings.find(:all, :conditions => {:taggable_id => sound}).collect{|tagging| tagging.tag}
-      response[:user_tags] => user_tags.join(', ')
+      response[:user_tags] = user_tags.join(', ')
     end
     
     response
