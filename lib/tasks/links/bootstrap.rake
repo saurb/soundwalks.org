@@ -8,7 +8,8 @@ namespace :links do
       puts "#{i + 1} / #{nodes.size}"
       
       nodes.each do |node2|
-        Link.update_or_create(node1, node2, nil, nil)
+        count = Link.count("first_id = #{node1.id} and second_id = #{node2.id}")
+        Link.update_or_create(node1, node2, nil, nil) if !count
       end
     end
   end
