@@ -29,7 +29,9 @@ ActionController::Routing::Routes.draw do |map|
     admin.tags_frequency 'tags_frequency', :controller => 'admin', :action => 'tags_frequency', :method => 'get'
   end
   
-  map.resources :soundwalks do |soundwalks|
+  map.resources :soundwalks, :member => {:locations => :get} do |soundwalks|
+    #soundwalks.formatted_locations 'locations.:format', :controller => 'soundwalks', :action => 'locations', :method => 'get'
+    
     soundwalks.resources :sounds, :collection => {:delete_multiple => :delete, :uploader => :get}, :member => {:analyze => :get} do |sounds|
       sounds.set_tags         'tags',           :controller => 'tags', :action => 'update', :method => 'post'
       sounds.tags             'tags',           :controller => 'tags', :action => 'index',  :method => 'get'

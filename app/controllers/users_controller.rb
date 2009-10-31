@@ -79,8 +79,8 @@ class UsersController < ApplicationController
     
     respond_to do |format|
       format.html {render :layout => 'site'}
-      format.xml {render :xml => @user.to_xml(:except => user_exceptions, :methods => user_methods)}
-      format.js {render :json => @user.to_json(:except => user_exceptions, :methods => user_methods)}
+      format.xml {render :xml => @user.to_xml(:except => user_exceptions, :methods => user_methods, :include => user_includes)}
+      format.js {render :json => @user.to_json(:except => user_exceptions, :methods => user_methods, :include => user_includes)}
     end
   end
   
@@ -128,8 +128,8 @@ class UsersController < ApplicationController
               flash.now[:notice] = "Your profile has been updated."
               render :layout => 'site', :action => "edit"
             }
-            format.xml {render :xml => @user.to_xml(:except => user_exceptions, :methods => user_methods), :status => :ok}
-            format.js {render :json => @user.to_json(:except => user_exceptions, :methods => user_methods), :status => :ok}
+            format.xml {render :xml => @user.to_xml(:except => user_exceptions, :methods => user_methods, :include => user_includes), :status => :ok}
+            format.js {render :json => @user.to_json(:except => user_exceptions, :methods => user_methods, :include => user_includes), :status => :ok}
           else
             format.html {render :layout => 'site', :action => "edit"}
             format.xml {render :xml => @user.errors, :status => :unprocessable_entity}
@@ -183,5 +183,13 @@ protected
   
   def user_methods
     [:avatar_large, :avatar_medium, :avatar_small, :avatar_tiny]
+  end
+  
+  def user_includes
+    {
+      :friends => {:only => :id, :methods => [], :include => []},
+      :inverse_friends => {:only => :id, :methods => [], :include => []},
+      :soundwalks => {:only => :id, :methods => [], :include => []}
+    }
   end
 end
