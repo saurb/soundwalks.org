@@ -47,11 +47,12 @@ module StringHelper
     
     results = []
     temp_results = Link.query_distribution(@sound.mds_node, nodes.collect {|node| node.id})
-    temp_results = temp_results.sort {|x, y| x[:value] <=> y[:value]}.reverse
-  
-    if temp_results
-      total = 0
     
+    if temp_results
+      temp_results = temp_results.sort {|x, y| x[:value] <=> y[:value]}.reverse
+      
+      total = 0
+      
       temp_results.each do |result|
         total += result[:value]
         results.push result if total < 0.99
