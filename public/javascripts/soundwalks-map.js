@@ -67,5 +67,6 @@ function addSoundwalks(map) {
 }
 
 $(document).ready(function() {
+	alert(window.location.host)
 	makeMap();
 })
