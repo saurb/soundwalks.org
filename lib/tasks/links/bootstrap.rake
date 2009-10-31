@@ -9,8 +9,10 @@ namespace :links do
       
       connections = node1.outbound_links.collect{|link| link.second_id}
       
-      nodes.each do |node2|
-        Link.update_or_create(node1, node2, nil, nil) if !connections.index(node2.id)
+      nodes.each_with_index do |node2, j|
+        if !connections.index(node2.id)
+          puts "\t#{j}"
+          Link.update_or_create(node1, node2, nil, nil) 
       end
     end
   end
