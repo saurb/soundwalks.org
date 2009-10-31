@@ -13,6 +13,7 @@ namespace :links do
         if !connections.index(node2.id)
           puts "\t#{j}"
           Link.update_or_create(node1, node2, nil, nil) 
+        end
       end
     end
   end
