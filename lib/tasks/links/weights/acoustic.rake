@@ -13,6 +13,7 @@ namespace :links do
       comparisons = Array.new(sounds.size)
       comparators = Array.new(sounds.size, nil)
       self_comparison = Array.new(sounds.size, nil)
+      costs = Matrix.infinity(sounds.size, sounds.size)
       
       #-------------------------------------------#
       # 2. Find which sounds need to be compared. #
@@ -27,8 +28,8 @@ namespace :links do
           comparisons[i].push j if link == nil || link.cost == nil || link.cost < 0 || link.cost == Infinity
         end
         
-        print "\tSound #{i + 1} / #{sounds.size}"
-        print comparisons[i].size > 0 ? ": #{comparisons[i].join(', ')}\n" : "\n" 
+        print "\tFind sound #{i + 1} / #{sounds.size}"
+        print comparisons[i].size > 0 ? ": #{comparisons[i].collect{|id| id + 1}.join(', ')}\n" : "\n" 
       end
       
       #------------------------------------------------#
@@ -38,13 +39,13 @@ namespace :links do
       
       comparisons.each_with_index do |sounds_to_compare, i|
         if sounds_to_compare.size > 0
-          puts "\tSound #{i + 1} / #{comparisons.size} (sound #{sounds[i].id}, node #{sounds[i].mds_node.id})"
+          puts "\tCompare sound #{i + 1} / #{comparisons.size} (sound #{sounds[i].id}, node #{sounds[i].mds_node.id})"
           
           comparators[i] = sounds[i].get_comparator if comparators[i] == nil
           self_comparison[i] = comparators[i].compare(comparators[i]) if self_comparison[i] == nil
           
           sounds_to_compare.each_with_index do |j, index|
-            puts "\t\tSound #{j + 1} (sound #{sounds[j].id}, node #{sounds[j].mds_node.id}) (#{index + 1} / #{sounds_to_compare.size})"
+            puts "\t\tCompare sound #{j + 1} (sound #{sounds[j].id}, node #{sounds[j].mds_node.id}) (#{index + 1} / #{sounds_to_compare.size})"
             
             comparators[j] = sounds[j].get_comparator if (comparators[j] == nil)
             self_comparison[j] = comparators[j].compare(comparators[j]) if self_comparison[j] == nil
@@ -52,13 +53,28 @@ namespace :links do
             i_to_j = comparators[i].compare(comparators[j])
             j_to_i = comparators[j].compare(comparators[i])
             
-            value = self_comparison[i] + self_comparison[j] - i_to_j - j_to_i
+            costs[i, j] = self_comparison[i] + self_comparison[j] - i_to_j - j_to_i
+          end
+        end
+      end
+      
+      #-------------------------------#
+      # Update costs in the database. #
+      #-------------------------------#
+      puts "4. Updating database."
+      
+      Link.transaction do
+        comparisons.each_with_index do |sounds_to_compare, i|
+          puts "\tUpdate sound #{i + 1} / #{comparisons.size} (sound #{sounds[i].id}, node #{sounds[i].mds_node.id})"
+          
+          sounds_to_compare.each do |j|
+            cost = costs[i, j]
             
-            if !value.nan? && value != Infinity && value != -Infinity
-              Link.update_or_create(sounds[i].mds_node, sounds[j].mds_node, value, nil)
-              Link.update_or_create(sounds[j].mds_node, sounds[i].mds_node, value, nil)
+            if !cost.nan? && cost < Infinity && cost >= 0
+              Link.update_or_create(sounds[i].mds_node, sounds[j].mds_node, cost, nil)
+              Link.update_or_create(sounds[j].mds_node, sounds[i].mds_node, cost, nil)
             else
-              puts "\t\t\tInvalid cost: #{value} (self[i]: #{self_comparisons[i]}, self[j]: #{self_comparisons[j]}, i_to_j: #{i_to_j}, j_to_i: #{j_to_i})"
+              puts "\t\tInvalid cost (#{i}, #{j}): (self[i]: #{self_comparisons[i]}, self[j]: #{self_comparisons[j]})"
             end
           end
         end
