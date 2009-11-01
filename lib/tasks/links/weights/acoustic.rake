@@ -50,7 +50,7 @@ namespace :links do
             self_comparison[j] = comparators[j].compare(comparators[j]) if self_comparison[j] == nil
             
             i_to_j = comparators[i].compare(comparators[j])
-            j_to_i = comparators[i].compare(comparators[j])
+            j_to_i = comparators[j].compare(comparators[i])
             
             value = self_comparison[i] + self_comparison[j] - i_to_j - j_to_i
             
@@ -58,7 +58,7 @@ namespace :links do
               Link.update_or_create(sounds[i].mds_node, sounds[j].mds_node, value, nil)
               Link.update_or_create(sounds[j].mds_node, sounds[i].mds_node, value, nil)
             else
-              puts "\t\t\tInvalid cost: #{value}"
+              puts "\t\t\tInvalid cost: #{value} (self[i]: #{self_comparisons[i]}, self[j]: #{self_comparisons[j]}, i_to_j: #{i_to_j}, j_to_i: #{j_to_i})"
             end
           end
         end
