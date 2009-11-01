@@ -1,10 +1,12 @@
+require 'matrix_extension'
+
 namespace :links do
   namespace :weights do
     desc "Calculates link costs between sounds in the network."
     task :acoustic => :environment do
-      #-------------------------#
-      # 1. Initialize matrices. #
-      #-------------------------#
+      #----------------------#
+      # 1. Initialize lists. #
+      #----------------------#
       puts "1. Loading all sounds."
       
       sounds = Sound.find(:all)
@@ -24,7 +26,7 @@ namespace :links do
         
         for j in i...sounds.size
           link = Link.find(:first, :conditions => {:first_id => sounds[i].mds_node.id, :second_id => sounds[j].mds_node.id})
-          comparisons[i].push j if link == nil || link.cost == nil
+          comparisons[i].push j if link == nil || link.cost == nil || link.cost < 0 || link.cost == Infinity
         end
       end
       
@@ -35,13 +37,13 @@ namespace :links do
       
       comparisons.each_with_index do |sounds_to_compare, i|
         if sounds_to_compare.size > 0
-          puts "\tSound #{i + 1} / #{comparisons.size}"
+          puts "\tSound #{i + 1} / #{comparisons.size} (sound #{sounds[i].id}, node #{sounds[i].mds_node.id})"
           
           comparators[i] = sounds[i].get_comparator if comparators[i] == nil
           self_comparison[i] = comparators[i].compare(comparators[i]) if self_comparison[i] == nil
           
           sounds_to_compare.each_with_index do |j, index|
-            puts "\t\tSound #{j + 1} (#{index + 1} / #{sounds_to_compare.size})"
+            puts "\t\tSound #{j + 1} (sound #{sounds[j].id}, node #{sounds[j].mds_node.id}) (#{index + 1} / #{sounds_to_compare.size})"
             
             comparators[j] = sounds[j].get_comparator if (comparators[j] == nil)
             self_comparison[j] = comparators[j].compare(comparators[j]) if self_comparison[j] == nil
@@ -54,6 +56,8 @@ namespace :links do
             if !value.nan? && value != Infinity && value != -Infinity
               Link.update_or_create(sounds[i].mds_node, sounds[j].mds_node, value, nil)
               Link.update_or_create(sounds[j].mds_node, sounds[i].mds_node, value, nil)
+            else
+              puts "\t\t\tInvalid cost: #{value}"
             end
           end
         end
