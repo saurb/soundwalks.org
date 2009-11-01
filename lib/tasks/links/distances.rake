@@ -31,7 +31,7 @@ namespace :links do
       
       queue.push i
       visited[i] = true
-      shortest[i] = 0
+      shortest[i] = 0.0
       
       pops = 0
       
@@ -60,9 +60,7 @@ namespace :links do
       valid_links = 0
       
       shortest.each_with_index do |distance, j|
-        distances[i, j] = distance
-        distances[j, i] = distance
-        
+        distances[i, j] = distance        
         valid_links += 1 if distance != nil and distance < Infinity and distance >= 0
       end
       
@@ -74,14 +72,20 @@ namespace :links do
     #--------------------------------------#
     puts "3. Updating links in the database."
     
-    source_ids.each_with_index do |source, source_index|
-      i = node_ids.index(source)
-      
-      puts "#{source_index + 1} / #{source_ids.size} (index: #{i}, node #{nodes[i].id})"
-      
-      for j in i...nodes.size
-        Link.update_or_create(nodes[i], nodes[j], nil, distances[i, j]) if distances[i, j] < Infinity
-        Link.update_or_create(nodes[j], nodes[i], nil, distances[j, i]) if distances[j, i] < Infinity
+    Link.transaction do
+      source_ids.each_with_index do |source, source_index|
+        i = node_ids.index(source)
+        
+        puts "\tUpdating node #{source_index + 1} / #{source_ids.size} (index: #{i}, node #{nodes[i].id})"
+
+        for j in i...nodes.size
+          if distances[i, j] != nil and !distances[i, j].nan? and distances[i, j] < Infinity && distances[i, j] >= 0.0
+            Link.update_or_create(nodes[i], nodes[j], nil, distances[i, j])
+            Link.update_or_create(nodes[j], nodes[i], nil, distances[i, j])
+          else
+            puts "\t\tInvalid link (#{i}, #{j}) (node #{nodes[i].id}, node #{nodes[j].id}): #{distances[i, j]}"
+          end
+        end
       end
     end
   end

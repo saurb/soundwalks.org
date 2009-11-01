@@ -22,7 +22,7 @@ namespace :links do
         sound_tags = sound.tag_counts_on(:tags)
         total = Tagging.count(:conditions => {:taggable_id => sound.id, :taggable_type => 'Sound'})
         
-        puts "\tSound #{i + 1} / #{sounds.size}: #{sound_tags} tags, #{total} taggings."
+        puts "\tFinding tags for sound #{i + 1} / #{sounds.size} (sound #{sound.id}): #{sound_tags.size} tags, #{total} taggings."
         
         votes[i] = []
         
@@ -39,14 +39,20 @@ namespace :links do
       #------------------------------#
       puts "3. Updating links in the database."
       
-      votes.each_with_index do |row, i|
-        puts "\tSound #{i + 1} / #{sounds.size}: #{row.size} tags."
+      Link.transaction do
+        votes.each_with_index do |row, i|
+          puts "\tUpdating links for sound #{i + 1} / #{sounds.size}: #{row.size} tags."
         
-        row.each_with_index do |cell, j|
-          cost = -Math.log(cell[:value] / sum_votes)
-          
-          Link.update_or_create(sounds[i].mds_node, tags[cell[:tag_id]].mds_node, cost, nil)
-          Link.update_or_create(tags[cell[:tag_id]].mds_node, sounds[i].mds_node, cost, nil)
+          row.each_with_index do |cell, j|
+            cost = -Math.log(cell[:value] / sum_votes.to_f)
+            
+            if cost != nil and !cost.nan? and cost < Infinity and cost >= 0
+              Link.update_or_create(sounds[i].mds_node, tags[cell[:tag_id]].mds_node, cost, nil)
+              Link.update_or_create(tags[cell[:tag_id]].mds_node, sounds[i].mds_node, cost, nil)
+            else
+              puts "\t\tInvalid cost #{i}, #{j} (sound #{sounds[i].id}, tag #{tags[j].id}): #{cost}"
+            end
+          end
         end
       end
     end

@@ -74,7 +74,7 @@ namespace :links do
               Link.update_or_create(sounds[i].mds_node, sounds[j].mds_node, cost, nil)
               Link.update_or_create(sounds[j].mds_node, sounds[i].mds_node, cost, nil)
             else
-              puts "\t\tInvalid cost (#{i}, #{j}): (self[i]: #{self_comparisons[i]}, self[j]: #{self_comparisons[j]})"
+              puts "\t\tInvalid cost #{i}, #{j} (sound #{sounds[i].id}/node #{sounds[i].mds_node.id}, sound #{sounds[j].id}/node #{nounds[j].mds_nodes.id}): (self[i]: #{self_comparisons[i]}, self[j]: #{self_comparisons[j]})"
             end
           end
         end
