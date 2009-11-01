@@ -27,8 +27,8 @@ class SoundwalksController < ApplicationController
     
     respond_to do |format|
       format.html
-      format.xml {render :xml => @soundwalk.to_xml(:methods => soundwalk_methods, :include => soundwalk_includes, :except => soundwalk_exceptions), :status => :ok}
-      format.json {render :json => @soundwalk.to_json(:methods => soundwalk_methods, :include => soundwalk_includes, :except => soundwalk_exceptions), :status => :ok, :callback => params[:callback]}
+      format.xml {render :xml => @soundwalk.to_xml(soundwalk_options), :status => :ok}
+      format.json {render :json => @soundwalk.to_json(soundwalk_options), :status => :ok, :callback => params[:callback]}
     end
   end
   
@@ -51,8 +51,8 @@ class SoundwalksController < ApplicationController
       
       respond_to do |format|
         format.html
-        format.xml {render :xml => @soundwalk.to_xml(:methods => soundwalk_methods, :include => soundwalk_includes, :except => soundwalk_exceptions)}
-        format.json {render :json => @soundwalk.to_json(:methods => soundwalk_methods, :include => soundwalk_includes, :except => soundwalk_exceptions), :callback => params[:callback]}
+        format.xml {render :xml => @soundwalk.to_xml(soundwalk_options)}
+        format.json {render :json => @soundwalk.to_json(soundwalk_options), :callback => params[:callback]}
       end
     else
       respond_to do |format|
@@ -60,8 +60,8 @@ class SoundwalksController < ApplicationController
           flash[:error] = "You do not have access to upload features. If you believe you should, contact us."
           redirect_back_or_default '/'
         }
-        format.xml {render :xml => @soundwalk.to_xml(:methods => soundwalk_methods, :include => soundwalk_includes, :except => soundwalk_exceptions)}
-        format.json {render :json => @soundwalk.to_json(:methods => soundwalk_methods, :include => soundwalk_includes, :except => soundwalk_exceptions), :callback => params[:callback]}
+        format.xml {render :xml => @soundwalk.to_xml(soundwalk_options)}
+        format.json {render :json => @soundwalk.to_json(soundwalk_options), :callback => params[:callback]}
       end
     end
   end
@@ -80,8 +80,8 @@ class SoundwalksController < ApplicationController
               redirect_to @soundwalk
             end
           }
-          format.xml {render :xml => @soundwalk.to_xml(:methods => soundwalk_methods, :include => soundwalk_includes, :except => soundwalk_exceptions), :status => :created, :location => @soundwalk}
-          format.json {render :json => @soundwalk.to_json(:methods => soundwalk_methods, :include => soundwalk_includes, :except => soundwalk_exceptions), :status => :created, :location => @soundwalk, :callback => params[:callback]}
+          format.xml {render :xml => @soundwalk.to_xml(soundwalk_options), :status => :created, :location => @soundwalk}
+          format.json {render :json => @soundwalk.to_json(soundwalk_options), :status => :created, :location => @soundwalk, :callback => params[:callback]}
         else
           format.html {render :action => 'new'}
           format.xml {render :xml => @soundwalk.errors, :status => :unprocessible_entity}
@@ -124,8 +124,8 @@ class SoundwalksController < ApplicationController
           flash[:notice] = 'Soundwalk was successfully updated.'
           redirect_to @soundwalk
         }
-        format.xml {render :xml => @soundwalk.to_xml(:methods => soundwalk_methods, :include => soundwalk_includes, :except => soundwalk_exceptions), :status => :ok}
-        format.json {render :json => @soundwalk.to_json(:methods => soundwalk_methods, :include => soundwalk_includes, :except => soundwalk_exceptions), :status => :ok, :callback => params[:callback]}
+        format.xml {render :xml => @soundwalk.to_xml(soundwalk_options), :status => :ok}
+        format.json {render :json => @soundwalk.to_json(soundwalk_options), :status => :ok, :callback => params[:callback]}
       else
         format.html {render :action => "edit"}
         format.xml {render :xml => @soundwalk.errors, :status => :unprocessable_entity}
@@ -174,5 +174,9 @@ class SoundwalksController < ApplicationController
   def soundwalk_exceptions
     #[:locations]
     []
+  end
+  
+  def soundwalk_options
+    {:methods => soundwalk_methods, :includes => soundwalk_includes, :except => soundwalk_exceptions}
   end
 end

@@ -20,8 +20,8 @@ class FriendshipsController < ApplicationController
           flash[:error] = "There was an error following #{@friendship.friend.name}."
           redirect_back_or_default @friendship.friend
         }
-        format.xml {render :xml => @friendship.errors, :status => :unprocessible_entity}
-        format.json {render :json => @friendship.errors, :status => :unprocessible_entity, :callback => params[:callback]}
+        format.xml {render :xml => @friendship.errors, :status => :unprocessible_entity, :location => @friendship}
+        format.json {render :json => @friendship.errors, :status => :unprocessible_entity, :callback => params[:callback], :location => @friendship}
       end
     end
   end

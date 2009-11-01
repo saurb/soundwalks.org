@@ -79,8 +79,8 @@ class UsersController < ApplicationController
     
     respond_to do |format|
       format.html {render :layout => 'site'}
-      format.xml {render :xml => @user.to_xml(:except => user_exceptions, :methods => user_methods, :include => user_includes)}
-      format.json {render :json => @user.to_json(:except => user_exceptions, :methods => user_methods, :include => user_includes), :callback => params[:callback]}
+      format.xml {render :xml => @user.to_xml(user_options)}
+      format.json {render :json => @user.to_json(user_options), :callback => params[:callback]}
     end
   end
   
@@ -128,8 +128,8 @@ class UsersController < ApplicationController
               flash.now[:notice] = "Your profile has been updated."
               render :layout => 'site', :action => "edit"
             }
-            format.xml {render :xml => @user.to_xml(:except => user_exceptions, :methods => user_methods, :include => user_includes), :status => :ok}
-            format.json {render :json => @user.to_json(:except => user_exceptions, :methods => user_methods, :include => user_includes), :status => :ok, :callback => params[:callback]}
+            format.xml {render :xml => @user.to_xml(user_options), :status => :ok}
+            format.json {render :json => @user.to_json(user_options), :status => :ok, :callback => params[:callback]}
           else
             format.html {render :layout => 'site', :action => "edit"}
             format.xml {render :xml => @user.errors, :status => :unprocessable_entity}
@@ -191,5 +191,9 @@ protected
       :inverse_friends => {:only => :id, :methods => [], :include => []},
       :soundwalks => {:only => :id, :methods => [], :include => []}
     }
+  end
+  
+  def user_options
+    {:methods => user_methods, :except => user_exceptions, :include => user_includes}
   end
 end

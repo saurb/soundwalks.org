@@ -19,8 +19,8 @@ class SoundsController < ApplicationController
     respond_to do |format|
       format.html {redirect_to @soundwalk}
       if params[:show] == 'sounds'
-        format.json {render :json => @soundwalk.sounds, :callback => params[:callback], :status => :ok}
-        format.xml {render :xml => @soundwalk.sounds, :status => :ok}
+        format.json {render :json => @soundwalk.sounds.to_json(sound_options), :callback => params[:callback], :status => :ok}
+        format.xml {render :xml => @soundwalk.sounds.to_xml(sound_options), :status => :ok}
       else
         format.json {render :json => @soundwalk.sounds.collect {|sound| sound.id}, :callback => params[:callback], :status => :ok}
         format.xml {render :xml => @soundwalk.sounds.collect {|sound| sound.id}, :status => :ok}
@@ -31,18 +31,16 @@ class SoundsController < ApplicationController
   # GET /sounds
   def allindex
     if params[:distance]
-      @sounds = Sound.find_within(params[:distance], :origin => [params[:lat], params[:lng]], :limit => 500)
+      @sounds = Sound.find_within(params[:distance], :origin => [params[:lat], params[:lng]], :limit => 20, :offset => params[:offset] ? params[:offset] : 0)
     elsif current_user.admin?
       @soundwalks = Soundwalk.find(:all)
       @sounds = Sound.find(:all)
     end
     
     respond_to do |format|
-      format.json {render :json => @sounds.collect{|sound| ActiveSupport::JSON.decode(sound.to_json :methods => all_sound_methods)}, :callback => params[:callback]}
-      format.xml {render :xml => @sounds.collect{|sound| ActiveSupport::XML.decode(sound.to_xml :methods => all_sound_methods)}}
-      if current_user.admin?
-        format.html
-      end
+      format.html if current_user.admin?
+      format.json {render :json => @sounds.to_json(sound_options), :callback => params[:callback]}
+      format.xml {render :xml => @sounds.to_xml(sound_options), :callback => params[:callback]}
     end
   end
   
@@ -50,8 +48,8 @@ class SoundsController < ApplicationController
   def show        
     respond_to do |format|
       format.html
-      format.xml {render :xml => @sound.to_xml(:methods => all_sound_methods)}
-      format.json {render :json => @sound.to_json(:methods => all_sound_methods), :callback => params[:callback]}
+      format.xml {render :xml => @sound.to_xml(sound_options)}
+      format.json {render :json => @sound.to_json(sound_options), :callback => params[:callback]}
       format.wav {send_file @sound.full_filename, :type => 'audio/x-wav'}
       format.mp3 {send_file @sound.full_filename + '.mp3', :type => 'audio/mpeg'}
     end
@@ -69,8 +67,8 @@ class SoundsController < ApplicationController
           flash[:notice] = 'Sound was successfully updated.'
           redirect_to soundwalk_sound_path(@soundwalk, @sound)
         }
-        format.xml {render :xml => @sound.to_xml(:methods => all_sound_methods), :status => :ok}
-        format.json {render :json => @sound.to_json(:methods => all_sound_methods), :status => :ok, :callback => params[:callback]}
+        format.xml {render :xml => @sound.to_xml(sound_options), :status => :ok}
+        format.json {render :json => @sound.to_json(sound_options), :status => :ok, :callback => params[:callback]}
       else
         format.html {render :action => "edit"}
         format.xml {render :xml => @sound.errors, :status => :unprocessable_entity}
@@ -84,8 +82,8 @@ class SoundsController < ApplicationController
  
     respond_to do |format|
       format.html
-      format.xml {render :xml => @sound.to_xml(:methods => all_sound_methods)}
-      format.json {render :json => @sound.to_json(:methods => all_sound_methods), :callback => params[:callback]}
+      format.xml {render :xml => @sound.to_xml(sound_options)}
+      format.json {render :json => @sound.to_json(sound_options), :callback => params[:callback]}
     end
   end
     
@@ -96,8 +94,8 @@ class SoundsController < ApplicationController
       
       respond_to do |format|
         format.html
-        format.xml {render :xml => @sound.to_xml(:methods => all_sound_methods)}
-        format.json {render :json => @sound.to_json(:methods => all_sound_methods), :callback => params[:callback]}
+        format.xml {render :xml => @sound.to_xml(sound_options)}
+        format.json {render :json => @sound.to_json(sound_options), :callback => params[:callback]}
       end
     else
       respond_to do |format|
@@ -105,8 +103,8 @@ class SoundsController < ApplicationController
           flash[:error] = "You do not have access to upload features. If you believe you should, contact us."
           redirect_back_or_default '/'
         }
-        format.xml {render :xml => @sound.to_xml(:methods => all_sound_methods)}
-        format.json {render :json => @sound.to_json(:methods => all_sound_methods), :callback => params[:callback]}
+        format.xml {render :xml => @sound.to_xml(sound_options)}
+        format.json {render :json => @sound.to_json(sound_options), :callback => params[:callback]}
       end
     end
   end
@@ -132,8 +130,8 @@ class SoundsController < ApplicationController
           node.save
           
           format.html {redirect_to soundwalk_sound_path(@soundwalk, @sound)}
-          format.xml {render :xml => @sound.to_xml(:methods => all_sound_methods), :status => :ok, :location => soundwalk_sound_path(@soundwalk, @sound)}
-          format.json {render :json => @sound.to_json(:methods => all_sound_methods), :status => :ok, :location => soundwalk_sound_path(@soundwalk, @sound), :callbock => params[:callback]}
+          format.xml {render :xml => @sound.to_xml(sound_options), :status => :ok, :location => soundwalk_sound_path(@soundwalk, @sound)}
+          format.json {render :json => @sound.to_json(sound_options), :status => :ok, :location => soundwalk_sound_path(@soundwalk, @sound), :callbock => params[:callback]}
         else
           format.html {render :action => 'new'}
           format.xml {render :xml => @sound.errors, :status => :unprocessable_entity}
@@ -267,7 +265,19 @@ class SoundsController < ApplicationController
     param.split(',').collect{|value| value.chomp}
   end  
   
-  def all_sound_methods
+  def sound_methods
     [:formatted_lat, :formatted_lng, :formatted_recorded_at, :soundwalk_title, :user_id, :user_name, :user_login, :color_red, :color_green, :color_blue]
+  end
+  
+  def sound_includes
+    []
+  end
+  
+  def sound_exceptions
+    []
+  end
+  
+  def sound_options
+    {:methods => sound_methods, :include => sound_includes, :except => sound_exceptions}
   end
 end
