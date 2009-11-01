@@ -55,7 +55,7 @@ module StringHelper
       
       temp_results.each do |result|
         total += result[:value]
-        results.push result if total < 0.99
+        results.push result if total < 0.8
       end
     
       for i in 0...results.size
