@@ -38,7 +38,7 @@ class SoundsController < ApplicationController
     end
     
     respond_to do |format|
-      format.html if current_user.admin?
+      format.html if logged_in? & current_user && current_user.admin?
       format.json {render :json => @sounds.to_json(sound_options), :callback => params[:callback]}
       format.xml {render :xml => @sounds.to_xml(sound_options), :callback => params[:callback]}
     end
