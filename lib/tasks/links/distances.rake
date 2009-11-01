@@ -78,7 +78,7 @@ namespace :links do
     total_updates = (nodes.size * nodes.size) / 2
     
     for i in 0...source_node_ids.size
-      puts "#{i + 1} / #{nodes.size}"
+      puts "#{i + 1} / #{source_node_ids.size}"
       
       for j in i...nodes.size
         node_index = node_ids.index(source_node_ids[i])
