@@ -20,14 +20,14 @@ namespace :links do
       puts "2. Finding which sounds need to be compared."
       
       for i in 0...sounds.size
-        puts "\tSound #{i + 1} / #{sounds.size}"
-        
         comparisons[i] = []
         
         for j in i...sounds.size
           link = Link.find(:first, :conditions => {:first_id => sounds[i].mds_node.id, :second_id => sounds[j].mds_node.id})
           comparisons[i].push j if link == nil || link.cost == nil || link.cost < 0 || link.cost == Infinity
         end
+        
+        puts "\tSound #{i + 1} / #{sounds.size} (#{comparisons[i]} costs to be calculated)"
       end
       
       #------------------------------------------------#
