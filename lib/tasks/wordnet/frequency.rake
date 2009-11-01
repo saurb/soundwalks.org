@@ -1,4 +1,5 @@
 namespace :wordnet do
+  desc "Loads frequency counts for all tags from a corpus."
   task :frequency => :environment do
     WordnetNode.destroy_all
     

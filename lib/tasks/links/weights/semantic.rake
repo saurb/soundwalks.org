@@ -4,21 +4,20 @@ namespace :links do
     task :semantic => :environment do
       include WordnetHelper
       
-      #-------------------------#
-      # 1. Initialize matrices. #
-      #-------------------------#
-      puts "Fetching all tags."
+      #----------------#
+      # 1. Fetch tags. #
+      #----------------#
+      puts "1. Fetching all tags."
       
       tags = Tag.find(:all)
-      distances = Matrix.infinity(tags.size, tags.size)
-      
-      total_computations = (tags.size * tags.size) / 2
-      max_distance = 0
       
       #--------------------------------------------------------#
       # 2. Compute semantic similarity between all tags pairs. #
       #--------------------------------------------------------#
-      puts "Computing similarities between tags."
+      puts "2. Computing similarities between tags."
+      
+      distances = Matrix.infinity(tags.size, tags.size)
+      max_distance = 0
       
       for i in 0...tags.size
         puts "\t#{i + 1} / #{tags.size}: #{tags[i].name}"
@@ -28,14 +27,13 @@ namespace :links do
           max_distance = distances[i, j] if distances[i, j] > max_distance and distances[i, j] < Infinity
           
           puts "\t\t#{j - i + 1} / #{tags.size - i}: #{tags[j].name}: #{distances[i, j]}"
-          Settings.links_weights_semantic = 0.5 * ((i * tags.size).to_f / total_computations.to_f)
         end
       end
       
       #------------------------------#
       # 3. Update links in database. #
       #------------------------------#
-      puts "Updating links in database."
+      puts "3. Updating links in database."
       
       for i in 0...tags.size
         puts "\t#{i + 1} / #{tags.size}"
@@ -46,12 +44,8 @@ namespace :links do
             Link.update_or_create(tags[i].mds_node, tags[j].mds_node, cost, nil)
             Link.update_or_create(tags[j].mds_node, tags[i].mds_node, cost, nil)
           end
-      
-          Settings.links_weights_semantic = 0.5 + 0.5 * ((i * tags.size).to_f / total_computations.to_f)
         end
       end
-  
-      Settings.links_weights_semantic = 1
     end
   end
 end

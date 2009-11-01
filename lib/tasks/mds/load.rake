@@ -2,34 +2,18 @@ namespace :mds do
   namespace :load do
     desc "Loads random MDS positions for all sounds and tags."
     task :random => :environment do
-      sounds = Sound.find(:all)
-      tags = Tag.find(:all)
-    
-      sounds.each_with_index do |sound, i|
-        node = sound.mds_node ? sound.mds_node : sound.build_mds_node
-        node.x = rand(100).to_f / 100.0
-        node.y = rand(100).to_f / 100.0
-        node.z = rand(100).to_f / 100.0
-        node.w = rand(100).to_f / 100.0
-            
+      nodes = MdsNode.find(:all)
+      
+      nodes.each_with_index do |node, i|
+        puts "#{i + 1} / #{nodes.size} (node #{node.id})"
+        numbers = Array.new(4) {rand(100) / 100.0}
+        node.x = numbers[0]
+        node.y = numbers[1]
+        node.z = numbers[2]
+        node.w = numbers[3]
+        
         node.save
-      
-        Settings.mds_load = 0.5 * i / sounds.size.to_f
       end
-    
-      tags.each_with_index do |tag, i|
-        node = tag.mds_node ? tag.mds_node : tag.build_mds_node
-        node.x = rand(100).to_f / 100.0
-        node.y = rand(100).to_f / 100.0
-        node.z = rand(100).to_f / 100.0
-        node.w = rand(100).to_f / 100.0
-      
-        node.save
-      
-        Settings.mds_load = 0.5 + 0.5 * i / tags.size.to_f
-      end
-    
-      Settings.mds_load = 1
     end
     
     desc "Loads MDS positions from a specially-formatted CSV file."
@@ -40,40 +24,21 @@ namespace :mds do
         puts line
         components = line.split(',')
         
-        if components.size == 4
-          if components[0] == 'Sound'
-            sound = Sound.find(:first, :conditions => {:filename => components[1]})
+        if components.size >= 3
+          node = MdsNode.find(components[0].to_i)
+          
+          if node
+            puts "\tNode #{node.id}: (#{node.x}, #{node.y})"
             
-            if sound
-              node = sound.mds_node ? sound.mds_node : sound.build_mds_node
-              node.x = components[2]
-              node.y = components[3]
-              node.w = 0
-              node.z = 0
-              
-              puts "\tSound #{sound.id}: (#{node.x}, #{node.y})"
-              
-              node.save
-            end
-          elsif components[0] == 'Tag'
-            tag = Tag.find(:first, :conditions => {:name => components[1]})
+            node.x = components[2] if components.size > 2
+            node.y = components[3] if components.size > 3
+            node.z = components[4] if components.size > 4
+            node.w = components[5] if components.size > 5
             
-            if tag
-              node = tag.mds_node ? tag.mds_node : tag.build_mds_node
-              node.x = components[2]
-              node.y = components[3]
-              node.w = 0
-              node.z = 0
-              
-              puts "\tTag #{tag.id}: (#{node.x}, #{node.y})"
-              
-              node.save
-            end
+            node.save
           end
         end
       end
-      
-      Settings.mds_load = 1
     end
   end
 end

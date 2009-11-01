@@ -5,18 +5,17 @@ namespace :links do
       #-------------------------#
       # 1. Initialize matrices. #
       #-------------------------#
-      puts "Loading all sounds."
+      puts "1. Loading all sounds."
       
       sounds = Sound.find(:all)
       comparisons = Array.new(sounds.size)
       comparators = Array.new(sounds.size, nil)
       self_comparison = Array.new(sounds.size, nil)
-      total_comparisons = 0
       
       #-------------------------------------------#
       # 2. Find which sounds need to be compared. #
       #-------------------------------------------#
-      puts "Finding which sounds need to be compared."
+      puts "2. Finding which sounds need to be compared."
       
       for i in 0...sounds.size
         puts "\tSound #{i + 1} / #{sounds.size}"
@@ -26,25 +25,24 @@ namespace :links do
         for j in i...sounds.size
           link = Link.find(:first, :conditions => {:first_id => sounds[i].mds_node.id, :second_id => sounds[j].mds_node.id})
           comparisons[i].push j if link == nil || link.cost == nil
-          total_comparisons += 1
         end
       end
       
       #------------------------------------------------#
       # 3. Compare them and add links to the database. #
       #------------------------------------------------#
-      puts "Comparing sounds."
-      
-      comparison_index = 0
+      puts "3. Comparing sounds."
       
       comparisons.each_with_index do |sounds_to_compare, i|
         if sounds_to_compare.size > 0
           puts "\tSound #{i + 1} / #{comparisons.size}"
+          
           comparators[i] = sounds[i].get_comparator if comparators[i] == nil
           self_comparison[i] = comparators[i].compare(comparators[i]) if self_comparison[i] == nil
           
           sounds_to_compare.each_with_index do |j, index|
             puts "\t\tSound #{j + 1} (#{index + 1} / #{sounds_to_compare.size})"
+            
             comparators[j] = sounds[j].get_comparator if (comparators[j] == nil)
             self_comparison[j] = comparators[j].compare(comparators[j]) if self_comparison[j] == nil
             
@@ -57,15 +55,9 @@ namespace :links do
               Link.update_or_create(sounds[i].mds_node, sounds[j].mds_node, value, nil)
               Link.update_or_create(sounds[j].mds_node, sounds[i].mds_node, value, nil)
             end
-            
-            comparison_index += 1
-            
-            Settings.links_weights_acoustic = comparison_index.to_f / total_comparisons.to_f
           end
         end
       end
-      
-      Settings.links_weights_acoustic = 1
     end
   end
 end
