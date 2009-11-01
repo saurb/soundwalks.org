@@ -27,7 +27,8 @@ namespace :links do
           comparisons[i].push j if link == nil || link.cost == nil || link.cost < 0 || link.cost == Infinity
         end
         
-        puts "\tSound #{i + 1} / #{sounds.size} (#{comparisons[i].size} costs to be calculated)"
+        print "\tSound #{i + 1} / #{sounds.size}"
+        print comparisons[i].size > 0 ? "#: {comparisons[i].join(',')}\n" : "\n" 
       end
       
       #------------------------------------------------#
