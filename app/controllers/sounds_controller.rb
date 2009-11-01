@@ -31,7 +31,7 @@ class SoundsController < ApplicationController
   # GET /sounds
   def allindex
     if params[:distance]
-      @sounds = Sound.find_within(params[:distance], :origin => [params[:lat], params[:lng]], :limit => 20, :offset => params[:offset] ? params[:offset] : 0)
+      @sounds = Sound.find_within(params[:distance], :origin => [params[:lat], params[:lng]], :limit => 200, :offset => params[:offset] ? params[:offset] : 0)
     elsif current_user.admin?
       @soundwalks = Soundwalk.find(:all)
       @sounds = Sound.find(:all)
