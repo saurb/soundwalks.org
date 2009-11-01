@@ -28,7 +28,7 @@ namespace :links do
         end
         
         print "\tSound #{i + 1} / #{sounds.size}"
-        print comparisons[i].size > 0 ? "#: {comparisons[i].join(',')}\n" : "\n" 
+        print comparisons[i].size > 0 ? ": #{comparisons[i].join(',')}\n" : "\n" 
       end
       
       #------------------------------------------------#
