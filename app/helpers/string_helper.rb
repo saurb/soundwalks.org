@@ -65,8 +65,8 @@ module StringHelper
         results[i][:deviation] = (results[i][:value] - (1.0 / results.size.to_f)) / (1.0 / results.size.to_f)
         results[i][:name] = tag_names[tag_index]
             
-        u = nodes[node_index] == nil ? 0 : nodes[node_index].x * 0.436
-        v = nodes[node_index] == nil ? 0 : nodes[node_index].y * 0.615
+        u = nodes[node_index] == nil || nodes[node_index].x == nil ? 0 : nodes[node_index].x * 0.436
+        v = nodes[node_index] == nil || nodes[node_index].y == nil ? 0 : nodes[node_index].y * 0.615
         c = yuv_to_rgb(0.5, u, v)
       
         results[i][:r] = (c[:r] * 255).to_i
