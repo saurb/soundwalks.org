@@ -19,7 +19,7 @@ function cancelProp(e) {
 
 $(document).ready(function() {
 	// Edit-in-place behavior.
-	$(".editable,.editable-link").each(function() {
+	$(".editable, .editable-link").each(function() {
 		edit_callback = function() {}
 		
 		if ($(this).attr('data-edits') == 'user_tags')

@@ -92,6 +92,7 @@ $.fn.editField = function(url, object, edits, shows, callback) {
 		jQuery.ajax({
 			"url" : url,
 			"type" : "PUT",
+			"dataType" : "json",
 			"data" : (object ? (object + '['+ edits + ']=') : (edits + '='))
 			 		+ encodeURIComponent(value) + 
 					'&authenticity_token=' + encodeURIComponent($('meta[name=authenticity_token]').attr('content')),
@@ -99,13 +100,13 @@ $.fn.editField = function(url, object, edits, shows, callback) {
 				xhr.setRequestHeader("Accept", "application/javascript");
 			},
 			"success" : function(json) {
-				data = eval('(' + json + ')');
+				data = json;//eval('(' + json + ')');
 				
 				if (shows) {
-					if (object) {
+					if (object && data[object]) {
 						e.html(data[object][shows])
 						e.attr('data-value', data[object][edits])
-					} else {
+					} else if (data[shows]) {
 						e.html(data[shows])
 						e.attr('data-value', data[edits])
 					}

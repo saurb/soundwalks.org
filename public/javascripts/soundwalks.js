@@ -19,7 +19,7 @@ function cancelProp(e) {
 
 $(document).ready(function() {
 	// Allow users to check multiple sounds and delete them all at once.
-	$('.delete-multiple-sounds').click(function() {
+	$('#delete-multiple-sounds').click(function() {
 		form = $(this).parent().parent();
 		
 		$.post(
