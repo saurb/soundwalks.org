@@ -18,11 +18,13 @@ ActionController::Routing::Routes.draw do |map|
   
   map.resources :soundwalks, :member => {:locations => :get} do |soundwalks|
     soundwalks.resources :sounds, :collection => {:delete_multiple => :delete, :uploader => :get} do |sounds|
-      # These can't be made using :member, because :member changes the id from :id to :sound_id. Not sure why. 
+      # These can't be made using :member, because :member changes the id from :id to :sound_id. Not sure why.
       sounds.analyze    'analyze',            :controller => 'sounds', :action => 'analyze',    :method => 'get'
       sounds.query_set  'query_set.:format',  :controller => 'sounds', :action => 'query_set',  :method => 'get'
       
-      sounds.set_tags         'tags',           :controller => 'tags', :action => 'update', :method => 'post'
+      sounds.set_tags           'tags',         :controller => 'tags', :action => 'update', :method => 'put'
+      sounds.formatted_set_tags 'tags.:format', :controller => 'tags', :action => 'update', :method => 'put'
+      
       sounds.tags             'tags',           :controller => 'tags', :action => 'index',  :method => 'get'
       sounds.formatted_tags   'tags.:format',   :controller => 'tags', :action => 'index',  :method => 'get'
     end
