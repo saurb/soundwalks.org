@@ -43,13 +43,13 @@ namespace :links do
           puts "\tCompare sound #{i + 1} / #{comparisons.size} (sound #{sounds[i].id}, node #{sounds[i].mds_node.id})"
           
           comparators[i] = sounds[i].get_comparator if comparators[i] == nil
-          likelihood[i, i] = comparators[i].compare(comparators[i]) if likelihood[i, i] == nil
+          likelihood[i, i] = comparators[i].compare(comparators[i]) if likelihood[i, i] == Infinity
           
           sounds_to_compare.each_with_index do |j, index|
             puts "\t\tCompare sound #{j + 1} (sound #{sounds[j].id}, node #{sounds[j].mds_node.id}) (#{index + 1} / #{sounds_to_compare.size})"
             
             comparators[j] = sounds[j].get_comparator if (comparators[j] == nil)
-            likelihood[j, j] = comparators[j].compare(comparators[j]) if likelihood[j, j] == nil
+            likelihood[j, j] = comparators[j].compare(comparators[j]) if likelihood[j, j] == Infinity
             
             likelihood[i, j] = comparators[i].compare(comparators[j])
             likelihood[j, i] = comparators[j].compare(comparators[i])
@@ -69,7 +69,7 @@ namespace :links do
           puts "\tUpdate sound #{i + 1} / #{comparisons.size} (sound #{sounds[i].id}, node #{sounds[i].mds_node.id})"
           
           sounds_to_compare.each do |j|            
-            if !costs[i, j].nan? && costs[i, j] < Infinity && costs[i, j] >= 0
+            if !costs[i, j].nan? and costs[i, j] < Infinity and costs[i, j] >= 0
               Link.update_or_create(sounds[i].mds_node, sounds[j].mds_node, costs[i, j], nil)
               Link.update_or_create(sounds[j].mds_node, sounds[i].mds_node, costs[i, j], nil)
             else
