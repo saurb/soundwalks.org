@@ -22,11 +22,14 @@ ActionController::Routing::Routes.draw do |map|
       sounds.analyze    'analyze',            :controller => 'sounds', :action => 'analyze',    :method => 'get'
       sounds.query_set  'query_set.:format',  :controller => 'sounds', :action => 'query_set',  :method => 'get'
       
-      sounds.set_tags           'tags',         :controller => 'tags', :action => 'update', :method => 'put'
-      sounds.formatted_set_tags 'tags.:format', :controller => 'tags', :action => 'update', :method => 'put'
+      sounds.resource :tags
+      #sounds.set_tags 'tags', :controller => 'tags'
+      #sounds.forma
+      #sounds.set_tags           'tags',         :controller => 'tags', :action => 'update', :method => 'put'
+      #sounds.formatted_set_tags 'tags.:format', :controller => 'tags', :action => 'update', :method => 'put'
       
-      sounds.tags             'tags',           :controller => 'tags', :action => 'index',  :method => 'get'
-      sounds.formatted_tags   'tags.:format',   :controller => 'tags', :action => 'index',  :method => 'get'
+      #sounds.tags             'tags',           :controller => 'tags', :action => 'index',  :method => 'get'
+      #sounds.formatted_tags   'tags.:format',   :controller => 'tags', :action => 'index',  :method => 'get'
     end
   end
   

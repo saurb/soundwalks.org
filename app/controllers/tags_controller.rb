@@ -7,7 +7,7 @@ class TagsController < ApplicationController
   #   Additionally shows the tags a user has assigned to the sound if the user is logged in. #
   #------------------------------------------------------------------------------------------#
   
-  def index
+  def show
     @soundwalk = Soundwalk.find(params[:soundwalk_id])
     @sound = @soundwalk.sounds.find(params[:sound_id])
     
