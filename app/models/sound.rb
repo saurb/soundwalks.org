@@ -1,3 +1,10 @@
+#-----------------------------------------------------------------------------------#
+# A sound is owned by a soundwalk, which is owned by a user.                        #
+#   A sound owns many features, and has one MDS node, which relates it to all other #
+#   nodes (sounds and tags) in the network through links.                           #
+#   A sound has many tags, which are applied by users.                              #
+#-----------------------------------------------------------------------------------#
+
 class Sound < ActiveRecord::Base
   include StringHelper
   include TimeHelper
@@ -8,21 +15,23 @@ class Sound < ActiveRecord::Base
   has_one :mds_node, :as => :owner, :dependent => :destroy
   
   acts_as_taggable_on :tags
-  acts_as_mappable :default_units => :miles, :default_formula => :flat
+  acts_as_mappable :default_units => :miles, :default_formula => :flat    # Allows for location-based search.
   
-  has_attachment :content_type => 'audio/x-wav',
-                 :storage => :file_system,
+  has_attachment :content_type => 'audio/x-wav',                          # Stores a .wav and .mp3 file. .wav is uploaded.
+                 :storage => :file_system,                                # TODO: Support mp3 uploads.
                  :max_size => 10.megabytes,
                  :path_prefix => 'public/data/sounds'
-              
+  
+  # Use the soundwalk's GPS path to locate the sound before creating it.
   before_validation_on_create do |record|
     record.localize
   end
   
+  # When everything's done, analyze the sound's features, create the MP3 file, and apply a default title.
   after_attachment_saved do |record|
     record.analyze_sound
     record.create_preview
-    record.title = record.filename
+    record.title = record.filename if !record.title
     record.save
     
     record.create_mds_node
@@ -33,9 +42,18 @@ class Sound < ActiveRecord::Base
   validates_numericality_of :lat
   validates_numericality_of :lng
   
+  #---------------------------------------------#
+  # Returns the trajectory for a given feature. #
+  #---------------------------------------------#
+  
   def trajectory(feature_type)
     self.features.find(:all, :conditions => {:feature_type => feature_type}).first.trajectory
   end
+  
+  #-------------------------------------------------------------------------------------------------------------#
+  # Assigns a location to the sound through interpolation on the GPS trace with the sound's file creation time. #
+  #   TODO: There needs to be a better way to do this. The file creation time is only available on Macs.        #
+  #-------------------------------------------------------------------------------------------------------------#
   
   def localize
     point = self.soundwalk.interpolate(self.recorded_at)
@@ -45,6 +63,10 @@ class Sound < ActiveRecord::Base
     self.lat = 0 if self.lat.nan?
     self.lng = 0 if self.lng.nan?
   end
+  
+  #---------------------------------------------------------------------------------#
+  # Uses sirens-ruby to analyze the sound and saves the feature trajectory objects. #
+  #---------------------------------------------------------------------------------#
   
   def analyze_sound
     begin
@@ -142,6 +164,11 @@ class Sound < ActiveRecord::Base
     end
   end
   
+  #--------------------------------------------------------------------------------#
+  # If a feature doesn't already exist, create it. Useful to do this as opposed to #
+  #   just created a new feature object for re-analyzing a sound.                  #
+  #--------------------------------------------------------------------------------#
+  
   def get_or_create_feature(type)
     results = self.features.find(:all, :conditions => {:feature_type => type})
     
@@ -155,9 +182,17 @@ class Sound < ActiveRecord::Base
     end
   end
   
+  #----------------------------------------------------------#
+  # Creates a lower-quality MP3 file for streaming in Flash. #
+  #----------------------------------------------------------#
+  
   def create_preview
     system("/Users/brandon/bin/lame --quiet -b192 #{self.full_filename} #{self.full_filename}.mp3")
   end
+  
+  #----------------------------------------------#
+  # Returns the formatted location of the sound. #
+  #----------------------------------------------#
   
   def formatted_lat
     coordinates_text :latitude, self.lat
@@ -166,6 +201,10 @@ class Sound < ActiveRecord::Base
   def formatted_lng
     coordinates_text :longitude, self.lng
   end
+  
+  #-------------------------------------------------------------#
+  # Returns a the sound's RGB color, given its MDS coordinates. #
+  #-------------------------------------------------------------#
   
   def color
     u = mds_node.x * 0.436
@@ -178,6 +217,10 @@ class Sound < ActiveRecord::Base
     
     return {:r => r, :g => g, :b => b}
   end
+  
+  #--------------------------------------------------------#
+  # Methods that fetch information for XML/JSON rendering. #
+  #--------------------------------------------------------#
   
   def color_red
     color[:r]
@@ -215,6 +258,10 @@ class Sound < ActiveRecord::Base
     return self.soundwalk.user.id
   end
   
+  #--------------------------------------------------------------------------#
+  # Creates a sirens-ruby feature object from the stored feature trajectory. #
+  #--------------------------------------------------------------------------#
+  
   def unpack_feature feature_name
     if (feature_name == :loudness)
       feature = Sirens::Loudness.new
@@ -239,6 +286,11 @@ class Sound < ActiveRecord::Base
     
     return feature
   end
+  
+  #------------------------------------------------------------------------------------------#
+  # Returns the segments of a sound. Not yet used.                                           #
+  #   TODO: Use this to segment a sound on creation and allow the user to edit the segments. #
+  #------------------------------------------------------------------------------------------#
   
   def segments
     loudness = unpack_feature(:loudness)
@@ -297,6 +349,10 @@ class Sound < ActiveRecord::Base
     #  puts "%d-%d" % [start, stop]
     #end
   end
+
+  #-----------------------------------------------------------------------------------------------#
+  # Returns a sirens-ruby comparator object of a sound based off its stored feature trajectories. #
+  #-----------------------------------------------------------------------------------------------#
   
   def get_comparator
     if self.features.count < 6
@@ -325,6 +381,11 @@ class Sound < ActiveRecord::Base
     
     return comparator
   end
+  
+  #------------------------------------------------------------------------------------------#
+  # Compares one sound to another by fetching their comparators on demand. Optionally allows #
+  #   you to pass in the comparator for the first sound if it's already been created.        #
+  #------------------------------------------------------------------------------------------#
   
   def compare(other, first_comparator = nil)
     first_comparator = get_comparator if (first_comparator == nil)

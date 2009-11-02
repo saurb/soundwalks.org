@@ -1,4 +1,8 @@
 module PathHelper
+  #-------------------------------------------------------------#
+  # Various paths that are not automatically created by routes. #
+  #-------------------------------------------------------------#
+  
 	def user_name_path user
 	  return '/' + user.login
 	end

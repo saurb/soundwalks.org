@@ -1,5 +1,9 @@
 require 'rack/utils'
 
+#-------------------------------------------------------------------------------------------------------------------------#
+# Helps Flash by fetching the session information as a GET parameter, since Flash doesn't have access to browser cookies. #
+#-------------------------------------------------------------------------------------------------------------------------#
+
 class FlashSessionCookieMiddleware
   def initialize(app, session_key = '_session_id')
     @app = app

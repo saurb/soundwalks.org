@@ -1,6 +1,12 @@
 class TagsController < ApplicationController
   before_filter :login_required, :only => :update
   
+  #------------------------------------------------------------------------------------------#
+  # GET /soundwalks/:soundwalk_id/sounds/:sound_id/tags                                      #
+  #   Shows all tags for a given soundwalk.                                                  #
+  #   Additionally shows the tags a user has assigned to the sound if the user is logged in. #
+  #------------------------------------------------------------------------------------------#
+  
   def index
     @soundwalk = Soundwalk.find(params[:soundwalk_id])
     @sound = @soundwalk.sounds.find(params[:sound_id])
@@ -11,6 +17,12 @@ class TagsController < ApplicationController
     end
   end
   
+  #------------------------------------------------------#
+  # POST /soundwalks/:soundwalk_id/sounds/:sound_id/tags #
+  #   Applies tags to the sound.                         #
+  #   User must be logged in.                            #
+  #------------------------------------------------------#
+    
   def update
     @soundwalk = Soundwalk.find(params[:soundwalk_id])
     @sound = @soundwalk.sounds.find(params[:sound_id])
@@ -23,6 +35,11 @@ class TagsController < ApplicationController
       format.json {render :json => tag_response(@sound), :status => :ok, :callback => params[:callback]}
     end
   end
+  
+  #-------------------------------------------------------------------------------------------#
+  # GET /tags/:id/query_set&tags=&tag_ids=&sound_ids=                                         #
+  #   TODO: Make tag_id id, make this accessible as GET /tags/:tag_name/query_set... as well. #
+  #-------------------------------------------------------------------------------------------#
   
   def query_set
     if params[:tag_id]
@@ -37,7 +54,12 @@ class TagsController < ApplicationController
     end
   end
   
-  protected
+protected
+  
+  #-------------------------------------#
+  # Formats XML/JSON rendering of tags. #
+  #-------------------------------------#
+  
   def tag_response sound
     response = {
       :all_tags => sound.tags.join(', '),

@@ -6,15 +6,16 @@ class SoundsController < ApplicationController
   layout 'site'
   
   before_filter :login_required, :except => ['index', 'show', 'allindex']
+  append_before_filter :get_soundwalk, :only => ['show', 'index', 'query_set']
+  append_before_filter :get_soundwalk_from_current_user, :only => ['edit', 'update', 'new', 'create', 'destroy', 'recalculate', 'uploader', 'tag', 'analyze']
+  append_before_filter :get_sound_from_soundwalk, :only => ['show', 'edit', 'update', 'destroy', 'recalculate', 'tag', 'analyze']
   
-  append_before_filter :get_soundwalk, 
-    :only => ['show', 'index', 'query_set']
-  append_before_filter :get_soundwalk_from_current_user,
-    :only => ['edit', 'update', 'new', 'create', 'destroy', 'recalculate', 'uploader', 'tag', 'analyze']
-  append_before_filter :get_sound_from_soundwalk,
-    :only => ['show', 'edit', 'update', 'destroy', 'recalculate', 'tag', 'analyze']
+  #---------------------------------------------------#
+  # GET /soundwalks/:soundwalk_id/sounds              #
+  #   Index of all sounds within a soundwalk.         #
+  #   HTML just redirects back to the soundwalk page. #
+  #---------------------------------------------------#
   
-  # GET /soundwalks/:soundwalk_id/sounds
   def index
     respond_to do |format|
       format.html {redirect_to @soundwalk}
@@ -28,7 +29,14 @@ class SoundsController < ApplicationController
     end
   end
   
-  # GET /sounds
+  #-----------------------------------------------------------------#
+  # GET /sounds?lat=&lng=&distance=&offset=                         #
+  #   Fetches all sounds within a certain radius (distance) around  #
+  #   the provided latitude and longitude. Limits to 200 items with #
+  #   optional offset parameter.                                    #
+  #   Admin users can fetch all sounds through GET /sounds          #
+  #-----------------------------------------------------------------#
+  
   def allindex
     if params[:distance]
       @sounds = Sound.find_within(params[:distance], :origin => [params[:lat], params[:lng]], :limit => 200, :offset => params[:offset] ? params[:offset] : 0)
@@ -44,8 +52,12 @@ class SoundsController < ApplicationController
     end
   end
   
-  # GET /soundwalks/:soundwalk_id/sounds/:id
-  def show        
+  #------------------------------------------#
+  # GET /soundwalks/:soundwalk_id/sounds/:id #
+  #   Shows details of the given sound.      #
+  #------------------------------------------#
+  
+  def show
     respond_to do |format|
       format.html
       format.xml {render :xml => @sound.to_xml(sound_options)}
@@ -55,11 +67,19 @@ class SoundsController < ApplicationController
     end
   end
   
-  # GET /soundwalks/:soundwalk_id/sounds/:id/edit
+  #-----------------------------------------------#
+  # GET /soundwalks/:soundwalk_id/sounds/:id/edit #
+  #   Shows the edit page for a sound.            #
+  #-----------------------------------------------#
+  
   def edit
   end
   
-  # POST /soundwalks/:soundwalk_id/sounds/:id
+  #---------------------------------------------#
+  # POST /soundwalks/:soundwalk_id/sounds/:id   #
+  #   Updates a sound given posted (form) data. #
+  #---------------------------------------------#
+  
   def update
     respond_to do |format|
       if @sound.update_attributes(params[:sound])
@@ -76,18 +96,28 @@ class SoundsController < ApplicationController
       end
     end
   end
-
+  
+  #-----------------------------------#
+  # GET /uploader                     #
+  #   Shows the multi-sound uploader. #
+  #-----------------------------------#
+  
   def uploader
     @sound = @soundwalk.sounds.build
- 
+    
     respond_to do |format|
       format.html
       format.xml {render :xml => @sound.to_xml(sound_options)}
       format.json {render :json => @sound.to_json(sound_options), :callback => params[:callback]}
     end
   end
-    
-  # GET /soundwalks/:soundwalk_id/sounds/new
+  
+  #-------------------------------------------------#
+  # GET /soundwalks/:soundwalk_id/sounds/new        #
+  #   Shows the single-sound upload form.           #
+  #   User must be logged in and own the soundwalk. #
+  #-------------------------------------------------#
+  
   def new
     if @current_user.can_upload
       @sound = @soundwalk.sounds.build
@@ -109,13 +139,18 @@ class SoundsController < ApplicationController
     end
   end
   
-  # POST /soundwalks/:soundwalk_id/sounds
-  def create    
+  #---------------------------------------------------------------------#
+  # POST /soundwalks/:soundwalk_id/sounds                               #
+  #   Creates a new sound given posted (form data) from both uploaders. #
+  #   User must be logged in and own the soundwalk.                     #
+  #---------------------------------------------------------------------#
+  
+  def create
     if @current_user.can_upload
       if params[:recorded_at]
         params[:sound]['recorded_at'] = Time.parse(params[:recorded_at])
       end
-    
+      
       params[:sound]['user_id'] = current_user.id
       
       @sound = @soundwalk.sounds.build(params[:sound])
@@ -148,7 +183,12 @@ class SoundsController < ApplicationController
     end
   end
   
-  # DELETE /soundwalks/:soundwalk_id/sounds/:id
+  #-------------------------------------------------------#
+  # DELETE /soundwalks/:soundwalk_id/sounds/:id           #
+  #   Deletes a sound from a soundwalk.                   #
+  #   User must be logged in and own the soundwalk/sound. #
+  #-------------------------------------------------------#
+  
   def destroy  
     @sound.destroy
     
@@ -156,10 +196,15 @@ class SoundsController < ApplicationController
       format.html {redirect_to soundwalk_url(@soundwalk)}
       format.xml {head :ok}
       format.json {head :ok, :callback => params[:callback]}
+      format.js
     end
   end
   
-  # DELETE /soundwalks/:soundwalk_id/sounds
+  #--------------------------------------------------------------------------------------#
+  # DELETE /soundwalks/:soundwalk_id/sounds?sound_ids=                                   #
+  #   Delete multiple sounds from a soundwalk given a comma-separated list of their IDs. #
+  #--------------------------------------------------------------------------------------#
+  
   def delete_multiple
     @soundwalk = Soundwalk.find(params[:soundwalk_id])
     
@@ -167,12 +212,19 @@ class SoundsController < ApplicationController
       @sound = @soundwalk.sounds.find(id)
       @sound.destroy
     end
-
+    
     respond_to do |format|
       format.xml {render :xml => {:sound_ids => params[:sound_ids]}, :status => :ok}
       format.json {render :json => {:sound_ids => params[:sound_ids]}, :status => :ok, :callback => params[:callback]}
+      format.js
     end
   end
+  
+  #-----------------------------------------------------#
+  # POST /soundwalks/:soundwalk_id/sounds/:sound_id/tag #
+  #   Assigns a tag to a sound.                         #
+  #   User must be logged in.                           #
+  #-----------------------------------------------------#
   
   def tag
     if params[:tags]
@@ -186,6 +238,12 @@ class SoundsController < ApplicationController
     end
   end
   
+  #--------------------------------------------------------#
+  # GET /soundwalks/:soundwalk_id/sounds/:sound_id/analyze #
+  #   Re-calculates the feature list for a sound.          #
+  #   User must be logged in and own the soundwalk/sound.  #
+  #--------------------------------------------------------#
+  
   def analyze
     @sound.analyze_sound
     
@@ -196,6 +254,12 @@ class SoundsController < ApplicationController
       }
     end
   end
+  
+  #------------------------------------------------------------------------------------#
+  # GET /soundwalks/:soundwalk_id/sounds/:sound_id/query_set?tags=&tag_ids=&sound_ids= #
+  #   Returns a distribution over a set of nodes (sounds and tags) given the sound as  #
+  #   a query node.                                                                    #
+  #------------------------------------------------------------------------------------#
   
   def query_set
     sound = @soundwalk.sounds.find(params[:sound_id])
@@ -234,7 +298,13 @@ class SoundsController < ApplicationController
     end
   end
   
-  protected 
+protected 
+  #--------------------------------------------------------------------------------------#
+  # Fetches a soundwalk without requiring the user own it.                               #
+  #   If the user does not own it, the soundwalk must either be public or friends-only.  #
+  #   If the sound is friends-only, the user who owns it must follow the logged in user. #
+  #--------------------------------------------------------------------------------------#
+  
   def get_soundwalk
     user_id = Soundwalk.find(params[:soundwalk_id], :select => 'user_id').read_attribute(:user_id)
     
@@ -253,20 +323,43 @@ class SoundsController < ApplicationController
     end
   end
   
+  #---------------------------------------------------#
+  # Fetches a soundwalk that the logged in user owns. #
+  #   Used for all editing/updating/creating methods. #
+  #---------------------------------------------------#
+  
   def get_soundwalk_from_current_user
     @soundwalk = current_user.soundwalks.find(params[:soundwalk_id])
   end
+  
+  #-----------------------------------------------------#
+  # Fetches a sound from the already-fetched soundwalk. #
+  #-----------------------------------------------------#
   
   def get_sound_from_soundwalk
     @sound = @soundwalk.sounds.find(params[:id])
   end
   
+  #----------------------------------------------------------------------------#
+  # Splits a comma-separated list and gets rid of leading/trailing whitespace. #
+  #   Used for lists of tags, ids, etc.                                        #
+  #----------------------------------------------------------------------------#
+  
   def split_param(param)
     param.split(',').collect{|value| value.chomp}
   end  
   
+  #-------------------------------------------------#
+  # Options to include in sound XML/JSON rendering. #
+  #-------------------------------------------------#
+  
   def sound_methods
-    [:formatted_lat, :formatted_lng, :formatted_recorded_at, :soundwalk_title, :user_id, :user_name, :user_login, :color_red, :color_green, :color_blue]
+    [
+      :formatted_lat, :formatted_lng, :formatted_recorded_at,   # HTML formatted info.
+      :soundwalk_title,                                         # Soundwalk info.
+      :user_id, :user_name, :user_login,                        # User info.
+      :color_red, :color_green, :color_blue                     # MDS coloring.
+    ]
   end
   
   def sound_includes

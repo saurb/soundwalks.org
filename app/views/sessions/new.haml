@@ -1,9 +1,6 @@
 - content_for :title do
 	Login
 
-- content_for :javascript do
-	= javascript_include_tag 'lib/jquery', 'form-buttons'
-
 - username_label = 'Username'
 - password_label = 'Password (<a title="login" href="/login">Forgot?</a>)'
 - username_label += "<br /><span class='error'>#{flash[:login_error]}</span>" if flash[:login_error]

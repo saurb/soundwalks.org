@@ -1,13 +1,28 @@
 Infinity = 1.0 / 0.0
 
+#-----------------------------------------------------------------#
+# A connection in the network between two nodes (tags or sounds). #
+#   Each link has a cost associated with it (link weight), and a  #
+#   distance, which is the shortest path distance between the two #
+#   nodes given the rest of the network.                          #
+#-----------------------------------------------------------------#
+
 class Link < ActiveRecord::Base
   belongs_to :first, :class_name => 'MdsNode'
   belongs_to :second, :class_name => 'MdsNode'
   
+  #--------------------------------------------------------#
+  # Finds a link based upon the nodes to which it belongs. #
+  #--------------------------------------------------------#
+  
   named_scope :find_with_nodes, lambda { |first, second|
     {:conditions => {:first_id => first.id, :second_id => second.id}}
   }
-   
+  
+  #---------------------------------------------------------------------------------------------#
+  # Either updates or creates a link. If either cost or distance are nil, they are not updated. #
+  #---------------------------------------------------------------------------------------------#
+  
   def self.update_or_create(first, second, cost, distance)
     link = Link.find(:first, :conditions => {:first_id => first.id, :second_id => second.id})
 
@@ -25,6 +40,11 @@ class Link < ActiveRecord::Base
     return link
   end
   
+  #--------------------------------------------------------------------------------------------------------#
+  # Same as update_or_create, but does not create a new link if one doesn't already exist.                 #
+  #   This is more efficient if you know that the link already exists, as you don't need to find it first. #
+  #--------------------------------------------------------------------------------------------------------#
+  
   def self.only_update(first, second, cost = nil, distance = nil)
     params = {}
     params[:cost] = cost if cost != nil
@@ -32,6 +52,10 @@ class Link < ActiveRecord::Base
     
     Link.update_all(params.collect{|param, value| "#{param} = #{value}"}.join(','), "first_id = #{first.id} and second_id = #{second.id}") if params.size
   end
+  
+  #-------------------------------------------------------------------------------#
+  # Obtains a probabilistic distribution over a list of nodes given a query node. #
+  #-------------------------------------------------------------------------------#
   
   def self.query_distribution(query, ids = [], conditional = false)
     response = []

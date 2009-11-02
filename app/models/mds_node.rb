@@ -1,3 +1,8 @@
+#--------------------------------------------------------------------------------------------#
+# A node in the network. Also contains an absolute position in an low-dimensional MDS space. #
+#   Position stored in members: .x, .y, .z, and .w.                                          #
+#--------------------------------------------------------------------------------------------#
+
 class MdsNode < ActiveRecord::Base
   belongs_to :owner, :polymorphic => true
   has_many :outbound_links, :class_name => 'Link', :foreign_key => 'first_id', :dependent => :destroy

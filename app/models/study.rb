@@ -1,3 +1,7 @@
+#--------------------------------------------------------#
+# Sends emails to the administrator from the user study. #
+#--------------------------------------------------------#
+
 class Study < ActionMailer::Base
   def study(sound_ids, tags)
     names = Array.new(sound_ids.size, "")

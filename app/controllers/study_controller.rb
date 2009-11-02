@@ -1,7 +1,17 @@
 class StudyController < ApplicationController
+  #-------------------------------------------------------------------------------------#
+  # GET /study                                                                          #
+  #   Shows the study, with the 10 sounds that have been tagged the least in the study. #
+  #-------------------------------------------------------------------------------------#
+  
   def index
     @sounds = Sound.find(:all, :order => 'study_coverage ASC', :limit => 10)
   end
+  
+  #---------------------------------------------------------------------------------------------------#
+  # POST /study                                                                                       #
+  #   Emails the results of the study to the administrator and lets the participant continue tagging. #
+  #---------------------------------------------------------------------------------------------------#
   
   def create
     if Study.deliver_study(params[:ids], params[:tags])

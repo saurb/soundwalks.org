@@ -1,5 +1,13 @@
 require 'gpx'
 
+#----------------------------------------------------------------------------------------------------#
+# A soundwalk is owned by a user and owns many sounds.                                               #
+#   Soundwalks can be public, friends-only, or private, which affects whether or not different users #
+#   can see the soundwalk and all the sounds within it.                                              #
+#   A soundwalk also has a serialized list of locations/times that form a GPS trace.                 #
+#   Soundwalks are associated with a .gpx file for the GPS trace.                                    #
+#----------------------------------------------------------------------------------------------------#
+
 class Soundwalk < ActiveRecord::Base
   include StringHelper
   
@@ -15,12 +23,14 @@ class Soundwalk < ActiveRecord::Base
              
   validates_as_attachment
   validates_presence_of :title, :description, :privacy
-    
+  
+  # After everything's done, open the GPX file and update the locations member.
   after_attachment_saved do |record|
     record.extract_locations
     record.save
   end
   
+  # Allows soundwalks to be fetched from a list of friends to account for privacy restrictions.
   named_scope :from_friends, lambda { |friend_ids, public_ids, my_id, options| 
     public_string = public_ids.join(', ')
     
@@ -33,6 +43,10 @@ class Soundwalk < ActiveRecord::Base
       
     return options
   }
+  
+  #-------------------------------------------------#
+  # Methods for returning lists from the GPS trace. #
+  #-------------------------------------------------#
   
   def times
     return self.locations.collect {|point| point.first}
@@ -50,6 +64,10 @@ class Soundwalk < ActiveRecord::Base
     return self.locations.collect {|point| point.third}
   end
   
+  #--------------------------------------------------------#
+  # Methods that fetch information for XML/JSON rendering. #
+  #--------------------------------------------------------#
+  
   def user_login
     return self.user.login
   end
@@ -58,10 +76,24 @@ class Soundwalk < ActiveRecord::Base
     return self.user.name
   end
   
+  def formatted_description
+    return textilize(read_attribute(:description))
+  end
+  
+  def formatted_lat
+    coordinates_text :latitude, self.lat
+  end
+  
+  def formatted_lng
+    coordinates_text :longitude, self.lng
+  end
+  
+  #--------------------------------------------------------------------------------------------------#
+  # Computes a latitude/longitude pair for a given time using linear interpolation on the GPS trace. #
+  #   If the time is beyond the start/stop time of the soundwalk, the location will be extrapolated. #
+  #--------------------------------------------------------------------------------------------------#
+  
   def interpolate time
-    # Uses linear interpolation to find the approximate location of a point in time. 
-    # Extrapolates if beyond bounds.
-    
     if times.index(time)
       return vertices[times.index(time)]
     elsif time < self.locations.first.first
@@ -103,6 +135,10 @@ class Soundwalk < ActiveRecord::Base
     end 
   end
   
+  #-------------------------------------------------------------------------#
+  # Loads the uploaded GPX file stores the locations/times in the database. #
+  #-------------------------------------------------------------------------#    
+  
   def extract_locations
     # Extract the track data.
     self.locations = Array.new
@@ -122,17 +158,5 @@ class Soundwalk < ActiveRecord::Base
       self.lat = self.locations[0][1]
       self.lng = self.locations[0][2]
     end 
-  end
-  
-  def formatted_description
-    return textilize(read_attribute(:description))
-  end
-  
-  def formatted_lat
-    coordinates_text :latitude, self.lat
-  end
-  
-  def formatted_lng
-    coordinates_text :longitude, self.lng
   end
 end

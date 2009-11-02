@@ -2,6 +2,11 @@ class AdminController < ApplicationController
   layout 'site'
   before_filter :login_required
   
+  #---------------------------------#
+  # GET /admin/poll?setting=        #
+  #   Fetches a Settings value.     #
+  #---------------------------------#
+  
   def poll
     if current_user.admin?
       value = Settings.find_by_var(params[:setting])
@@ -22,10 +27,21 @@ class AdminController < ApplicationController
     end
   end
   
+  #-----------------------------------------------#
+  # GET /admin/sandbox                            #
+  #   Developer sandbox for testing new features. #
+  #-----------------------------------------------#
+  
   def sandbox
     html_page_for_admins
   end
-
+  
+  
+  #------------------------------------------#
+  # GET /admin/mds                           #
+  #   List of all MDS nodes in the database. #
+  #------------------------------------------#
+  
   def mds
     if current_user.admin?
       if params[:offset]
@@ -45,7 +61,12 @@ class AdminController < ApplicationController
       redirect_back_or_default '/'
     end
   end
-    
+  
+  #-------------------------------------#
+  # GET /admin/tags                     #
+  #   List of all tags in the database. #
+  #-------------------------------------#
+  
   def tags
     if current_user.admin?
       if params[:offset]
@@ -65,7 +86,12 @@ class AdminController < ApplicationController
       redirect_back_or_default '/'
     end
   end
-    
+  
+  #--------------------------------------#
+  # GET /admin/links                     #
+  #   List of all links in the database. #
+  #--------------------------------------#
+  
   def links
     if current_user.admin?
       if params[:offset]
@@ -88,7 +114,11 @@ class AdminController < ApplicationController
     end
   end
   
-  protected
+protected
+  
+  #------------------------------------------------------------#
+  # Simple page with a view that can only be viewed by admins. #
+  #------------------------------------------------------------#
   
   def html_page_for_admins
     if current_user.admin?

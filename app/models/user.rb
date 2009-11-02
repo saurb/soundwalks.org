@@ -1,6 +1,13 @@
 require 'digest/sha1'
 require 'avatar'
 
+#------------------------------------------------------------------------------#
+# A user owns many soundwalks and many sounds from these soundwalks.           #
+#   Additionally, a user has many friends that s/he follows.                   #
+#   A user is followed by many other users, which are inverse_friends.         #
+#   Users can be admins, and they have upload restrictions through can_upload. #
+#------------------------------------------------------------------------------#
+
 class User < ActiveRecord::Base
   include Avatar::View::ActionViewSupport
   include Authentication
@@ -24,10 +31,10 @@ class User < ActiveRecord::Base
   validates_length_of       :login,    :within => 3..40
   validates_uniqueness_of   :login
   validates_format_of       :login,    :with => Authentication.login_regex, :message => Authentication.bad_login_message
-
+  
   validates_format_of       :name,     :with => Authentication.name_regex,  :message => Authentication.bad_name_message, :allow_nil => true
   validates_length_of       :name,     :maximum => 100
-
+  
   validates_presence_of     :email
   validates_length_of       :email,    :within => 6..100 #r@a.wk
   validates_uniqueness_of   :email
@@ -36,29 +43,48 @@ class User < ActiveRecord::Base
   # anything else you want your user to change should be added here.
   attr_accessible :login, :email, :name, :password, :can_upload, :admin
   
-  # Authenticates a user by their login name and unencrypted password.  Returns the user or nil.
+  #---------------------------------------------------------------------------------------------#
+  # Authenticates a user by their login name and unencrypted password. Returns the user or nil. #
+  #---------------------------------------------------------------------------------------------#
+  
   def self.authenticate(login, password)
     return nil if login.blank? || password.blank?
     u = find_in_state :first, :active, :conditions => {:login => login.downcase} # need to get the salt
     u && u.authenticated?(password) ? u : nil
   end
   
+  #------------------------------------------------------------#
+  # Returns whether or not a user with the given login exists. #
+  #------------------------------------------------------------#
+  
   def self.valid_login?(login)
     return false if login.blank?
     return find_in_state(:first, :active, :conditions => {:login => login.downcase})
   end
   
+  #-----------------------------------------------------#
+  # Filters parameters by converting them to lowercase. #
+  #-----------------------------------------------------#
+  
   def login=(value)
     write_attribute :login, (value ? value.downcase : nil)
   end
-
+  
   def email=(value)
     write_attribute :email, (value ? value.downcase : nil)
   end
   
+  #------------------------------------------#
+  # Returns a list of attributes of friends. #
+  #------------------------------------------#
+  
   def friend_ids(friendship_list, attribute)
     friendship_list.map{|friendship| friendship.read_attribute(attribute)}.compact
   end
+  
+  #---------------------------------------------------------------------#
+  # Returns a list of soundwalks from users that the user is following. #
+  #---------------------------------------------------------------------#
   
   def following_soundwalks(options = {})
     double_friendship_ids = (friend_ids(self.friendships, :friend_id) & friend_ids(self.inverse_friendships, :user_id))
@@ -68,6 +94,10 @@ class User < ActiveRecord::Base
     
     Soundwalk.from_friends(double_friendship_ids, excess_ids, self.id, :order => 'created_at DESC, title')
   end
+  
+  #--------------------------------------------------------#
+  # Methods that fetch information for XML/JSON rendering. #
+  #--------------------------------------------------------#
   
   def avatar_tiny
     avatar_url_for(self, :size => 16)
@@ -85,8 +115,12 @@ class User < ActiveRecord::Base
     avatar_url_for(self, :size => 92)
   end
   
-  protected
-    
+protected
+  
+  #--------------------------------------------#
+  # Creates an activation code for a new user. #
+  #--------------------------------------------#
+  
   def make_activation_code
     self.deleted_at = nil
     self.activation_code = self.class.make_token

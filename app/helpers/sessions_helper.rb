@@ -1,4 +1,8 @@
 module SessionsHelper
+  #-------------------------------------#
+  # Formats errors that occur at login. #
+  #-------------------------------------#
+  
   def login_error user, attribute
     user.errors.each do |attr, error|
       if attr.eql? attribute

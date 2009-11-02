@@ -46,7 +46,7 @@
 				
 				%span.editable{'data-edits' => 'user_tags', 
 					'data-shows' => 'user_tags', 
-					'data-url' => "#{soundwalk_sound_path(@sound.soundwalk, @sound)}/tags",
+					'data-url' => "#{soundwalk_sound_path(@sound.soundwalk, @sound)}/tags.json",
 					'data-value' => (user_tags.size > 0) ? user_tags.join(', ') : 'Separate multiple tags with commas.'}
 					#{(user_tags.size > 0) ? user_tags.join(', ') : 'Click here to add tags.'}
 	%h2 Details

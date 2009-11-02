@@ -1,15 +1,26 @@
 class UsersController < ApplicationController  
   layout 'user', :except => [:edit, :update, :show]
   
-  before_filter :login_required, :only => [:settings]
+  before_filter :login_required, :only => [:settings, :suspend, :unsuspend, :destroy, :purge]
   before_filter :get_user, :except => [:create, :activate, :settings]
   
-  # GET /users/new, /signup
+  #---------------------------#
+  # GET /users/new            #
+  # GET /signup               #
+  #   Shows the sign up form. #
+  #---------------------------#
+  
   def new
     @user = User.new
   end
   
-  # POST /users/new
+  #-------------------------------------------------------------------------#
+  # POST /users/new                                                         #
+  #   Signs up a user given posted (form) data. Sends the activation email. #
+  #   TEMPORARY: User must provide the hard-coded secret phrase below.      #
+  #   TODO: Make secret phrase a Setting.                                   #
+  #-------------------------------------------------------------------------#
+  
   def create
     if params[:user]['secret'] != '52521082'
       @user = User.new(params[:user])
@@ -32,7 +43,11 @@ class UsersController < ApplicationController
     end
   end
   
-  # GET /users/activate/:activation_code
+  #-------------------------------------------------------------------#
+  # GET /users/activate/:activation_code                              #
+  #   Activates a user after they have received the activation email. #
+  #-------------------------------------------------------------------#
+  
   def activate
     logout_keeping_session!
     user = User.find_by_activation_code(params[:activation_code]) unless params[:activation_code].blank?
@@ -50,30 +65,71 @@ class UsersController < ApplicationController
     end
   end
   
-  # PUT /users/:id/suspend
+  #-------------------------------------------#
+  # PUT /users/:id/suspend                    #
+  #   Suspends a user's account.              #
+  #   User must be logged in and be an admin. #
+  #-------------------------------------------#
+  
   def suspend
-    @user.suspend! 
-    redirect_to users_path
+    if current_user.admin?
+      @user.suspend! 
+      redirect_to users_path
+    else
+      flash[:error] = "You do not have privileges to suspend this account."
+      redirect_back_or_default '/'
+    end
   end
   
-  # PUT /users/:id/unsuspend
+  #-------------------------------------------#
+  # PUT /users/:id/unsuspend                  #
+  #   Unsuspends a user's account.            #
+  #   User must be logged in and be an admin. #
+  #-------------------------------------------#
+  
   def unsuspend
-    @user.unsuspend! 
-    redirect_to users_path
+    if current_user.admin?
+      @user.unsuspend!
+      redirect_to users_path
+    else
+      flash[:error] = "You do not have privileges to unsuspend this account."
+      redirect_back_or_default '/'
+    end
   end
   
-  # DELETE /users/:id
+  #-------------------------------------------#
+  # DELETE /users/:id                         #
+  #   Deletes a user's account.               #
+  #   User must be logged in and be an admin. #
+  #-------------------------------------------#
+  
   def destroy
-    @user.delete!
-    redirect_to users_path
+    if current_user.admin?
+      @user.delete!
+      redirect_to users_path
+    else
+      flash[:error] = "You do not have privileges to delete this account."
+      redirect_back_or_default '/'
+    end
   end
+  
+  #------------------------------------------------------------#
+  # DELETE /users/:id/purge                                    #
+  #   Deletes a user's account without deleting owned content. #
+  #   User must be logged in and be an admin.                  #
+  #------------------------------------------------------------#
   
   def purge
     @user.destroy
     redirect_to users_path
   end
   
-  # GET /users/:id, /:login
+  #-------------------------------------------------------------------#
+  # GET /users/:id                                                    #
+  # GET /:login                                                       #
+  #   Shows a user's account, including all their visible soundwalks. #
+  #-------------------------------------------------------------------#
+  
   def show
     get_soundwalks_from_user
     
@@ -84,11 +140,21 @@ class UsersController < ApplicationController
     end
   end
   
+  #------------------------------------#
+  # GET /settings                      #
+  #   Redirects to GET /users/:id/edit #
+  #------------------------------------#
+  
   def settings
     redirect_to edit_user_path(current_user)
   end
   
-  # GET /users/:id/edit
+  #------------------------------------------------------#
+  # GET /users/:id/edit                                  #
+  #   Shows an HTML form to edit a user's account.       #
+  #   User must be logged in as the user or be an admin. #
+  #------------------------------------------------------#
+  
   def edit
     if current_user.id != @user.id && !@user.admin
       flash[:error] = "You are not authorized to access this account."
@@ -98,7 +164,12 @@ class UsersController < ApplicationController
     end
   end
   
-  # POST /users/:id/edit
+  #-----------------------------------------------------------------#
+  # POST /users/:id/edit                                            #
+  #   Updates a user's account information with posted (form) data. #
+  #   User must be logged in as the user or be an admin.            #
+  #-----------------------------------------------------------------#
+  
   def update
     if current_user.id != @user.id && !@user.admin
       flash[:error] = "You are not authorized to access this account."
@@ -140,17 +211,29 @@ class UsersController < ApplicationController
     end
   end
   
-  # GET /:login/followers
+  #------------------------------------------------------#
+  # GET /:login/followers                                #
+  #   Shows a list of people who are following the user. #
+  #------------------------------------------------------#
+  
   def followers
     render :layout => 'site'
   end
   
-  # GET /:login/following
+  #-----------------------------------------------------#
+  # GET /:login/following                               #
+  #   Shows a list of people who the user is following. #
+  #-----------------------------------------------------#
+  
   def following
     render :layout => 'site'
   end
   
 protected
+  #--------------------------------#
+  # Fetches a user by id or login. #
+  #--------------------------------#
+  
   def get_user
     if params[:id]
       @user = User.find(params[:id])
@@ -164,6 +247,13 @@ protected
     end
   end
   
+  #------------------------------------------------------------------------------------------#
+  # Gets all visible soundwalks by the user.                                                 #
+  #   Either the soundwalks must be public, the logged-in user must own the soundwalks, or   #
+  #   the logged-in user must be followed by the user who owns the soundwalks, which must be #
+  #   friends-only.                                                                          #
+  #------------------------------------------------------------------------------------------#
+  
   def get_soundwalks_from_user
     friendships = nil
     friendships = @user.friendships.find(:all, :conditions => "friend_id=#{current_user.id}") if logged_in?
@@ -176,6 +266,10 @@ protected
       @soundwalks = @user.soundwalks.find(:all, :conditions => {:privacy => 'public'})
     end
   end
+  
+  #------------------------------------------------#
+  # Options to include in user XML/JSON rendering. #
+  #------------------------------------------------#
   
   def user_exceptions
     [:salt, :remember_token_expires_at, :crypted_password, :admin, :activation_code, :remember_token, :secret, :can_upload, :email]

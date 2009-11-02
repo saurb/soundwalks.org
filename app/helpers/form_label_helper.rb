@@ -1,4 +1,8 @@
 module FormLabelHelper
+  #----------------------------------------------------------#
+  # Displays formatted errors next to erroneous form fields. #
+  #----------------------------------------------------------#
+  
   def label_with_errors user, attribute, label
     error_text = nil
 

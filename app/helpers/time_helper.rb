@@ -1,3 +1,7 @@
+#----------------------------------------------------------------------#
+# This is code originally from a Rails plugin. Need to remember which. #
+#----------------------------------------------------------------------#
+
 module TimeHelper
   mattr_accessor :time_class
   mattr_accessor :time_output

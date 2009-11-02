@@ -29,7 +29,7 @@
 %div
 	- if logged_in? && current_user.id == @user.id
 		%h2 Description
-		%div#description{:class => 'editable', 'data-object' => 'soundwalk', 'data-edits' => 'description', 'data-shows' => 'formatted_description', 'data-url' => @soundwalk, 'data-value' => @soundwalk.description}
+		%div#description{:class => 'editable', 'data-object' => 'soundwalk', 'data-edits' => 'description', 'data-shows' => 'formatted_description', 'data-url' => "/soundwalks/#{@soundwalk.id}.json", 'data-value' => @soundwalk.description}
 			= textilize(h @soundwalk.description)
 	- elsif @soundwalk.description
 		%h2 Description
@@ -85,7 +85,7 @@
 				- fields_for 'sound[]' do |f|
 					- duration = sprintf('%.2f', @sound.samples.to_f / @sound.sample_rate.to_f)
 					
-					%tr.sound-record{:id => dom_id(@sound), 'data-url' => soundwalk_sound_path(@soundwalk, @sound), 'data-object' => 'sound'}
+					%tr.sound-record{:id => dom_id(@sound), 'data-url' => "/soundwalks/#{@soundwalk.id}/sounds/#{@sound.id}.json", 'data-object' => 'sound'}
 						%td{'data-edits' => 'filename', 'data-value' => @sound.filename}
 							%a{:href => soundwalk_sound_path(@soundwalk, @sound),:style => "border-left: 1.3em solid rgb(#{(@sound.color_red * 255).to_i}, #{(@sound.color_green * 255).to_i}, #{(@sound.color_blue * 255).to_i}); padding-left: 0.5em"}= @sound.filename
 						%td{'data-edits' => 'duration', 'data-value' => duration} #{duration}s

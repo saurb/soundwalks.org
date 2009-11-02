@@ -1,7 +1,12 @@
 class FriendshipsController < ApplicationController
   before_filter :login_required
   
-  # POST /friendships
+  #--------------------------------------------------------#
+  # POST /friendships                                      #
+  #   Creates a new friendship from one user to the other. #
+  #   User must be logged in.                              #
+  #--------------------------------------------------------#
+  
   def create
     @friendship = current_user.friendships.build(:friend_id => params[:friend_id])
     
@@ -13,6 +18,7 @@ class FriendshipsController < ApplicationController
         }
         format.xml {render :xml => @friendship}
         format.json {render :json => @friendship, :callback => params[:callback]}
+        format.js
       end
     else
       respond_to do |format|
@@ -22,11 +28,17 @@ class FriendshipsController < ApplicationController
         }
         format.xml {render :xml => @friendship.errors, :status => :unprocessible_entity, :location => @friendship}
         format.json {render :json => @friendship.errors, :status => :unprocessible_entity, :callback => params[:callback], :location => @friendship}
+        format.js
       end
     end
   end
   
-  # DELETE /friendships/:id
+  #------------------------------------------------#
+  # DELETE /friendships/:id                        #
+  #   Unfollows a user by deleting the friendship. #
+  #   User must be logged in.                      #
+  #------------------------------------------------#
+  
   def destroy
     @friendship = current_user.friendships.find(params[:id])
     @friendship.destroy
@@ -38,6 +50,7 @@ class FriendshipsController < ApplicationController
       }
       format.xml {head :ok}
       format.json {head :ok, :callback => params[:callback]}
+      format.js
     end
   end
 end

@@ -1,18 +1,26 @@
 module StringHelper
+  #------------------------------------------#
+  # Formats latitutde/longitude coordinates. #
+  #------------------------------------------#
+  
   def coordinates_text(type, number)
     direction = type == :latitude ? (number < 0 ? 'N' : 'S') : (number < 0 ? 'W' : 'E')
     number = number < 0 ? -number : number
-  
+    
     degrees = number.to_i
     remainder = number - degrees;
-  
+    
     minutes = (remainder * 60).to_i
     remainder = (remainder * 60) - minutes
-  
+    
     seconds = sprintf('%.2f', remainder * 60)
-  
+    
     return degrees.to_s + '&deg;' + minutes.to_s + "'" + seconds.to_s + '&quot; ' + direction 
   end
+  
+  #---------------------------------------------------------------------------------#
+  # Truncates a string to N words, proceeded by an optional symbol (e.g. ellipses). #
+  #---------------------------------------------------------------------------------#
   
   def truncate_words(input, words, symbol)
     inputs = input.split(' ')
@@ -23,6 +31,10 @@ module StringHelper
     end
   end
   
+  #--------------------------------------------------------------------------------------#
+  # Truncates a string to N characters, proceeded by an optional symbol (e.g. ellipses). #
+  #--------------------------------------------------------------------------------------#
+  
   def truncate_characters(input, characters, symbol)
     if input.size <= characters
       return input
@@ -31,11 +43,19 @@ module StringHelper
     end
   end
   
+  #--------------------------------------------------------------------------------------------#
+  # Strips HTML from user form input to prevent poorly-formed markup from messing up the site. #
+  #--------------------------------------------------------------------------------------------#
+  
   def strip_html(str, preserve_tags = ['a', 'img', 'p', 'br', 'i', 'b', 'u', 'ul', 'li'])
     str = str.strip || ''
     preserve_array = preserve_tags.join('|') << '|\/'
     str.gsub(/<(\/|\s)*[^(#{preserve_array})][^>]*>/,'')
   end
+  
+  #----------------------------------------------------------------------------------------#
+  # Creates a colored tag cloud for a given sound based on its distribution over all tags. #
+  #----------------------------------------------------------------------------------------#
   
   def formatted_sound_tags(sound, style = nil)
     tags = Tag.find(:all)
@@ -93,6 +113,10 @@ module StringHelper
       "This sound does not yet have any tags."
     end
   end
+  
+  #--------------------------------------------------#
+  # Converts values from the YUV color space to RGB. #
+  #--------------------------------------------------#
   
   def yuv_to_rgb y, u, v
     r = y + 1.13983 * v

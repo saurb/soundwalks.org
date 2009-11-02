@@ -14,22 +14,13 @@ class ApplicationController < ActionController::Base
   protect_from_forgery
   filter_parameter_logging :password
   
-  def create_meta
-    @meta = Hash.new
-    @meta[:title] = nil
-    @meta[:description] = nil
-  end
+  #--------------------------------------------#
+  # Calls a rake task with optional arguments. #
+  #--------------------------------------------#
   
   def call_rake(task, options = {})
     options[:rails_env] ||= Rails.env
     args = options.map {|n, v| "#{n.to_s.upcase}='#{v}'"}
     system "#{$RAKE_PATH} #{task} #{args.join(' ')} --trace 2>&1 >> #{Rails.root}/log/rake.log &"
   end
-  
-  def switch_js_format
-    params[:format] = 'json' if params[:format] and params[:format] == 'js'
-  end
-  
-  before_filter :switch_js_format
-  before_filter :create_meta
 end
