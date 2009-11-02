@@ -14,6 +14,7 @@ namespace :links do
       comparators = Array.new(sounds.size, nil)
       self_comparison = Array.new(sounds.size, nil)
       costs = Matrix.infinity(sounds.size, sounds.size)
+      likelihood = Matrix.infinity(sounds.size, sounds.size)
       
       #-------------------------------------------#
       # 2. Find which sounds need to be compared. #
@@ -42,18 +43,18 @@ namespace :links do
           puts "\tCompare sound #{i + 1} / #{comparisons.size} (sound #{sounds[i].id}, node #{sounds[i].mds_node.id})"
           
           comparators[i] = sounds[i].get_comparator if comparators[i] == nil
-          self_comparison[i] = comparators[i].compare(comparators[i]) if self_comparison[i] == nil
+          likelihood[i, i] = comparators[i].compare(comparators[i]) if likelihood[i, i] == nil
           
           sounds_to_compare.each_with_index do |j, index|
             puts "\t\tCompare sound #{j + 1} (sound #{sounds[j].id}, node #{sounds[j].mds_node.id}) (#{index + 1} / #{sounds_to_compare.size})"
             
             comparators[j] = sounds[j].get_comparator if (comparators[j] == nil)
-            self_comparison[j] = comparators[j].compare(comparators[j]) if self_comparison[j] == nil
+            likelihood[j, j] = comparators[j].compare(comparators[j]) if likelihood[j, j] == nil
             
-            i_to_j = comparators[i].compare(comparators[j])
-            j_to_i = comparators[j].compare(comparators[i])
+            likelihood[i, j] = comparators[i].compare(comparators[j])
+            likelihood[j, i] = comparators[j].compare(comparators[i])
             
-            costs[i, j] = self_comparison[i] + self_comparison[j] - i_to_j - j_to_i
+            costs[i, j] = likelihood[i, i] + likelihood[j, j] - likelihood[i, j] - likelihood[j, i]
           end
         end
       end
@@ -67,14 +68,13 @@ namespace :links do
         comparisons.each_with_index do |sounds_to_compare, i|
           puts "\tUpdate sound #{i + 1} / #{comparisons.size} (sound #{sounds[i].id}, node #{sounds[i].mds_node.id})"
           
-          sounds_to_compare.each do |j|
-            cost = costs[i, j]
-            
-            if !cost.nan? && cost < Infinity && cost >= 0
-              Link.update_or_create(sounds[i].mds_node, sounds[j].mds_node, cost, nil)
-              Link.update_or_create(sounds[j].mds_node, sounds[i].mds_node, cost, nil)
+          sounds_to_compare.each do |j|            
+            if !costs[i, j].nan? && costs[i, j] < Infinity && costs[i, j] >= 0
+              Link.update_or_create(sounds[i].mds_node, sounds[j].mds_node, costs[i, j], nil)
+              Link.update_or_create(sounds[j].mds_node, sounds[i].mds_node, costs[i, j], nil)
             else
-              puts "\t\tInvalid cost #{i}, #{j} (sound #{sounds[i].id}/node #{sounds[i].mds_node.id}, sound #{sounds[j].id}/node #{sounds[j].mds_node.id}): (self[i]: #{self_comparison[i]}, self[j]: #{self_comparison[j]})"
+              puts "\t\tInvalid cost: #{j} (sound #{sounds[j].id}, node #{sounds[j].mds_node.id}):
+                #{costs[i, j]} (#{likelihood[i, i]} + #{likelihood[j, j]} - #{likelihood[i, j]} - #{likelihood[j, i]})"
             end
           end
         end
