@@ -73,8 +73,7 @@ namespace :links do
               Link.update_or_create(sounds[i].mds_node, sounds[j].mds_node, costs[i, j], nil)
               Link.update_or_create(sounds[j].mds_node, sounds[i].mds_node, costs[i, j], nil)
             else
-              puts "\t\tInvalid cost: #{j} (sound #{sounds[j].id}, node #{sounds[j].mds_node.id}):
-                #{costs[i, j]} (#{likelihood[i, i]} + #{likelihood[j, j]} - #{likelihood[i, j]} - #{likelihood[j, i]})"
+              puts "\t\tInvalid cost: #{j} (sound #{sounds[j].id}, node #{sounds[j].mds_node.id}): #{costs[i, j]} (#{likelihood[i, i]} + #{likelihood[j, j]} - #{likelihood[i, j]} - #{likelihood[j, i]})"
             end
           end
         end
