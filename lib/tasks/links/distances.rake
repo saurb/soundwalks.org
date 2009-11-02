@@ -12,6 +12,7 @@ namespace :links do
     nodes = MdsNode.find(:all)
     node_ids = nodes.collect {|node| node.id}
     source_ids = ENV['ONLYNEW'] ? node_ids.reject{|id| Link.count(:conditions => "first_id = #{id} and ISNULL(distance)") > 0} : node_ids
+    source_ids = ENV['ONLYSOUNDS'] ? source_ids.reject{|id| nodes[id].owner_type == 'Tag'} : source_ids
     
     #---------------------------------------------------------#
     # 2. Compute Dijkstra's algorithm between all node pairs. #
