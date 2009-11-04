@@ -177,7 +177,7 @@ class UsersController < ApplicationController
     else
       success = true
       
-      if params[:new_password] && params[:new_password] != '' !@user.admin
+      if params[:new_password] && params[:new_password] != '' && !@user.admin
         if User.authenticate(@user.login, params[:old_password])
           params[:user][:password] = params[:new_password]
         else
