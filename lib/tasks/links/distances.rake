@@ -3,30 +3,38 @@ require 'matrix_extension'
 
 namespace :links do
   desc "Calculates shortest path distances between nodes in the network."
-  task :distances2 => :environment do    
+  task :distances => :environment do
+    start_time = Time.now
+    
     #-------------------------------------------#
     # 1. Extract link costs as a sparse matrix. #
     #-------------------------------------------#
+    puts "Loading all links."
+    
+    costs = {}
+    link_ids = {}
     
     links = Link.find(:all, :order => "first_id asc, second_id asc")
     
-    costs = {}
-    
-    links.each do |link|
+    links.each_with_index do |link, i|
+      link_ids[link.first_id] = {} if !link_ids[link.first_id]
+      link_ids[link.first_id][link.second_id] = link.id
+      
       if link.cost
-        costs[link.first_id] = [] if !costs[link.first_id]
-        costs[link.first_id].push({:id => link.second_id, :cost => link.cost})
+        costs[link.first_id] = {} if !costs[link.first_id]
+        costs[link.first_id][link.second_id] = link.cost
       end
     end
     
     #-------------------------------------------------------#
     # 2. Peform Dijkstra's algorithm for every source node. #
     #-------------------------------------------------------#
+    puts "Finding shortest paths."
     
     distances = {}
     index = 0
     
-    costs.each do |source, neighbors|
+    costs.each do |source, dummy|
       visited = {source => true}
       shortest = {source => 0}
       previous = {}
@@ -34,137 +42,77 @@ namespace :links do
       queue =  PQueue.new(proc {|x, y| shortest[x] < shortest[y]})
       queue.push source
       
-      pops = 0
-      
       while queue.size != 0
-        pops += 1
         node = queue.pop
         
         visited[node] = true
         shortest[node] = Infinity if !shortest[node]
         
-        neighbors.each do |neighbor|
-          shortest[neighbor[:id]] = Infinity if !shortest[neighbor[:id]]
+        costs[node].each do |neighbor, cost|
+          shortest[neighbor] = Infinity if !shortest[neighbor]
           
-          if !visited[neighbor[:id]] and shortest[neighbor[:id]] > shortest[node] + neighbor[:cost]
-            shortest[neighbor[:id]] = shortest[node] = neighbor[:cost]
-            previous[neighbor[:id]] = node
+          if !visited[neighbor] and shortest[neighbor] > shortest[node] + cost
+            shortest[neighbor] = shortest[node] = cost
+            previous[neighbor] = node
             
-            queue.push neighbor[:id]
+            queue.push neighbor
           end
         end
       end
       
-      distances[source] = []
+      distances[source] = {}
       shortest.each do |id, distance|
-        distances[source].push({:id => id, :distance => distance})
+        distances[source][id] = distance
       end
       
-      puts "#{index + 1} / #{costs.size} (#{source}): #{pops} pops, #{distances[source].size} distances."
+      puts "\t#{index + 1} / #{costs.size} (#{source}): #{distances[source].size} distances."
       index += 1
     end
     
+    #------------------------------------------------------------------------#
+    # 3. Update any existing links in the database.                          #
+    #   Presumably, updating in bulk like this avoids multiple transactions. #
+    #------------------------------------------------------------------------#
+    puts "Updating existing records in the database."
+    
+    index = 0
+    
     Link.transaction do
-      index = 0
-      
       distances.each do |source, neighbors|
-        puts "#{index + 1} / #{distances.size} (#{source})"
+        puts "\t#{index + 1} / #{distances.size} (#{source})"
         index += 1
         
-        neighbors.each do |neighbor|
-          puts "\t#{neighbor[:id]}: #{neighbor[:distance]}"
-          Link.update_or_create_by_id(source, neighbor[:id], nil, neighbor[:distance])
+        neighbors.each do |neighbor, distance|
+          Link.update(link_ids[source][neighbor], :distance => distance) if link_ids[source][neighbor]
         end
       end
     end
-  end
-  
-  desc "Calculates shortest path distances between nodes in the network."
-  task :distances => :environment do
-    #-------------------------#
-    # 1. Initialize matrices. #
-    #-------------------------#
-    puts "1. Fetching nodes."
     
-    nodes = MdsNode.find(:all)
-    node_ids = nodes.collect {|node| node.id}
-    source_ids = ENV['ONLYNEW'] ? node_ids.reject{|id| Link.count(:conditions => "first_id = #{id} and ISNULL(distance)") > 0} : node_ids
-    source_ids = ENV['ONLYSOUNDS'] ? source_ids.reject{|id| nodes[id].owner_type == 'Tag'} : source_ids
+    #------------------------------------------#
+    # 4. Insert any new links in the database. #
+    #------------------------------------------#
+    puts "Inserting new records into database."
     
-    #---------------------------------------------------------#
-    # 2. Compute Dijkstra's algorithm between all node pairs. #
-    #---------------------------------------------------------#
-    puts "2. Computing shortest-path distances."
-    puts "\t(Only updating distances for #{source_ids.size} new nodes.)" if ENV['ONLYNEW']
-    
-    distances = Matrix.infinity(nodes.size, nodes.size)
-    
-    source_ids.each_with_index do |source, source_index|
-      i = node_ids.index(source)
-      
-      visited = Array.new(nodes.size, false)
-      previous = Array.new(nodes.size, nil)
-      shortest = Array.new(nodes.size, Infinity) #distances.row(i).to_a
-      queue = PQueue.new(proc {|x, y| shortest[x] < shortest[y]})
-      
-      queue.push i
-      visited[i] = true
-      shortest[i] = 0.0
-      
-      pops = 0
-      
-      while queue.size != 0
-        v = queue.pop
-        pops += 1
-        
-        visited[v] = true
-        
-        links = nodes[v].outbound_links
-        if links != nil and links.size > 0
-          links = links.reject{|link| link.cost == nil || link.cost == Infinity || link.cost < 0}
-          
-          links.each do |link|
-            w = node_ids.index(link.second_id)
-            
-            if !visited[w] and shortest[w] > shortest[v] + link.cost
-              shortest[w] = shortest[v] + link.cost
-              previous[w] = v
-              queue.push w
-            end
-          end
-        end
-      end
-      
-      valid_links = 0
-      
-      shortest.each_with_index do |distance, j|
-        distances[i, j] = distance        
-        valid_links += 1 if distance != nil and distance < Infinity and distance >= 0
-      end
-      
-      puts "\t#{source_index + 1} / #{source_ids.size} (index: #{i}, node #{nodes[i].id}): #{pops} visited, #{valid_links} valid distances."
-    end
-    
-    #--------------------------------------#
-    # 3. Update the links in the database. #
-    #--------------------------------------#
-    puts "3. Updating links in the database."
+    index = 0
+    nodes = MdsNode.find(:all, :only => :id)
+    node_ids = nodes.collect{|node| node.id}
     
     Link.transaction do
-      source_ids.each_with_index do |source, source_index|
-        i = node_ids.index(source)
+      distances.each do |source, neighbors|
+        puts "\t#{index + 1} / #{distances.size} (#{source})"
+        index += 1
         
-        puts "\tUpdating node #{source_index + 1} / #{source_ids.size} (index: #{i}, node #{nodes[i].id})"
-
-        for j in i...nodes.size
-          if distances[i, j] != nil and !distances[i, j].nan? and distances[i, j] < Infinity && distances[i, j] >= 0.0
-            Link.update_or_create(nodes[i], nodes[j], nil, distances[i, j])
-            Link.update_or_create(nodes[j], nodes[i], nil, distances[i, j])
-          else
-            puts "\t\tInvalid link (#{i}, #{j}) (node #{nodes[i].id}, node #{nodes[j].id}): #{distances[i, j]}"
+        neighbors.each do |neighbor, distance|
+          if !link_ids[source][neighbor]
+            first_node = nodes[node_ids.index(source)]
+            second_node = nodes[node_ids.index(neighbor)]
+            
+            Link.create(:cost => nil, :distance => distance, :first_id => first_node.id, :second_id => second_node.id)
           end
         end
       end
     end
+    
+    puts "Elapsed time: #{Time.now - start_time}"
   end
 end
