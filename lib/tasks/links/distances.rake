@@ -27,7 +27,7 @@ namespace :links do
     index = 0
     
     costs.each do |source, neighbors|
-      puts "#{index + 1} / #{links.size} (#{source})"
+      puts "#{index + 1} / #{costs.size} (#{source})"
       index += 1
       
       visited = {}
