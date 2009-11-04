@@ -177,19 +177,14 @@ class UsersController < ApplicationController
     else
       success = true
       
-      if params[:new_password] 
+      if params[:new_password] && params[:new_password] != '' !@user.admin
         if User.authenticate(@user.login, params[:old_password])
-          puts 'Success'
-          puts params[:old_password]
           params[:user][:password] = params[:new_password]
         else
-          puts 'No success'
           success = false
           flash.now[:error] = "Incorrect old password."
           render :layout => 'site', :action => 'edit'
         end
-      else
-        puts 'No password'
       end
       
       if success
