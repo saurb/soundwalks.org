@@ -3,15 +3,21 @@ require 'matrix_extension'
 namespace :links do
   desc "Prints out a cost and distance matrix for the network and a list of sounds and tags that are associated."
   task :csv2 => :environment do
-    #------------------------------------------------------------------------#
-    # 1. Fetch all links and nodes. Construct sparse distance/cost matrices. #
-    #------------------------------------------------------------------------#
-    puts "Constructing sparse distance and cost matrices from all links."
+    #-------------------------------#
+    # 1. Fetch all links and nodes. #
+    #-------------------------------#
+    puts "Loading all links and nodes."
     
     links = Link.find(:all)
     nodes = MdsNode.find(:all)
     node_ids = nodes.collect{|node| node.id}
+
+    #---------------------------------------------#
+    # 2. Construct sparse distance/cost matrices. #
+    #---------------------------------------------#
+    puts "Constructing sparse distance and cost matrices from all links."
     
+
     distances = {}
     costs = {}
     
