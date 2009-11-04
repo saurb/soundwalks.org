@@ -30,4 +30,10 @@ class HomeController < ApplicationController
       end
     end
   end
+  
+  def tagcloud
+    respond_to do |format|
+      format.html
+    end
+  end
 end

@@ -53,6 +53,60 @@ module StringHelper
     str.gsub(/<(\/|\s)*[^(#{preserve_array})][^>]*>/,'')
   end
   
+  def formatted_tag_cloud(limit = 200)
+    tags = Tag.find(:all)
+    
+    counts = {}
+    tags.each do |tag|
+      counts[tag.id] =Tagging.count(:conditions => {:tag_id => tag.id})
+    end
+    
+    tags = tags.sort{|x, y| counts[y.id] <=> counts[x.id]}
+    tags = tags[0...limit]
+    
+    tags1 = []
+    tags2 = []
+    
+    for i in 0...tags.size
+      if i % 2 == 0
+        tags1.push tags[i]
+      else
+        tags2.push tags[i]
+      end
+    end
+    
+    tags = tags1.reverse.concat tags2
+    
+    total_count = 0
+    
+    tags.each do |tag|
+      total_count += counts[tag.id]
+    end
+    
+    nodes = MdsNode.find(:all, :conditions => {:owner_type => 'Tag'});
+    node_ids = nodes.collect{|node| node.owner_id}
+    
+    strings = []
+    
+    tags.each do |tag|
+     index = node_ids.index(tag.id)
+      
+      u = (nodes[index] != nil and nodes[index].x != nil) ? nodes[index].x - 0.5 * 0.436 : 0
+      v = (nodes[index] != nil and nodes[index].y != nil) ? nodes[index].y - 0.5 * 0.436 : 0
+      
+      c = yuv_to_rgb(0.5, u, v)
+      r = (c[:r] * 255).to_i
+      g = (c[:g] * 255).to_i
+      b = (c[:b] * 255).to_i
+      
+      deviation = ((counts[tag.id] / total_count.to_f) - (1 / tags.size.to_f)) / (1 / tags.size.to_f)
+      
+      strings.push "<span style='color: rgb(#{r}, #{g}, #{b}); font-size: #{(1.5 + deviation * 0.25)}em'>#{tag}</span>"
+    end
+    
+    return strings.join(', ')
+  end
+  
   #----------------------------------------------------------------------------------------#
   # Creates a colored tag cloud for a given sound based on its distribution over all tags. #
   #----------------------------------------------------------------------------------------#

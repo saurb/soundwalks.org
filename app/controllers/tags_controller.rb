@@ -12,8 +12,8 @@ class TagsController < ApplicationController
     @sound = @soundwalk.sounds.find(params[:sound_id])
     
     respond_to do |format|
-      format.xml {render :xml => tag_response(@sound), :status => :ok}
-      format.json {render :json => tag_response(@sound), :status => :ok, :callback => params[:callback]}
+      format.xml {render :xml => tag_response(@sound)}
+      format.json {render :json => tag_response(@sound), :callback => params[:callback]}
     end
   end
   
@@ -49,8 +49,8 @@ class TagsController < ApplicationController
     end
     
     respond_to do |format|
-      format.xml {render :xml => @query, :status => :ok}
-      format.json {render :json => @query, :status => :ok, :callback => params[:callback]}
+      format.xml {render :xml => @query}
+      format.json {render :json => @query, :callback => params[:callback]}
     end
   end
   
