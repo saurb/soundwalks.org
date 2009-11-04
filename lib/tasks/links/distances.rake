@@ -3,6 +3,82 @@ require 'matrix_extension'
 
 namespace :links do
   desc "Calculates shortest path distances between nodes in the network."
+  task :distances2 => :environment do    
+    #-------------------------------------------#
+    # 1. Extract link costs as a sparse matrix. #
+    #-------------------------------------------#
+    
+    links = Link.find(:all, :order => "first_id asc, second_id asc")
+    
+    costs = {}
+    
+    links.each do |link|
+      if link.cost
+        costs[link.first_id] = [] if !costs[link.first_id]
+        costs[link.first_id].push({:id => link.second_id, :cost => link.cost})
+      end
+    end
+    
+    #-------------------------------------------------------#
+    # 2. Peform Dijkstra's algorithm for every source node. #
+    #-------------------------------------------------------#
+    
+    distances = {}
+    index = 0
+    
+    costs.each do |source, neighbors|
+      puts "#{index + 1} / #{links.size} (#{source})"
+      index += 1
+      
+      visited = {}
+      previous = {}
+      shortest = {}
+      
+      queue =  PQueue.new(proc {|x, y| shortest[x] < shortest[y]})
+      queue.push source
+      visited[source] = true
+      shortest[source] = 0
+      
+      while queue.size != 0
+        node = queue.pop
+        
+        visited[node] = true
+        shortest[node] = Infinity if !shortest[node]
+        
+        neighbors.each do |neighbor|
+          shortest[neighbor[:id]] = Infinity if !shortest[neighbor[:id]]
+          
+          if !visited[neighbor[:id]] and shortest[neighbor[:id]] > shortest[node] + neighbor[:cost]
+            shortest[neighbor[:id]] = shortest[node] = neighbor[:cost]
+            previous[neighbor[:id]] = node
+            
+            queue.push neighbor[:id]
+          end
+        end
+      end
+      
+      distances[source] = []
+      shortest.each do |id, distance|
+        distances[source].push({:id => id, :distance => distance})
+      end
+    end
+    
+    Link.transaction do
+      index = 0
+      
+      distances.each do |source, neighbors|
+        puts "#{index + 1} / #{distances.size} (#{source})"
+        index += 1
+        
+        neighbors.each do |neighbor|
+          puts "\t#{neighbor[:id]}: #{neighbor[:distance]}"
+          Link.update_or_create_by_id(source, neighbor[:id], nil, neighbor[:distance])
+        end
+      end
+    end
+  end
+  
+  desc "Calculates shortest path distances between nodes in the network."
   task :distances => :environment do
     #-------------------------#
     # 1. Initialize matrices. #
