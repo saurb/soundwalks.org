@@ -15,7 +15,9 @@ namespace :links do
     distances = {}
     costs = {}
     
-    links.each do |link|
+    links.each_with_index do |link, i|
+      puts "\t#{i + 1} / #{links.size}" if (link % (links.size / 100)) == 0
+      
       distances[link.first_id] = {} if !distances[link.first_id]
       distances[link.first_id][link.second_id] = link.distance
       
