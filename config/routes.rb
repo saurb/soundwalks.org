@@ -33,6 +33,7 @@ ActionController::Routing::Routes.draw do |map|
   map.resource :session
   map.resource :home
   
+  map.tagloud '/tagcloud', :controller => 'home', :action => 'tagcloud'
   # Sound index for location-based queries.
   map.sounds '/sounds', :controller => 'sounds', :action => 'allindex', :method => 'get'
   map.formatted_sounds '/sounds.:format', :controller => 'sounds', :action => 'allindex', :method => 'get'
