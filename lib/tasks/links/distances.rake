@@ -93,25 +93,9 @@ namespace :links do
     #------------------------------------------#
     puts "Inserting new records into database."
     
-    index = 0
-    nodes = MdsNode.find(:all, :only => :id)
-    node_ids = nodes.collect{|node| node.id}
-    
-    Link.transaction do
-      distances.each do |source, neighbors|
-        puts "\t#{index + 1} / #{distances.size} (#{source})"
-        index += 1
-        
-        neighbors.each do |neighbor, distance|
-          if !link_ids[source][neighbor]
-            first_node = nodes[node_ids.index(source)]
-            second_node = nodes[node_ids.index(neighbor)]
-            
-            Link.create(:cost => nil, :distance => distance, :first_id => first_node.id, :second_id => second_node.id)
-          end
-        end
-      end
-    end
+    values = distances.collect{|source, neighbors| neighbors.collect{|neighbor, distance| "(#{source}, #{neighbor}, #{distance})"}.join(',')}.join(',')
+    command = "insert into links (first_id,second_id,distance) values #{values}"
+    Link.connection.execute(command)
     
     puts "Elapsed time: #{Time.now - start_time}"
   end
