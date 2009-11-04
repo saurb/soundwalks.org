@@ -363,7 +363,7 @@ protected
   end
   
   def sound_includes
-    []
+    [:mds_node]
   end
   
   def sound_exceptions

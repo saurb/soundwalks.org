@@ -207,8 +207,8 @@ class Sound < ActiveRecord::Base
   #-------------------------------------------------------------#
   
   def color
-    u = mds_node.x * 0.436
-    v = mds_node.y * 0.615
+    u = (mds_node.x - 0.5) * 0.436
+    v = (mds_node.y - 0.5) * 0.615
     y = 0.5
     
     r = y + 1.13983 * v
