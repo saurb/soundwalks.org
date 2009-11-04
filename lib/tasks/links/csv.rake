@@ -3,6 +3,11 @@ require 'matrix_extension'
 namespace :links do
   desc "Prints out a cost and distance matrix for the network and a list of sounds and tags that are associated."
   task :csv2 => :environment do
+    #------------------------------------------------------------------------#
+    # 1. Fetch all links and nodes. Construct sparse distance/cost matrices. #
+    #------------------------------------------------------------------------#
+    puts "Constructing sparse distance and cost matrices from all links."
+    
     links = Link.find(:all)
     nodes = MdsNode.find(:all)
     node_ids = nodes.collect{|node| node.id}
@@ -18,15 +23,27 @@ namespace :links do
       costs[link.first_id][link.second_id] = link.cost
     end
     
+    #-----------------------------------#
+    # 2. Construct matrices for output. #
+    #-----------------------------------#
+    puts "Constructing matrices for output."
+    
     distance_matrix = Matrix.infinity(nodes.size, nodes.size)
     cost_matrix = Matrix.infinity(nodes.size, nodes.size)
     
     nodes.each_with_index do |node1, i|
+      puts "\t#{i + 1} / #{nodes.size}"
+      
       nodes.each_with_index do |node2, j|
         distance_matrix[i, j] = distances[node1.id][node2.id] if distances[node1.id] and distances[node1.id][node2.id]
         cost_matrix[i, j] = costs[node1.id][node2.id] if costs[node1.id] and costs[node1.id][node2.id]
       end
     end
+    
+    #-----------------#
+    # 3. Write files. #
+    #-----------------#
+    puts "Writing files."
     
     distances_path = File.join(RAILS_ROOT, '/data/mds/distances.csv')
     costs_path = File.join(RAILS_ROOT, '/data/mds/costs.csv')
