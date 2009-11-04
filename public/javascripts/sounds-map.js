@@ -32,7 +32,7 @@ function makeMap() {
 function addTrace(map, bounds) {
 	soundwalk_id = $("meta[name=soundwalk_id]").attr('content');
 
-	$.getJSON('/soundwalks/' + soundwalk_id, null, function(data, textStatus) {
+	$.getJSON('/soundwalks/' + soundwalk_id + '.json', null, function(data, textStatus) {
 		trace = data.locations;
 		
 		points = new Array();
