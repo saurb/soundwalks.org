@@ -40,6 +40,23 @@ class Link < ActiveRecord::Base
     return link
   end
   
+  def self.update_or_create_by_id(first, second, cost, distance)
+    link = Link.find(:first, :conditions => {:first_id => first, :second_id => second})
+    
+    if link == nil
+      link = Link.new
+      link.first = MdsNode.find(first)
+      link.second = MdsNode.find(second)
+    end
+    
+    link.cost = cost if cost != nil
+    link.distance = distance if distance != nil
+    
+    link.save
+    
+    return link
+  end
+  
   #--------------------------------------------------------------------------------------------------------#
   # Same as update_or_create, but does not create a new link if one doesn't already exist.                 #
   #   This is more efficient if you know that the link already exists, as you don't need to find it first. #
