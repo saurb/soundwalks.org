@@ -52,7 +52,7 @@ namespace :links do
           shortest[neighbor] = Infinity if !shortest[neighbor]
           
           if !visited[neighbor] and shortest[neighbor] > shortest[node] + cost
-            shortest[neighbor] = shortest[node] = cost
+            shortest[neighbor] = shortest[node] + cost
             previous[neighbor] = node
             
             queue.push neighbor
