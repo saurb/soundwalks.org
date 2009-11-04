@@ -95,6 +95,17 @@ namespace :links do
     
     index = 0
     
+    #file = File.open(File.join(RAILS_ROOT, '/data/temp_inserts.csv'), 'w')
+    #distances.each do |source, neighbors|
+    #  neighbors.each do |neighbor, distance|
+    #    file << "#{source},#{neighbor},NULL,#{distance}"
+    #  end
+    #end
+    #
+    #file.close
+    #
+    #Link.connection.execute("load data infile '#{RAILS_ROOT}/data/temp_inserts.csv' into table links fields terminated by ','")
+    
     Link.transaction do
       distances.each do |source, neighbors|
         puts "\t#{index + 1} / #{distances.size} (#{source})"
