@@ -27,19 +27,17 @@ namespace :links do
     index = 0
     
     costs.each do |source, neighbors|
-      puts "#{index + 1} / #{costs.size} (#{source})"
-      index += 1
-      
-      visited = {}
+      visited = {source => true}
+      shortest = {source => 0}
       previous = {}
-      shortest = {}
       
       queue =  PQueue.new(proc {|x, y| shortest[x] < shortest[y]})
       queue.push source
-      visited[source] = true
-      shortest[source] = 0
+      
+      pops = 0
       
       while queue.size != 0
+        pops += 1
         node = queue.pop
         
         visited[node] = true
@@ -61,6 +59,9 @@ namespace :links do
       shortest.each do |id, distance|
         distances[source].push({:id => id, :distance => distance})
       end
+      
+      puts "#{index + 1} / #{costs.size} (#{source}): #{pops} pops, #{distances[source].size} distances."
+      index += 1
     end
     
     Link.transaction do
