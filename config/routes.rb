@@ -9,8 +9,8 @@ ActionController::Routing::Routes.draw do |map|
   map.resource :about, :controller => 'about', :member =>  {:developers => :get, :contact => :get}
   
   map.resource :admin, :controller => 'admin', :member => {
-    :poll => :get, 
-    :sandbox => :get, 
+    :poll => :get,
+    :sandbox => :get,
     :mds => :get,
     :links => :get,
     :tags => :get
@@ -23,13 +23,6 @@ ActionController::Routing::Routes.draw do |map|
       sounds.query_set  'query_set.:format',  :controller => 'sounds', :action => 'query_set',  :method => 'get'
       
       sounds.resource :tags
-      #sounds.set_tags 'tags', :controller => 'tags'
-      #sounds.forma
-      #sounds.set_tags           'tags',         :controller => 'tags', :action => 'update', :method => 'put'
-      #sounds.formatted_set_tags 'tags.:format', :controller => 'tags', :action => 'update', :method => 'put'
-      
-      #sounds.tags             'tags',           :controller => 'tags', :action => 'index',  :method => 'get'
-      #sounds.formatted_tags   'tags.:format',   :controller => 'tags', :action => 'index',  :method => 'get'
     end
   end
   
