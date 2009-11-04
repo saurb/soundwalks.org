@@ -101,8 +101,7 @@ namespace :links do
         index += 1
         
         neighbors.each do |neighbor, distance|    
-            Link.create(:cost => nil, :distance => distance, :first_id => source, :second_id => neighbor) if !link_ids[source][neighbor]
-          end
+          Link.create(:cost => nil, :distance => distance, :first_id => source, :second_id => neighbor) if !link_ids[source][neighbor]
         end
       end
     end
