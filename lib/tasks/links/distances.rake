@@ -93,9 +93,19 @@ namespace :links do
     #------------------------------------------#
     puts "Inserting new records into database."
     
-    values = distances.collect{|source, neighbors| neighbors.collect{|neighbor, distance| "(#{source}, #{neighbor}, #{distance})"}.join(',')}.join(',')
-    command = "insert into links (first_id,second_id,distance) values #{values}"
-    Link.connection.execute(command)
+    index = 0
+    
+    Link.transaction do
+      distances.each do |source, neighbors|
+        puts "\t#{index + 1} / #{distances.size} (#{source})"
+        index += 1
+        
+        neighbors.each do |neighbor, distance|    
+            Link.create(:cost => nil, :distance => distance, :first_id => source, :second_id => neighbor) if !link_ids[source][neighbor]
+          end
+        end
+      end
+    end
     
     puts "Elapsed time: #{Time.now - start_time}"
   end
