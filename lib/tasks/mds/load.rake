@@ -30,10 +30,10 @@ namespace :mds do
           if node
             puts "\tNode #{node.id}: (#{node.x}, #{node.y})"
             
-            node.x = components[2] if components.size > 2
-            node.y = components[3] if components.size > 3
-            node.z = components[4] if components.size > 4
-            node.w = components[5] if components.size > 5
+            node.x = components[1] if components.size > 1
+            node.y = components[2] if components.size > 2
+            node.z = components[3] if components.size > 3
+            node.w = components[4] if components.size > 4
             
             node.save
           end
