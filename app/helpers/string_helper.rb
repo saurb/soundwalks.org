@@ -91,8 +91,8 @@ module StringHelper
     tags.each do |tag|
      index = node_ids.index(tag.id)
       
-      u = ((nodes[index] != nil and nodes[index].x != nil) ? nodes[index].x - 0.5) * 0.436 : 0
-      v = ((nodes[index] != nil and nodes[index].y != nil) ? nodes[index].y - 0.5) * 0.615 : 0
+      u = (nodes[index] != nil and nodes[index].x != nil) ? (nodes[index].x - 0.5) * 0.436 : 0
+      v = (nodes[index] != nil and nodes[index].y != nil) ? (nodes[index].y - 0.5) * 0.615 : 0
       
       c = yuv_to_rgb(0.5, u, v)
       r = (c[:r] * 255).to_i
