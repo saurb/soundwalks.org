@@ -104,7 +104,7 @@ module StringHelper
       strings.push "<span style='color: rgb(#{r}, #{g}, #{b}); font-size: #{(1.5 + deviation * 0.25)}em'>#{tag}</span>"
     end
     
-    return strings.join(', ')
+    return strings.join(' ')
   end
   
   #----------------------------------------------------------------------------------------#
