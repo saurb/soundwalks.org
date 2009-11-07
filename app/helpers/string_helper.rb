@@ -131,7 +131,20 @@ module StringHelper
         total += result[:value]
         results.push result if total < 0.8
       end
-    
+      
+      results1 = []
+      results2 = []
+      
+      for i in 0...results.size
+        if i % 2 == 0
+          results1.push results[i]
+        else
+          results2.push results[i]
+        end
+      end
+      
+      results = results1.reverse.concat results2
+      
       for i in 0...results.size
         node_index = node_ids.index(results[i][:id])
         tag_index = tag_ids.index(nodes[node_index].owner_id)
