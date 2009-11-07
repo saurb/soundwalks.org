@@ -2,7 +2,7 @@
 	Settings
 
 %div#settings-profile
-	%h1 Profile
+	%h1 Settings
 	%div.help
 		%h2 Getting an avatar
 		%p
@@ -35,5 +35,5 @@
 				Admin? #{form.check_box :admin}
 				Can upload? #{form.check_box :can_upload}
 				
-		%div.submit= form.submit 'Save', :class => 'button'
-		
+		%p{:class => 'buttons'}
+			%button{:type => "submit"} Save Settings

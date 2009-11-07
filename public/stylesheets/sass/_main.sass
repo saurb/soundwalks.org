@@ -2,7 +2,7 @@
 
 body
 	font-family = !fonts_normal
-	background-color = !tan
+	background-color: white
 	font-size: 1em
 	text-align: center
 	behavior: url("/stylesheets/csshover3.htc")
@@ -11,12 +11,12 @@ strong, em, b, i
 	font-family = !fonts_styled
 
 a
-	color = !dark_blue
+	color = !dark_green
 	text-decoration: none
 	weight: bold
 	
 	&:hover
-		color = !red
+		color = !blue
 	
 	img
 		border: none
@@ -36,12 +36,12 @@ h1
 	bottom: 0.5em
 	border-bottom = !dashed_border
 	font-size: 2em
-	color = !red
+	color = !dark_blue
 	text-align: center
 	font-weight: normal
 	
 	a
-		color = !red
+		color = !dark_blue
 
 h2
 	width: 100%
@@ -64,10 +64,18 @@ em
 	border-bottom = "3px solid " + !green
 	
 p.notice
+	border = "1px dashed " + !green
+	width: 100%
+	padding: 0.5em
+	background-color = !very_light_green
 	text-align: center
-	color = !green
+	color = !dark_green
 
 p.error
+	border = "1px dashed " + !light_red
+	width: 100%
+	padding: 0.5em
+	background-color = !very_light_red
 	text-align: center
 	color = !red
 
@@ -86,10 +94,8 @@ p.detail
 	margin: 0
 	
 .code
-	+rounded_border
 	margin-left: 1em
 	margin-right: 1em
 	padding: 0.5em
-	background-color = !very_light_blue
 	font-family = !fonts_monospaced
 	font-size: 0.8em

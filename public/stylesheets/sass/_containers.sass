@@ -1,67 +1,99 @@
 @import variables.sass
 
 #strip
+	position: relative
+	
 	width = !big_width
 	margin: 2em auto 0 auto
-	border-bottom = "0.125em solid " + !dark_blue
-	height: 48px
+	height: 6.5em
 	
 	#title-picture
+		position: absolute
+		left: 0
+		top: 0
+		
+		display: block
 		float: left
 		text-align: left
+		margin-left: 0.5em
+		background: transparent
+		display: inline-block
+		z-index: 1
 		
 	#user-panel
-		float: right
+		width: 100%
 		color = !dark_blue
 		text-align: right
-		margin-top: 1.3em
-			
+		
 		img
 			vertical-align: middle
-			border = "1px solid " + !light_blue
+			border = "1px solid " + !tan
 
 	a
-		color = !red
+		color = !dark_tan
 		text-decoration: none
 		font-weight: bold
+		
+		&:hover
+			color = !blue
 
 	&.little
 		text-align: center
 		width = !little_width
 		height: 96px
+		
+	#menu 
+		position: absolute
+		left: 0
+		top: 1em
+		
+		width: 100%
+		height: 2em
+		
+		margin: 0
+		margin-top: 1.2em
+		
+		padding: 0.5em
+		
+		background-color = !tan
+		border = "1px solid " + !tan
+		
+		line-height: 2em
+		
+		text-align: right
+		font-size: 1.2em
+		
+		z-index: 0
+		a
+			margin-right: 1em
+			color = !dark_green
 
+			&:hover
+				color = !blue
+				
 #body
 	width = !big_width
-	margin: 0 auto 0
+	margin: 0.25em auto 0
 	padding: 0
-	border = "1px solid " + !light_blue
 	background-color: white
 	text-align: left
 	z-index: 0
 	
-	#menu 
-		text-align: left
-		margin: 0
-		padding: 0.5em
-		background-color = !very_light_blue
-		border-bottom = !dashed_border
-		z-index: 1
-
 	#content
 		padding: 1em
 		z-index: 1
 		
 		p.invitation
-			+rounded_border
+			width: 100%
 			padding: 0.5em
 			font-size: 1.2em
 			background-color = !very_light_green
 			color = !dark_green
 			
 			a
-				color = !red
+				color = !blue
 				&:hover
-					color = !dark_blue
+					color = !dark_tan
 			
 	#footer
 		margin-top: 1em

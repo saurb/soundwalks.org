@@ -1,4 +1,4 @@
-%li.stream-item{:id => "soundwalk-#{soundwalk.id}", 'data-lat' => soundwalk.lat, 'data-lng' => soundwalk.lng, 'onclick' => "window.location='#{soundwalk_path(soundwalk)}'"}
+%li{:class => 'stream-item rounded', :id => "soundwalk-#{soundwalk.id}", 'data-lat' => soundwalk.lat, 'data-lng' => soundwalk.lng, 'onclick' => "window.location='#{soundwalk_path(soundwalk)}'"}
 	%div.stream-item-content
 		%div.stream-item-avatar
 			- if show_users

@@ -1,6 +1,7 @@
 !!! XML
 %html{:xmlns => "http://www.w3.org/1999/xhtml", "xml:lang" => "en", :lang => "en"}
 	%head
+		= javascript_include_tag 'lib/dd_roundies'
 		= yield :javascript
 		
 		= stylesheet_link_tag 'main'
@@ -17,41 +18,36 @@
 		
 		%title Soundwalks: #{yield :title}
 	%body
-		%div#strip		
-			%div#title-picture
+		%div#strip
+			%span#title-picture
 				%a{:title => 'Soundwalks', :href => '/'}
 					%img{:src => '/images/soundwalks.png', :alt => 'Soundwalks'}
 			%div#user-panel
 				- if logged_in? && !current_user.nil? && current_user.id
 					%img{:src => avatar_url_for(current_user, :size => 25), :alt => ''}
 					Hi, #{first_name current_user, :force_third_person => true}! &nbsp;&nbsp;
-					%a{:title => 'Settings', :href => '/settings'} Settings
-					| 
+					%a{:title => 'My profile', :href => user_name_path(current_user)} My profile &#124;
+					%a{:title => 'Settings', :href => '/settings'} Settings &#124;
 					%a{:title => 'Logout', :href => '/logout'} Logout
 				- else
-					%a{:title => 'Login', :href => '/login'} Login
-					|
+					%a{:title => 'Login', :href => '/login'} Login &#124;
 					%a{:title => 'Sign up', :href => '/signup'} Sign up
-		%div#body
-			%div#menu
+			%div#menu{:class => 'rounded'}
 				- if logged_in? && !current_user.nil? && current_user.id
 					- if current_user.can_upload?
-						#{link_to 'New soundwalk', new_soundwalk_path} &#124;
-						
-					#{link_to 'My profile', user_name_path(current_user)} &#124;
-					#{link_to 'Followed timeline', '/'} &#124;
-				
-				#{link_to 'Public timeline', soundwalks_path} &#124;
-				= link_to 'About Soundwalks', about_path
+						#{link_to 'New soundwalk', new_soundwalk_path}
+
+					#{link_to 'My timeline', '/'}
+					
+				#{link_to 'Public timeline', soundwalks_path}
+				= link_to 'Help', about_path
+		%div#body
 			%div#content
 				- if flash[:notice]
-					%p.notice= flash[:notice]
+					%p{:class => 'notice rounded'}= flash[:notice]
 					
 				- if flash[:error]
-					%p.error= flash[:error]
-				
-				- if !logged_in?
-					%p{:class => 'invitation'} Hey there! Are you new to Soundwalks? We're a community dedicated to exploring the world's rich sonic landscape. With Soundwalks, you can share your acoustic experiences and explore new soundscapes with our interactive sound map. <a href="/about">Read more about us</a> and <a href="/signup">join today!</a>
+					%p{:class => 'error rounded'}= flash[:error]
 					
 				= yield
 			

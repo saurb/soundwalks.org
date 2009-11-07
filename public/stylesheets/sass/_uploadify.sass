@@ -50,7 +50,7 @@ form
 	z-index: 2
 
 =queue_item
-	border-bottom = "1px solid " + !blue
+	border-bottom = "1px solid " + !light_gray
 	position: relative
 	font-size: 1em
 	height: 2.25em
@@ -98,13 +98,13 @@ form
 			height: 100%
 	
 	.delete_button
-		color = !red
+		color = !blue
 	
 .fileUploadQueueItem-Active
 	+queue_item
 	
 .fileUploadQueueItem-Complete
-	background-color = !very_light_blue
+	background-color = !light_blue
 	+queue_item
 	
 .fileUploadQueueItem-Canceled
