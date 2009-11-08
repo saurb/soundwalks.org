@@ -89,22 +89,22 @@ module StringHelper
     strings = []
     
     tags.each do |tag|
-     index = node_ids.index(tag.id)
+      index = node_ids.index(tag.id)
       
-      u = (nodes[index] != nil and nodes[index].x != nil) ? (nodes[index].x - 0.5) * 0.436 : 0
-      v = (nodes[index] != nil and nodes[index].y != nil) ? (nodes[index].y - 0.5) * 0.615 : 0
+      if index
+        color = nodes[index].color
       
-      c = yuv_to_rgb(0.5, u, v)
-      r = (c[:r] * 255).to_i
-      g = (c[:g] * 255).to_i
-      b = (c[:b] * 255).to_i
+        r = (color[0] * 255).to_i
+        g = (color[1] * 255).to_i
+        b = (color[2] * 255).to_i
       
-      deviation = ((counts[tag.id] / total_count.to_f) - (1 / tags.size.to_f)) / (1 / tags.size.to_f)
+        deviation = ((counts[tag.id] / total_count.to_f) - (1 / tags.size.to_f)) / (1 / tags.size.to_f)
       
-      strings.push "<span style='color: rgb(#{r}, #{g}, #{b}); font-size: #{(1.5 + deviation * 0.25)}em'>#{tag}</span>"
+        strings.push "<span style='color: rgb(#{r}, #{g}, #{b}); font-size: #{(1.5 + deviation * 0.25)}em'>#{tag}</span>"
+      end
     end
     
-    return strings.join(' ')
+    strings.join(' ')
   end
   
   #----------------------------------------------------------------------------------------#
@@ -147,22 +147,23 @@ module StringHelper
       
       for i in 0...results.size
         node_index = node_ids.index(results[i][:id])
-        tag_index = tag_ids.index(nodes[node_index].owner_id)
-      
-        results[i][:deviation] = (results[i][:value] - (1.0 / results.size.to_f)) / (1.0 / results.size.to_f)
-        results[i][:name] = tag_names[tag_index]
-            
-        u = nodes[node_index] == nil || nodes[node_index].x == nil ? 0 : (nodes[node_index].x - 0.5) * 0.436
-        v = nodes[node_index] == nil || nodes[node_index].y == nil ? 0 : (nodes[node_index].y - 0.5) * 0.615
-        c = yuv_to_rgb(0.5, u, v)
-      
-        results[i][:r] = (c[:r] * 255).to_i
-        results[i][:g] = (c[:g] * 255).to_i
-        results[i][:b] = (c[:b] * 255).to_i
+        
+        if node_index
+          tag_index = tag_ids.index(nodes[node_index].owner_id)
+          
+          results[i][:deviation] = (results[i][:value] - (1.0 / results.size.to_f)) / (1.0 / results.size.to_f)
+          results[i][:name] = tag_names[tag_index]
+          
+          color = nodes[node_index].color
+          
+          results[i][:r] = (color[0] * 255).to_i
+          results[i][:g] = (color[1] * 255).to_i
+          results[i][:b] = (color[2] * 255).to_i
+        end
       end
-    
+      
       html = ''
-    
+      
       if style == :normal || style == nil
         html += results.collect{|result| "<span style='color: rgb(#{result[:r]}, #{result[:g]}, #{result[:b]}); font-size: #{(1.5 + result[:deviation] * 0.25)}em'>#{result[:name]}</span>"}.join(' ')
       elsif style == :old
@@ -171,25 +172,13 @@ module StringHelper
           color = "#%02x%02x%02x" % [result[:r], result[:g], result[:b]].map {|i| i}
           html_results.push "<font color='#{color}' size='#{((1.5 + result[:deviation] * 0.25) * 12).to_i}'>#{result[:name]}</font>"
         end
-      
+        
         html = html_results.join(' ')
       end
-    
+      
       html
     else
       "This sound does not yet have any tags."
     end
-  end
-  
-  #--------------------------------------------------#
-  # Converts values from the YUV color space to RGB. #
-  #--------------------------------------------------#
-  
-  def yuv_to_rgb y, u, v
-    r = y + 1.13983 * v
-    g = y - 0.39465 * u - 0.58060 * v
-    b = y + 2.03211 * u
-    
-    {:r => r, :g => g, :b => b}
   end
 end
