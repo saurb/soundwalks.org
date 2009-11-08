@@ -5,7 +5,7 @@
 
 %object{:codebase => "http://fpdownload.macromedia.com/pub/shockwave/cabs/flash/swflash.cab#version=7,0,0,0", :height => "600px", :width => "100%", :align => "middle", :classid => "clsid:d27cdb6e-ae6d-11cf-96b8-444553540000"}
 	%param{:name => "flashvars", :value => "google_key=#{Geokit::Geocoders::google}"}
-	%param{:name => "src", :value => "/flash/map.swf"}
+	%param{:name => "src", :value => "http://soundwalks.org/flash/map.swf"}
 	%param{:name => "wmode", :value => 'window'}
 	%param{:name => 'quality', :value => 'best'}
-	%embed{:type => "application/x-shockwave-flash", :movie => "/flash/map.swf", :quality => "best", :bgcolor => "#ffffff", :wmode => "window", :flashvars => "google_key=#{Geokit::Geocoders::google}", :pluginspage => "http://www.macromedia.com/go/getflashplayer", :height => "600px", :width => "100%"}
+	%embed{:type => "application/x-shockwave-flash", :movie => "http://soundwalks.org/flash/map.swf", :quality => "best", :bgcolor => "#ffffff", :wmode => "window", :flashvars => "google_key=#{Geokit::Geocoders::google}", :pluginspage => "http://www.macromedia.com/go/getflashplayer", :height => "600px", :width => "100%"}
