@@ -1,4 +1,5 @@
 module ColorHelper
+  include Math
   def xy_to_hsv xy
     sqrt2 = sqrt(2)
     
@@ -24,7 +25,7 @@ module ColorHelper
       s = l / ((1 / sqrt2) * cos(-a))
     end
     
-    [h * 360, s, 1]
+    [h * 360, (s * 0.75) + 0.15, 1]
   end
   
   def hsv_to_rgb hsv
