@@ -1,5 +1,6 @@
 module ColorHelper
   include Math
+  
   def xy_to_hsv xy
     sqrt2 = sqrt(2)
     
@@ -7,25 +8,34 @@ module ColorHelper
     y2 = (xy[1] - 0.5) * (2 / sqrt2)
     
     a = atan(y2 / x2)
+    a_abs = atan(y2.abs / x2.abs)
     l = sqrt(x2 * x2 + y2 * y2)
     
-    pi = 3.1415926
-    
     if x2 >= 0 and y2 >= 0
-      h = a / (2 * pi)
-      s = l / ((1 / sqrt2) * cos(a))
+      h = a / (2 * PI)
     elsif x2 < 0 and y2 >= 0
-      h = (a + pi) / (2 * pi)
-      s = l / ((1 / sqrt2) * cos(-a))
+      h = (a + PI) / (2 * PI)
     elsif x2 < 0 and y2 < 0
-      h = (a + pi) / (2 * pi)
-      s = l / ((1 / sqrt2) * cos(a))
+      h = (a + PI) / (2 * PI)
     elsif x2 >= 0 and y2 < 0
-      h = (a + 2 * pi) / (2 * pi)
-      s = l / ((1 / sqrt2) * cos(-a))
+      h = (a + 2 * PI) / (2 * PI)
     end
     
-    [h * 360, (s * 0.75) + 0.15, ((s * 0.75) + 0.15) ** 0.25]
+    if a_abs < PI / 4
+      r = 1 / (sqrt2 * cos(a_abs))
+    else
+      r = 1 / (sqrt2 * sin(a_abs))
+    end
+    
+    if l == 0
+      s = 0
+    else
+      s = l / r
+    end
+    
+    v = s ** 0.25
+    
+    [h * 360, s, v]
   end
   
   def hsv_to_rgb hsv
