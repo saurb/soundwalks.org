@@ -176,7 +176,7 @@ module StringHelper
         html = html_results.join(' ')
       end
       
-      html
+      "<center>#{html}</center>"
     else
       "This sound does not yet have any tags."
     end
