@@ -63,7 +63,7 @@ em
 	border-bottom = "3px solid " + !green
 	
 p.notice
-	border = "1px dashed " + !green
+	border: none
 	width: 100%
 	padding: 0.5em
 	background-color = !very_light_green
@@ -71,7 +71,7 @@ p.notice
 	color = !dark_green
 	
 p.error
-	border = "1px dashed " + !light_red
+	border: none
 	width: 100%
 	padding: 0.5em
 	background-color = !very_light_red
@@ -93,9 +93,12 @@ p.detail
 	margin: 0
 	
 .code
+	+rounded_border
+	border: none
 	margin-left: 1em
 	margin-right: 1em
 	padding: 0.5em
 	font-family = !fonts_monospaced
+	background-color = !light_blue
 	font-size: 0.8em
 	
