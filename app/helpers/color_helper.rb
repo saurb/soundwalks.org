@@ -33,9 +33,7 @@ module ColorHelper
       s = l / r
     end
     
-    v = s ** 0.25
-    
-    [h * 360, s, v]
+    [h * 360, s ** 0.5, 1]
   end
   
   def hsv_to_rgb hsv
