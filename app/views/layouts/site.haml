@@ -36,10 +36,9 @@
 				- if logged_in? && !current_user.nil? && current_user.id
 					- if current_user.can_upload?
 						#{link_to 'New soundwalk', new_soundwalk_path}
-
-					#{link_to 'My timeline', '/'}
-					
-				#{link_to 'Public timeline', soundwalks_path}
+				
+				#{link_to 'Map', '/map'}
+				#{link_to 'Timeline', '/'}
 				= link_to 'Help', about_path
 		%div#body
 			%div#content

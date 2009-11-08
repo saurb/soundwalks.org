@@ -1,5 +1,5 @@
 - content_for :title do
-	Public timeline
+	Latest soundwalks
 
 - content_for :javascript do
 	= javascript_include_tag 'lib/jquery'
@@ -7,8 +7,14 @@
 - if !logged_in?
 	%p{:class => 'invitation rounded'} Hey there! Are you new to Soundwalks? We're a community dedicated to exploring the world's rich sonic landscape. With Soundwalks, you can share your acoustic experiences and explore new soundscapes with our interactive sound map. <a href="/about">Read more about us</a> and <a href="/signup">join today!</a>	
 
-%h1 Public timeline
+%h1 Latest soundwalks
 
 = render :partial => 'soundwalks/soundwalks_map', :locals => {:soundwalks => @soundwalks}
+
+- if logged_in?
+	%h3
+		%a{:href => '/'} Only friends
+		&#124; Everyone
+	
 = render :partial => 'soundwalks/soundwalks_index', :locals => {:show_users => :true, :soundwalks => @soundwalks}
 = render :partial => 'shared/pagination', :locals => {:page => @page, :pages => @pages, :options => {:controller => :soundwalks}}

@@ -26,6 +26,8 @@ ActionController::Routing::Routes.draw do |map|
     end
   end
   
+  map.resource :map, :controller => 'map'
+  
   map.resources :tags, :collection => {:query_set => :get}
   
   map.resources :friendships

@@ -5,11 +5,14 @@
 	= javascript_include_tag 'lib/jquery'
 
 - if logged_in?
-	= render :partial => 'users/user_profile', :locals => {:user => current_user}
-	
-	%h1 Latest watched soundwalks
+	%h1 Latest soundwalks
 	- if current_user.following_soundwalks.count > 0
 		= render :partial => 'soundwalks/soundwalks_map', :locals => {:soundwalks => @soundwalks}
+		
+		%h3
+			Only friends &#124; 
+			%a{:href => '/soundwalks/'} Everyone
+			
 		= render :partial => 'soundwalks/soundwalks_index', :locals => {:show_users => :true, :soundwalks => @soundwalks}
 		= render :partial => 'shared/pagination', :locals => {:page => @page, :pages => @pages, :options => {:controller => :home}}
 	- elsif current_user.friends.count > 0
