@@ -40,15 +40,19 @@ class SoundsController < ApplicationController
   def allindex
     if params[:distance]
       @sounds = Sound.find_within(params[:distance], :origin => [params[:lat], params[:lng]], :limit => 200, :offset => params[:offset] ? params[:offset] : 0)
-    elsif logged_in? && current_user && current_user.admin?
-      @soundwalks = Soundwalk.find(:all)
-      @sounds = Sound.find(:all)
-    end
-    
-    respond_to do |format|
-      format.html if logged_in? & current_user && current_user.admin?
-      format.json {render :json => @sounds.to_json(sound_options), :callback => params[:callback]}
-      format.xml {render :xml => @sounds.to_xml(sound_options), :callback => params[:callback]}
+      
+      respond_to do |format|
+        format.html if logged_in? & current_user && current_user.admin?
+        format.json {render :json => @sounds.to_json(sound_options), :callback => params[:callback]}
+        format.xml {render :xml => @sounds.to_xml(sound_options)}
+      end
+    else
+      @sounds = Sound.find(:all, :order => 'id ASC')
+      
+      respond_to do |format|
+        format.xml {render :xml => @sounds.to_xml(:only => :id, :include => [], :except => [])}
+        format.json {render :json => @sounds.to_json(:only => :id, :include => [], :except => [])}
+      end
     end
   end
   
