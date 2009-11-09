@@ -45,11 +45,11 @@ ActionController::Routing::Routes.draw do |map|
   map.sendstudy '/sendstudy', :controller => 'study', :action => 'create', :method => 'post'
   
   # Username permalinks.
-  map.username '/:username', :controller => 'users', :action => 'show'
-  map.username_with_format '/:username.:format', :controller => 'users', :action => 'show'
-  map.follow '/:username/follow', :controller => 'users', :action => 'follow'
-  map.followers '/:username/followers', :controller => 'users', :action => 'followers'
-  map.following '/:username/following', :controller => 'users', :action => 'following'
+  map.username '/:login', :controller => 'users', :action => 'show'
+  map.username_with_format '/:login.:format', :controller => 'users', :action => 'show'
+  map.follow '/:login/follow', :controller => 'users', :action => 'follow'
+  map.followers '/:login/followers', :controller => 'users', :action => 'followers'
+  map.following '/:login/following', :controller => 'users', :action => 'following'
   
   map.root :controller => 'home', :action => 'index'
 end
