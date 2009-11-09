@@ -84,19 +84,26 @@
 		padding: 1em
 		z-index: 1
 		
-		p.invitation
+		.invitation	
+			+rounded_border
 			border: none
 			width: 100%
 			padding: 0.5em
 			font-size: 1.2em
 			background-color = !very_light_green
 			color = !dark_green
+			margin-bottom: 1em
 			
 			a
 				color = !blue
 				&:hover
 					color = !dark_tan
-					
+				
+			h1
+				color = !red
+				border-bottom = "1px dashed " + !green
+				
+				
 	#footer
 		margin-top: 1em
 		padding: 1em
