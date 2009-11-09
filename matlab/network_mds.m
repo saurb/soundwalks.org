@@ -43,3 +43,7 @@ scatterplot(mds(:,1:2));
 for i = 1:nodes
     fprintf('%d,%f,%f\n', ids(i), mds(i, 1), mds(i, 2));
 end
+
+for i = 1:nodes
+    fprintf('%f,%f\n', ids(i), mds(i, 1), mds(i, 2));
+end
