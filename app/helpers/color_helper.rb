@@ -29,6 +29,7 @@ module ColorHelper
     
     if l == 0
       s = 0
+      h = 0
     else
       s = l / r
     end
