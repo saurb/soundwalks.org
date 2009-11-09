@@ -32,21 +32,21 @@
 				- else
 					%a{:title => 'Login', :href => '/login'} Login &#124;
 					%a{:title => 'Sign up', :href => '/signup'} Sign up
-			%div#menu{:class => 'rounded'}
+			%div#menu
 				- if logged_in? && !current_user.nil? && current_user.id
 					- if current_user.can_upload?
 						#{link_to 'New soundwalk', new_soundwalk_path}
 				
 				#{link_to 'Map', '/map'}
 				#{link_to 'Timeline', '/'}
-				= link_to 'Help', about_path
+				= link_to 'About', about_path
 		%div#body
 			%div#content
 				- if flash[:notice]
-					%p{:class => 'notice rounded'}= flash[:notice]
+					%p{:class => 'notice'}= flash[:notice]
 					
 				- if flash[:error]
-					%p{:class => 'error rounded'}= flash[:error]
+					%p{:class => 'error'}= flash[:error]
 					
 				= yield
 			
