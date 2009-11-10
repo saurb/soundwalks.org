@@ -2,4 +2,7 @@
 
 <cross-domain-policy>
 	<allow-access-from domain="soundwalks.org"/>
+	<allow-access-from domain="www.soundwalks.org"/>
+	<allow-access-from domain="127.0.0.1"/>
+	<allow-access-from domain="ame7.hc.asu.edu"/>
 </cross-domain-policy>
