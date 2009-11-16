@@ -4,7 +4,7 @@
 - content_for :javascript do
 	= javascript_include_tag 'lib/jquery'
 
-- if !logged_in?
+- if !logged_in? and !flash[:notice]
 	%p{:class => 'invitation'} Hey there! Are you new to Soundwalks? We're a community dedicated to exploring the world's rich sonic landscape. With Soundwalks, you can share your acoustic experiences and explore new soundscapes with our interactive sound map. <a href="/about">Read more about us</a> and <a href="/signup">join today!</a>
 	
 %h1 Latest soundwalks
