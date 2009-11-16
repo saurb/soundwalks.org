@@ -1,0 +1,802 @@
+<?xml version="1.0" encoding="utf-8"?>
+<mx:Application xmlns:mx="http://www.adobe.com/2006/mxml" layout="absolute">   
+  <!--        www.soundwalks.org       -->
+  <!--        Jinru Liu                -->
+  <!--        Jinru.Liu@asu.edu        -->
+ 
+  <!-- <mx:Style>
+.controllerStyle {
+    top: 10;
+    left: 800;
+    paddingBottom: 6;
+    paddingLeft: 6;
+    paddingRight: 6;
+    paddingTop: 6;
+    alpha: 0;
+    background-color: #FFFFFF;
+    background-alpha: 0.5;
+  }
+</mx:Style>-->
+
+<mx:Fade id="fadeIn" alphaFrom="0.0" alphaTo="1.0" />
+<mx:Fade id="fadeOut" alphaFrom="1.0" alphaTo="0.0" />
+
+
+ <mx:Canvas id = "canvas" width="100%" height="100%" >
+  <mx:UIComponent id="mapHolder"
+      initialize="onHolderCreated(event);"
+      resize="onHolderResized(event)"
+      width="100%" height="100%" x="0" y="0"/>    
+    <mx:HBox id="controls" styleName="controllerStyle" resize = "onHolderResized(event)">
+    	<mx:Image source = "speaker_icon_s.png" />
+		<mx:HSlider
+      	id="zoomSlider"
+     	width="100"
+      	minimum="0"
+      	maximum="10"
+      	snapInterval="1"
+      	tickInterval="1"
+      	dataTipPrecision="0"
+      	value="7"
+      	showTrackHighlight="true"
+      	liveDragging = "true"
+      	borderColor="#ffffff"
+      	tickColor="#ffffff"
+      	change="onSliderChanged(event);"
+   		 />
+    </mx:HBox>
+    <mx:HBox id="scrubcontrol" styleName="controllerStyle" resize = "onHolderResized(event)">
+    	<mx:Image source = "scrubhand.png" />
+		<mx:HSlider
+      	id="scrubSlider"
+     	width="100"
+      	minimum="0"
+      	maximum="10"
+      	snapInterval="1"
+      	tickInterval="1"
+      	dataTipPrecision="0"
+      	value="5"
+      	showTrackHighlight="true"
+      	liveDragging = "true"
+      	borderColor="#ffffff"
+      	tickColor="#ffffff"
+      	change="scrubRadiusChanged(event);"
+   		 />
+    </mx:HBox>
+    
+   <!-- <mx:VBox id = "taginputs"  x = "0" y = "450">
+    
+    	<mx:TextInput
+    		id = "tagInput1"
+    		restrict = "a-z A-Z '\-"
+    		backgroundAlpha = "0.7"
+    		backgroundColor = "#FF3E96"
+    		borderThickness = "0"
+    		color = "#FFFFFF"
+    		errorString = "Type your first tag here"
+    		/>
+    		<mx:TextInput
+    		id = "tagInput2"
+    		restrict = "a-z A-Z '\-"
+    		backgroundAlpha = "0.7"
+    		backgroundColor = "#FF0000"
+    		borderThickness = "0"
+    		color = "#FFFFFF"
+    		errorString = "Type your second tag here"
+    		/>
+    		<mx:TextInput
+    		id = "tagInput3"
+    		restrict = "a-z A-Z '\-"
+    		backgroundAlpha = "0.7"
+    		backgroundColor = "#FFFF00"
+    		borderThickness = "0"
+    		color = "#FFFFFF"
+    		errorString = "Type your third tag here"
+    		/>
+    		<mx:TextInput
+    		id = "tagInput4"
+    		restrict = "a-z A-Z '\-"
+    		backgroundAlpha = "0.7"
+    		backgroundColor = "#008B45"
+    		borderThickness = "0"
+    		color = "#FFFFFF"
+    		errorString = "Type your fourth tag here"
+    		/>
+    		<mx:TextInput
+    		restrict = "a-z A-Z '\-"
+    		backgroundAlpha = "0.5"
+    		backgroundColor = "#FFFF00"
+    		borderThickness = "0"
+    		color = "#FFFFFF"
+    		errorString = "Type your fifth tag here"
+    		/> 
+    		<mx:Button
+    			id = "textInputDone"
+    			label = "Submit"
+    			click = "querySet(event);"
+    		/>
+    </mx:VBox>-->
+   
+    <mx:ApplicationControlBar width="574" height="51" fillAlphas="[1.0, 1.0]" fillColors="[#66CCEE, #66CCEE]" alpha="0.5" id="addControlBar"  cornerRadius="7" bottom="0"  horizontalCenter="0" rollOver="showControls()" rollOut="hideControls()" themeColor="#009DFF">
+    <mx:Label text = "Take me to" fontSize = "12" id= "addLabel" color="#E12448" fontFamily="Verdana" fontWeight="bold" />
+    	<mx:TextInput
+    		id = "address"
+    		text = "Arizona State University"
+    		width = "30%"
+    		 fontWeight="normal" borderStyle="none" cornerRadius="0" borderColor="#FBFAFA"/>
+    	<mx:Label id = "radiusId" text = "Radius:" fontSize = "12" color="#E12448" fontWeight="bold"/>
+    	<mx:ComboBox
+    		id = "radius">
+    		<mx:dataProvider>
+    			<mx:Array>
+    				<mx:String>0.1</mx:String>
+    				<mx:String>1</mx:String>
+    				<mx:String>3</mx:String>
+    			</mx:Array>
+    		</mx:dataProvider>
+    	</mx:ComboBox>
+    	<mx:Button
+    		id = "goButton"
+    		label = "Go!"
+    		click = "searchLocation(event);"
+    	 	color="#ED1649"/>
+    	 <!--<mx:Button
+    	 	id = "scrubButton"
+    	 	label = "Scrub!"
+    	 	click = "enableScrub(event);"
+    	 	color = "#ED1649"/> -->
+    	 <mx:CheckBox 
+    	 	label="Start Scrub!" 
+    	 	id = "scrubCheck" 
+    	 	click = "enableScrub(event);"
+    	 	color = "#ED1649" fontSize="12" fontWeight="bold"/>
+    </mx:ApplicationControlBar>
+    <mx:ApplicationControlBar width="280" height="100" id="progressPanel" horizontalCenter="0" cornerRadius="5" fillAlphas="[1.0, 1.0]" alpha = "0.6" fillColors="[#009DFF, #F6F9FB]" verticalCenter="22">
+    </mx:ApplicationControlBar>
+  </mx:Canvas> 
+
+<mx:Script>
+	<![CDATA[
+		import mx.events.MoveEvent;
+			/*[Embed(source='soundwalks_s.png')]
+             private static const ico:Class; // for panel soundwalks icon*/
+	import mx.controls.Button;
+	import adobe.utils.CustomActions;
+	import com.google.maps.controls.ControlPosition;
+	import com.google.maps.LatLng;
+	import com.google.maps.LatLngBounds;
+	import com.google.maps.Map;
+	import com.google.maps.MapEvent;
+	import com.google.maps.MapType;
+	import com.google.maps.MapMoveEvent;
+	import com.google.maps.MapMouseEvent;
+	import com.google.maps.MapZoomEvent;
+	import com.google.maps.controls.MapTypeControl;
+	//import com.google.maps.controls.ZoomControl;
+	import com.google.maps.controls.NavigationControl;
+	import com.google.maps.controls.NavigationControlOptions;
+	//import com.google.maps.controls.PositionControl;
+	import com.google.maps.extras.dragzoomcontrol.DragZoomControl;
+	import com.google.maps.overlays.Marker;
+	import com.google.maps.overlays.MarkerOptions;
+	import com.google.maps.styles.FillStyle; //info window alpha
+	import com.google.maps.InfoWindowOptions;
+	import com.google.maps.overlays.Polyline;
+	import com.google.maps.overlays.PolylineOptions;
+	import com.google.maps.styles.StrokeStyle;
+	import com.google.maps.examples.MarkerManager; // Marker Manager
+	import mx.controls.TextInput;
+	import com.kelvinluck.gmaps.Clusterer; // Marker Cluster
+	import com.kelvinluck.gmaps.example.ExampleClusterMarker;
+	
+	import com.google.maps.services.ClientGeocoder;
+    import com.google.maps.services.GeocodingEvent;
+    import mx.controls.Alert;
+	
+	import com.adobe.serialization.json.JSON; //json
+	import flash.net.URLLoader;
+	import flash.net.URLRequest;
+	import flash.events.*;
+	import flash.media.SoundMixer; //for global volume control
+	import flash.display.Graphics; // for draw trail
+	
+	import mx.managers.CursorManagerPriority;
+   	import mx.managers.CursorManager;
+   	
+   	import fink.MTN; // alex
+   	
+   	import mx.controls.ProgressBar;
+   	import mx.controls.ProgressBarMode;
+   	import mx.controls.Label;
+	
+	private var mtn:MTN = new MTN(); // alex's stuff
+	private var map:Map;
+	private var mgr:MarkerManager; //MarkerManager
+	
+	private var clusterer:Clusterer; //MarkerCluster
+	private var soundIdArray:Array;
+	private var markers:Array; // to store the markers for cluster
+	private var attachedMarkers:Array;
+	private var channel:SoundChannel = new SoundChannel(); // for sound play control
+	private var sounds:Array;
+	private var soundwalksId:Array; // to store soundwalk ids
+	private var markerDraw:Boolean = false;
+	
+	//for scrub mode
+	private var scrubState:Boolean = false;
+	private var drawLine:Boolean = false;
+	private var scrubDrawArea:Sprite = new Sprite();
+	private var scrubLine:Shape;
+	private var drawAreaState:Boolean = false;
+	private var scrubCircle:ScrubCircle;
+	private var scrubradiuschanged:Boolean = false;
+	private var fadeSpeed:Number = 0.002;
+	
+	private var loadProgressBar:ProgressBar = new ProgressBar();
+    
+    public function onHolderCreated(event:Event):void 
+    {
+        map = new Map();
+    //map.key = "ABQIAAAA7QUChpcnvnmXxsjC7s1fCxQGj0PqsCtxKvarsoS-iqLdqZSKfxTd7Xf-2rEc_PC9o8IsJde80Wnj4g";
+   map.key = Application.application.parameters.google_key;
+        map.addEventListener(MapEvent.MAP_READY, onMapReady);
+        mapHolder.addChild(map);
+        
+        loadProgressBar.indeterminate = false;
+       // loadProgressBar.mode = ProgressBarMode.MANUAL;
+        loadProgressBar.width = 250;
+        loadProgressBar.height = 16;
+        
+       
+     }
+
+    public function onHolderResized(event:Event):void 
+    {
+        map.setSize(new Point(mapHolder.width, mapHolder.height));
+        
+        // update volume controls position when resize
+        controls.x = mapHolder.width*0.85;
+        controls.y = mapHolder.height*0.05;
+        scrubcontrol.x = mapHolder.width*0.85;
+        scrubcontrol.y = mapHolder.height*0.08;
+    }
+	
+	private function showControls():void 
+		{
+        	
+        	fadeIn.play([addControlBar]);
+        	addLabel.visible = true;
+        	address.visible = true;
+        	radiusId.visible = true;
+        	radius.visible = true;
+        	goButton.visible = true;
+        	//scrubButton.visible = true;
+        	scrubCheck.visible = true;
+        	//clear.visible = true;
+      	}
+      	
+      	private function hideControls():void 
+      	{
+        	
+        	fadeOut.play([addControlBar]);
+        	addLabel.visible = false;
+  			address.visible = false;
+  			radiusId.visible = false;
+        	radius.visible = false;
+        	goButton.visible = false;
+        	//scrubButton.visible = false;
+        	scrubCheck.visible = false;
+        	//clear.visible = false;
+      	}
+      
+      	// deal with volume slider
+      	private function onSliderChanged(event:Event):void 
+      	{
+          var volume:Number = event.target.value/10;
+          SoundMixer.soundTransform = new SoundTransform(volume, 0); // global soundmixer
+      	}
+      	
+      	private function scrubRadiusChanged(event:Event):void
+      	{
+      		if(scrubCircle)
+      		{
+      			var r:Number = event.target.value*10;
+      			scrubCircle.radius = r;
+      		}
+      		scrubradiuschanged = true;
+      	}
+      	
+      	private function searchLocation(event:Event):void
+      	{	
+      		var geocoder:ClientGeocoder = new ClientGeocoder();
+      		geocoder.addEventListener(GeocodingEvent.GEOCODING_SUCCESS, 
+      		function(event:GeocodingEvent):void
+      		{
+      			var placemarks:Array = event.response.placemarks;
+      			if (placemarks.length > 0)
+      			{
+      				map.setCenter(placemarks[0].point, 14); // reset map center and zoom level
+  
+      			}
+      		});
+      		
+      		geocoder.addEventListener(GeocodingEvent.GEOCODING_FAILURE,
+      		function(event:GeocodingEvent):void
+      		{
+      			Alert.show("Geocoding failed");
+      		});
+      		
+      		geocoder.geocode(address.text);
+      	}
+      	
+		private function enableScrub(event:Event):void
+		{
+			//addControlBar.visible = false; // hide address control bar
+			Mouse.cursor = MouseCursor.BUTTON;
+			if(scrubCheck.selected == true)
+			{
+				scrubCheck.label = "Exit Scrub";
+				scrubState = true;
+				map.disableDragging();
+				map.addEventListener(MapMouseEvent.MOUSE_DOWN, startScrub);
+				map.addEventListener(MapMouseEvent.MOUSE_MOVE, updateScrub);
+				map.addEventListener(MapMouseEvent.MOUSE_UP, commitScrub);
+				if(scrubDrawArea == null)
+				{
+					scrubDrawArea = new Sprite(); // creat new drawing area if object is null
+				}
+				map.addChild(scrubDrawArea); // add draw area
+				drawAreaState = true; // decide if drawArea is created
+				var point:Point = map.fromLatLngToViewport(map.getCenter());
+				/*if (!scrubradiuschanged)
+				{
+					scrubCircle = new ScrubCircle(50);
+				}*/
+				scrubCircle = new ScrubCircle(scrubSlider.value*10);
+				scrubCircle.x = point.x;
+				scrubCircle.y = point.y;
+				scrubDrawArea.addChild(scrubCircle);
+			//CursorManager.setCursor(rippleCursor, CursorManagerPriority.HIGH, 20, 20);
+			}
+			else
+			{
+				scrubCheck.label = "Start Scrub!";
+				scrubState = false;
+				disableScrub();
+			}
+		}
+		
+		private function startScrub(event:MapMouseEvent):void
+		{
+			Mouse.cursor = MouseCursor.BUTTON;
+			drawLine = true;
+			scrubLine = new Shape();
+			var point:Point = map.fromLatLngToViewport(event.latLng);
+			var x_new:Number = point.x + scrubSlider.value*10;
+			var newLatLng:LatLng = map.fromViewportToLatLng(new Point(x, point.y));
+			var distance:Number = Math.abs(newLatLng.lng() - event.latLng.lng());
+			mtn.set_zoom(distance);
+			
+			mtn.start();
+			if(scrubradiuschanged)
+				{
+					//var point:Point = map.fromLatLngToViewport(event.latLng);
+					scrubDrawArea.removeChild(scrubCircle);
+					scrubCircle = new ScrubCircle(scrubSlider.value*10);
+					scrubCircle.x = point.x;
+					scrubCircle.y = point.y;
+					scrubDrawArea.addChild(scrubCircle);
+				}
+			
+			//CursorManager.setCursor(rippleCursor, CursorManagerPriority.HIGH, 20, 20);
+		}
+		
+		private function updateScrub(event:MapMouseEvent):void
+		{
+			//CursorManager.setCursor(rippleCursor, CursorManagerPriority.HIGH, -20, -20);
+			var point:Point = map.fromLatLngToViewport(event.latLng);
+			scrubCircle.x = point.x;
+			scrubCircle.y = point.y;
+			if(scrubState && drawLine)
+			{
+				Mouse.cursor = MouseCursor.BUTTON;
+				
+				var lat:Number = event.latLng.lat();
+				var lng:Number = event.latLng.lng();
+				if(scrubLine)
+				{
+					mtn.set_location(lng,lat);
+					
+					var dot:MovieClip = new MovieClip();
+					dot.graphics.beginFill(0xff3e96, 1.0);
+					dot.graphics.drawCircle(point.x, point.y, 5);
+					dot.graphics.endFill();
+					dot.addEventListener(Event.ENTER_FRAME, fadeDraw);
+					scrubDrawArea.addChild(dot);
+				}
+				
+		
+			}
+		
+			function fadeDraw(event:Event):void
+			{
+				event.target.alpha -= fadeSpeed;
+			}
+		}
+		
+		private function commitScrub(event:MapMouseEvent):void
+		{
+			mtn.stop();
+			drawLine = false;
+			//Mouse.cursor = MouseCursor.ARROW;
+			//scrubState = false;
+			//disableScrub();
+			//scrubDrawArea.removeChild(scrubCircle);
+			//scrubLine = null; // destroy previous line
+			
+			/*map.addEventListener(MapMoveEvent.MOVE_START, onMapMoved);
+			function onMapMoved(e:MapMoveEvent):void
+			{
+				clearScrub(event);
+			}*/
+			
+			//addControlBar.visible = true; // show the address control bar
+			
+		}
+		
+		private function disableScrub():void 
+		{	
+			scrubDrawArea.removeChild(scrubCircle);
+			Mouse.cursor = MouseCursor.ARROW;		
+			map.removeEventListener(MapMouseEvent.MOUSE_DOWN, startScrub);
+			map.removeEventListener(MapMouseEvent.MOUSE_UP, commitScrub);
+			map.removeEventListener(MapMouseEvent.MOUSE_MOVE, updateScrub);
+			map.enableDragging();
+			//CursorManager.removeAllCursors();
+		}
+		
+		/*private function clearScrub(event:Event):void
+		{
+			if(drawAreaState)
+			{
+				map.removeChild(scrubDrawArea);
+				if(scrubLine)
+				{
+					scrubDrawArea.removeChild(scrubLine);
+					scrubLine = null;
+				}
+				scrubDrawArea = null; // destroy previous draw area
+				drawAreaState = false;
+			}
+		}*/	
+		
+		private function onMapZoomChanged(event:MapZoomEvent):void
+		{
+			clusterer.zoom = map.getZoom();
+			attachMarkers();
+
+			//clearScrub(event); // clear previous drawing when zoom changed
+			
+		}
+		
+		private function attachMarkers():void
+		{
+			for each (var marker:Marker in attachedMarkers) 
+			{
+				map.removeOverlay(marker);
+			}
+			attachedMarkers = [];
+			var clusteredMarkers:Array = clusterer.clusters;
+			
+			for each (var cluster:Array in clusteredMarkers)
+			//for (var i:int = 0; i < cluster.length; i++)
+			{ 
+				var colorSum:Number = 0;
+				var markerCount:Number = cluster.length;
+				
+				if (cluster.length == 1) 
+				{
+					// there is only a single marker in this cluster
+					marker = cluster[0];
+				} else {
+					for (var i:int = 0; i < cluster.length; i++)
+					{
+						var color:Number = Number(cluster[i].getOptions().fillStyle.color);
+						colorSum += color;
+						
+					}
+					marker = new ExampleClusterMarker(cluster, colorSum/markerCount);
+				}
+				map.addOverlay(marker);
+				attachedMarkers.push(marker);
+			}
+		}
+		
+	private function onMapReady(event:Event):void
+	{	
+	
+		map.enableScrollWheelZoom();
+		map.enableContinuousZoom();
+		map.setCenter(new LatLng(33.420545084211, -111.931561410526), 4, MapType.HYBRID_MAP_TYPE);
+		
+		//add navControl, MapTypeControl and DragZoomControl
+		var navigationControlOptions:NavigationControlOptions = new NavigationControlOptions({position: new ControlPosition(ControlPosition.ANCHOR_TOP_LEFT, 4, 60)});
+    	map.addControl(new NavigationControl(navigationControlOptions));
+		map.addControl(new MapTypeControl());
+		map.addControl(new DragZoomControl());
+		
+		//set progressbar
+       	loadProgressBar.setStyle("themeColor", "haloOrange");
+       	loadProgressBar.setStyle("color", "0xff0000");
+		progressPanel.addChild(loadProgressBar);
+	
+		//	mgr = new MarkerManager(map,{}); // create MarkerManager
+		markers = []; // init markers for clusterer
+	
+		
+		drawSoundwalk();
+		soundJSON();
+		
+
+		map.addEventListener(MapZoomEvent.ZOOM_CHANGED, onMapZoomChanged);
+		map.addEventListener(MapEvent.INFOWINDOW_CLOSED, function(e:Event):void{channel.stop();}); // add infowindow closed event to stop playing sound
+	
+    	//addContextMenu(); //Context Menu
+ 	}
+		
+		private function drawSoundwalk():void
+		{
+			var soundwalkURL:String = "http://www.soundwalks.org/soundwalks.json";
+			var request:URLRequest = new URLRequest(soundwalkURL);
+			var loader:URLLoader = new URLLoader();
+			loader.addEventListener(Event.COMPLETE, decodeSoundwalkIdJSON);
+			loader.load(request);
+		}
+		
+		private function decodeSoundwalkIdJSON(e:Event):void
+		{
+			var loader:URLLoader = URLLoader(e.target);
+			soundwalksId = JSON.decode(loader.data);
+			for (var i:int = 0; i < soundwalksId.length; i++)
+			{
+				var id:String = soundwalksId[i].id;
+				soundwalkJSON(id);
+			}
+	
+		}
+		
+		private function soundJSON():void
+		{
+			// create json loader for sound marker
+			var centerLat:Number = map.getCenter().lat();
+			var centerLng:Number = map.getCenter().lng();
+			var soundURL:String = "http://soundwalks.org/sounds.json?lat="+ String(centerLat) + "&lng=" + String(centerLng)+"&distance=10";
+			var request:URLRequest = new URLRequest(soundURL);
+			var loader:URLLoader = new URLLoader();
+			
+			loadProgressBar.source = loader; // progress bar
+			loader.load(request);
+			loadProgressBar.addEventListener(Event.COMPLETE, function(e:Event):void{canvas.removeChild(progressPanel);});
+			
+			loader.addEventListener(Event.COMPLETE, decodeJSON); // decode json object after completion of load
+			
+		}
+		
+		private function decodeJSON(e:Event):void
+		{
+			var loader:URLLoader = URLLoader(e.target);
+			sounds = JSON.decode(loader.data);
+			var length:Number = sounds.length;
+			var id:Array = new Array(length);
+			
+			loadProgressBar.maximum = length;
+		
+			for (var i:int = 0; i < length; i++)
+			{
+				var soundLat:Number = sounds[i].lat;
+				var soundLng:Number = sounds[i].lng;
+				var localCustomInfoWindow:CustomInfoWindow = new CustomInfoWindow(sounds[i]);
+				
+				id[i] = sounds[i].id;
+				
+				var r:int = int(sounds[i].color_red*255);
+				var g:int = int(sounds[i].color_green*255);
+				var b:int = int(sounds[i].color_blue*255);
+				var hexColor:Number = rgbtohex24(r,g,b); // marker fillin color(hex)
+				
+				createMarker(soundLat, soundLng, localCustomInfoWindow, sounds[i].id, sounds[i].soundwalk_id, hexColor);
+				
+			}
+			
+			// create clusterer
+			clusterer = new Clusterer(markers, map.getZoom(), 30);
+			attachedMarkers = [];
+			attachMarkers();
+			
+			soundIdArray = id; // pass to global soundIdArray
+		}
+		
+		// convert dec color to hex color
+		public function rgbtohex24(red:Number,green:Number,blue:Number):Number
+		{
+			return (red<<16 | green<<8 | blue)
+		}
+     	
+      	private function createMarker(lat:Number, lon:Number, customInfoWindow:CustomInfoWindow, soundId:String, soundWalkId:String, hexColor:Number): void 
+      	{
+       
+        	var options:MarkerOptions = new MarkerOptions({icon: new CustomColorIcon(hexColor),
+        											   tooltip:lat + "\n" + lon, // add tooltip lat, lon info
+        											   iconAlignment: MarkerOptions.ALIGN_HORIZONTAL_CENTER,
+        											   fillStyle:{color:hexColor}}); //Marker Alignment
+        	var markerLocal:Marker = new Marker(new LatLng(lat, lon), options);
+			
+        	markers.push(markerLocal); // store markers to global markers array
+       		
+  			if (markerDraw != false)
+  			{
+     			map.addOverlay(markerLocal);
+    		 }
+     		// use MarkerManager to show the marker between zoom level 6 and 17
+  			// mgr.addMarker(markerLocal, 6, 17);
+ 
+  			// add doubleclick event for playback sound 
+    		markerLocal.addEventListener(MapMouseEvent.DOUBLE_CLICK, function(e:MapMouseEvent):void
+    			{
+					var soundPlayer:Sound = new Sound();
+					var soundURL:String = "http://www.soundwalks.org/soundwalks/" + soundWalkId + "/sounds/" + soundId + ".mp3";
+					soundPlayer.load(new URLRequest(soundURL));
+					soundPlayer.addEventListener(Event.COMPLETE, function(e:Event):void{channel = soundPlayer.play();});
+    		
+    			});
+    	
+    		// add customInfoWindow for each marker
+       		markerLocal.addEventListener(MapMouseEvent.CLICK, function(e:MapMouseEvent):void
+        		{
+       				var infoWindow:InfoWindowOptions = new InfoWindowOptions({customContent:customInfoWindow, 
+       														  		fillStyle: new FillStyle({alpha: 1.0}),
+       														  		width: 360,
+                											  		height: 200,
+                											  		drawDefaultFrame: true});
+               		customInfoWindow.showTags();
+                											  		
+       				markerLocal.openInfoWindow(infoWindow);});
+       	
+       		// add stop playing within infoWindow		
+       		map.addEventListener(MapEvent.INFOWINDOW_CLOSED, function(e:Event):void{customInfoWindow.infoChannel.stop();});
+                										
+     	} 
+     	
+  
+     	
+     	private function soundwalkJSON(id:String):void
+     	{
+     		// create json for soundwalk
+			var soundwalkReq:URLRequest = new URLRequest("http://www.soundwalks.org/soundwalks/" + id + ".json");
+			var soundwalkLoader:URLLoader = new URLLoader();
+			soundwalkLoader.load(soundwalkReq);
+			soundwalkLoader.addEventListener(Event.COMPLETE, decodeSoundwalkJSON);
+     	}
+     	
+		private function decodeSoundwalkJSON(e:Event):void
+		{
+			var loader:URLLoader = URLLoader(e.target);
+			var soundwalk:Object = JSON.decode(loader.data);
+			/*var opts:PolylineOptions = new PolylineOptions();
+        		opts.strokeStyle = new StrokeStyle({
+            	color: 0xFF0000,
+            	thickness: 4,
+            	alpha: 0.7});*/ //Polyline Options
+			for (var i:int = 0; i < soundwalk.locations.length-1; i++)
+			{
+				var latlngStart:LatLng = new LatLng(parseFloat(soundwalk.locations[i][1]), parseFloat(soundwalk.locations[i][2]));
+				var latlngEnd:LatLng = new LatLng(parseFloat(soundwalk.locations[i+1][1]), parseFloat(soundwalk.locations[i+1][2]));
+				var poly:Polyline = new Polyline([latlngStart, latlngEnd]);
+				map.addOverlay(poly);
+			}
+		}
+		
+	/*	private function querySet(event:Event):void
+      	{	
+      		markerDraw = true;
+      		var tag1:String = tagInput1.text;
+      		var tag2:String = tagInput2.text;
+      		var tag3:String = tagInput3.text;
+      		var tag4:String = tagInput4.text;
+      		var tag:String = tag1 + "," + tag2 + "," + tag3 +"," + tag4;
+      		var tags:Array = new Array(soundIdArray.length);
+      		var tagArray:Array = new Array(soundIdArray.length);
+   			var count:int = 0;
+   			
+       		 markers.splice(0, markers.length); // clear markers array
+			
+      		for(var i:int = 0; i < soundIdArray.length; i++)
+      		{	
+      			var url:String = "http://ame7.hc.asu.edu/soundwalks/1/sounds/" + soundIdArray[i] +"/query_set.js?tags=" + tag;
+      			var request:URLRequest = new URLRequest(url);
+				var loader:URLLoader = new URLLoader();
+				loader.load(request);
+				loader.addEventListener(Event.COMPLETE, decodeJSONforTag);
+
+
+      		}
+      		
+      		function decodeJSONforTag(e:Event):void
+      				{
+      					var loader:URLLoader = URLLoader(e.target);
+						var distribution:Array = JSON.decode(loader.data);
+						var max:Number = distribution.length - 1;
+						distribution.sortOn("value", Array.NUMERIC); // sort distribution on value
+						
+						var name:String = distribution[max].name;
+						var tagColor:String;
+						var localSound:Object = sounds[count];
+						var localCustomInfoWindow:CustomInfoWindow = new CustomInfoWindow(localSound);
+						switch(name)
+						{
+							case tagInput1.text:
+							tagColor = "tag1";
+							break;
+							
+							case tagInput2.text:
+							tagColor = "tag2";
+							break;
+							
+							case tagInput3.text:
+							tagColor = "tag3";
+							break;
+							
+							case tagInput4.text:
+							tagColor = "tag4";
+							break;
+						}
+						
+						createMarker(sounds[count].lat, sounds[count].lng, localCustomInfoWindow, sounds[count].id, sounds[count].soundwalk_id, tagColor);
+						count+=1;
+						clusterer = new Clusterer(markers, map.getZoom(), 30); 	
+				
+      				}
+      		
+						
+						attachMarkers();
+		
+						
+			
+      	}*/
+		
+		  	
+			
+     /*public function addInfoWindow(marker:Marker, markerInfo:String):void
+     	{
+     		var markerLocal:Marker = marker;
+     		markerLocal.addEventListener(MapMouseEvent.CLICK, function(e:MapMouseEvent):void
+     		{
+     			markerLocal.openInfoWindow(new InfoWindowOptions({content:markerInfo, fillStyle: new FillStyle({alpha: 0.5})}));
+     		});
+     	} */
+     
+     	/*public function addContextMenu():void
+     	{
+     		var menu:ContextMenu = new ContextMenu();
+     		var latlng:LatLng;
+     		menu.addEventListener(ContextMenuEvent.MENU_SELECT, function(e:ContextMenuEvent):void{
+     			latlng = map.fromViewportToLatLng(new Point(e.mouseTarget.mouseX, e.mouseTarget.mouseY));
+     		});
+     		
+     		var menuItem:ContextMenuItem = new ContextMenuItem('Add Marker');
+     		menuItem.addEventListener(ContextMenuEvent.MENU_ITEM_SELECT, function(e:ContextMenuEvent):void{
+     			createMarker(latlng.lat(), latlng.lng(), "Marker Info"); // ! need CustomInfoWindow here
+     		});
+     		
+     		var drawItem:ContextMenuItem = new ContextMenuItem('Draw Line');
+     		menu.customItems.push(drawItem);
+     		
+     		menu.customItems.push(menuItem);
+     		menu.hideBuiltInItems();
+     		this.map.contextMenu = menu;
+     	}*/
+      	
+	
+	]]>
+</mx:Script>	
+</mx:Application>
