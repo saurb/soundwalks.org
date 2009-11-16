@@ -161,13 +161,6 @@ class SoundsController < ApplicationController
       
       respond_to do |format|
         if @sound.save
-          node = @sound.build_mds_node
-          node.x = 0
-          node.y = 0
-          node.z = 0
-          node.w = 0
-          node.save
-          
           format.html {redirect_to soundwalk_sound_path(@soundwalk, @sound)}
           format.xml {render :xml => @sound.to_xml(sound_options), :status => :ok, :location => soundwalk_sound_path(@soundwalk, @sound)}
           format.json {render :json => @sound.to_json(sound_options), :status => :ok, :location => soundwalk_sound_path(@soundwalk, @sound), :callbock => params[:callback]}
@@ -239,23 +232,6 @@ class SoundsController < ApplicationController
         format.xml {render :xml => {:tags => tags}, :status => :ok}
         format.json {render :json => {:tags => tags}, :status => :ok, :callback => params[:callback]}
       end
-    end
-  end
-  
-  #--------------------------------------------------------#
-  # GET /soundwalks/:soundwalk_id/sounds/:sound_id/analyze #
-  #   Re-calculates the feature list for a sound.          #
-  #   User must be logged in and own the soundwalk/sound.  #
-  #--------------------------------------------------------#
-  
-  def analyze
-    @sound.analyze_sound
-    
-    respond_to do |format|
-      format.html {
-        flash[:notice] = "Sound #{@sound.id} (#{@sound.filename}) successfully analyzed."
-        redirect_to(soundwalk_sound_path(@soundwalk, @sound))
-      }
     end
   end
   
