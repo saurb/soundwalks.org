@@ -26,11 +26,14 @@
 				- if logged_in? && !current_user.nil? && current_user.id
 					%img{:src => avatar_url_for(current_user, :size => 25), :alt => ''}
 					Hi, #{first_name current_user, :force_third_person => true}! &nbsp;&nbsp;
-					%a{:title => 'My profile', :href => user_name_path(current_user)} My profile &#124;
-					%a{:title => 'Settings', :href => '/settings'} Settings &#124;
+					%a{:title => 'My profile', :href => user_name_path(current_user)} My profile
+					&#124;
+					%a{:title => 'Settings', :href => '/settings'} Settings
+					&#124;
 					%a{:title => 'Logout', :href => '/logout'} Logout
 				- else
-					%a{:title => 'Login', :href => '/login'} Login &#124;
+					%a{:title => 'Login', :href => '/login'} Login
+					&#124;
 					%a{:title => 'Sign up', :href => '/signup'} Sign up
 			%div#menu
 				- if logged_in? && !current_user.nil? && current_user.id
