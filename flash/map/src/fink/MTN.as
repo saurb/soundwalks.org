@@ -235,7 +235,7 @@ package fink
 		{
 			if (allLoaded)
 			{
-				
+				timeCount = 1000000;
 				design_system(true);
 				//maybe start with closest sound?
 				time_Mix.addEventListener(TimerEvent.TIMER, actant_tictoc);

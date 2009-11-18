@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="utf-8"?>
+<mx:Application xmlns:mx="http://www.adobe.com/2006/mxml" layout="absolute" initialize="init();">
+<mx:Script>
+        <![CDATA[
+        	import mx.containers.Accordion;
+            import mx.containers.VBox;
+            import mx.controls.Label;
+ 
+            private var accordion:Accordion = new Accordion();
+           
+           
+ 
+            private function init():void {
+                
+                var n:int = 100;
+                for (var i:int = 0; i < n; i++)
+                {
+                	 var l:Label = new Label();
+               		 l.text = "Test No." + String(i);
+                	
+                	var vbox:VBox = new VBox();
+                	vbox.label = String(i);
+                	vbox.percentHeight = 100;
+                	vbox.percentWidth = 100;
+                	vbox.addChild(l);
+                	
+                	accordion.addChild(vbox);
+                	
+                }
+                accordion.percentHeight = 100;
+                accordion.percentWidth = 100;
+                addChild(accordion);
+            }
+        ]]>
+    </mx:Script>
+	
+</mx:Application>
