@@ -146,7 +146,7 @@
     	 	click = "enableScrub(event);"
     	 	color = "#ED1649"/> -->
     	 <mx:CheckBox 
-    	 	label="Start Scrub!" 
+    	 	label="Listen!" 
     	 	id = "scrubCheck" 
     	 	click = "enableScrub(event);"
     	 	color = "#ED1649" fontSize="12" fontWeight="bold"/>
@@ -157,6 +157,7 @@
 
 <mx:Script>
 	<![CDATA[
+		import mx.containers.Accordion;
 		import mx.events.MoveEvent;
 			/*[Embed(source='soundwalks_s.png')]
              private static const ico:Class; // for panel soundwalks icon*/
@@ -209,8 +210,8 @@
    	import mx.controls.ProgressBarMode;
    	import mx.controls.Label;
 	
+	public var map:Map;
 	private var mtn:MTN = new MTN(); // alex's stuff
-	private var map:Map;
 	private var mgr:MarkerManager; //MarkerManager
 	
 	private var clusterer:Clusterer; //MarkerCluster
@@ -233,12 +234,14 @@
 	private var fadeSpeed:Number = 0.002;
 	
 	private var loadProgressBar:ProgressBar = new ProgressBar();
+	
+	private var infowindow:Array = [];
     
     public function onHolderCreated(event:Event):void 
     {
         map = new Map();
-    //map.key = "ABQIAAAA7QUChpcnvnmXxsjC7s1fCxQGj0PqsCtxKvarsoS-iqLdqZSKfxTd7Xf-2rEc_PC9o8IsJde80Wnj4g";
-   map.key = Application.application.parameters.google_key;
+    map.key = "ABQIAAAA7QUChpcnvnmXxsjC7s1fCxQGj0PqsCtxKvarsoS-iqLdqZSKfxTd7Xf-2rEc_PC9o8IsJde80Wnj4g";
+   //map.key = Application.application.parameters.google_key;
         map.addEventListener(MapEvent.MAP_READY, onMapReady);
         mapHolder.addChild(map);
         
@@ -376,7 +379,7 @@
 			var newLatLng:LatLng = map.fromViewportToLatLng(new Point(x, point.y));
 			var distance:Number = Math.abs(newLatLng.lng() - event.latLng.lng());
 			mtn.set_zoom(distance);
-			
+			mtn.set_location(event.latLng.lng(), event.latLng.lat());
 			mtn.start();
 			if(scrubradiuschanged)
 				{
@@ -489,42 +492,77 @@
 			var clusteredMarkers:Array = clusterer.clusters;
 			
 			for each (var cluster:Array in clusteredMarkers)
-			//for (var i:int = 0; i < cluster.length; i++)
 			{ 
 				var colorSum:Number = 0;
+				var clusterInfoWindowArray:Array = [];
 				var markerCount:Number = cluster.length;
 				
 				if (cluster.length == 1) 
 				{
 					// there is only a single marker in this cluster
 					marker = cluster[0];
-				} else {
+				} 
+				else 
+				{
 					for (var i:int = 0; i < cluster.length; i++)
 					{
 						var color:Number = Number(cluster[i].getOptions().fillStyle.color);
 						colorSum += color;
 						
+						if (map.getZoom() == map.getMaxZoomLevel())
+						{
+							var id_sound:int = cluster[i].getOptions().radius;
+							var id_soundwalk:int = cluster[i].getOptions().gravity;
+							for (var j:int = 0; j < infowindow.length; j++)
+							{
+								if ((int(infowindow[j].sound_id)==id_sound) && (int(infowindow[j].soundwalk_id==id_soundwalk)))
+								{
+									clusterInfoWindowArray.push(infowindow[j]);
+									break;
+								}
+							}
+						}
+						else
+						{
+							clusterInfoWindowArray = [];
+						}
+						
 					}
-					marker = new ExampleClusterMarker(cluster, colorSum/markerCount);
+					
+					
+					if (map.getZoom() != map.getMaxZoomLevel())
+					{
+						//var clusterInfo:ClusterInfoWindow = new ClusterInfoWindow(cluster.length);
+						marker = new ClusterMarker(cluster, colorSum/markerCount);
+						marker.addEventListener(MapMouseEvent.DOUBLE_CLICK, function(e:MapMouseEvent):void{map.setZoom(map.getZoom() + 2);});
+					}
+					else
+					{
+						var window:AccordionInfoWindow = new AccordionInfoWindow(clusterInfoWindowArray);
+						marker = new ExampleClusterMarker(cluster, colorSum/markerCount, window);
+					}
+	
+					
 				}
 				map.addOverlay(marker);
 				attachedMarkers.push(marker);
 			}
 		}
 		
+		
 	private function onMapReady(event:Event):void
 	{	
 	
 		map.enableScrollWheelZoom();
 		map.enableContinuousZoom();
-		map.setCenter(new LatLng(33.420545084211, -111.931561410526), 4, MapType.HYBRID_MAP_TYPE);
+		map.setCenter(new LatLng(33.420545084211, -111.931561410526), 10, MapType.NORMAL_MAP_TYPE);
 		
 		//add navControl, MapTypeControl and DragZoomControl
 		var navigationControlOptions:NavigationControlOptions = new NavigationControlOptions({position: new ControlPosition(ControlPosition.ANCHOR_TOP_LEFT, 4, 60)});
     	map.addControl(new NavigationControl(navigationControlOptions));
 		map.addControl(new MapTypeControl());
 		map.addControl(new DragZoomControl());
-		
+	
 		//set progressbar
        	loadProgressBar.setStyle("themeColor", "haloOrange");
        	loadProgressBar.setStyle("color", "0xff0000");
@@ -588,6 +626,7 @@
 			sounds = JSON.decode(loader.data);
 			var length:Number = sounds.length;
 			var id:Array = new Array(length);
+			var infowindowReady:Boolean = false;
 			
 			loadProgressBar.maximum = length;
 		
@@ -596,6 +635,8 @@
 				var soundLat:Number = sounds[i].lat;
 				var soundLng:Number = sounds[i].lng;
 				var localCustomInfoWindow:CustomInfoWindow = new CustomInfoWindow(sounds[i]);
+			
+				infowindow.push(localCustomInfoWindow);// store all the info windows
 				
 				id[i] = sounds[i].id;
 				
@@ -608,10 +649,18 @@
 				
 			}
 			
+			if (infowindow.length == length)
+			{
+				infowindowReady = true;
+			}
 			// create clusterer
 			clusterer = new Clusterer(markers, map.getZoom(), 30);
 			attachedMarkers = [];
-			attachMarkers();
+			
+			if (infowindow)
+			{
+				attachMarkers();
+			}
 			
 			soundIdArray = id; // pass to global soundIdArray
 		}
@@ -624,13 +673,14 @@
      	
       	private function createMarker(lat:Number, lon:Number, customInfoWindow:CustomInfoWindow, soundId:String, soundWalkId:String, hexColor:Number): void 
       	{
-       
-        	var options:MarkerOptions = new MarkerOptions({icon: new CustomColorIcon(hexColor),
+       		var markerIcon:CustomColorIcon = new CustomColorIcon(hexColor);
+        	var options:MarkerOptions = new MarkerOptions({icon: markerIcon,
         											   tooltip:lat + "\n" + lon, // add tooltip lat, lon info
         											   iconAlignment: MarkerOptions.ALIGN_HORIZONTAL_CENTER,
+        											   radius: int(soundId), // pass in soundId
+        											   gravity: int(soundWalkId), // pass in soundwalkId
         											   fillStyle:{color:hexColor}}); //Marker Alignment
         	var markerLocal:Marker = new Marker(new LatLng(lat, lon), options);
-			
         	markers.push(markerLocal); // store markers to global markers array
        		
   			if (markerDraw != false)
@@ -659,7 +709,7 @@
                 											  		height: 200,
                 											  		drawDefaultFrame: true});
                		customInfoWindow.showTags();
-                											  		
+                	
        				markerLocal.openInfoWindow(infoWindow);});
        	
        		// add stop playing within infoWindow		

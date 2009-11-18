@@ -1,4 +1,4 @@
-package com.kelvinluck.gmaps.example 
+package
 {
 	import com.google.maps.InfoWindowOptions;
 	import com.google.maps.MapMouseEvent;
@@ -7,30 +7,31 @@ package com.kelvinluck.gmaps.example
 	import com.google.maps.styles.FillStyle;
 
 	/**
-	 * @author kelvinluck
+	 *
 	 * mordified by Jinru Liu
 	 */
-	public class ExampleClusterMarker extends Marker 
+	public class ClusterMarker extends Marker 
 	{
 
-		public function ExampleClusterMarker(cluster:Array, clusterColor:Number, window:AccordionInfoWindow)
+		public function ClusterMarker(cluster:Array, clusterColor:Number)
 		{
 			var options:MarkerOptions = new MarkerOptions();
+			options.tooltip = String(cluster.length) + " sounds inside" + "\n" + "double click to zoom in";
 			options.icon = new ExampleClusterMarkerIcon(cluster.length, clusterColor);
 			options.hasShadow = false;
 			super((cluster[0] as Marker).getLatLng(), options);
 			
-			super.addEventListener(MapMouseEvent.CLICK, addClusterInfoWindow);
+			/*super.addEventListener(MapMouseEvent.CLICK, addClusterInfoWindow);
 			function addClusterInfoWindow(e:MapMouseEvent):void
 			{
 				
 				var infoWindow:InfoWindowOptions = new InfoWindowOptions({customContent:window, 
        														  		fillStyle: new FillStyle({alpha: 1.0}),
-       														  		width: 400,
-                											  		height: 350,
+       														  		width: 200,
+                											  		height: 100,
                 											  		drawDefaultFrame: true});					
         		e.target.openInfoWindow(infoWindow);
-			}
+			}*/
 		}
 	}
 }
