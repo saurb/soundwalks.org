@@ -4,6 +4,7 @@ package
 	
 	public class CustomColorIcon extends Sprite
 	{
+		
 		public function CustomColorIcon(color:Number)
 		{
 				graphics.beginFill(color, 1.0);

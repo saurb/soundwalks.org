@@ -27,15 +27,15 @@ package
 	{
 		//[Embed(source="play.png")] private var playIcon:Class;
 		//[Embed(source="pause.png")] private var pauseIcon:Class;
+		public var sound_id:String;
+		public var soundwalk_id:String;
+		public var infoChannel:SoundChannel = new SoundChannel(); // to access from soundwalk_map.mxml
 		
 		private var ready:Boolean = false;
 		private var pausePosition:Number = 0;
-		public var infoChannel:SoundChannel = new SoundChannel(); // to access from soundwalk_map.mxml
 		private var prevUser:String = "user_id";
 		private var image:Image = new Image();
 		private var prevUserImage:Image = new Image();
-		private var sound_id:String;
-		private var soundwalk_id:String;
 		private var tagText:String = "";
 		private var tagArea:TextArea = new TextArea();
 		private var soundFile:Sound;
@@ -86,7 +86,7 @@ package
 			//create panel for info window
 			var panel:Box = new Box();
 			panel.width = 360;
-			panel.height = 250;
+			panel.height = 200;
 			
 			var hbox1:HBox = new HBox();
 			
@@ -153,13 +153,13 @@ package
 			// addEventListener(FlexEvent.SHOW, showTags);
 			// TODO: EVENT LISTENER ON SHOW
 			
-			var hbox3:HBox = new HBox();
+			/*var hbox3:HBox = new HBox();
 			
 			var userTags:Label = new Label();
 			userTags.setStyle("color", 0xff0000);
 			userTags.setStyle("fontWeight", "bold");
 			userTags.text = "Your Tags:";
-			hbox3.addChild(userTags);
+			hbox3.addChild(userTags);*/
 			
 			
 			hbox2.addChild(ppButton);
