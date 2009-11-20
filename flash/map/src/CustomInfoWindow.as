@@ -14,7 +14,6 @@ package
 	import mx.containers.VBox;
 	import mx.controls.Button;
 	import mx.controls.Image;
-	import mx.controls.Label;
 	import mx.controls.Text;
 	import mx.controls.TextArea;
 	import mx.core.UIComponent;
@@ -30,6 +29,7 @@ package
 		public var sound_id:String;
 		public var soundwalk_id:String;
 		public var infoChannel:SoundChannel = new SoundChannel(); // to access from soundwalk_map.mxml
+		public var soundTitle:String;
 		
 		private var ready:Boolean = false;
 		private var pausePosition:Number = 0;
@@ -40,7 +40,7 @@ package
 		private var tagArea:TextArea = new TextArea();
 		private var soundFile:Sound;
 		
-		public function showTags():void
+			public function showTags():void
 			{
 				if (tagText == "") {
 					var tagLoader:URLLoader = new URLLoader();
@@ -66,6 +66,7 @@ package
 		{
 			sound_id = sound.id;
 			soundwalk_id = sound.soundwalk_id;
+			soundTitle = sound.title;
 			
 			var frameLength:Number = Number(sound.frame_length);
 			var frames:Number = Number(sound.frames);

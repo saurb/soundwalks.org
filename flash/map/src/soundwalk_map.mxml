@@ -338,7 +338,7 @@
 			Mouse.cursor = MouseCursor.BUTTON;
 			if(scrubCheck.selected == true)
 			{
-				scrubCheck.label = "Exit Scrub";
+				scrubCheck.label = "Stop Listen";
 				scrubState = true;
 				map.disableDragging();
 				map.addEventListener(MapMouseEvent.MOUSE_DOWN, startScrub);

@@ -27,7 +27,7 @@ package com.kelvinluck.gmaps.example
 				var infoWindow:InfoWindowOptions = new InfoWindowOptions({customContent:window, 
        														  		fillStyle: new FillStyle({alpha: 1.0}),
        														  		width: 400,
-                											  		height: 350,
+                											  		height: 270,
                 											  		drawDefaultFrame: true});					
         		e.target.openInfoWindow(infoWindow);
 			}
