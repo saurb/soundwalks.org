@@ -22,7 +22,7 @@
 <mx:Fade id="fadeOut" alphaFrom="1.0" alphaTo="0.0" />
 
 
- <mx:Canvas id = "canvas" width="100%" height="100%" >
+ <mx:Canvas id = "canvas" width="100%" height="100%">
   <mx:UIComponent id="mapHolder"
       initialize="onHolderCreated(event);"
       resize="onHolderResized(event)"
@@ -46,22 +46,6 @@
    		 />
     </mx:HBox>
     <mx:HBox id="scrubcontrol" styleName="controllerStyle" resize = "onHolderResized(event)">
-    	<mx:Image source = "scrubhand.png" />
-		<mx:HSlider
-      	id="scrubSlider"
-     	width="100"
-      	minimum="0"
-      	maximum="10"
-      	snapInterval="1"
-      	tickInterval="1"
-      	dataTipPrecision="0"
-      	value="5"
-      	showTrackHighlight="true"
-      	liveDragging = "true"
-      	borderColor="#ffffff"
-      	tickColor="#ffffff"
-      	change="scrubRadiusChanged(event);"
-   		 />
     </mx:HBox>
     
    <!-- <mx:VBox id = "taginputs"  x = "0" y = "450">
@@ -117,14 +101,14 @@
     		/>
     </mx:VBox>-->
    
-    <mx:ApplicationControlBar width="574" height="51" fillAlphas="[1.0, 1.0]" fillColors="[#66CCEE, #66CCEE]" alpha="0.5" id="addControlBar"  cornerRadius="7" bottom="0"  horizontalCenter="0" rollOver="showControls()" rollOut="hideControls()" themeColor="#009DFF">
+    <mx:ApplicationControlBar width="492" height="51" fillAlphas="[1.0, 1.0]" fillColors="[#66CCEE, #66CCEE]" alpha="0.8" id="addControlBar"  cornerRadius="7" bottom="0"  horizontalCenter="0" rollOver="showControls()" rollOut="hideControls()" themeColor="#009DFF">
     <mx:Label text = "Take me to" fontSize = "12" id= "addLabel" color="#E12448" fontFamily="Verdana" fontWeight="bold" />
     	<mx:TextInput
     		id = "address"
     		text = "Arizona State University"
     		width = "30%"
     		 fontWeight="normal" borderStyle="none" cornerRadius="0" borderColor="#FBFAFA"/>
-    	<mx:Label id = "radiusId" text = "Radius:" fontSize = "12" color="#E12448" fontWeight="bold"/>
+    	<!--<mx:Label id = "radiusId" text = "Radius:" fontSize = "12" color="#E12448" fontWeight="bold"/>
     	<mx:ComboBox
     		id = "radius">
     		<mx:dataProvider>
@@ -134,7 +118,7 @@
     				<mx:String>3</mx:String>
     			</mx:Array>
     		</mx:dataProvider>
-    	</mx:ComboBox>
+    	</mx:ComboBox>-->
     	<mx:Button
     		id = "goButton"
     		label = "Go!"
@@ -148,8 +132,26 @@
     	 <mx:CheckBox 
     	 	label="Listen!" 
     	 	id = "scrubCheck" 
+    	 	toolTip = "scrub and listen"
     	 	click = "enableScrub(event);"
     	 	color = "#ED1649" fontSize="12" fontWeight="bold"/>
+    	 <!--<mx:Image source = "scrubhand.png" width="19" height="20" toolTip="Listen Radius"/>-->
+    	 <mx:HSlider
+    	  	id="scrubSlider"
+    	  	toolTip="adjust listen radius"
+    	 	width="100"
+    	  	minimum="0"
+    	  	maximum="10"
+    	  	snapInterval="1"
+    	  	tickInterval="1"
+    	  	dataTipPrecision="0"
+    	  	value="5"
+    	  	showTrackHighlight="true"
+    	  	liveDragging = "true"
+    	  	borderColor="#ffffff"
+    	  	tickColor="#ffffff"
+    	  	change="scrubRadiusChanged(event);"
+    	 />
     </mx:ApplicationControlBar>
     <mx:ApplicationControlBar width="280" height="100" id="progressPanel" horizontalCenter="0" cornerRadius="5" fillAlphas="[1.0, 1.0]" alpha = "0.6" fillColors="[#009DFF, #F6F9FB]" verticalCenter="22">
     </mx:ApplicationControlBar>
@@ -267,7 +269,7 @@
 	private function showControls():void 
 		{
         	
-        	fadeIn.play([addControlBar]);
+        	/*fadeIn.play([addControlBar]);
         	addLabel.visible = true;
         	address.visible = true;
         	radiusId.visible = true;
@@ -275,13 +277,13 @@
         	goButton.visible = true;
         	//scrubButton.visible = true;
         	scrubCheck.visible = true;
-        	//clear.visible = true;
+        	//clear.visible = true;*/
       	}
       	
       	private function hideControls():void 
       	{
         	
-        	fadeOut.play([addControlBar]);
+        	/*fadeOut.play([addControlBar]);
         	addLabel.visible = false;
   			address.visible = false;
   			radiusId.visible = false;
@@ -289,7 +291,7 @@
         	goButton.visible = false;
         	//scrubButton.visible = false;
         	scrubCheck.visible = false;
-        	//clear.visible = false;
+        	//clear.visible = false;*/
       	}
       
       	// deal with volume slider
@@ -334,6 +336,8 @@
       	
 		private function enableScrub(event:Event):void
 		{
+			map.blendMode = "multiply";
+			
 			//addControlBar.visible = false; // hide address control bar
 			Mouse.cursor = MouseCursor.BUTTON;
 			if(scrubCheck.selected == true)
@@ -356,6 +360,7 @@
 					scrubCircle = new ScrubCircle(50);
 				}*/
 				scrubCircle = new ScrubCircle(scrubSlider.value*10);
+				scrubCircle.blendMode = "invert";
 				scrubCircle.x = point.x;
 				scrubCircle.y = point.y;
 				scrubDrawArea.addChild(scrubCircle);
@@ -363,7 +368,7 @@
 			}
 			else
 			{
-				scrubCheck.label = "Start Scrub!";
+				scrubCheck.label = "Listen!";
 				scrubState = false;
 				disableScrub();
 			}
@@ -388,6 +393,7 @@
 					scrubCircle = new ScrubCircle(scrubSlider.value*10);
 					scrubCircle.x = point.x;
 					scrubCircle.y = point.y;
+					scrubCircle.blendMode = "invert";
 					scrubDrawArea.addChild(scrubCircle);
 				}
 			
@@ -411,7 +417,8 @@
 					mtn.set_location(lng,lat);
 					
 					var dot:MovieClip = new MovieClip();
-					dot.graphics.beginFill(0xff3e96, 1.0);
+					//dot.graphics.beginFill(0xff3e96, 1.0);
+					dot.graphics.beginFill(0xffffff, 1.0);
 					dot.graphics.drawCircle(point.x, point.y, 5);
 					dot.graphics.endFill();
 					dot.addEventListener(Event.ENTER_FRAME, fadeDraw);
@@ -449,7 +456,10 @@
 		
 		private function disableScrub():void 
 		{	
+			map.blendMode = "normal";
 			scrubDrawArea.removeChild(scrubCircle);
+			map.removeChild(scrubDrawArea);
+			scrubDrawArea = null;
 			Mouse.cursor = MouseCursor.ARROW;		
 			map.removeEventListener(MapMouseEvent.MOUSE_DOWN, startScrub);
 			map.removeEventListener(MapMouseEvent.MOUSE_UP, commitScrub);
