@@ -242,13 +242,12 @@
     public function onHolderCreated(event:Event):void 
     {
         map = new Map();
-    //map.key = "ABQIAAAA7QUChpcnvnmXxsjC7s1fCxQGj0PqsCtxKvarsoS-iqLdqZSKfxTd7Xf-2rEc_PC9o8IsJde80Wnj4g";
-   map.key = Application.application.parameters.google_key;
+    map.key = "ABQIAAAA7QUChpcnvnmXxsjC7s1fCxQGj0PqsCtxKvarsoS-iqLdqZSKfxTd7Xf-2rEc_PC9o8IsJde80Wnj4g";
+   //map.key = Application.application.parameters.google_key;
         map.addEventListener(MapEvent.MAP_READY, onMapReady);
         mapHolder.addChild(map);
         
         loadProgressBar.indeterminate = false;
-       // loadProgressBar.mode = ProgressBarMode.MANUAL;
         loadProgressBar.width = 250;
         loadProgressBar.height = 16;
         
