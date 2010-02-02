@@ -244,7 +244,8 @@
     public function onHolderCreated(event:Event):void 
     {
         map = new Map();
-   		map.key = Application.application.parameters.google_key ? Application.application.parameters.goole_key : "ABQIAAAA7QUChpcnvnmXxsjC7s1fCxQGj0PqsCtxKvarsoS-iqLdqZSKfxTd7Xf-2rEc_PC9o8IsJde80Wnj4g";
+   		//map.key = Application.application.parameters.google_key ? Application.application.parameters.goole_key : "ABQIAAAA7QUChpcnvnmXxsjC7s1fCxQGj0PqsCtxKvarsoS-iqLdqZSKfxTd7Xf-2rEc_PC9o8IsJde80Wnj4g";
+        map.key = Application.application.parameters.google_key;
         map.addEventListener(MapEvent.MAP_READY, onMapReady);
         mapHolder.addChild(map);
         
