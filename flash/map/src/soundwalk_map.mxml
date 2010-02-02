@@ -31,6 +31,7 @@
     	<mx:Image source = "speaker_icon_s.png" />
 		<mx:HSlider
       	id="zoomSlider"
+      	toolTip = "Adjust volume"
      	width="100"
       	minimum="0"
       	maximum="10"
@@ -101,7 +102,7 @@
     		/>
     </mx:VBox>-->
    
-    <mx:ApplicationControlBar width="492" height="51" fillAlphas="[1.0, 1.0]" fillColors="[#66CCEE, #66CCEE]" alpha="0.8" id="addControlBar"  cornerRadius="7" bottom="0"  horizontalCenter="0" rollOver="showControls()" rollOut="hideControls()" themeColor="#009DFF">
+    <mx:ApplicationControlBar width="492" height="44" fillAlphas="[1.0, 1.0]" fillColors="[#9F959E, #9F959E]" alpha="0.8" id="addControlBar"  cornerRadius="7" bottom="0"  horizontalCenter="0" rollOver="showControls()" rollOut="hideControls()" themeColor="#009DFF">
     <mx:Label text = "Take me to" fontSize = "12" id= "addLabel" color="#E12448" fontFamily="Verdana" fontWeight="bold" />
     	<mx:TextInput
     		id = "address"
@@ -123,7 +124,8 @@
     		id = "goButton"
     		label = "Go!"
     		click = "searchLocation(event);"
-    	 	color="#ED1649"/>
+    	 	color="#ED1649" width="47" cornerRadius="8"/>
+    	<mx:VRule height="30"/>
     	 <!--<mx:Button
     	 	id = "scrubButton"
     	 	label = "Scrub!"
@@ -132,20 +134,20 @@
     	 <mx:CheckBox 
     	 	label="Listen!" 
     	 	id = "scrubCheck" 
-    	 	toolTip = "scrub and listen"
+    	 	toolTip = "Scrub and listen"
     	 	click = "enableScrub(event);"
     	 	color = "#ED1649" fontSize="12" fontWeight="bold"/>
     	 <!--<mx:Image source = "scrubhand.png" width="19" height="20" toolTip="Listen Radius"/>-->
     	 <mx:HSlider
     	  	id="scrubSlider"
-    	  	toolTip="adjust listen radius"
-    	 	width="100"
+    	  	toolTip="Adjust listen radius"
+    	 	width="84"
     	  	minimum="0"
     	  	maximum="10"
     	  	snapInterval="1"
     	  	tickInterval="1"
     	  	dataTipPrecision="0"
-    	  	value="5"
+    	  	value="3"
     	  	showTrackHighlight="true"
     	  	liveDragging = "true"
     	  	borderColor="#ffffff"
@@ -258,8 +260,8 @@
         map.setSize(new Point(mapHolder.width, mapHolder.height));
         
         // update volume controls position when resize
-        controls.x = mapHolder.width*0.85;
-        controls.y = mapHolder.height*0.05;
+        controls.x = mapHolder.width*0.07;
+        controls.y = mapHolder.height*0.015;
         scrubcontrol.x = mapHolder.width*0.85;
         scrubcontrol.y = mapHolder.height*0.08;
     }
@@ -334,7 +336,7 @@
       	
 		private function enableScrub(event:Event):void
 		{
-			map.blendMode = "multiply";
+			//map.blendMode = "multiply";
 			
 			//addControlBar.visible = false; // hide address control bar
 			Mouse.cursor = MouseCursor.BUTTON;
@@ -358,7 +360,7 @@
 					scrubCircle = new ScrubCircle(50);
 				}*/
 				scrubCircle = new ScrubCircle(scrubSlider.value*10);
-				scrubCircle.blendMode = "invert";
+				//scrubCircle.blendMode = "invert";
 				scrubCircle.x = point.x;
 				scrubCircle.y = point.y;
 				scrubDrawArea.addChild(scrubCircle);
@@ -391,7 +393,7 @@
 					scrubCircle = new ScrubCircle(scrubSlider.value*10);
 					scrubCircle.x = point.x;
 					scrubCircle.y = point.y;
-					scrubCircle.blendMode = "invert";
+					//scrubCircle.blendMode = "invert";
 					scrubDrawArea.addChild(scrubCircle);
 				}
 			
@@ -454,7 +456,7 @@
 		
 		private function disableScrub():void 
 		{	
-			map.blendMode = "normal";
+			//map.blendMode = "normal";
 			scrubDrawArea.removeChild(scrubCircle);
 			map.removeChild(scrubDrawArea);
 			scrubDrawArea = null;
@@ -538,7 +540,7 @@
 					}
 					
 					
-					if (map.getZoom() != map.getMaxZoomLevel())
+					if (map.getZoom() != map.getMaxZoomLevel() )
 					{
 						//var clusterInfo:ClusterInfoWindow = new ClusterInfoWindow(cluster.length);
 						marker = new ClusterMarker(cluster, colorSum/markerCount);

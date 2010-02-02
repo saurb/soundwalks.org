@@ -56,7 +56,7 @@ package com.google.maps.extras.dragzoomcontrol
 				
 		//static constants
 		private static const ACTIVE_ALPHA:Number = 1;
-		private static const INACTIVE_ALPHA:Number = .7;
+		private static const INACTIVE_ALPHA:Number = .8;
 		
 		//Default configurable properties values
 		public static const DEFAULT_SELECTION_BG_COLOR:Number = 0xFFFFFF;

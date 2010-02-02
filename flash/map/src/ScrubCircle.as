@@ -26,7 +26,7 @@ package
 		{
 				_radius = radius;
 				//graphics.beginFill(0xff3e96, 0.3);
-				graphics.beginFill(0xffffff, 0.8);
+				graphics.beginFill(0xffffff, 0.7);
 				graphics.drawCircle(0,0,_radius);
 				graphics.endFill();
 			
